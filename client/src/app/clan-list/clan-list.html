@@ -1,0 +1,32 @@
+<div class="container-fluid user-list list">
+
+	
+<div ng-click="vm.creatClan()" class="create-game-link customButton customButton__wide bg-green white">Create Clan
+
+	<input ng-model="vm.newClanTag" type="text">
+</div>
+	<div class="row table-header">
+		<div class="col-xs-8">tag</div>
+		
+		
+		
+	</div>
+
+	<!-- table body -->
+	<div class="table game-list">
+		<div
+			class="list-item row"
+			ng-repeat="clan in vm.clans">
+
+			<a ui-sref="clashClan({ clantag: clan.Name })" title="display clans">
+				
+				<div class="col-xs-8">{{clan.Name}}</div>
+				
+				
+			</a>
+			
+
+			
+		</div>
+	</div>
+</div>

@@ -1,0 +1,83 @@
+<div class="container-fluid user form">
+
+	<div class="userTabs d-flex arround" >
+		<div ng-click="vm.changeActiveTab('info')" ng-class="vm.activeTab == 'info'? 'active' : ''" class="">Info</div>
+		<div ng-click="vm.changeActiveTab('stats')" ng-class="vm.activeTab == 'stats'? 'active' : ''" class="">Stats</div>
+		<div ng-click="vm.changeActiveTab('cards')" ng-class="vm.activeTab == 'cards'? 'active' : ''" class="">Cards</div>
+		<div ng-click="vm.changeActiveTab('battles')" ng-class="vm.activeTab == 'battles'? 'active' : ''" class="">Battles</div>
+		
+	</div>
+	<div class="userContent">
+		<div ng-class="vm.activeTab == 'info'? 'block' : 'hidden' " >
+			<div class="row">
+				<div class="col-xs-5">name: </div>
+				<div class="col-xs-7">{{vm.user.name}}</div>
+				<div class="col-xs-5">trophies: </div>
+				<div class="col-xs-7">{{vm.user.trophies}}</div>
+				<div class="col-xs-5">bestTrophies: </div>
+				<div class="col-xs-7">{{vm.user.bestTrophies}}</div>
+				<div class="col-xs-5">arena: </div>
+				<div class="col-xs-7">{{vm.user.arena.name}}</div>
+				<div class="col-xs-5">role: </div>
+				<div class="col-xs-7">{{vm.user.role}}</div>
+				<div class="col-xs-5">clan: </div>
+				<div class="col-xs-7">{{vm.user.clan.name}}</div>
+			</div>
+			
+			
+		</div>
+		<div ng-class="vm.activeTab == 'stats'? 'block' : 'hidden' " >
+			<div class="row">
+				<div class="col-xs-5">wins</div>
+				<div class="col-xs-7">{{vm.user.wins}}</div>
+				<div class="col-xs-5">threeCrownWins</div>
+				<div class="col-xs-7">{{vm.user.threeCrownWins}}</div>
+				<div class="col-xs-5">losses</div>
+				<div class="col-xs-7">{{vm.user.losses}}</div>
+				<div class="col-xs-5">battleCount</div>
+				<div class="col-xs-7">{{vm.user.battleCount}}</div>
+				<div class="col-xs-5">challengeMaxWins</div>
+				<div class="col-xs-7">{{vm.user.challengeMaxWins}}</div>
+				
+				
+			</div>
+		</div>
+		<div ng-class="vm.activeTab == 'cards'? 'block' : 'hidden' ">
+			<div class="row">
+				<div class="col-xs-3">currentDeck</div>
+				<div class="col-xs-9">
+					<div class="cardImage" ng-repeat="card in vm.user.currentDeck">
+						<img  src="{{card.iconUrls.medium}}" alt="">
+					</div>
+					
+					
+				</div>
+				<div class="col-xs-5">currentFavouriteCard</div>
+				<div class="col-xs-7">
+					<div class="cardImage">
+						<img  src="{{vm.user.currentFavouriteCard.iconUrls.medium}}" alt="">
+					</div>
+				</div>
+				
+				
+			</div>
+		</div>
+		<div ng-class="vm.activeTab == 'battles'? 'block' : 'hidden' ">
+			<div class="row tableHeaderRow">
+				<div class="col-xs-3">battleTime</div>
+				<div class="col-xs-2">type</div>
+				<div class="col-xs-3">teamMate</div>
+				<div class="col-xs-2">opponent</div>
+				<div class="col-xs-2">winner</div>
+			</div>
+			<div class="" ng-repeat="battle in vm.userBattles">
+				<battle-directive battle="{{battle}}"></battle-directive>
+			</div>
+		</div>
+		
+	</div>
+
+	
+
+	
+</div>

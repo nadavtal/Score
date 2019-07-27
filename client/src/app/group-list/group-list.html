@@ -1,0 +1,51 @@
+<div class="container-fluid user-list list">
+
+	<div class="buttons d-flex arround">
+		<div ui-sref="createGroup" class="create-game-link customButton bg-green white" ui-sref-opts="{reload: true, notify: true}">Create group</div>
+		<button ng-click="vm.getGroupsOfUserId()" class="customButton">find groups by user</button>
+
+	</div>
+	<!-- header -->
+	<div class="row table-header">
+		<div class="col-xs-2">logo</div>
+		<div class="col-xs-2">Name</div>
+		<div class="col-xs-2">Manager</div>
+		
+		<div class="col-xs-4">members</div>
+		
+		<div class="col-xs-2">Edit</div>
+	</div>
+
+	<!-- table body -->
+	<div class="table-body game-list">
+		<div
+			class="list-item row"
+			ng-repeat="group in vm.groups">
+
+			<a ui-sref="displayGroup({ groupId: group._id })" title="display groups">
+				<div class="col-xs-2"></div>
+				<div class="col-xs-2">{{group.groupName}}</div>
+				<div class="col-xs-2">{{group.groupManager.userName}}</div>
+				<div class="col-xs-4">
+					<a ui-sref="displayUser({userId: player.userId})" ng-repeat="player in group.members">
+						{{player.userName}}, 
+					</a>
+					
+				</div>
+				
+			</a>
+			<div class="col-xs-2 buttons">
+				<a class="editButton" ui-sref="editGroup({ groupId: group._id })" class="icon" title="edit group">
+					Edit 
+				</a>
+				<!-- <a class="registerButton" ui-sref="registerToGroup({ groupId: group._id })" class="icon" title="register group">
+					register 
+				</a>
+				 -->
+				<button class="editButton" ng-click="vm.removeGame($index, group._id)">X</button>
+			</div>
+
+			
+		</div>
+	</div>
+</div>

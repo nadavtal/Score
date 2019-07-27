@@ -1,0 +1,28 @@
+<div class="container-fluid user-list list">
+
+	<!-- header -->
+	
+	
+	<div class="row table-header">
+		
+		<div class="col-xs-3">userTag</div>
+		
+	</div>
+
+	<!-- table body -->
+	<div class="table">
+		<div
+			class="list-item row"
+			ng-repeat="user in vm.accounts">
+
+			<a ui-sref="clashUser({ usertag: user.accountId })" title="display clash user">
+				<div class="col-xs-4">{{ user.platform }}</div>
+				<div class="col-xs-4">{{ user.userName }}</div>
+				<div class="col-xs-4">{{ user.accountId }}</div>
+				
+			</a>
+
+			
+		</div>
+	</div>
+</div>

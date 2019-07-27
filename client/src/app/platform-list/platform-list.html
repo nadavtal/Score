@@ -1,0 +1,36 @@
+<div class="container-fluid user-list list">
+
+	<!-- header -->
+	<li>
+		<div ui-sref="createUser" class="create-user-link customButton bg-green white" ui-sref-opts="{reload: true, notify: true}">Create user</div>
+	</li>
+
+	<div class="row table-header">
+		
+		<div class="col-xs-3">username</div>
+		<div class="col-xs-3">role</div>
+		<div class="col-xs-3">wins</div>
+		<div class="col-xs-3">action</div>
+	</div>
+
+	<!-- table body -->
+	<div class="table">
+		<div
+			class="list-item row"
+			ng-repeat="user in vm.users track by user._id">
+
+			<a ui-sref="displayUser({ userId: user._id })" title="display user">
+				
+				<div class="col-xs-3">{{ user.username }}</div>
+				<div class="col-xs-3">{{ user.role }}</div>
+				<div class="col-xs-3">{{ user.wins }}</div>
+			</a>
+
+			<div class="col-xs-3">
+				<a ui-sref="editUser({ userId: user._id })" class="icon" title="edit user">
+				    Edit user
+				</a>
+			</div>
+		</div>
+	</div>
+</div>

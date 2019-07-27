@@ -1,0 +1,29 @@
+<div class="row tableBodyRow">
+    
+    <div class="col-xs-3">{{battle.battleTime | date: 'dd/MM/yy HH:mm'}}</div>
+    <div class="col-xs-2">{{battle.type}}</div>
+    <div class="col-xs-3">
+        <div ng-repeat="player in battle.team">
+           <a ui-sref="clashUser({ usertag: player.tag })" class="create-user-link" ui-sref-opts="{reload: true, notify: true}">
+                {{player.name}}
+            </a> 
+        </div>
+    </br>	
+    </div>
+    <div class="col-xs-2">
+        <div ng-repeat="player in battle.opponent">
+           <a ui-sref="clashUser({ usertag: player.tag })" class="create-user-link" ui-sref-opts="{reload: true, notify: true}">
+                {{player.name}}
+            </a> 
+        </div>
+    </br>
+    </div>
+    <div class="col-xs-2">
+        <div ng-repeat="player in winner">
+           <a ui-sref="clashUser({ usertag: player.tag })" class="create-user-link" ui-sref-opts="{reload: true, notify: true}">
+                {{player.name}}   
+            </a> 
+        </div>
+         <br>
+    </div>
+</div>

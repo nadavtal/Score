@@ -1,0 +1,19 @@
+{
+  "boss": true,
+  "curly": false,
+  "eqnull": true,
+  "immed": true,
+  "latedef": false,
+  "newcap": false,
+  "noarg": true,
+  "node": true,
+  "sub": true,
+  "multistr": true,
+  "eqeqeq": false,
+  "undef": true,
+  "predef" : [
+      "angular",
+      "window",
+      "io"
+  ]
+}

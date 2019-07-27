@@ -1,0 +1,53 @@
+<div class="container-fluid home">
+    <h1>HOMEPAGE</h1>
+
+    <div ng-if="vm.user.role == 'admin'">
+        <div class="customButton bg-green white">Add Platform</div>
+        <form
+            ng-submit="vm.submitAddPlatform(vm.platform)"
+            name="vm.addPlatform"
+            role="form"
+            id="user"
+            novalidate
+        >
+
+            <div class="row">
+                <label for="platform" class="col-xs-5">Platform</label>
+                <div class="col-xs-7">
+                    <input
+                        type="text"
+                        ng-model="vm.platform.name"
+                    
+                        name="platform"
+                        id="platform"
+                        autocomplete="off"
+                        placeholder="Platform"
+                    >
+                </div>
+                <label for="platformType" class="col-xs-5">type</label>
+                <div class="col-xs-7">
+                    <input
+                        type="text"
+                        ng-model="vm.platform.type"
+                        
+                        name="platformType"
+                        id="platformType"
+                        autocomplete="off"
+                        placeholder="platformType"
+                    >
+                </div>
+                
+            </div>
+
+            
+            <button class="customButton"
+                type="submit"
+                ng-disabled="vm.addPlatform.$invalid"
+                
+            >
+                Save
+            </button>
+            
+        </form>
+    </div>
+</div>

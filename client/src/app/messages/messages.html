@@ -1,0 +1,114 @@
+
+
+	<div class="button d-flex between">
+		<!-- <div ui-sref="createGame" class="create-game-link customButton bg-green white" ui-sref-opts="{reload: true, notify: true}">Create game</div>
+		<div ui-sref="createGroupGame" class="create-game-link customButton bg-green white" ui-sref-opts="{reload: true, notify: true}">Create Group game</div> -->
+		<button ng-click="vm.createGame()" class="create-game-link customButton bg-green white">Create New message</button>
+		<button ng-click="vm.getGamesOfUserId()" class="customButton">find messages by user</button>
+	</div>
+	
+	<md-content class="md-padding">
+			<md-tabs class="md-accent" md-selected="data.selectedIndex" md-align-tabs="{{data.bottom ? 'bottom' : 'top'}}">
+			  <md-tab id="tab1">
+				<md-tab-label>Inbox</md-tab-label>
+				<md-tab-body>
+				  <div class="row">
+					 <div class="col-xs-3">
+						<div class="messageUser">
+							Nadi
+						</div>
+					 </div>
+					 <div class="col-xs-7">
+						<div class="messageSubject">
+							Come fight me you woos
+						</div>
+					 </div>
+					 <div class="col-xs-2">
+						27.7.19
+					 </div>
+				  </div>
+				</md-tab-body>
+			  </md-tab>
+			  <md-tab id="tab2" ng-disabled="data.secondLocked">
+				<md-tab-label>Oubox</md-tab-label>
+				<md-tab-body>
+					<div class="row">
+						<div class="col-xs-3">
+							<div class="messageUser">
+								Nadi
+							</div>
+						</div>
+						<div class="col-xs-7">
+							<div class="messageSubject">
+								Come fight me you woos
+							</div>
+						</div>
+						<div class="col-xs-2">
+							27.7.19
+						</div>
+					</div>
+				</md-tab-body>
+			  </md-tab>
+			  <md-tab id="tab3">
+				<md-tab-label>Draft</md-tab-label>
+				<md-tab-body>
+				  View for Item #3 <br/>
+				  data.selectedIndex = 2;
+				</md-tab-body>
+			  </md-tab>
+			 
+			</md-tabs>
+		  </md-content>
+		
+		  <div class="md-padding" layout="row" layout-sm="column" layout-align="left center"
+			   style="padding-top: 0;">
+			<md-checkbox ng-model="data.secondLocked" aria-label="Disable item two?" style="margin: 5px;">
+			  Disable item two?
+			</md-checkbox>
+			<md-checkbox ng-model="data.bottom" aria-label="Align tabs to bottom?" style="margin: 5px;">
+			  Align tabs to bottom?
+			</md-checkbox>
+		</div>
+		
+	<div class="row table-header">
+		<div class="col-xs-2">Time</div>
+		<div class="col-xs-2">Subject</div>
+		<div class="col-xs-2">Content</div>
+		<div class="col-xs-2">players</div>
+		<div class="col-xs-2">Winner</div>
+		<div class="col-xs-2">Edit</div>
+	</div>
+
+	<!-- table body -->
+	<div class="table-body game-list">
+		<div
+			class="list-item row"
+			ng-repeat="game in vm.games track by game._id">
+
+			<a ui-sref="displayGame({ gameId: game._id, groupId: game.group })" title="display game">
+				<div class="col-xs-2">{{ game.time | date:'dd-MM-yy H:mm' }}</div>
+				<div class="col-xs-2">{{ game.gametype }}</div>
+				<div class="col-xs-2">{{ game.host }}</div>
+				<div class="col-xs-2">
+					<a ui-sref="gamesByUserId({userId: player.userid})" ng-repeat="player in game.players">
+						{{player.username}}, 
+					</a>
+					
+				</div>
+				<div class="col-xs-2">{{ game.winner.username }}</div>
+			</a>
+			<div class="col-xs-2">
+				<a class="editButton" ui-sref="editGame({ gameId: game._id })" class="icon" title="edit game">
+					Edit 
+				</a>
+				<a class="registerButton" ui-sref="registerToGame({ gameId: game._id })" class="icon" title="edit game">
+					register 
+				</a>
+				
+				<button class="editButton" ng-click="vm.removeGame($index, game._id)">X</button>
+			</div>
+
+			
+		</div>
+	</div>
+

@@ -1,0 +1,60 @@
+<!-- Main navigation -->
+<div class="container-fluid main-nav">
+
+	<header>
+
+		<div class="row">
+			<div class="col-xs-12">
+				<!-- login/logout -->
+				<div class="auth">
+					<auth></auth>
+				</div>
+			</div>
+		</div>
+
+		
+		<!-- navigation -->
+		<!-- <md-content class="md-padding"> -->
+			<md-nav-bar
+			  ng-if="mnCtrl.user"
+			  md-selected-nav-item="currentNavItem"
+			  nav-bar-aria-label="navigation links">
+			  <md-nav-item md-nav-href="home" ui-sref="home({ userId: mnCtrl.user._id })" name="home" ui-sref-opts="{reload: true, notify: true}">HOME</md-nav-item>
+			  <md-nav-item md-nav-href="myProfile" ui-sref="displayUser({ userId: mnCtrl.user._id })" name="myProfile" ui-sref-opts="{reload: true, notify: true}">MY PROFILE</md-nav-item>
+			  <md-nav-item md-nav-href="users" ng-if="mnCtrl.user.role == 'admin'" ui-sref="users" name="users" ui-sref-opts="{reload: true, notify: true}">DB</md-nav-item>
+			  <md-nav-item md-nav-href="clashClans" ui-sref="clashClans" name="clashClans" ui-sref-opts="{reload: true, notify: true}">CLANS</md-nav-item>
+			  
+			</md-nav-bar>
+			
+		
+			
+		
+		  <!-- </md-content> -->
+
+		
+
+		<!-- <div class="row" ng-if="mnCtrl.user">
+			<ul>
+
+				<li>
+					<a ui-sref="home({ userId: mnCtrl.user._id })" class="create-user-link" ui-sref-opts="{reload: true, notify: true}">Home</a>
+				</li>
+				<li>
+					<a ui-sref="displayUser({ userId: mnCtrl.user._id })" class="create-user-link" ui-sref-opts="{reload: true, notify: true}">My Profile</a>
+				</li>
+				
+				
+				<li ng-if="mnCtrl.user.role =='admin'">
+					<a ui-sref="users" class="users-link" ui-sref-opts="{reload: true, notify: true}">DB</a>
+				</li>
+				
+				
+				
+				<li>
+					<a ui-sref="clashClans" class="users-link" >Clans</a>
+				</li>
+			
+			</ul>
+		</div> -->
+	</header>
+</div>

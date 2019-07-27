@@ -1,0 +1,76 @@
+<div class="container-fluid group form">
+		<h1 class="clanName">{{vm.clan.name}}</h1>
+		<div class="userTabs d-flex arround" >
+			<div ng-click="vm.changeActiveTab('members')" ng-class="vm.activeTab == 'members'? 'active' : ''" class="">members</div>
+			<div ng-click="vm.changeActiveTab('stats')" ng-class="vm.activeTab == 'stats'? 'active' : ''" class="">Stats</div>
+			<div ng-click="vm.changeActiveTab('allbattles')" ng-class="vm.activeTab == 'allbattles'? 'active' : ''" class="">All Battles</div>
+			<div ng-click="vm.changeActiveTab('friendlybattles')" ng-class="vm.activeTab == 'friendlybattles'? 'active' : ''" class="">Friendly Battles</div>
+			
+		</div>
+		<div class="userContent">
+			<div ng-class="vm.activeTab == 'members'? 'block' : 'hidden' " >
+				<div class="row" ng-repeat="member in vm.clan.memberList">
+					<a ui-sref="clashUser({ usertag: member.tag })">
+						<div class="col-xs-3">{{member.name}}</div>
+						<div class="col-xs-3">{{member.clanRank}}</div>
+						<div class="col-xs-3">{{member.trophies}}</div>
+						<div class="col-xs-3">{{member.tag}}</div>
+					</a>
+				</div>
+				
+				
+			</div>
+			<div ng-class="vm.activeTab == 'stats'? 'block' : 'hidden' " >
+				<div class="row">
+					<div class="col-xs-5">wins</div>
+					<div class="col-xs-7"></div>
+					<div class="col-xs-5">threeCrownWins</div>
+					<div class="col-xs-7"></div>
+					<div class="col-xs-5">losses</div>
+					<div class="col-xs-7"></div>
+					<div class="col-xs-5">battleCount</div>
+					<div class="col-xs-7"></div>
+					<div class="col-xs-5">challengeMaxWins</div>
+					<div class="col-xs-7"></div>
+					
+					
+				</div>
+			</div>
+			
+			<div ng-class="vm.activeTab == 'allbattles'? 'block' : 'hidden' ">
+				<div class="row tableHeaderRow">
+					<div class="col-xs-3">battleTime</div>
+					<div class="col-xs-2">type</div>
+					<div class="col-xs-3">teamMate</div>
+					<div class="col-xs-2">opponent</div>
+					<div class="col-xs-2">winner</div>
+				</div>
+				<div class="" ng-repeat="battle in vm.allClanBattles">
+					<battle-directive battle="{{battle}}"></battle-directive>
+				</div>
+			</div>
+			<div ng-class="vm.activeTab == 'friendlybattles'? 'block' : 'hidden' ">
+				<div class="row tableHeaderRow">
+					<div class="col-xs-3">battleTime</div>
+					<div class="col-xs-2">type</div>
+					<div class="col-xs-3">teamMate</div>
+					<div class="col-xs-2">opponent</div>
+					<div class="col-xs-2">winner</div>
+				</div>
+				<div class="" ng-repeat="battle in vm.friendlyBattles">
+					<battle-directive battle="{{battle}}"></battle-directive>
+				</div>
+			</div>
+			
+		</div>
+	<div>
+
+		
+		
+		
+		
+		
+			
+		
+	
+</div>

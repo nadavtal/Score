@@ -1,0 +1,15 @@
+.table-header{
+    font-weight: bold;
+    border-bottom: 1px solid black;
+    padding-bottom: .2rem;
+}
+
+.table-body{
+    margin-top: 1rem;
+
+    .row{
+        border-bottom: 1px solid grey;
+        padding: .3rem 0;
+    }
+}
+

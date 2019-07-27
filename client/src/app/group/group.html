@@ -1,0 +1,185 @@
+<div class="container-fluid group form">
+
+	<div class="row" ng-if="vm.user.role == 'admin' && vm.actionType != 'createGroup' || vm.group.groupManager.userName == vm.user.userName">
+		<div class="col-md-12">
+			<button class="customButton bg-green white" ui-sref="editGroup({ groupId: vm.group._id })" title="edit group">
+			    Edit group
+			</button>
+		</div>
+	</div>
+
+	<h1 class="">{{vm.group.name}}</h1>
+		<div class="userTabs d-flex arround" >
+			<div ng-click="vm.changeActiveTab('info')" ng-class="vm.activeTab == 'info'? 'active' : ''" class="">Info</div>
+			<div ng-click="vm.changeActiveTab('games')" ng-class="vm.activeTab == 'games'? 'active' : ''" class="">Games</div>
+			<div ng-click="vm.changeActiveTab('stats')" ng-class="vm.activeTab == 'stats'? 'active' : ''" class="">Stats</div>
+		</div>
+		<div class="userContent">
+			<div ng-class="vm.activeTab == 'info'? 'block' : 'hidden' " >
+				<form
+					ng-submit="vm.submitGroupForm(vm.group, vm.group._id)"
+					name="vm.groupForm"
+					role="form"
+					id="group"
+					novalidate
+				>
+				
+					<div ng-if="vm.actionType != 'createGroup'" class="row hidden">
+						<label for="group-id" class="col-md-5">ID</label>
+						<div class="col-md-5">
+							<input
+								type="text"
+								ng-model="vm.group._id"
+								ng-disabled="'always'"
+								name="group-id"
+								id="group-id"
+								autocomplete="off"
+								placeholder="group ID"
+							>
+						</div>
+					</div>
+
+					<div class="row">
+						<label for="grouptype" class="col-xs-5">Group name</label>
+						<div class="col-xs-7">
+							<input
+								type="text"
+								ng-model="vm.group.groupName"
+								ng-disabled="vm.actionType == 'displayGroup'"
+								name="groupname"
+								id="groupname"
+								autocomplete="off"
+								placeholder="groupname"
+								
+							>
+						</div>
+						
+					</div>
+					<br>
+					<div class="row">
+						<label for="grouptype" class="col-xs-5">Group Manager: </label>
+						<div class="col-xs-7">
+							<a ui-sref="displayUser({ userId: vm.group.groupManager._id })">
+							{{vm.group.groupManager.userName}}
+							</a>
+						</div>
+						
+					</div>
+					<br>
+					<div class="row" ng-if="vm.actionType == 'editGroup'">
+						<label  class="col-xs-5">change manager:</label>
+						<div class="col-xs-7">
+								<select ng-options="user as user.userName for user in vm.group.members" 
+									ng-model="user" ng-change="vm.selectManager(user)" >
+								</select>
+						</div>
+					</div>
+					<br>
+					<div class="row">
+						<label class="col-xs-5">Members</label>
+						<div class="col-xs-7">
+							<div class="row" ng-repeat="member in vm.group.members">
+								<div class="col-xs-10">
+									<a ui-sref="displayUser({ userId: member._id })">
+										{{member.userName}}
+									</a>
+										
+								</div>
+								<div class="col-xs-2">
+									<button ng-if="vm.actionType == 'editGroup'" ng-click="vm.removePlayer($index)">X</button>
+								</div>
+							</div>
+							
+						</div>
+					</div>
+					<hr>
+					
+					<hr>
+					
+					
+					<div class="row" ng-if="vm.actionType != 'displayGroup'">
+						<div class="col-xs-5">add member</div>
+						<div class="col-xs-7">
+							<!--<users-select-directive userlist="vm.group.players"></users-select-directive>-->
+							
+							<select ng-options="user as user.userName for user in vm.users" 
+								ng-model="user" ng-change="vm.addPlayer(user)">
+							</select>
+						</div>
+						
+					</div>
+
+					<div class="row" ng-if="vm.actionType == 'createGroup'">
+						<div class="col-xs-5">select manager</div>
+						<div class="col-xs-7">
+							<select name="platform" id="platform" ng-model="vm.groupManager">
+								<option value="">---Please select---</option> <!-- not selected / blank option -->
+								<option ng-click="vm.selectManager(user)" ng-repeat="user in vm.group.members" value="{{user}}">{{user.userName}}</option> <!-- interpolation -->
+								
+							</select>
+							<!--<select ng-options="user as user.username for user in vm.group.members" 
+								ng-model="user" ng-change="vm.selectManager(user)">
+							</select>-->
+						</div>
+						
+					</div>
+
+					
+					<div class="row">
+						<div class="col-md-5 col-md-offset-5">
+							<button
+								class="customButton bg-green white"
+								type="submit"
+								ng-disabled="vm.groupForm.$invalid"
+								ng-if="vm.actionType == 'createGroup'"
+							>
+								Create
+							</button>
+
+							<button
+								class="customButton bg-green white"
+								type="submit"
+								ng-disabled="vm.groupForm.$invalid"
+								ng-if="vm.actionType == 'editGroup'"
+							>
+								Save
+							</button>
+							
+							
+						</div>
+					</div>
+				</form>
+				
+				
+			</div>
+			<div ng-class="vm.activeTab == 'games'? 'block' : 'hidden' " >
+				
+				<game-list games="vm.games"></game-list>
+			</div>
+			
+			<div ng-class="vm.activeTab == 'stats'? 'block' : 'hidden' ">
+				
+			</div>
+		
+			
+		</div>
+
+	<!-- group form -->
+	<div>
+
+		
+		<div class="buttons d-flex arround">
+			<div ng-if="!vm.registerd && vm.actionType != 'createGroup'">
+					<button	class="customButton bg-green white" ng-click="vm.registerToGroup()">Join group</button>
+			</div>
+			
+			<div ng-if="vm.registerd">
+				<button class="customButton bg-black white" ng-click="vm.unRegisterToGroup()">Leave group</button>
+			</div>
+		</div>
+		
+		
+			
+		
+	</div>
+</div>

@@ -1,0 +1,145 @@
+<div class="container-fluid user-list list">
+
+	<!-- header -->
+	<div class="userTabs d-flex between" >
+			<div ng-click="vm.changeActiveTab('users')" ng-class="vm.activeTab == 'users'? 'active' : ''" class="">Users</div>
+			<div ng-click="vm.changeActiveTab('accounts')" ng-class="vm.activeTab == 'accounts'? 'active' : ''" class="">Accounts</div>
+			<div ng-click="vm.changeActiveTab('groups')" ng-class="vm.activeTab == 'groups'? 'active' : ''" class="">Groups</div>
+			<div ng-click="vm.changeActiveTab('games')" ng-class="vm.activeTab == 'games'? 'active' : ''" class="">Games</div>
+			
+			
+	</div>
+	<div class="userContent">
+		<div ng-class="vm.activeTab == 'users'? 'block' : 'hidden' " id="userInfo">
+			<div ui-sref="createUser" class="create-user-link customButton bg-green white" ui-sref-opts="{reload: true, notify: true}">Create user</div>
+			<div class="row table-header">
+		
+				<div class="col-xs-3">username</div>
+				<div class="col-xs-4">role</div>
+				<div class="col-xs-2">wins</div>
+				<div class="col-xs-3">action</div>
+			</div>
+		
+			<!-- table body -->
+			<div class="table">
+				<div
+					class="list-item row"
+					ng-repeat="user in vm.users track by user._id">
+		
+					<a ui-sref="displayUser({ userId: user._id })" title="display user">
+						
+						<div class="col-xs-3">{{ user.userName }}</div>
+						<div class="col-xs-4">{{ user.role }}</div>
+						<div class="col-xs-2">{{ user.wins }}</div>
+					</a>
+		
+					<div class="col-xs-3">
+						<a ui-sref="editUser({ userId: user._id })" class="icon" title="edit user" ng-if="vm.user.role=='admin'">
+							Edit user
+						</a>
+					</div>
+					<div class="col-xs-3">
+						Accounts:
+					</div>
+					<div class="col-xs-9">
+						
+						<div class="row" ng-repeat="account in vm.accounts" ng-if="account.userId == user._id">
+							<a ui-sref="clashUser({ usertag: account.accountId })" title="display clash user">
+								<div class="col-xs-4">{{ account.platform }}</div>
+								<div class="col-xs-4">{{ account.userName }}</div>
+								<div class="col-xs-4">{{ account.accountId }}</div>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+		<div ng-class="vm.activeTab == 'accounts'? 'block' : 'hidden' " id="userInfo">
+			<button ng-click="vm.toggleAddAccount()" class="customButton bg-green white">Add account</button>
+			<form ng-if="vm.showAddAccount == true"
+				ng-submit="vm.AddAccountForm(vm.account, vm.user._id)"
+				name="vm.addAccountForm"
+				role="form"
+				id="user"
+				novalidate>
+			
+
+				<div class="row">
+					<label for="platform" class="col-xs-5">Platform</label>
+					<div class="col-xs-7">
+						
+						<select name="platform" id="platform" ng-model="vm.account.platform">
+							<option value="">---Please select---</option> <!-- not selected / blank option -->
+							<option ng-repeat="platform in vm.platforms" value="{{platform.name}}">{{platform.name}}</option> <!-- interpolation -->
+							
+						</select>
+						
+					</div>
+					<label for="userName" class="col-xs-5">UserName</label>
+					<div class="col-xs-7">
+						<input
+							type="text"
+							ng-model="vm.account.userName"
+							
+							name="userName"
+							id="userName"
+							autocomplete="off"
+							placeholder="UserName"
+						>
+					</div>
+					<label for="accountId" class="col-xs-5">Account Id</label>
+					<div class="col-xs-7">
+						<input
+							type="text"
+							ng-model="vm.account.accountId"
+							
+							name="accountId"
+							id="accountId"
+							autocomplete="off"
+							placeholder="ID"
+						>
+					</div>
+				</div>
+
+				
+				<button class="customButton"
+					type="submit"
+					ng-disabled="vm.addAccountForm.$invalid"
+					
+				>
+					Save
+				</button>
+					
+			</form>
+			<div class="row table-header">
+		
+				
+				<div class="col-xs-4">platform</div>
+				<div class="col-xs-4">userName</div>
+				<div class="col-xs-4">accountId</div>
+			</div>
+		
+			<!-- table body -->
+			<div class="row" ng-repeat="account in vm.accounts">
+				<a ui-sref="clashUser({ usertag: account.accountId })" title="display clash user">
+					<div class="col-xs-4">{{ account.platform }}</div>
+					<div class="col-xs-4">{{ account.userName }}</div>
+					<div class="col-xs-4">{{ account.accountId }}</div>
+				</a>
+			</div>
+			
+		</div>
+		<div ng-class="vm.activeTab == 'groups'? 'block' : 'hidden' " id="userInfo">
+			<group-list></group-list>
+		</div>
+		<div ng-class="vm.activeTab == 'games'? 'block' : 'hidden' " id="userInfo">
+			<game-list games="vm.games"></game-list>
+		</div>
+	</div>
+	
+
+	
+
+	
+</div>
