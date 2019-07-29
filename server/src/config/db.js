@@ -41,7 +41,7 @@
         });
     }
     // removeCollection('games');
-    // removeCollection('users');
+    // removeCollection('messages');
   });
 
   // for nodemon restarts

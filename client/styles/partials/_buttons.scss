@@ -15,7 +15,32 @@
 
 }
 
+.backToMainButton{
+    position: fixed;
+    bottom: 2rem;
+    left: 2rem;
+    
+}
 
+.backToMainButton.ng-enter{
+    transition: .3s linear all;
+    left: 100vw;
+}
+
+.backToMainButton.ng-enter-active{
+    bottom: 2rem;
+    left: 2rem;
+}
+
+.backToMainButton.ng-leave{
+    transition: .3s linear all;
+    left: 2rem;
+}
+
+.backToMainButton.ng-leave-active{
+    bottom: 2rem;
+    left: -50rem;
+}
 
 
 .editButton{

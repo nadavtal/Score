@@ -6,12 +6,31 @@
     background-color: $green !important;
 }
 
+.border-green{
+    border: 5px solid $green
+}
+.purple{
+    color: $purple !important;
+}
+
+.bg-purple {
+    background-color: $purple !important;
+}
+
+.border-purple{
+    border: 5px solid $purple
+}
+
 .white{
     color: $white !important;
 }
 
 .bg-white {
     background-color: $white !important;
+}
+
+.border-white{
+    border: 5px solid $white
 }
 
 .blue{
@@ -22,11 +41,66 @@
     background-color: $alert-blue !important;
 }
 
+.border-blue{
+    border: 5px solid $alert-blue
+}
+
 .black{
     color: $black !important;
 }
 
 .bg-black {
     background-color: $black !important;
+}
+
+.border-black{
+    border: 5px solid $black
+}
+.red{
+    color: $red !important;
+}
+
+.bg-red {
+    background-color: $red !important;
+}
+
+.border-red{
+    border: 5px solid $red
+}
+
+.orange{
+    color: $orange !important;
+}
+
+.bg-orange {
+    background-color: $orange !important;
+}
+
+.border-orange{
+    border: 5px solid $orange
+}
+
+.pink{
+    color: $pink !important;
+}
+
+.bg-pink {
+    background-color: $pink !important;
+}
+
+.border-pink{
+    border: 5px solid $pink
+}
+
+.yellow{
+    color: $yellow !important;
+}
+
+.bg-yellow {
+    background-color: $yellow !important;
+}
+
+.border-yellow{
+    border: 5px solid $yellow
 }
 

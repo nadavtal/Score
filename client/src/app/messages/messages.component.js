@@ -19,12 +19,13 @@
       controller: messagesCtrl
     });
 
-    messagesCtrl.$inject = ['$log', 'QueryService', '$rootScope', 'localStorage', '$stateParams'];
+    messagesCtrl.$inject = ['$log', 'QueryService', '$rootScope', 'localStorage', '$stateParams', 'messagesService'];
 
-  function messagesCtrl($log, QueryService, $rootScope, localStorage, $stateParams) {
+  function messagesCtrl($log, QueryService, $rootScope, localStorage, $stateParams, messagesService) {
     // console.log('messages controler')
     var vm = this;
     vm.user = localStorage.get('user');
+    console.log(vm.user)
     vm.data = {
       selectedIndex: 0,
       
@@ -45,7 +46,15 @@
 
 
       if (userId)
-        getMessagesByUserId(userId);
+        messagesService.getMessagesByUserID(userId)
+        .then((messages)=>{
+          console.log(messages)
+          vm.userMessages = messages.data.data;
+          console.log(vm.userMessages)
+        })
+        .catch(function(err) {
+          $log.debug(err);
+        });
       
       
       else 

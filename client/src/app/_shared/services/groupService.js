@@ -68,7 +68,9 @@
       }
 
       function getGroupsByUserID(userId){
-        return QueryService.query('GET', 'Groups/'+userId, null, null)
+        
+        
+        return QueryService.query('GET', 'users/'+userId + '/groups', null, null)
       }
   
       function checkIfGroupExists(Group){

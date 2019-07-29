@@ -14,10 +14,10 @@
     });
 
   UserCtrl.$inject = ['$log', '$state', '$stateParams', 'QueryService', 'localStorage', 'platformService', 'accountsService', 
-    'ngDialog', '$rootScope', '$scope', 'clashUserService', 'gamesService'];
+    'ngDialog', '$rootScope', '$scope', 'clashUserService', 'gamesService','messagesService', 'groupsService'];
 
   function UserCtrl($log, $state, $stateParams, QueryService, localStorage, platformService, accountsService, 
-      ngDialog, $rootScope, $scope, clashUserService, gamesService) {
+      ngDialog, $rootScope, $scope, clashUserService, gamesService, messagesService, groupsService) {
     var vm = this;
     
     
@@ -27,9 +27,12 @@
     vm.editUser = editUser;
     vm.submitUserForm = submitUserForm;
     vm.changeActiveTab = changeActiveTab;
-    vm.AddAccountForm = AddAccountForm
-    vm.toggleAddAccount = toggleAddAccount
-    
+    vm.AddAccountForm = AddAccountForm;
+    vm.toggleAddAccount = toggleAddAccount;
+    vm.sendMessageToUser = sendMessageToUser;
+    vm.inviteUserToGroup = inviteUserToGroup;
+    vm.inviteUserToGame  = inviteUserToGame;
+    vm.sendFriendRequest = sendFriendRequest
     vm.$onInit = function() {
 
       vm.showAddAccount = false
@@ -71,16 +74,23 @@
               vm.accounts = accounts.data.data;
               console.log(vm.accounts)
             })
-          })
-          .catch(function(err) {
-            $log.debug(err);
-          });
+          
+            .catch(function(err) {
+              $log.debug(err);
+            });
           gamesService.getGamesByUserID(userId)
             .then((games)=>{
               console.log(games)
               vm.userGames = games.data.data;
               console.log(vm.userGames)
             })
+            .catch(function(err) {
+              $log.debug(err);
+            });
+
+          
+        })
+          
 
        
     };
@@ -321,6 +331,71 @@
       return QueryService
         .query('GET', 'users/' + userId, null, null)
         
+    }
+
+    function sendMessageToUser(){
+      // console.log(vm.currentUser, vm.user)
+      var users = {
+        sender: vm.currentUser,
+        receiver: vm.user,
+        messageType: 'chatMessage'
+      }
+      var dialog = ngDialog.open({
+        template: '\
+          <message-form-directive></message-form-directive>',
+        plain: true,
+        data: users
+      });
+    }
+
+    function inviteUserToGroup(){
+      console.log(vm.currentUser, vm.user)
+      groupsService.getGroupsByUserID(vm.currentUser._id)
+        .then((groups)=>{
+          var users = {
+            sender: vm.currentUser,
+            receiver: vm.user,
+            messageType: 'groupInvite',
+            groups: groups.data.data
+          }
+          var dialog = ngDialog.open({
+            template: '\
+              <message-form-directive></message-form-directive>',
+            plain: true,
+            data: users
+          });
+        })
+      
+    }
+
+    function sendFriendRequest(){
+      console.log(vm.currentUser, vm.user)
+      var users = {
+        sender: vm.currentUser,
+        receiver: vm.user,
+        messageType: 'friendRequest'
+      }
+      var dialog = ngDialog.open({
+        template: '\
+          <message-form-directive></message-form-directive>',
+        plain: true,
+        data: users
+      });
+    }
+
+    function inviteUserToGame(){
+      console.log(vm.currentUser, vm.user)
+      var users = {
+        sender: vm.currentUser,
+        receiver: vm.user,
+        messageType: 'gameInvite'
+      }
+      var dialog = ngDialog.open({
+        template: '\
+          <message-form-directive></message-form-directive>',
+        plain: true,
+        data: users
+      });
     }
 
   }

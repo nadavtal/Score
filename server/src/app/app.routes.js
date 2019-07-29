@@ -77,6 +77,7 @@
    */
   router.post('/messages', messagesCtrl.createMessage); // create new Message
   router.get('/messages/', messagesCtrl.getAllMessages); // get all messages
+  router.get('/messages/user/:userId', messagesCtrl.getMessagesByUserID); // get all messages
 
 
    /**

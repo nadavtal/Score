@@ -46,7 +46,8 @@
       console.log(e);
   });
   });
-
+  console.log(__dirname)
+  // app.use(express.static(path.join(__dirname, 'src')));
   // make io accessible for all routes
   app.use((req,res,next) => {
       req.io = io;

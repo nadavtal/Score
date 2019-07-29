@@ -24,22 +24,35 @@
     messageType: {
       type: String,
       enum: {
-        values: ['groupInvite', 'gameInvite', 'chatMessage', 'systemMessage'],
-        message: 'Only "groupInvite", "gameInvite", "chatMessage", "systemMessage" messages are allowed.'
+        values: ['groupInvite', 'gameInvite', 'chatMessage', 'systemMessage', 'friendRequest'],
+        message: 'Only "groupInvite", "gameInvite", "chatMessage", "systemMessage" , "friendRequest", messages are allowed.'
       }
     },
     sender: {
       userName: String,
-      iserId: ObjectId
+      userId: ObjectId
     },
     receiver: {
       userName: String,
-      iserId: ObjectId
+      userId: ObjectId
     },
     sentdAt: {
       type: Date,
       default: Date.now
     }, 
+    status: {
+      type: String,
+      enum: {
+        values: ['read', 'unread'],
+        message: 'Only "read", "unread" messages are allowed.',
+        
+      },
+      default: 'unread'
+    },
+    links: {
+      type: Array,
+      default: []
+    }
     
     
 

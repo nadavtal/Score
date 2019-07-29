@@ -22,7 +22,7 @@
     getMessage,
     
     removeMessage,
-    getMessagesByUserId
+    getMessagesByUserID
   };
 
   /// definitions
@@ -32,15 +32,16 @@
    * POST '/games'
    */
   function createMessage(req, res, next) {
-    console.log('creating message')
     var params = req.body;
-    // console.log(params)
+    console.log('creating message', params)
+    
     var message = new Message({
       subject : params.subject,
       content: params.content,
       messageType : params.messageType,
       sender : params.sender,
-      receiver : params.receiver
+      receiver : params.receiver,
+      links: params.links
 
       
     });
@@ -110,11 +111,11 @@
    * GET '/games/:userId'
    */
 
-   function getMessagesByUserId(req, res, next){
+   function getMessagesByUserID(req, res, next){
      var params = req.params;
-      console.log(params.userId)
+      console.log('getting messages of userID: ', params.userId)
      Message
-        .find({'players': {userid : params.userId}})
+        .find({$or:[{'receiver.userId':  params.userId}, {'sender.userId' : params.userId}]})
         
         .exec((err, games) => {
           if (err) return next(err);
@@ -126,6 +127,8 @@
           utils.sendJSONresponse(res, 200, games);
         });
    }
+
+   
 
    /**
    * Get games by gameID

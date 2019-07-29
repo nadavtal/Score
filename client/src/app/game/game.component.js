@@ -47,7 +47,10 @@
       usersService.getAllUsers()
         .then((data) => {
           vm.users = data.data.data;
-          vm.optionalPlayers = vm.users;
+          if(!groupId){
+            vm.optionalPlayers = vm.users;
+
+          }
           console.log(vm.users)
         })
       
@@ -136,6 +139,8 @@
         vm.actionType = 'editGame';
       else if (state == 'createGame')
         vm.actionType = 'createGame';
+      else if (state == 'createGroupGame')
+        vm.actionType = 'createGroupGame';
       else if (state == 'displayGame')
         vm.actionType = 'displayGame';
       else

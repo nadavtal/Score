@@ -10,6 +10,7 @@
       'ngMaterial',
       'btford.socket-io',
       'angularUtils.directives.dirPagination',
+      'ngAnimate',
     ])
     .config(config);
 
@@ -20,7 +21,7 @@
    */
   function config($locationProvider, $httpProvider, $logProvider) {
     // console.log($mdIconProvider)
-    $locationProvider.html5Mode(true);
+    // $locationProvider.html5Mode(true);
     // $mdIconProvider
     // .iconSet('communication', 'img/icons/sets/communication-icons.svg')
     // .icon('favorite', 'img/icons/favorite.svg');

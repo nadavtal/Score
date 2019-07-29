@@ -1,73 +1,64 @@
 <form
-ng-submit="vm.submitMessageForm(vm.message, vm.user._id)"
-name="vm.messageForm"
+ng-submit="submitMessageForm(message, user._id)"
+name="messageForm"
 role="form"
 id="messageForm"
 novalidate
->
-
-<div class="row">
-    <label for="messageSubject" class="col-md-5">Subject</label>
-    <div class="col-md-5">
-        <input
-            type="text"
-            ng-model="vm.message.subject"
-            ng-disabled=""
-            name="messageSubject"
-            id="messageSubject"
-            autocomplete="off"
-            placeholder="Subject"
-            required
-        >
-    </div>
-</div>
-
-<div class="row">
-    <label for="massageContent" class="col-md-5">Content</label>
-    <div class="col-md-5">
-        <input
-            type="textarea"
-            ng-model="vm.message.content"
-            ng-disabled=""
-            name="massageContent"
-            id="massageContent"
-            autocomplete="off"
-            placeholder="Message Content"
-            
-        >
-    </div>
-</div>
-
-
-<input
-    type="hidden"
-    ng-model="vm.message.messageType"
-    ng-disabled=""
-    name="messageType"
-    id="messageType"
-    autocomplete="off"
-    placeholder="message Type"
-    required>            
-
+>   
+    <label for="users" class="col-md-5">To: {{ngDialogData.receiver.userName}}</label>
+    <select name="users" id="" ng-model="receiver" ng-change="pickReceiver(receiver)" ng-if="!ngDialogData.receiver">
+        <option value="">---Please select---</option> <!-- not selected / blank option -->
+        <option ng-repeat="user in vm.users" value="{{user}}">{{user.userName}}</option> <!-- interpolation -->
+        
+    </select>
     
-
-<div class="row">
-    <div class="col-md-5 col-md-offset-5">
-        <button
-            type="submit"
-            ng-disabled="vm.messageForm.$invalid"
-            ng-if="vm.actionType == 'sendMessage'"
-        >
-            Send
-        </button>
-
-        <button
-            type="submit"
-            ng-disabled="vm.messageForm.$invalid"
-            ng-if="vm.actionType == 'saveDraftMessage'"
-        >
-            Save
-        </button>
+    <select name="groups" id="" ng-model="group" ng-change="pickGroup(group)" ng-if="ngDialogData.groups">
+        <option value="">---Please select group---</option> <!-- not selected / blank option -->
+        <option ng-repeat="group in groups" value="{{group}}">{{group.groupName}}</option> <!-- interpolation -->
+        
+    </select>
+    <div class="row">
+        <label for="messageSubject" class="col-md-5">Subject</label>
+        <div class="col-md-5">
+            <input
+                type="text"
+                ng-model="message.subject"
+                ng-disabled=""
+                name="messageSubject"
+                id="messageSubject"
+                autocomplete="off"
+                placeholder="{{message.subject}}"
+                required
+            >
+        </div>
     </div>
-</div>
+
+    <div class="row">
+        <label for="massageContent" class="col-md-5">Content</label>
+        <div class="col-md-5">
+            <input
+                type="text"
+                ng-model="message.content"
+                ng-disabled=""
+                name="massageContent"
+                id="massageContent"
+                autocomplete="off"
+                placeholder="Message Content"
+                
+            >
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-5 col-md-offset-5">
+            <button type="submit">
+                Send
+            </button>
+
+            <button type="submit"
+                    ng-disabled="messageForm.$invalid">
+                Save
+            </button>
+        </div>
+    </div>
 </form>

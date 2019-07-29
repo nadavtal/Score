@@ -4,3 +4,115 @@
 		margin: 0 0 20px 0;
 	}
 }
+
+.mainCubeMenu{
+	width: 100vw;
+	position: relative
+}
+
+.cubeMenuTabs{
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 10000
+}
+.cubeMenuItem{
+	
+	
+	// border: 1px solid black;
+	transition: all .3s;
+
+	&--bg{
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%
+	}
+
+	&--cube{
+		position: relative !important;
+		float: left !important;
+		width: 50vw !important;
+		height: 33vh !important;
+	}
+
+	&--active{
+		float: none;
+		width: 100vw;
+		height: 100vh;
+		z-index: 100;
+	}
+
+	&--tab{
+		position: relative;
+		// top: 0;
+		width: 16.66%;
+		height: 5rem;
+		float: left;
+		z-index: 1000;
+	}
+	
+	
+	
+
+	&--title{
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%)
+	}
+
+	&--icon{
+		width: 5rem;
+		height: 5rem;
+		color: white
+	}
+
+	&--iconSmall{
+		width: 3rem;
+		height: 3rem;
+		color: white
+	}
+
+
+}
+
+.userContent{
+	transition: .3s linear all;
+	position: absolute;
+	top: 100vh;
+	// left: -100vw;
+    width: 100%;
+}
+
+.userContentWrapper{
+	transition: .3s linear all;
+	height: 0;
+	opacity: 0;
+}
+
+.fullheight{
+	height: auto
+}
+
+
+.cubeMenuItem.ng-enter{
+	transition: all .5s;
+	transform: translateX(-100vw);
+	opacity: 0;
+}
+.cubeMenuItem.ng-enter-active{
+	transform: translateX(0);
+	opacity: 1;
+}
+
+.pageWrapper.ng-enter{
+	transition: .5s linear all;
+	transform: translateX(-100vw);
+	opacity: 0;
+}
+.pageWrapper.ng-enter-active{
+	transform: translateX(0);
+	opacity: 1;
+}

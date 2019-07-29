@@ -11,22 +11,69 @@
     });
 
 
-  HomeCtrl.$inject = ['QueryService', '$log', '$rootScope', 'localStorage', 'platformService'];
+  HomeCtrl.$inject = ['$scope', 'QueryService', '$log', '$rootScope', 'localStorage', 'platformService', 'accountsService', '$timeout'];
 
-  function HomeCtrl(QueryService, $log, $rootScope, localStorage, platformService) {
+  function HomeCtrl($scope, QueryService, $log, $rootScope, localStorage, platformService, accountsService, $timeout) {
     // console.log('rootscope', $rootScope);
     var vm = this
     vm.submitAddPlatform = submitAddPlatform;
-
+    vm.changeActiveTab = changeActiveTab;
+    vm.backToMain = backToMain
     vm.$onInit = function() {
       
-      
+      console.log($scope);
+      vm.showMenuTab = false
+      vm.activeTab = ''
       vm.user = localStorage.get('user');
+      QueryService
+            .query('GET', 'users/', null, null)
+            .then(function(user) {
+              vm.users = user.data.data
+              console.log(vm.users)
+            })
       
+      accountsService.getAccountsByUserID(vm.user._id)
+      .then((accounts) => {
+        
+        vm.accounts = accounts.data.data;
+        console.log(vm.accounts)
+      })
+    
+      .catch(function(err) {
+        $log.debug(err);
+      });
       
     }
 
-    
+    function backToMain(){
+      vm.activeTab = '';
+      vm.showMenuTab = false;
+      $('.userContent').css('top', '100vh')
+      $('.userContentWrapper').css({
+        'opacity': 0,
+          'height' : 0})
+    }
+
+    function changeActiveTab(tab){
+      console.log(tab);
+      vm.activeTab = tab;
+      vm.showMenuTab = true;
+      $('.userContent').css('top', '5rem')
+      
+      $('.userContentWrapper').css({
+                                'opacity': 1,
+                                  'height' : 'auto'})
+      
+      $('.cubeMenuItem--iconSmall').on('click', function(){
+        // $(this).css('transform', 'rotateY(180deg)')
+      })
+      
+    }
+
+    function expand(event){
+      
+      
+    }
     
 
     function submitAddPlatform(platform){

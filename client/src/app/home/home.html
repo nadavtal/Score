@@ -1,4 +1,518 @@
-<div class="container-fluid home">
+<div class="mainCubeMenu">
+    <!--<div class="cubeMenuTabs d-flex" ng-if="vm.showMenuTab">
+        <div class="cubeMenuItem--tab bg-green white" 
+            ng-click="vm.changeActiveTab('myProfile')"
+            ng-class="vm.activeTab == 'myProfile'? 'active' : ''" class="">
+            MY PROFILE
+        </div>
+        <div class="cubeMenuItem--tab bg-orange white" 
+            ng-click="vm.changeActiveTab('accounts')"
+            ng-class="vm.activeTab == 'accounts'? 'active' : ''" class="">
+            ACCOUNTS
+        </div>
+        <div class="cubeMenuItem--tab bg-blue white" 
+            ng-click="vm.changeActiveTab('groups')"
+            ng-class="vm.activeTab == 'groups'? 'active' : ''" class="">
+            GROUPS
+        </div>
+        <div class="cubeMenuItem--tab bg-purple white" 
+            ng-click="vm.changeActiveTab('friends')"
+            ng-class="vm.activeTab == 'friends'? 'active' : ''" class="">
+            FRIENDS
+        </div>
+        <div class="cubeMenuItem--tab bg-red white" 
+            ng-click="vm.changeActiveTab('messages')"
+            ng-class="vm.activeTab == 'messages'? 'active' : ''" class="">
+            MESSAGES
+        </div>
+        <div class="cubeMenuItem--tab bg-black white" 
+            ng-click="vm.changeActiveTab('history')"
+            ng-class="vm.activeTab == 'history'? 'active' : ''" class="">
+            HOSTORY
+        </div>
+    </div>-->
+    <!-- 
+    <div 
+        ng-click="vm.expand($event)" 
+        class="cubeMenuItem bg-pink white cubeMenuItem--cube" >
+        
+       <div class="cubeMenuItem--title" ng-click="vm.expand($event)">
+           GROUPS
+       </div>
+       <div class="cubeMenuItem--content hidden">
+           <group-list ></group-list>
+
+       </div>
+   </div>
+   <div 
+        ng-click="vm.expand($event)" 
+        class="cubeMenuItem bg-green white cubeMenuItem--cube" >
+        
+       <div class="cubeMenuItem--title" ng-click="vm.expand($event)">
+           ACCOUNTS
+       </div>
+       <div class="cubeMenuItem--content hidden">
+           <account-list ></account-list>
+
+       </div>
+   </div>
+   <div 
+        ng-click="vm.expand($event)" 
+        class="cubeMenuItem bg-orange white cubeMenuItem--cube" >
+        
+       <div class="cubeMenuItem--title" ng-click="vm.expand($event)">
+           GAMES
+       </div>
+       <div class="cubeMenuItem--content hidden">
+           
+            <game-list></game-list>
+       </div>
+   </div>
+   <div 
+        ng-click="vm.expand($event)" 
+        class="cubeMenuItem bg-black white cubeMenuItem--cube" >
+        
+       <div class="cubeMenuItem--title" ng-click="vm.expand($event)">
+           MESSAGES
+       </div>
+       <div class="cubeMenuItem--content hidden">
+           
+            <messages></messages>
+       </div>
+   </div>
+   <div 
+        ng-click="vm.expand($event)" 
+        class="cubeMenuItem bg-blue white cubeMenuItem--cube" >
+        
+       <div class="cubeMenuItem--title" ng-click="vm.expand($event)">
+           FRIENDS
+       </div>
+       <div class="cubeMenuItem--content hidden">
+           
+            <messages></messages>
+       </div>
+   </div>
+   <div 
+        ng-click="vm.expand($event)" 
+        class="cubeMenuItem bg-purple white cubeMenuItem--cube" >
+        
+       <div class="cubeMenuItem--title" ng-click="vm.expand($event)">
+           USERS
+       </div>
+       <div class="cubeMenuItem--content hidden">
+           
+            <user-list></user-list>
+       </div>
+   </div>-->
+   
+   <div ng-click="vm.changeActiveTab('myProfile')" ng-class="vm.activeTab == 'myProfile'? 'active' : ''" class="">
+        <div class="cubeMenuItem bg-green white"
+        ng-class="!vm.showMenuTab ? 'cubeMenuItem--cube' : 'cubeMenuItem--tab'">
+            <div class="cubeMenuItem--title" >
+                <div>
+                    <md-icon md-svg-src="assets/img/icons/profile.svg" ng-class="vm.showMenuTab? 'cubeMenuItem--iconSmall' : 'cubeMenuItem--icon'"></md-icon>
+
+                </div>
+                <div ng-if="!vm.showMenuTab" class="div">
+                    MY PROFILE
+
+                </div>
+            </div>
+    
+        </div>
+    </div>
+   <div ng-click="vm.changeActiveTab('accounts')" ng-class="vm.activeTab == 'accounts'? 'active' : ''" class="">
+        <div class="cubeMenuItem cubeMenuItem--cube bg-orange white"
+            ng-class="!vm.showMenuTab ? 'cubeMenuItem--cube' : 'cubeMenuItem--tab'">
+            <div class="cubeMenuItem--title" >
+                <div>
+                    <md-icon md-svg-src="assets/img/icons/accounts.svg" ng-class="vm.showMenuTab? 'cubeMenuItem--iconSmall' : 'cubeMenuItem--icon'"></md-icon>
+
+                </div>
+                <div ng-if="!vm.showMenuTab" class="div">
+                    ACCOUNTS
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div ng-click="vm.changeActiveTab('groups')" ng-class="vm.activeTab == 'groups'? 'active' : ''" class="">
+        <div class="cubeMenuItem bg-blue white"
+            ng-class="!vm.showMenuTab ? 'cubeMenuItem--cube' : 'cubeMenuItem--tab'">
+            <div class="cubeMenuItem--title" >
+                <div>
+                    <md-icon md-svg-src="assets/img/icons/group.svg" ng-class="vm.showMenuTab? 'cubeMenuItem--iconSmall' : 'cubeMenuItem--icon'"></md-icon>
+
+                </div>
+                <div ng-if="!vm.showMenuTab" class="div">
+                    GROUPS
+
+                </div>
+            </div>
+    
+        </div>
+    </div>
+    <div ng-click="vm.changeActiveTab('friends')" ng-class="vm.activeTab == 'friends'? 'active' : ''" class="">
+        <div class="cubeMenuItem cubeMenuItem--cube bg-purple white"
+            ng-class="!vm.showMenuTab ? 'cubeMenuItem--cube' : 'cubeMenuItem--tab'">
+            <div class="cubeMenuItem--title" >
+                <div>
+                    <md-icon md-svg-src="assets/img/icons/heart.svg" ng-class="vm.showMenuTab? 'cubeMenuItem--iconSmall' : 'cubeMenuItem--icon'"></md-icon>
+
+                </div>
+                <div ng-if="!vm.showMenuTab" class="div">
+                    FRIENDS
+
+                </div>
+            </div>
+    
+        </div>
+    </div>
+   <div ng-click="vm.changeActiveTab('messages')" ng-class="vm.activeTab == 'messages'? 'active' : ''" class="">
+        <div class="cubeMenuItem bg-pink white"
+            ng-class="!vm.showMenuTab ? 'cubeMenuItem--cube' : 'cubeMenuItem--tab'">
+            <div class="cubeMenuItem--title" >
+                <div >
+                    <md-icon md-svg-src="assets/img/icons/chat.svg" ng-class="vm.showMenuTab? 'cubeMenuItem--iconSmall' : 'cubeMenuItem--icon'"></md-icon>
+
+                </div>
+                <div ng-if="!vm.showMenuTab" class="div">
+                    MESSAGES
+
+                </div>
+            </div>
+    
+        </div>
+    </div>
+   <div ng-click="vm.changeActiveTab('history')" ng-class="vm.activeTab == 'history'? 'active' : ''" class="">
+        <div class="cubeMenuItem cubeMenuItem--cube bg-black white"
+            ng-class="!vm.showMenuTab ? 'cubeMenuItem--cube' : 'cubeMenuItem--tab'">
+            <div class="cubeMenuItem--title" >
+                <div>
+                    <md-icon md-svg-src="assets/img/icons/threeLines.svg" ng-class="vm.showMenuTab? 'cubeMenuItem--iconSmall' : 'cubeMenuItem--icon'"></md-icon>
+
+                </div>
+                <div ng-if="!vm.showMenuTab" class="div">
+                    HISTORY
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="userContent">
+        
+        <div class="userContentWrapper" ng-class="vm.activeTab == 'myProfile'? 'block border-green' : 'hidden' " id="myProfileContent">
+            <div class="container">
+                <h1>My Profile</h1>
+                <div class="row" ng-if="vm.actionType == 'loadUser'">
+                        <div class="col-xs-6">
+                            <div ui-sref="editUser({ userId: vm.user._id })" title="edit user" class="customButton bg-green white">
+                                Edit Profile
+                            </div>
+                        </div>
+                        <div class="col-xs-6">
+                            <li>
+                                <div ui-sref="changePassword" class="change-password-link customButton bg-green white">Change password</div>
+                            </li>
+                        </div>
+                </div>
+                <form
+                    ng-submit="vm.submitUserForm(vm.user, vm.user._id)"
+                    name="vm.userForm"
+                    role="form"
+                    id="user"
+                    novalidate
+                >
+    
+                    <div ng-if="vm.actionType != 'createUser'" class="row">
+                        <label for="user-id" class="col-md-5">ID</label>
+                        <div class="col-md-5">
+                            <input
+                                type="text"
+                                ng-model="vm.user._id"
+                                ng-disabled="'always'"
+                                name="user-id"
+                                id="user-id"
+                                autocomplete="off"
+                                placeholder="User ID"
+                            >
+                        </div>
+                    </div>
+    
+                    <div class="row">
+                        <label for="username" class="col-md-5">Username</label>
+                        <div class="col-md-5">
+                            <input
+                                type="text"
+                                ng-model="vm.user.username"
+                                ng-disabled="vm.actionType != 'createUser'"
+                                name="username"
+                                id="username"
+                                autocomplete="off"
+                                placeholder="Username"
+                                required
+                            >
+                        </div>
+                    </div>
+    
+                    <div class="row" ng-if="vm.actionType == 'createUser'">
+                        <label for="password" class="col-md-5">Password</label>
+                        <div class="col-md-5">
+                            <input
+                                type="password"
+                                ng-model="vm.user.password"
+                                ng-disabled="vm.actionType != 'createUser'"
+                                name="password"
+                                id="password"
+                                autocomplete="off"
+                                placeholder="Password"
+                                required
+                            >
+                        </div>
+                    </div>
+    
+                    <div class="row">
+                        <label for="firstName" class="col-md-5">First name</label>
+                        <div class="col-md-5">
+                            <input
+                                type="text"
+                                ng-model="vm.user.firstName"
+                                ng-disabled="vm.actionType == 'loadUser'"
+                                name="firstName"
+                                id="firstName"
+                                autocomplete="off"
+                                placeholder="First name"
+                            >
+                        </div>
+                    </div>
+    
+                    <div class="row">
+                        <label for="surname" class="col-md-5">Surname</label>
+                        <div class="col-md-5">
+                            <input
+                                type="text"
+                                ng-model="vm.user.surname"
+                                ng-disabled="vm.actionType == 'loadUser'"
+                                name="surname"
+                                id="surname"
+                                autocomplete="off"
+                                placeholder="Surname"
+                            >
+                        </div>
+                    </div>
+    
+                    <div class="row">
+                        <label for="email" class="col-md-5">Email</label>
+                        <div class="col-md-5">
+                            <input
+                                type="email"
+                                ng-model="vm.user.email"
+                                ng-disabled="vm.actionType == 'loadUser'"
+                                name="email"
+                                id="email"
+                                autocomplete="off"
+                                placeholder="Email"
+                            >
+                        </div>
+                    </div>
+    
+                    <div class="row">
+                        <label for="role" class="col-md-5">Role</label>
+                        <div class="col-md-5">
+                            <input
+                                type="text"
+                                ng-model="vm.user.role"
+                                ng-disabled="vm.actionType == 'loadUser'"
+                                name="role"
+                                id="role"
+                                autocomplete="off"
+                                placeholder="Role"
+                                ng-if="vm.actionType == 'loadUser'"
+                            >
+                            <select
+                                type="text"
+                                ng-model="vm.user.role"
+                                ng-disabled="vm.actionType == 'loadUser'"
+                                name="role"
+                                id="role"
+                                autocomplete="off"
+                                placeholder="Role"
+                                ng-if="vm.actionType != 'loadUser'"
+                                required
+                            >
+                                <option value="user">user</option>
+                                <option value="admin">admin</option>
+                                <option value="group-manager">group-manager</option>
+                            </select>
+                        </div>
+                    </div>
+    
+                    <div class="row">
+                        <label for="wins" class="col-md-5">wins</label>
+                        <div class="col-md-5">
+                            <input
+                                type="text"
+                                ng-model="vm.user.wins"
+                                ng-disabled="vm.actionType == 'loadUser'"
+                                name="wins"
+                                id="wins"
+                                autocomplete="off"
+                                placeholder="wins"
+                                
+                            >
+                            
+                        </div>
+                    </div>
+    
+                    <div class="row">
+                        <div class="col-md-5 col-md-offset-5">
+                            <button
+                                type="submit"
+                                ng-disabled="vm.userForm.$invalid"
+                                ng-if="vm.actionType == 'createUser'"
+                            >
+                                Create
+                            </button>
+    
+                            <button
+                                type="submit"
+                                ng-disabled="vm.userForm.$invalid"
+                                ng-if="vm.actionType == 'editUser'"
+                            >
+                                Save
+                            </button>
+                        </div>
+                    </div>
+                </form> 
+            </div>
+              
+        </div>
+        <div class="userContentWrapper" ng-class="vm.activeTab == 'accounts'? 'block border-orange' : 'hidden' " id="groups">
+            <div class="container">
+                <h1>My Accounts</h1>
+                <button ng-click="vm.toggleAddAccount()" class="customButton bg-green white">Add account</button>
+                <form ng-if="vm.showAddAccount == true"
+                    ng-submit="vm.AddAccountForm(vm.account, vm.user._id)"
+                    name="vm.addAccountForm"
+                    role="form"
+                    id="user"
+                    novalidate>
+                
+    
+                    <div class="row">
+                        <label for="platform" class="col-xs-5">Platform</label>
+                        <div class="col-xs-7">
+                            
+                            <select name="platform" id="platform" ng-model="vm.account.platform">
+                                <option value="">---Please select---</option> <!-- not selected / blank option -->
+                                <option ng-repeat="platform in vm.platforms" value="{{platform.name}}">{{platform.name}}</option> <!-- interpolation -->
+                                
+                            </select>
+                            
+                        </div>
+                        <label for="userName" class="col-xs-5">UserName</label>
+                        <div class="col-xs-7">
+                            <input
+                                type="text"
+                                ng-model="vm.account.userName"
+                                
+                                name="userName"
+                                id="userName"
+                                autocomplete="off"
+                                placeholder="UserName"
+                            >
+                        </div>
+                        <label for="accountId" class="col-xs-5">Account Id</label>
+                        <div class="col-xs-7">
+                            <input
+                                type="text"
+                                ng-model="vm.account.accountId"
+                                
+                                name="accountId"
+                                id="accountId"
+                                autocomplete="off"
+                                placeholder="ID"
+                            >
+                        </div>
+                    </div>
+    
+                    
+                    <button class="customButton"
+                        type="submit"
+                        ng-disabled="vm.addAccountForm.$invalid"
+                        
+                    >
+                        Save
+                    </button>
+                        
+                </form>
+                <div class="row" ng-repeat="account in vm.accounts">
+                    <div class="col-xs-4">Platform</div>
+                    <div class="col-xs-4">UserName</div>
+                    <div class="col-xs-4">AccountId</div>
+                    
+                </div>
+                <div class="row" ng-repeat="account in vm.accounts">
+                    <div class="col-xs-4">{{account.platform}}</div>
+                    <div class="col-xs-4">{{account.userName}}</div>
+                    <div class="col-xs-4">{{account.accountId}}</div>
+                    
+                </div>
+            </div>
+            
+
+        </div>
+        <div class="userContentWrapper" ng-class="vm.activeTab == 'groups'? 'block border-blue' : 'hidden' " id="groups">
+            <div class="container">
+                <h1>My Groups</h1>
+                <group-list></group-list>
+            </div>
+            
+        </div>
+        <div class="userContentWrapper" ng-class="vm.activeTab == 'friends'? 'block border-purple' : 'hidden' " id="friends">
+            <div class="container">
+                <h1>My Friends</h1>
+
+            </div>
+        </div>
+        
+        <div class="userContentWrapper" ng-class="vm.activeTab == 'messages'? 'block border-pink' : 'hidden' " id="messages">
+            <div class="container">
+                <h1>My Messages</h1>
+                <messages></messages>
+
+            </div>
+            
+        </div>
+        <div class="userContentWrapper" ng-class="vm.activeTab == 'history'? 'block border-black' : 'hidden' " id="history">
+            <div class="container">
+                <h1>My History</h1>
+                <game-list></game-list>
+
+            </div>
+        </div>
+        <button class="customButton backToMainButton" ng-click="vm.backToMain()" ng-if="vm.showMenuTab">Back to main</button>  
+    </div>
+    
+  <!--  <cube-menu-item-directive color="green" title="MY PROFILE"></cube-menu-item-directive>
+<cube-menu-item-directive color="red" title="ACCOUNTS"></cube-menu-item-directive>
+<cube-menu-item-directive color="yellow" title="GROUPS"></cube-menu-item-directive>
+  <cube-menu-item-directive color="blue" title="FRIENDS"></cube-menu-item-directive>
+ <cube-menu-item-directive color="pink" title="HISTORY"></cube-menu-item-directive>
+<cube-menu-item-directive color="orange" title="MESSAGES"></cube-menu-item-directive>-->
+    
+    
+    
+    
+</div>
+
+
+
+
+<!--<div class="container-fluid home">
     <h1>HOMEPAGE</h1>
 
     <div ng-if="vm.user.role == 'admin'">
@@ -50,4 +564,13 @@
             
         </form>
     </div>
-</div>
+
+    <div class="button d-flex between" ng-if="vm.user.role == 'admin'">
+		 <div ui-sref="createGame" class="create-game-link customButton bg-green white" ui-sref-opts="{reload: true, notify: true}">Create game</div>
+		<div ui-sref="createGroupGame" class="create-game-link customButton bg-green white" ui-sref-opts="{reload: true, notify: true}">Create Group game</div>
+		<button ng-click="vm.createGame()" class="create-game-link customButton bg-green white">Create New message</button>
+		<button ng-click="vm.getGamesOfUserId()" class="customButton">find messages by user</button>
+    </div>
+    
+    <message-form-directive></message-form-directive>
+</div> -->
