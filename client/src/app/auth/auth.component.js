@@ -41,12 +41,13 @@
             // console.log(resp)
             vm.user = resp.data.data;
             $rootScope.user = vm.user;
-            console.log(vm.user)
+            console.log(vm.user);
+
             localStorage.set('user', vm.user);
-           
+            console.log(window.localStorage)
             $rootScope.$broadcast('user:login', vm.user);
             // $location.path('/users/'+vm.user._id);
-            $location.path('/home/');
+            $location.path('/users/'+ vm.user._id);
             // $scope.$apply();
           })
           .catch(function(error) {

@@ -7,7 +7,7 @@
    */
   var mongoose = require('mongoose');
   var Schema = mongoose.Schema;
-
+  var ObjectId = Schema.ObjectId
   var bcrypt = require('bcryptjs');
   var SALT_WORK_FACTOR = 10;
   var mongoosePaginate = require('mongoose-paginate');
@@ -65,10 +65,11 @@
       type: Array,
       default: []
     },
-    friends: {
-      type: Array,
-      default: []
-    },
+    friends:[{
+      userName: String,
+      userId: ObjectId
+      
+    }],
     accounts: [Account.schema],
     messages: [Message.schema],
     createdAt: {

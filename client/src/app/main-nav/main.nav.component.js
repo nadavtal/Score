@@ -26,7 +26,7 @@
       vm.user = localStorage.get('user');
       console.log(vm.user);
       vm.currentNavItem = 'home';
-
+      
       vm.goto = function(page) {
         console.log("Goto " + page);
       }

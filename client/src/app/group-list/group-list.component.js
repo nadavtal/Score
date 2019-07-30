@@ -19,12 +19,12 @@
       controller: GroupListCtrl
     });
 
-    GroupListCtrl.$inject = ['$log', 'QueryService', '$rootScope', 'localStorage', '$stateParams'];
+    GroupListCtrl.$inject = ['$log', 'QueryService', 'usersService', 'localStorage', '$stateParams', 'groupsService'];
 
-  function GroupListCtrl($log, QueryService, $rootScope, localStorage, $stateParams) {
+  function GroupListCtrl($log, QueryService, usersService, localStorage, $stateParams, groupsService) {
     // console.log('groupList component')
     var vm = this;
-    vm.user = localStorage.get('user');
+    
     
     
     vm.$onInit = function() {
@@ -32,14 +32,35 @@
       var userId = vm.userId || $stateParams.userId;
       var groupId = vm.groupId || $stateParams.groupId;
       // console.log('userId: ' + userId, 'groupId: '+groupId);
-
-
-      if (userId)
-        getGroupsByUserId(userId);
+      vm.isUser = false
+      vm.currentUser = localStorage.get('user');
+      console.log(userId)
+      if (userId){
+        usersService.getUser(userId)
+        .then((user) => {
+          vm.user = user.data.data
+          console.log(vm.user)
+          console.log(vm.currentUser, vm.user)
+          if(vm.currentUser._id == vm.user._id){
+            vm.isUser = true
+          }
+          getGroupsByUserId(userId);
+        })
       
+      }
+       
       
       else 
-      getGroups();
+      groupsService.getAllGroupsFromDataBase()
+      .then(function(groups) {
+        // console.log(game)
+        vm.groups = groups.data.data;
+        console.log(vm.groups)
+        $log.debug('groups', vm.groups);
+      })
+      .catch(function(err) {
+        $log.debug(err);
+      });;
     };
 
     
@@ -54,54 +75,24 @@
       
     }
 
-    /// definitions
-
-    /**
-     * Get users
-     */
-    function getGroups() {
-      QueryService
-        .query('GET', 'groups/', null, null)
-        .then(function(groups) {
-          // console.log(game)
-          vm.groups = groups.data.data;
-          console.log(vm.groups)
-          $log.debug('groups', vm.groups);
-        })
-        .catch(function(err) {
-          $log.debug(err);
-        });
-    }
-
     function getGroupsByUserId(userId) {
+      groupsService.getGroupsByUserID(userId)
+      .then(function(groups) {
+        console.log(groups)
+        
+        vm.groups = groups.data.data;
+        console.log(vm.groups)
+        $log.debug('groups', vm.groups);
+      })
+      .catch(function(err) {
+        $log.debug(err);
+      });
       // console.log(userId)
-      QueryService
-        .query('GET', 'users/'+userId + '/groups', null, null)
-        .then(function(groups) {
-          console.log(groups)
-          
-          vm.groups = groups.data.data;
-          console.log(vm.groups)
-          $log.debug('groups', vm.groups);
-        })
-        .catch(function(err) {
-          $log.debug(err);
-        });
+      
+        
     }
 
-    function getGamesOfUserId() {
-      console.log($stateParams.userId)
-      QueryService
-        .query('GET', 'games/user/'+$stateParams.userId, null, null)
-        
-        .then(function(data) {
-          console.log(data)
-          
-        })
-        .catch(function(err) {
-          $log.debug(err);
-        });
-    }
+    
   }
 
 })();

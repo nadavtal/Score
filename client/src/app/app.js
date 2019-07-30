@@ -78,22 +78,22 @@
 
         
 
-        getUsers();
+        // getUsers();
 
-        platformService.getAllPlatformsFromDataBase()
-          .then((platforms) => {
-            console.log(platforms.data.data)
-            $rootScope.platforms = platforms.data.data;
-            localStorage.set('platforms', platforms.data.data);
-            // console.log($rootScope.platforms)
-          })
+        // platformService.getAllPlatformsFromDataBase()
+        //   .then((platforms) => {
+        //     console.log(platforms.data.data)
+        //     $rootScope.platforms = platforms.data.data;
+        //     localStorage.set('platforms', platforms.data.data);
+        //     // console.log($rootScope.platforms)
+        //   })
 
         
 
-        clanService.getAllBattlesFromDataBase()
-          .then((friendlyBattles) =>{
-            console.log(friendlyBattles)
-          })
+        // clanService.getAllBattlesFromDataBase()
+        //   .then((friendlyBattles) =>{
+        //     console.log(friendlyBattles)
+        //   })
         // updateNewFriendlyBattlesFromAllClans();  
     // $interval(updateNewFriendlyBattlesFromAllClans, 1800000);
 
@@ -167,28 +167,8 @@
 
 
 
-        function getUsers() {
-          QueryService
-            .query('GET', 'users/', null, null)
-            .then(function(user) {
-              // console.log(user)
-              
-              $rootScope.users = user.data.data;
-             
-              // console.log('rootscope in home', $rootScope)
-              $log.debug('users', $rootScope.users);
-            })
-            .catch(function(err) {
-              $log.debug(err);
-            });
-        }
-      
         
-        // console.log($rootScope);
-        // $rootScope.$on('selectWinner', function(event, data) {
-        //   console.log('selectWinnerEvent', event)
-        //   console.log('selectWinnerData', data)
-        // });
+      
 
       })
 

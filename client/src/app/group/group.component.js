@@ -14,10 +14,10 @@
     });
 
   GroupCtrl.$inject = ['$log', '$state', '$stateParams', 'QueryService', 'localStorage', 'groupsService', 'usersService',
-    'ngDialog', '$rootScope', '$scope', 'gamesService'];
+    'ngDialog', '$rootScope', '$scope', 'gamesService', '$element'];
 
   function GroupCtrl($log, $state, $stateParams, QueryService, localStorage, groupsService, usersService, 
-      ngDialog, $rootScope, $scope, gamesService) {
+      ngDialog, $rootScope, $scope, gamesService, $element) {
     var vm = this;
 
     // methods
@@ -27,7 +27,8 @@
     vm.registerToGroup = registerToGroup;
     vm.unRegisterToGroup = unRegisterToGroup;
     vm.selectManager = selectManager;
-    vm.changeActiveTab = changeActiveTab
+    vm.changeActiveTab = changeActiveTab;
+    vm.clearSearchTerm = clearSearchTerm 
      
     vm.$onInit = function() {
       var groupId = vm.groupId || $stateParams.groupId;
@@ -36,7 +37,7 @@
       vm.user = localStorage.get('user') || {};
       vm.registerd = false;
       vm.activeTab = 'info'
-      
+      vm.searchTerm;
       if(!$rootScope.users){
         console.log('no rootscope users');
         usersService.getAllUsers()
@@ -44,7 +45,7 @@
           $rootScope.users = user.data.data;;
           
           vm.users = $rootScope.users
-          console.log(vm.users)
+          // console.log(vm.users)
         })
         .catch(function(err) {
           $log.debug(err);
@@ -52,7 +53,7 @@
         
       } else{
         vm.users = $rootScope.users;
-        console.log('vm.users in group', vm.users);
+        // console.log('vm.users in group', vm.users);
       }
 
       vm.actionType = setActionType(state, groupId);
@@ -86,13 +87,19 @@
                                 userId : vm.user._id}
         vm.groupManager = vm.group.groupManager
       }
-
+      $element.find('input').on('keydown', function(ev) {
+        console.log(ev)
+        // ev.stopPropagation();
+      });
         
       
     };
     /**
      * Submit form: either create or edit user
      */
+    function clearSearchTerm() {
+      vm.searchTerm = '';
+    };
 
     function changeActiveTab(tab){
       vm.activeTab = tab

@@ -47,6 +47,7 @@
    * POST '/users/authenticate'
    */
   function authenticate(req, res, next) {
+    console.log('authenticating')
     var params = req.body;
     var pass = params.password;
     var authErrMsg = {
@@ -64,20 +65,28 @@
         // test a matching password
         user.comparePassword(pass, (err, isMatch) => {
           if (err || !isMatch) return next(authErrMsg);
-
-          var userInfo = {
+          console.log('user after authentication', user)
+          var userInfo =  {
             _id: user._id,
             userName: user.userName,
             createdAt: user.createdAt,
             role: user.role,
             email: user.email,
             surname: user.surname,
-            firstName: user.firstName
+            firstName: user.firstName,
+            wins: user.wins,
+            friends: user.friends,
+            groups: user.groups,
+            accounts: user.accounts,
+            messages: user.messages,
+            gamesHistory: user.gamesHistory
+
           };
 
           var token = jwt.sign(userInfo, config.secret, {
             expiresIn: '24h'
           });
+          // console.log('token', token)
 
           userInfo.token = token;
 
@@ -201,7 +210,8 @@
           'role': bodyParams.role,
           'wins' : bodyParams.wins,
           'gamesplayed' : bodyParams.gamesplayed,
-          'accounts': bodyParams.account
+          'accounts': bodyParams.account,
+          'friends' : bodyParams.friends,
           }
         },
         { upsert: false, new: true, fields: { password: 0 }, runValidators: true, setDefaultsOnInsert: true })

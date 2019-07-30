@@ -19,12 +19,12 @@
       controller: GameListCtrl
     });
 
-    GameListCtrl.$inject = ['$scope', '$log', 'QueryService', '$rootScope', 'localStorage', '$stateParams', 'ngDialog', '$state'];
+    GameListCtrl.$inject = ['$scope', '$log', 'QueryService', 'gamesService', 'localStorage', '$stateParams', 'ngDialog', '$state', 'usersService'];
 
-  function GameListCtrl($scope,$log, QueryService, $rootScope, localStorage, $stateParams, ngDialog, $state) {
+  function GameListCtrl($scope,$log, QueryService, gamesService, localStorage, $stateParams, ngDialog, $state, usersService) {
     var vm = this;
-    vm.user = localStorage.get('user');
-    vm.getGamesOfUserId = getGamesOfUserId
+    
+    
     
     vm.removeGame = function(index, gameId){
       QueryService
@@ -37,10 +37,28 @@
     }
     
     vm.$onInit = function() {
-      console.log($scope)
-      if($stateParams.userId){
-        console.log('getting games of user:' , $stateParams.userId)
-          // getGamesOfUserId($stateParams.userId)
+      
+      vm.currentUser = localStorage.get('user');
+      var userId = vm.userId || $stateParams.userId;
+      gamesService.getAllGamesFromDataBase()
+        .then((data) => {
+          console.log(data)
+        });
+      if(userId){
+        vm.createGame = createNewGame;
+        console.log('getting games of user:' , userId)
+        usersService.getUser(userId)
+          .then((user) => {
+            vm.user = user.data.data
+            if(vm.currentUser._id == vm.user._id){
+              vm.isUser = true
+            };
+            gamesService.getGamesByUserID(userId)
+              .then((games) => {
+                vm.games = games.data.data;
+                console.log(vm.games)
+              })
+          })
 
       } else if ($stateParams.groupId){
         console.log('getting games of group:' , $stateParams.groupId)
@@ -92,21 +110,7 @@
      */
     
 
-    function getGamesOfUserId(userId) {
-      
-      QueryService
-        .query('GET', 'games/user/'+userId, null, null)
-        
-        .then(function(data) {
-          
-          vm.games = data.data.data;
-          console.log(vm.games)
-          $scope.$apply();
-        })
-        .catch(function(err) {
-          $log.debug(err);
-        });
-    }
+    
     function getGamesOfGroupId(groupId) {
       
       QueryService

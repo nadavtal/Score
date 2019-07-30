@@ -51,6 +51,7 @@
 		height: 5rem;
 		float: left;
 		z-index: 1000;
+		opacity: .3;
 	}
 	
 	
@@ -78,6 +79,26 @@
 
 }
 
+.mainCubeMenu.ng-enter{
+	transition: .3s linear all;
+	transform: translateY(100vh);
+}
+.mainCubeMenu.ng-enter-active{
+	transform: translateY(0);
+}
+
+.mainCubeMenu.ng-leave{
+	transition: .3s linear all;
+	transform: translateX(0);
+}
+.mainCubeMenu.ng-leave-active{
+	transform: translateX(100vw);
+}
+
+.active div{
+	opacity: 1;
+}
+
 .userContent{
 	transition: .3s linear all;
 	position: absolute;
@@ -86,33 +107,147 @@
     width: 100%;
 }
 
-.userContentWrapper{
-	transition: .3s linear all;
-	height: 0;
-	opacity: 0;
-}
+
 
 .fullheight{
 	height: auto
 }
 
 
-.cubeMenuItem.ng-enter{
-	transition: all .5s;
+.cubeMenuItemWrapper.ng-enter{
+	transition: all 3s;
+	
+	
+	opacity: 0;
+}
+.cubeMenuItemWrapper.ng-enter-active{
+	
+	opacity: 1;
+}
+
+// .userContentWrapper{
+// 	// transition: .3s linear all;
+// 	height: auto;
+// 	// opacity: 1;
+// }
+
+.userContentWrapper.ng-enter{
+	transition: .3s linear all;
 	transform: translateX(-100vw);
 	opacity: 0;
 }
-.cubeMenuItem.ng-enter-active{
+.userContentWrapper.ng-enter-active{
 	transform: translateX(0);
 	opacity: 1;
 }
 
-.pageWrapper.ng-enter{
-	transition: .5s linear all;
-	transform: translateX(-100vw);
-	opacity: 0;
-}
-.pageWrapper.ng-enter-active{
+.userContentWrapper.ng-leave{
+	transition: .1s linear all;
 	transform: translateX(0);
 	opacity: 1;
+}
+.userContentWrapper.ng-leave-active{
+	transform: translateX(100vw);
+	opacity: 0;
+}
+
+.bottomToolBar{
+	position: fixed;
+	bottom: 1vh;
+	right: 1vw;
+	width: 100%;
+}
+
+.componentToolBox{
+	width: 100%;
+    float: right;
+}
+
+.userContentTitle{
+	margin-top: .5rem;
+	padding: 0;
+}
+
+.groupLogo{
+    width: 2.5rem;
+    height: 2.5rem
+}
+
+.groupActionButton{
+	width: 1.5rem;
+    height: 1.5rem
+}
+
+.lineBreak{
+	transition: .3s linear all;
+}
+
+// .lineOpen{
+// 	width: 100%;
+// }
+
+// .lineClosed{
+// 	width: 0
+// }
+
+.lineBreak.ng-enter{
+	transition: .3s linear all;
+	width: 0;
+}
+
+.lineBreak.ng-enter-active{
+	width: 100%;
+}
+
+.lineBreak.ng-leave{
+	transition: .1s linear all;
+	width: 100%;
+}
+
+.lineBreak.ng-leave-active{
+	width: 0;
+}
+
+.pageNav{
+	height: 5rem;
+
+	&__item{
+		transition: .2s all;
+		display: flex;
+		align-items: center;
+		opacity: .4;
+	}
+
+	&__item.active{
+		opacity: 1;
+	}
+}
+
+
+
+
+
+
+.selectdemoSelectHeader {
+/* Please note: All these selectors are only applied to children of elements with the 'selectdemoSelectHeader' class */ }
+.selectdemoSelectHeader .demo-header-searchbox {
+	border: none;
+	outline: none;
+	height: 100%;
+	width: 100%;
+	padding: 0; }
+.selectdemoSelectHeader .demo-select-header {
+	box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.1), 0 0 0 0 rgba(0, 0, 0, 0.14), 0 0 0 0 rgba(0, 0, 0, 0.12);
+	padding-left: 10.667px;
+	height: 48px;
+	cursor: pointer;
+	position: relative;
+	display: flex;
+	align-items: center;
+	width: auto; }
+.selectdemoSelectHeader md-content._md {
+	max-height: 240px; }
+
+.md-input-has-placeholder{
+	margin: 0
 }

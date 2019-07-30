@@ -1,5 +1,14 @@
-.game-list {
-    
+md-tabs.md-default-theme.md-accent>md-tabs-wrapper, md-tabs.md-accent>md-tabs-wrapper {
+    background-color: $pink;
+}
+
+md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {
+    min-height: 248px;
+    height: 90vh;
+}
+
+md-tab-content {
+    margin-top: .5rem;
 }
 
 

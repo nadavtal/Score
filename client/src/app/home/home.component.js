@@ -21,27 +21,7 @@
     vm.backToMain = backToMain
     vm.$onInit = function() {
       
-      console.log($scope);
-      vm.showMenuTab = false
-      vm.activeTab = ''
-      vm.user = localStorage.get('user');
-      QueryService
-            .query('GET', 'users/', null, null)
-            .then(function(user) {
-              vm.users = user.data.data
-              console.log(vm.users)
-            })
       
-      accountsService.getAccountsByUserID(vm.user._id)
-      .then((accounts) => {
-        
-        vm.accounts = accounts.data.data;
-        console.log(vm.accounts)
-      })
-    
-      .catch(function(err) {
-        $log.debug(err);
-      });
       
     }
 
@@ -70,10 +50,7 @@
       
     }
 
-    function expand(event){
-      
-      
-    }
+    
     
 
     function submitAddPlatform(platform){

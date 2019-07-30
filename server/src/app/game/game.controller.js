@@ -115,8 +115,9 @@
   function getGamesByUserId(req,res,next){
     console.log('getting games by userId:', req.params.userId);
     var params = req.params;
-    Game.find({ 'players.userid': params.userId }, { 'players.$': 1 })
+    Game.find({ 'players.userId': params.userId }, { 'players.$': 1 })
     .exec((err, data) => {
+      // console.log(data)
       if (err) return next(err);
       if (!data) return next({
         message: 'groups not found.',
@@ -227,7 +228,7 @@
     // console.log(req.body)
     var bodyParams = req.body;
     
-    // console.log(currentGame)
+    console.log(bodyParams)
 
     Game
       .findOneAndUpdate(

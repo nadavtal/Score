@@ -18,7 +18,8 @@
 
   function usersService($window, $rootScope, $log, QueryService) {
     this.getAllUsers = getAllUsers;
-    
+    this.getUser = getUser;
+    this.editUser = editUser;
 
     /// definitions
 
@@ -29,6 +30,21 @@
       return QueryService
         .query('GET', 'users/', null, null)
         
+    }
+
+    function getUser(userId) {
+      if (!userId) return;
+
+      return QueryService
+        .query('GET', 'users/' + userId, null, null)
+        
+    }
+    
+    function editUser(user, userId) {
+      if (!user) return;
+      console.log('user before update', user);
+      return QueryService
+        .query('PUT', 'users/' + userId, null, user)
     }
 
 

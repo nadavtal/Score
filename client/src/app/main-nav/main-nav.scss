@@ -1,10 +1,13 @@
 .main-nav {
-	background-color: #86C3AF;
-	padding: 20px;
+	transition: all .3s;
+	position: absolute;
+	// left: 0;
+	background-color:transparent;
+	// padding: 20px;
 	width: 100%;
-	text-align: center;
+	// text-align: center;
 	// display: none;
-
+	z-index: 100000;
 	li {
 		display: inline-block;
 	}
@@ -13,3 +16,26 @@
 		margin-bottom: 5px;
 	}
 }
+
+.main-nav-loggedOut{
+	transition: all .3s;
+	// position: absolute;
+	// top: 0;
+	background-color: $gray;
+	// padding: 20px;
+	width: 100%;
+}
+
+.main-nav-top{
+	top: 0
+}
+
+.main-nav-bottom{
+	top: 95vh
+	
+}
+
+// .fabTrigger{
+// 	position: absolute;
+// 	z-index: 1000000
+// }

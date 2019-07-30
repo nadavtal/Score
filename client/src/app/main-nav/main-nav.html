@@ -1,21 +1,32 @@
 <!-- Main navigation -->
-<div class="container-fluid main-nav" ng-class="mnCtrl.user? 'hidden' : ''">
-
-	<header>
-
+<!-- <div class="container-fluid main-nav-loggedOut" ng-if="!mnCtrl.user">
 		<div class="row">
 			<div class="col-xs-12">
-				<!-- login/logout -->
+				
 				<div class="auth">
 					<auth></auth>
 				</div>
 			</div>
 		</div>
+</div> -->
+<div class="container-fluid main-nav" ng-class="mnCtrl.user? '' : ''">
+	<div class="row main-nav-loggedOut" ng-if="!mnCtrl.user">
+		<div class="col-xs-12">
+			
+			<div class="auth">
+				<auth></auth>
+			</div>
+		</div>
+	</div>
+	 
+	<header>
+
+		
 
 		
 		<!-- navigation -->
 		<!-- <md-content class="md-padding"> -->
-			<md-nav-bar
+			<!-- <md-nav-bar
 			  ng-if="mnCtrl.user"
 			  md-selected-nav-item="currentNavItem"
 			  nav-bar-aria-label="navigation links">
@@ -24,7 +35,7 @@
 			  <md-nav-item md-nav-href="users" ng-if="mnCtrl.user.role == 'admin'" ui-sref="users" name="users" ui-sref-opts="{reload: true, notify: true}">DB</md-nav-item>
 			  <md-nav-item md-nav-href="clashClans" ui-sref="clashClans" name="clashClans" ui-sref-opts="{reload: true, notify: true}">CLANS</md-nav-item>
 			  
-			</md-nav-bar>
+			</md-nav-bar> -->
 			
 		
 			

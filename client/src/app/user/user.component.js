@@ -8,16 +8,16 @@
       bindings: {
         userId: '<'
       },
-      templateUrl: 'app/user/user.html',
+      templateUrl: 'app/user/newUserComponent.html',
       controllerAs: 'vm',
       controller: UserCtrl
     });
 
   UserCtrl.$inject = ['$log', '$state', '$stateParams', 'QueryService', 'localStorage', 'platformService', 'accountsService', 
-    'ngDialog', '$rootScope', '$scope', 'clashUserService', 'gamesService','messagesService', 'groupsService'];
+    'ngDialog', '$rootScope', '$scope', 'clashUserService', 'gamesService','usersService', 'groupsService'];
 
   function UserCtrl($log, $state, $stateParams, QueryService, localStorage, platformService, accountsService, 
-      ngDialog, $rootScope, $scope, clashUserService, gamesService, messagesService, groupsService) {
+      ngDialog, $rootScope, $scope, clashUserService, gamesService, usersService, groupsService) {
     var vm = this;
     
     
@@ -32,10 +32,27 @@
     vm.sendMessageToUser = sendMessageToUser;
     vm.inviteUserToGroup = inviteUserToGroup;
     vm.inviteUserToGame  = inviteUserToGame;
-    vm.sendFriendRequest = sendFriendRequest
+    vm.sendFriendRequest = sendFriendRequest;
+    vm.backToMain = backToMain;
+    vm.addToFriends = addToFriends   
+    
     vm.$onInit = function() {
+      vm.showMenuTab = false
+      
+      
+      vm.showAddAccount = false;
+      var userId = vm.userId || $stateParams.userId;
+      var state = $state.current.name;
+      vm.currentUser = localStorage.get('user');
+      vm.user = vm.user || {};
+      vm.activeTab = '';
+      vm.isUser = false
 
-      vm.showAddAccount = false
+      // if(localStorage.get('activeTab')){
+      //   vm.changeActiveTab(localStorage.get('activeTab'))
+      //   console.log(vm.activeTab)
+      // }
+
       
       if(!$rootScope.platforms) {
         platformService.getAllPlatformsFromDataBase()
@@ -47,49 +64,46 @@
         })
       } else{
         vm.platforms = $rootScope.platforms
-      }
-
-      
-      
-      var userId = vm.userId || $stateParams.userId;
-      var state = $state.current.name;
-      vm.currentUser = localStorage.get('user');
-      vm.user = vm.user || {};
-      vm.activeTab = 'info'
+      };
 
       setActionType(state, userId);
 
       if (userId)
-        console.log('getting user', userId)
-        getUser(userId)
-         .then(function(user) {
-          vm.user = user.data.data;
-          console.log(vm.user);
-          
-          $log.debug('user', vm.user);
-
-          accountsService.getAccountsByUserID(vm.user._id)
-            .then((accounts) => {
-             
-              vm.accounts = accounts.data.data;
-              console.log(vm.accounts)
-            })
-          
-            .catch(function(err) {
-              $log.debug(err);
-            });
-          gamesService.getGamesByUserID(userId)
-            .then((games)=>{
-              console.log(games)
-              vm.userGames = games.data.data;
-              console.log(vm.userGames)
-            })
-            .catch(function(err) {
-              $log.debug(err);
-            });
-
-          
-        })
+        if(userId){
+          console.log('getting user', userId)
+          usersService.getUser(userId)
+           .then(function(user) {
+            vm.user = user.data.data;
+            console.log(vm.user);
+            if(vm.currentUser._id == vm.user._id){
+              vm.isUser = true
+            }
+            $log.debug('user', vm.user);
+  
+            accountsService.getAccountsByUserID(vm.user._id)
+              .then((accounts) => {
+               
+                vm.accounts = accounts.data.data;
+                console.log(vm.accounts)
+              })
+            
+              .catch(function(err) {
+                $log.debug(err);
+              });
+            gamesService.getGamesByUserID(userId)
+              .then((games)=>{
+                console.log(games)
+                vm.userGames = games.data.data;
+                console.log(vm.userGames)
+              })
+              .catch(function(err) {
+                $log.debug(err);
+              });
+  
+            
+          })
+        }
+        
           
 
        
@@ -102,28 +116,7 @@
       console.log(vm.showAddAccount)
     }
 
-    function changeActiveTab(tab){
-      vm.activeTab = tab;
-      
-    }
-
-    
-    function getUsers() {
-          QueryService
-            .query('GET', 'users/', null, null)
-            .then(function(user) {
-              
-              vm.users = user.data.data;
-              
-              $rootScope.users = vm.users;
-              
-              $log.debug('users', vm.users);
-            })
-            .catch(function(err) {
-              $log.debug(err);
-            });
-    }
-
+   
     function findItemById(array, id){
       console.log(id)
       for (let item of array) {
@@ -174,7 +167,34 @@
       return vm.actionType;
     }
 
+    function backToMain(){
+      console.log('backto main')
+      vm.activeTab = '';
+      localStorage.remove('activeTab');
+      vm.showMenuTab = false;
+      $('.userContent').css('top', '100vh')
+      $('.userContentWrapper').css({
+        'opacity': 0,
+          'height' : 0})
+    }
 
+    function changeActiveTab(tab){
+      // console.log(tab);
+      vm.activeTab = tab;
+      vm.showMenuTab = true;
+      console.log($scope)
+      $('.userContent').css('top', '5rem')
+      
+      $('.userContentWrapper').css({
+                                'opacity': 1,
+                                  // 'height' : 'auto'
+                                })
+      
+      $('.cubeMenuItem--iconSmall').on('click', function(){
+        // $(this).css('transform', 'rotateY(180deg)')
+      })
+      localStorage.update('activeTab', vm.activeTab)
+    }
     /**
      * Submit form: either create or edit user
      */
@@ -285,8 +305,7 @@
     function editUser(user, userId) {
       if (!user) return;
       console.log('user before update', user);
-      QueryService
-        .query('PUT', 'users/' + userId, null, user)
+      usersService.editUser(user, userId)
         .then(function(updatedUser) {
           console.log(updatedUser);
           var updatedUser = updatedUser.data.data;
@@ -294,16 +313,6 @@
           $log.debug('updatedUser', updatedUser);
 
 
-          getUsers();
-
-          // for(i = 0; i<$rootScope.users.length; i++){
-          //   console.log($rootScope.users[i])
-          //   if($rootScope.users[i]._id == updatedItem._id){
-          //     console.log('foundItem', $rootScope.users[i], updatedItem)
-          //     array[i] = updatedItem
-          //   }
-          // }
-          // utils.replaceOldItemWithUpdated($rootScope.users, updatedUser)
 
           ngDialog.open({
             template: '\
@@ -320,18 +329,6 @@
         });
     }
 
-    /**
-     * Get user
-     * @param  {object} userId User ID
-     * @return {object}      Promise
-     */
-    function getUser(userId) {
-      if (!userId) return;
-
-      return QueryService
-        .query('GET', 'users/' + userId, null, null)
-        
-    }
 
     function sendMessageToUser(){
       // console.log(vm.currentUser, vm.user)
@@ -397,6 +394,51 @@
         data: users
       });
     }
+
+    function addToFriends(userToAdd, targetUser){
+      console.log(userToAdd);
+      console.log(targetUser);
+      if(!userToAdd) return;
+      if(!targetUser) return;
+
+      if(targetUser.friends){
+        targetUser.friends.push({
+          userName :userToAdd.userName,
+          userId: userToAdd._id
+        })
+
+      } else{
+        targetUser.friends = [];
+        targetUser.friends.push({
+          userName :userToAdd.userName,
+          userId: userToAdd._id
+        })
+
+      }
+      if(userToAdd.friends){
+        userToAdd.friends.push({
+          userName :targetUser.userName,
+          userId: targetUser._id
+        })
+
+      } else{
+        userToAdd.friends = [];
+        userToAdd.friends.push({
+          userName :targetUser.userName,
+          userId: targetUser._id
+        })
+
+      }
+
+      // console.log(userToAdd)
+      // console.log(targetUser)
+      editUser(userToAdd, userToAdd._id);
+      editUser(targetUser, targetUser._id);
+    }
+
+    
+    
+    // addToMyFriends('')
 
   }
 

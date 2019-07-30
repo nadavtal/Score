@@ -1,10 +1,34 @@
 <div class="container-fluid user-list list">
 
 	<div class="button d-flex between">
+		<div class="col-xs-6 userContentTitle">
+			<h3 class="">{{vm.user.userName | uppercase}}'s  Games</h3>
+		</div> 
+		<div class="col-xs-6">
+			<md-fab-toolbar md-direction="left" class="componentToolBox" ng-if="vm.isUser || vm.currentUser.role == 'admin'">
+				<md-fab-trigger>
+					<md-button aria-label="Add..."><md-icon md-svg-src="assets/img/icons/settings.svg"></md-icon></md-button>
+				</md-fab-trigger>
+				
+				<md-toolbar>
+					<md-fab-actions class="d-flex arround">
+						<md-button ng-click="vm.createGame()" aria-label="edit">
+							<md-icon md-svg-src="assets/img/icons/add.svg"></md-icon>
+						</md-button>
+					
+						<md-button aria-label="search games " <div ui-sref="changePassword">
+							<md-icon md-svg-src="assets/img/icons/search.svg"></md-icon>
+						</md-button>
+						
+					</md-fab-actions>
+				</md-toolbar>
+			</md-fab-toolbar>
+			
+		</div>
 		<!-- <div ui-sref="createGame" class="create-game-link customButton bg-green white" ui-sref-opts="{reload: true, notify: true}">Create game</div>
 		<div ui-sref="createGroupGame" class="create-game-link customButton bg-green white" ui-sref-opts="{reload: true, notify: true}">Create Group game</div> -->
-		<button ng-click="vm.createGame()" class="create-game-link customButton bg-green white">Create New Game</button>
-		<button ng-click="vm.getGamesOfUserId()" class="customButton">find games by user</button>
+		<!-- <button ng-click="vm.createGame()" class="create-game-link customButton bg-green white">Create New Game</button>
+		<button ng-click="vm.getGamesOfUserId()" class="customButton">find games by user</button> -->
 	</div>
 	
 	<!-- header -->
@@ -14,7 +38,7 @@
 		<div class="col-xs-2">host</div>
 		<div class="col-xs-2">players</div>
 		<div class="col-xs-2">Winner</div>
-		<div class="col-xs-2">Edit</div>
+		<div class="col-xs-2">actions</div>
 	</div>
 
 	<!-- table body -->
@@ -29,21 +53,30 @@
 				<div class="col-xs-2">{{ game.host }}</div>
 				<div class="col-xs-2">
 					<a ui-sref="gamesByUserId({userId: player.userid})" ng-repeat="player in game.players">
-						{{player.username}}, 
+						{{player.userName}}, 
 					</a>
 					
 				</div>
 				<div class="col-xs-2">{{ game.winner.username }}</div>
 			</a>
 			<div class="col-xs-2">
-				<a class="editButton" ui-sref="editGame({ gameId: game._id })" class="icon" title="edit game">
+				<md-icon md-svg-src="assets/img/icons/edit.svg" 
+					class="groupActionButton" 
+					ui-sref="editGame({ gameId: game._id })"
+					ng-if="game.host == vm.currentUser.userName "></md-icon>
+				<!-- <a class="editButton" ui-sref="editGame({ gameId: game._id })" class="icon" title="edit game">
 					Edit 
-				</a>
-				<a class="registerButton" ui-sref="registerToGame({ gameId: game._id })" class="icon" title="edit game">
+				</a> -->
+				<!-- <md-icon md-svg-src="assets/img/icons/add.svg" class="groupActionButton green" ui-sref="registerToGame({ gameId: game._id })"></md-icon> -->
+				<md-icon md-svg-src="assets/img/icons/remove.svg" 
+					class="groupActionButton red" 
+					ng-click="vm.removeGame($index, game._id)"
+					ng-if="game.host == vm.currentUser.userName "></md-icon></md-icon>
+				<!-- <a class="registerButton" ui-sref="registerToGame({ gameId: game._id })" class="icon" title="edit game">
 					register 
 				</a>
 				
-				<button class="editButton" ng-click="vm.removeGame($index, game._id)">X</button>
+				<button class="editButton" ng-click="vm.removeGame($index, game._id)">X</button> -->
 			</div>
 
 			

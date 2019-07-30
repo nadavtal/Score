@@ -1,3 +1,17 @@
+<div class="pageNav bg-black d-flex between">
+		<div class="navBackButton white" ui-sref="displayUser({ userId: vm.user._id })">
+			<back-to-main-button-directive></back-to-main-button-directive>	
+		</div>
+		<div class="pageNav__item white center" class="active">
+			
+			<div ng-click="vm.changeActiveTab('info')"  class="">
+				<md-icon md-svg-src="assets/img/icons/games.svg" class="groupActionButton white"></md-icon>
+				{{vm.game.gametype}}
+			</div>
+		</div>
+		
+		
+	</div>
 <div class="container-fluid user form">
 
 	<div class="row" ng-if="vm.user.role == 'admin' && vm.actionType != 'editGame'">
@@ -78,14 +92,15 @@
 				<label class="col-xs-5">Players</label>
 				<div class="col-xs-7">
 					<div class="row" ng-repeat="player in vm.game.players">
-						<div class="col-xs-10">
+						<div class="col-xs-9">
 							<a ui-sref="displayUser({ userId: player.userid })">
-								{{player.username}}
+								{{player.userName}}
 							</a>
 								
 						</div>
-						<div class="col-xs-2">
-							<button ng-if="vm.actionType == 'editGame'" ng-click="vm.removePlayer($index)">X</button>
+						<div class="col-xs-2 " >
+							<md-icon md-svg-src="assets/img/icons/remove.svg" class="groupActionButton" ng-click="vm.removePlayer($index)"></md-icon>
+							<!-- <button ng-if="vm.actionType == 'editGame'" ng-click="vm.removePlayer($index)">X</button> -->
 						</div>
 					</div>
 					
@@ -98,9 +113,10 @@
 					<div class="row">
 						<div class="col-xs-12 col-md-2 d-flex between" ng-repeat="player in vm.game.optionalplayers" >
 							<a ui-sref="displayUser({ userId: player.userid })">
-								{{player.username}}
+								{{player.userName}}
 							</a>
-							<button ng-if="player.username == vm.user.username" ng-click="vm.removeFromOptionalPLayers()">X</button>	
+							<md-icon md-svg-src="assets/img/icons/remove.svg" class="groupActionButton" ng-click="vm.removeFromOptionalPLayers()"></md-icon>
+							<!-- <button ng-if="player.userName == vm.user.userName" ng-click="vm.removeFromOptionalPLayers()">X</button>	 -->
 						</div>
 						
 					</div>
@@ -123,9 +139,9 @@
 						</div>
 						<div class="col-xs-7">
 							<div ng-repeat="player in time.players" class="d-flex between">
-								<span>{{player.username}}</span>
-
-								<button ng-if="player.username == vm.user.username" ng-click="vm.removePlayerfromTimeOption(time)">X</button>
+								<span>{{player.userName}}</span>
+								<md-icon md-svg-src="assets/img/icons/remove.svg" class="groupActionButton" ng-click="vm.removePlayerfromTimeOption(time)"></md-icon>
+								<!-- <button ng-if="player.userName == vm.user.userName" ng-click="vm.removePlayerfromTimeOption(time)">X</button> -->
 							</div>
 						
 						</div>
@@ -135,21 +151,7 @@
 					
 				</div>
 			</div>
-			<div class="row" ng-if="!vm.registerd && vm.actionType == 'displayGame'">
-				<div class="col-xs-5">
-					<button	class="customButton" type="button"
-						
-						ng-click="vm.addOptionalTime()">
-						Add optional time
-					</button>
-					<div class="optionalTime">
-							<input type="datetime-local" id="gametimeOption" name="gametimeOption" ng-model="vm.timeOption"
-							min="2019-07-01T00:00:00" max="2030-12-31T00:00:00" />
-							
-					</div>
-				</div>
-				
-			</div>
+			
 			
 			<hr>
 			
@@ -157,28 +159,84 @@
 			<div class="row" ng-if="vm.game.winner">
 				<label class="col-xs-5"><h3>Winner:</h3></label>
 				<div class="col-xs-7">
-					<h3>{{vm.game.winner.username}}	</h3> 				
+					<h3>{{vm.game.winner.userName}}	</h3> 				
 				</div>
 			</div>
 			<br>
+
+			<div class="row" ng-if="!vm.registerd">
+				<div class="col-xs-5">
+					<button	class="customButton" type="button"
+						
+						ng-click="vm.addOptionalTime()">
+						optional time
+						<md-icon md-svg-src="assets/img/icons/add.svg" class="groupActionButton"></md-icon>
+					</button>
+				</div>
+				<div class="col-xs-7 optionalTime">
+						<input type="datetime-local" id="gametimeOption" name="gametimeOption" ng-model="vm.timeOption"
+						min="2019-07-01T00:00:00" max="2030-12-31T00:00:00" />
+						
+				</div>
+				
+				
+			</div>
 			<div class="row" ng-if="vm.actionType != 'displayGame'">
 				<div class="col-xs-5">add player</div>
 				<div class="col-xs-7">
 					<!--<users-select-directive userlist="vm.game.players"></users-select-directive>-->
-					
-					<select ng-options="user as user.userName for user in vm.optionalPlayers" 
+					<md-input-container>
+						<label>Optional Players</label>
+						<md-select ng-model="vm.game.optionalPlayers"
+									md-on-close="vm.clearSearchTerm()"
+									data-md-container-class="selectdemoSelectHeader"
+									>
+							<md-select-header class="demo-select-header">
+							<input ng-model="vm.searchTerm"
+									type="search"
+									placeholder="Search for a user.."
+									class="demo-header-searchbox md-text">
+							</md-select-header>
+							<md-optgroup label="users">
+							<md-option ng-value="user._id" ng-repeat="user in vm.optionalPlayers | filter:searchTerm"
+								ng-click="vm.addPlayer(user)">{{user.userName}}
+							</md-option>
+							</md-optgroup>
+						</md-select>
+					</md-input-container>
+					<!-- <select ng-options="user as user.userName for user in vm.optionalPlayers" 
 						ng-model="user" ng-change="vm.addPlayer(user)">
-					</select>
+					</select> -->
 				</div>
 				
 			</div>
-
+			<br>
 			<div class="row" ng-if="vm.actionType == 'editGame'">
 				<div class="col-xs-5">select winner</div>
 				<div class="col-xs-7">
-					<select ng-options="user as user.username for user in vm.game.players" 
+					<md-input-container>
+						<label>Players</label>
+						<md-select ng-model="vm.selectedWinner"
+									md-on-close="vm.clearSearchTerm()"
+									data-md-container-class="selectdemoSelectHeader"
+									>
+							<md-select-header class="demo-select-header">
+							<input ng-model="vm.searchTerm"
+									type="search"
+									placeholder="Search for a user.."
+									class="demo-header-searchbox md-text">
+							</md-select-header>
+							<md-optgroup label="users">
+							<md-option ng-value="user._id" ng-repeat="user in vm.game.players |
+								filter:searchTerm"
+								ng-click="vm.selectWinner(user)">{{user.userName}}
+							</md-option>
+							</md-optgroup>
+						</md-select>
+					</md-input-container>
+					<!-- <select ng-options="user as user.userName for user in vm.game.players" 
 						ng-model="user" ng-change="vm.selectWinner(user)">
-					</select>
+					</select> -->
 				</div>
 				
 			</div>

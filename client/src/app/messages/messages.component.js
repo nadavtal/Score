@@ -19,9 +19,9 @@
       controller: messagesCtrl
     });
 
-    messagesCtrl.$inject = ['$log', 'QueryService', '$rootScope', 'localStorage', '$stateParams', 'messagesService'];
+    messagesCtrl.$inject = ['$log', 'usersService', '$rootScope', 'localStorage', '$stateParams', 'messagesService', 'groupsService'];
 
-  function messagesCtrl($log, QueryService, $rootScope, localStorage, $stateParams, messagesService) {
+  function messagesCtrl($log, usersService, $rootScope, localStorage, $stateParams, messagesService, groupsService) {
     // console.log('messages controler')
     var vm = this;
     vm.user = localStorage.get('user');
@@ -45,7 +45,7 @@
       // console.log('userId: ' + userId, 'messageId: '+messageId);
 
 
-      if (userId)
+      if (userId){
         messagesService.getMessagesByUserID(userId)
         .then((messages)=>{
           console.log(messages)
@@ -55,72 +55,39 @@
         .catch(function(err) {
           $log.debug(err);
         });
+
+        groupsService.getGroupsByUserID(userId)
+          .then((groups) => {
+            vm.groups = groups.data.data
+          })
       
       
-      else 
-      getMessages();
+      } else {
+        messagesService.getAllMessagesFromDataBase()
+          .then((messages) => {
+            vm.messages = messages.data.data;
+            console.log(vm.messages)
+            $log.debug('messages', vm.messages);
+          })
+          .catch(function(err) {
+            $log.debug(err);
+          });
+
+        groupsService.getAllGroupsFromDataBase(userId)
+        .then((groups) => {
+          vm.groups = groups.data.data
+        })
+
+        usersService.getAllUsers()
+          .then((users) => {
+            vm.users = users.data.daya
+          })
+        
+
+      }
     };
 
     
-
-    vm.removeGame = function(index, gameId){
-      QueryService
-        .query('POST', 'games/'+ gameId, null, null)
-        .then(function(deletedgame) {
-          console.log('deletedgame', deletedgame)
-          vm.games.splice(index,1)
-        })
-      
-    }
-
-    /// definitions
-
-    /**
-     * Get users
-     */
-    function getMessages() {
-      QueryService
-        .query('GET', 'messages/', null, null)
-        .then(function(messages) {
-          // console.log(game)
-          vm.messages = messages.data.data;
-          console.log(vm.messages)
-          $log.debug('messages', vm.messages);
-        })
-        .catch(function(err) {
-          $log.debug(err);
-        });
-    }
-
-    function getMessagesByUserId(userId) {
-      // console.log(userId)
-      QueryService
-        .query('GET', 'users/'+userId + '/messages', null, null)
-        .then(function(messages) {
-          console.log(messages)
-          
-          vm.messages = messages.data.data;
-          console.log(vm.messages)
-          $log.debug('messages', vm.messages);
-        })
-        .catch(function(err) {
-          $log.debug(err);
-        });
-    }
-
-    function getGamesOfUserId() {
-      console.log($stateParams.userId)
-      QueryService
-        .query('GET', 'games/user/'+$stateParams.userId, null, null)
-        
-        .then(function(data) {
-          console.log(data)
-          
-        })
-        .catch(function(err) {
-          $log.debug(err);
-        });
-    }
   }
 
 })();

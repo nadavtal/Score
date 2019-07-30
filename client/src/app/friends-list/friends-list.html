@@ -2,7 +2,7 @@
 
 	<div class="buttons d-flex arround">
 		<div class="col-xs-6 userContentTitle">
-			<h3 class="">{{vm.user.userName}}'s Groups</h3>
+			<h3 class="">{{vm.user.userName}}'s Friends</h3>
 		</div> 
 		<div class="col-xs-6">
 			<md-fab-toolbar md-direction="left" class="componentToolBox" ng-if="vm.isUser">
@@ -33,9 +33,9 @@
 	<div class="row table-header">
 		<div class="col-xs-2">logo</div>
 		<div class="col-xs-2">Name</div>
-		<div class="col-xs-3">Manager</div>
 		
-		<div class="col-xs-3">Members</div>
+		
+		
 		
 		<div class="col-xs-2">Actions</div>
 	</div>
@@ -44,23 +44,17 @@
 	<div class="table-body game-list">
 		<div
 			class="list-item row"
-			ng-repeat="group in vm.groups">
+			ng-repeat="user in vm.user.friends">
 
-			<a ui-sref="displayGroup({ groupId: group._id })" title="display groups">
+			<a ui-sref="displayUser({ userId: user.userId })" title="display user">
 				<div class="col-xs-2"><md-icon md-svg-src="assets/img/icons/profile.svg" class="groupLogo"></md-icon></div>
-				<div class="col-xs-2">{{group.groupName}}</div>
-				<div class="col-xs-3">{{group.groupManager.userName}}</div>
-				<div class="col-xs-3">
-					<div ui-sref="displayUser({userId: player.userId})" ng-repeat="player in group.members">
-						{{player.userName}}  
-					</div> 
-					
-				</div>
+				<div class="col-xs-2">{{user.userName}}</div>
+				
 				
 			</a>
 			<div class="col-xs-2 d-flex">
-				<md-icon md-svg-src="assets/img/icons/edit.svg" class="groupActionButton" ui-sref="editGroup({ groupId: group._id })"></md-icon>
-				<md-icon md-svg-src="assets/img/icons/remove.svg" class="groupActionButton red" ng-click="vm.removeGame($index, group._id)"></md-icon>
+				<!-- <md-icon md-svg-src="assets/img/icons/edit.svg" class="groupActionButton" ui-sref="editGroup({ groupId: group._id })"></md-icon> -->
+				<md-icon md-svg-src="assets/img/icons/remove.svg" class="groupActionButton red" ng-click="vm.removeFriend($index)"></md-icon>
 				<!-- <a class="editButton" ui-sref="editGroup({ groupId: group._id })" class="icon" title="edit group">
 					Edit 
 				</a> -->

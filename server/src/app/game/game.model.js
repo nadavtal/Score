@@ -23,8 +23,8 @@
   var timeOptionSchema = new Schema({
     date: Date,
     players: [{
-      username: String,
-      userid: ObjectId
+      userName: String,
+      userId: ObjectId
       
     }],
   })
@@ -37,18 +37,18 @@
       unique: false
     },
     players: [{
-      username: String,
-      userid: ObjectId
+      userName: String,
+      userId: ObjectId
       
     }],
     optionalplayers: [{
-      username: String,
-      userid: ObjectId
+      userName: String,
+      userId: ObjectId
       
     }],
     winner: {
-      username: String,
-      userid: ObjectId
+      userName: String,
+      userId: ObjectId
       
     },
     time: {
