@@ -24,6 +24,11 @@
         component: 'home',
         
       })
+      .state('admin', {
+        url: '/admin',
+        component: 'admin',
+        
+      })
       .state('users', {
         url: '/users',
         component: 'userList',

@@ -17,6 +17,8 @@
   var platformsCtrl = require('./platform/platform.controller.js');
   var accountsCtrl = require('./account/account.controller.js');
   var messagesCtrl = require('./message/message.controller.js');
+  var gameTypesCtrl = require('./gameType/gameType.controller.js');
+  var platformTypesCtrl = require('./platformType/platformType.controller.js');
   
   // router.get('/clashusers/:clantag/:usertag', clashUserCtrl.getClashPlayer); // get clash clan
   router.get('/clashusers/:userId/battles', clashUserCtrl.getClashPlayerBattles); // get clash user battles
@@ -71,6 +73,16 @@
    */
   router.post('/platforms', platformsCtrl.createPlatform); // create new Group
   router.get('/platforms/', platformsCtrl.getAllPlatforms); // get all games
+ /**
+   * Platform Types
+   */
+  router.post('/platformTypes', platformTypesCtrl.createPlatformType); // create new platformType
+  router.get('/platformTypes/', platformTypesCtrl.getAllPlatformTypes); // get all platformTypes
+   /**
+   * GameTypes
+   */
+  router.post('/gameTypes', gameTypesCtrl.createGameType); // create new GameType
+  router.get('/gameTypes/', gameTypesCtrl.getAllGameTypes); // get all gamesTypes
 
   /**
    * Messages

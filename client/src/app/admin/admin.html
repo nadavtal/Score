@@ -1,0 +1,132 @@
+<div ng-if="vm.user.role == 'admin'">
+    <div class="bg-green white">Add Platform</div>
+    <form
+        ng-submit="vm.submitAddPlatform(vm.platform)"
+        name="addPlatform"
+        role="form"
+        id="user"
+        novalidate
+    >
+
+        <div class="row">
+            <label for="platform" class="col-xs-5">Platform</label>
+            <div class="col-xs-7">
+                <input
+                    type="text"
+                    ng-model="vm.platform.name"
+                
+                    name="platform"
+                    id="platform"
+                    autocomplete="off"
+                    placeholder="Platform"
+                >
+            </div>
+            <label for="platformType" class="col-xs-5">type</label>
+            <div class="col-xs-7">
+                <input
+                    type="text"
+                    ng-model="vm.platform.type"
+                    
+                    name="platformType"
+                    id="platformType"
+                    autocomplete="off"
+                    placeholder="platformType"
+                >
+            </div>
+            
+        </div>
+
+        
+        <button class="customButton"
+            type="submit"
+            ng-disabled="vm.addPlatform.$invalid"
+            
+        >
+            Save
+        </button>
+        
+    </form>
+</div>
+<br>
+<div ng-if="vm.user.role == 'admin'">
+        <div class="bg-green white">Add Platform type</div>
+        <form
+            ng-submit="vm.submitAddPlatformType(vm.platformType)"
+            name="addPlatformType"
+            role="form"
+            id="user"
+            novalidate
+        >
+
+            <div class="row">
+                <label for="platformType" class="col-xs-5">PlatformType</label>
+                <div class="col-xs-7">
+                    <input
+                        type="text"
+                        ng-model="vm.platformType"
+                    
+                        name="platformType"
+                        id="platformType"
+                        autocomplete="off"
+                        placeholder="Platform type "
+                    >
+                </div>
+                
+                
+            </div>
+
+            
+            <button class="customButton"
+                type="submit"
+                ng-disabled="vm.addPlatformType.$invalid"
+                
+            >
+                Save
+            </button>
+            
+            
+        </form>
+</div>
+<br>
+<div ng-if="vm.user.role == 'admin'">
+        <div class="bg-green white">Add game type</div>
+        <form
+        ng-submit="vm.submitAddGameType(vm.gameType)"
+        name="addGameType"
+        role="form"
+        id="user"
+        novalidate
+    >
+
+        <div class="row">
+            <label for="gameType" class="col-xs-5">GameType</label>
+            <div class="col-xs-7">
+                <input
+                    type="text"
+                    ng-model="vm.gameType"
+                
+                    name="gameType"
+                    id="gameType"
+                    autocomplete="off"
+                    placeholder="GameType"
+                >
+            </div>
+            
+            
+        </div>
+
+        
+        <button class="customButton"
+            type="submit"
+            ng-disabled="vm.addGameType.$invalid"
+            
+        >
+            Save
+        </button>
+        
+    </form>
+</div>
+
+
+    
+    <!-- <message-form-directive></message-form-directive> -->
