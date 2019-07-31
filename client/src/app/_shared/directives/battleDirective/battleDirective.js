@@ -21,17 +21,20 @@
         return {
             templateUrl: 'app/_shared/directives/battleDirective/battleDirective.htm',
             link: function (scope, element, attributes) {
-                // console.log(attributes)
+                console.log(scope)
                 scope.battle = JSON.parse(attributes.battle)
                 scope.winner = []
-                
+                // console.log(scope.battle)
                 // console.log(scope.battle.team)
                 getWinner(scope.battle.team[0], scope.battle.opponent[0]);
                 if(scope.battle.team[1] && scope.battle.opponent[1]){
 
                     getWinner(scope.battle.team[1], scope.battle.opponent[1]);
                 }
+                scope.isWinner = checkIfIAmWinner();
+                console.log(scope.isWinner)
                 
+
 
                 function getWinner(player1, player2){
                     // console.log(player1)
@@ -46,7 +49,21 @@
                    
                 }
 
-                // console.log('winner:', scope.winner)
+                function checkIfIAmWinner(){
+                    var isWinner = false;
+                    var userName = scope.$parent.vm.user.name;
+                    // console.log(userName)
+                    for(var i =0; i< scope.winner.length; i++){
+                        console.log(scope.winner[i].name, userName)
+                        if (scope.winner[i].name == userName){
+                            // console.log('WINERERERERERERERER')
+                            isWinner = true;
+                        }
+                    }
+                    return isWinner
+                }
+
+                console.log('winner:', scope.winner)
                 
             }
         };

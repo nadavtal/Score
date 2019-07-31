@@ -1,36 +1,24 @@
 <div class="container-fluid user-list list">
 
-	<div class="buttons d-flex arround">
-		<div class="col-xs-6 userContentTitle">
+	<div class="d-flex between">
+		<div class=" userContentTitle">
 			<h3 class="">{{vm.user.userName}}'s Groups</h3>
 		</div> 
-		<div class="col-xs-6">
-			<md-fab-toolbar md-direction="left" class="componentToolBox" ng-if="vm.isUser">
-				<md-fab-trigger>
-					<md-button aria-label="Add..."><md-icon md-svg-src="assets/img/icons/edit.svg"></md-icon></md-button>
-				</md-fab-trigger>
-				
-				<md-toolbar>
-					<md-fab-actions class="d-flex arround">
-						<md-button aria-label="add group" div ui-sref="createGroup">
-							<md-icon md-svg-src="assets/img/icons/add.svg"></md-icon>
-						</md-button>
-					
-						<md-button aria-label="send message" <div ui-sref="changePassword">
-							<md-icon md-svg-src="assets/img/icons/email.svg"></md-icon>
-						</md-button>
-						
-					</md-fab-actions>
-				</md-toolbar>
-			</md-fab-toolbar>
-			
+		<div class="">
+			<md-button aria-label="add group" div ui-sref="createGroup">
+				<md-icon md-svg-src="assets/img/icons/add.svg"></md-icon>
+			</md-button>
+		
 		</div>
 		<!-- <div ui-sref="createGroup" class="create-game-link customButton bg-green white" ui-sref-opts="{reload: true, notify: true}">Create group</div> -->
 		<!-- <button ng-click="vm.getGroupsOfUserId()" class="customButton">find groups by user</button> -->
 
 	</div>
 	<!-- header -->
-	<div class="row table-header">
+
+	
+
+	<!-- <div class="row table-header">
 		<div class="col-xs-2">logo</div>
 		<div class="col-xs-2">Name</div>
 		<div class="col-xs-3">Manager</div>
@@ -38,17 +26,38 @@
 		<div class="col-xs-3">Members</div>
 		
 		<div class="col-xs-2">Actions</div>
-	</div>
+	</div> -->
 
 	<!-- table body -->
-	<div class="table-body game-list">
+	<div class="game-list">
 		<div
 			class="list-item row"
 			ng-repeat="group in vm.groups">
+			<div class="groupBlock">
+				<div class="row">
+					<a ui-sref="displayGroup({ groupId: group._id })" title="display groups">
+						<div class="col-xs-3">
+							<img class="groupBlock--image" src="../../assets/img/platforms/clashroyal.png" alt="">
+						</div>
+						<div class="col-xs-7 groupBlock__details">
+							<h3>{{group.groupName}}</h3>
+							<div class="groupBlock__details--numMembers">
+								{{group.members.length}} members
+							</div>
 
-			<a ui-sref="displayGroup({ groupId: group._id })" title="display groups">
+						</div>
+					</a>
+					<div class="col-xs-2 d-flex">
+						<md-icon md-svg-src="assets/img/icons/edit.svg" class="groupActionButton" ui-sref="editGroup({ groupId: group._id })"></md-icon>
+						<md-icon md-svg-src="assets/img/icons/remove.svg" class="groupActionButton red" ng-click="vm.removeGame($index, group._id)"></md-icon>
+						
+					</div>
+				</div>
+			</div>
+
+			<!-- <a ui-sref="displayGroup({ groupId: group._id })" title="display groups">
 				<div class="col-xs-2"><md-icon md-svg-src="assets/img/icons/profile.svg" class="groupLogo"></md-icon></div>
-				<div class="col-xs-2">{{group.groupName}}</div>
+				<div class="col-xs-2"></div>
 				<div class="col-xs-3">{{group.groupManager.userName}}</div>
 				<div class="col-xs-3">
 					<div ui-sref="displayUser({userId: player.userId})" ng-repeat="player in group.members">
@@ -61,15 +70,8 @@
 			<div class="col-xs-2 d-flex">
 				<md-icon md-svg-src="assets/img/icons/edit.svg" class="groupActionButton" ui-sref="editGroup({ groupId: group._id })"></md-icon>
 				<md-icon md-svg-src="assets/img/icons/remove.svg" class="groupActionButton red" ng-click="vm.removeGame($index, group._id)"></md-icon>
-				<!-- <a class="editButton" ui-sref="editGroup({ groupId: group._id })" class="icon" title="edit group">
-					Edit 
-				</a> -->
-				<!-- <a class="registerButton" ui-sref="registerToGroup({ groupId: group._id })" class="icon" title="register group">
-					register 
-				</a>
-				 -->
-				<!-- <button class="editButton" ng-click="vm.removeGame($index, group._id)">X</button> -->
-			</div>
+				
+			</div> -->
 
 			
 		</div>

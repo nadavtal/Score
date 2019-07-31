@@ -24,38 +24,9 @@
 	
 </div>
 <div class="container-fluid group form">
-	<div class="row" ng-if="vm.user.role == 'admin' && vm.actionType != 'createGroup' || vm.group.groupManager.userName == vm.user.userName">
-		<div class="col-md-12">
-			<md-fab-toolbar md-direction="left" class="userToolBar" ng-if="!vm.isUser">
-				<md-fab-trigger>
-					<md-button aria-label="Add..."><md-icon md-svg-src="assets/img/icons/threeLines.svg"></md-icon></md-button>
-				</md-fab-trigger>
-				
-				<md-toolbar>
-					<md-fab-actions class="d-flex arround">
-						<md-button aria-label="Chat" ng-click="">
-							<md-icon md-svg-src="assets/img/icons/edit.svg" ui-sref="editGroup({ groupId: vm.group._id })"></md-icon>
-						</md-button>
-					
-						<md-button aria-label="group chat" ng-click="">
-							<md-icon md-svg-src="assets/img/icons/chat.svg"></md-icon>
-						</md-button>
-						<md-button aria-label="Invite to group" ng-click="">
-							<md-icon md-svg-src="assets/img/icons/baseline-person_add-24px.svg"></md-icon>
-						</md-button>
-						<md-button aria-label="challenge for battle" ng-click="">
-							<md-icon md-svg-src="assets/img/icons/shield.svg"></md-icon>
-						</md-button>
-					</md-fab-actions>
-				</md-toolbar>
-			</md-fab-toolbar>
-			<!-- <button class="customButton bg-green white" ui-sref="editGroup({ groupId: vm.group._id })" title="edit group">
-			    Edit group
-			</button> -->
-		</div>
-	</div>
+	
 
-	<h1 class="">{{vm.group.name}}</h1>
+	<h3 class="">{{vm.group.groupName}}</h3>
 		<!-- <div class="userTabs d-flex arround" >
 			<div ng-click="vm.changeActiveTab('info')" ng-class="vm.activeTab == 'info'? 'active' : ''" class="">Info</div>
 			<div ng-click="vm.changeActiveTab('games')" ng-class="vm.activeTab == 'games'? 'active' : ''" class="">Games</div>
@@ -271,7 +242,36 @@
 			<button class="customButton bg-black white" ng-click="vm.unRegisterToGroup()">Leave group</button>
 		</div>
 	</div>
-		
+	<div class="row bottomToolBar" ng-if="vm.user.role == 'admin' && vm.actionType != 'createGroup' || vm.group.groupManager.userName == vm.user.userName">
+		<div class="col-md-12">
+			<md-fab-toolbar md-direction="left" class="userToolBar bg-blue" ng-if="!vm.isUser">
+				<md-fab-trigger>
+					<md-button aria-label="Add..."><md-icon md-svg-src="assets/img/icons/threeLines.svg" class="white"></md-icon></md-button>
+				</md-fab-trigger>
+				
+				<md-toolbar class="">
+					<md-fab-actions class="d-flex arround">
+						<md-button aria-label="Chat" ng-click="" class="">
+							<md-icon md-svg-src="assets/img/icons/edit.svg" ui-sref="editGroup({ groupId: vm.group._id })" class="blue"></md-icon>
+						</md-button>
+					
+						<md-button aria-label="group chat" ng-click="">
+							<md-icon md-svg-src="assets/img/icons/chat.svg" class="blue"></md-icon>
+						</md-button>
+						<md-button aria-label="Invite to group" ng-click="" class="blue">
+							<md-icon md-svg-src="assets/img/icons/baseline-person_add-24px.svg"></md-icon>
+						</md-button>
+						<md-button aria-label="challenge for battle" ng-click="">
+							<md-icon md-svg-src="assets/img/icons/shield.svg" class="blue"></md-icon>
+						</md-button>
+					</md-fab-actions>
+				</md-toolbar>
+			</md-fab-toolbar>
+			<!-- <button class="customButton bg-green white" ui-sref="editGroup({ groupId: vm.group._id })" title="edit group">
+				Edit group
+			</button> -->
+		</div>
+	</div>	
 		
 			
 

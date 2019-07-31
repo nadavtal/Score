@@ -35,7 +35,9 @@
       vm.activeTab = 'info'
       vm.changeActiveTab = function(tab){
         vm.activeTab = tab
+        console.log(vm.activeTab)
       }
+      $('.userContent').css('top', '5rem')
       console.log($stateParams)
       
 

@@ -193,7 +193,7 @@
       console.log(group)
       if (!group) return;
       if(vm.groupManager && group.groupManager){
-        if(vm.groupManager.userid != group.groupManager.userid){
+        if(vm.groupManager.userId != group.groupManager.userId){
           console.log('manager has been changed ', group.groupManager, 'vm.newManger:' + vm.groupManager);
           $scope.$emit('selectNewManager', group.groupManager, vm.groupManager);
           group.groupManager = vm.groupManager;
@@ -212,11 +212,12 @@
           // checkIfRegistered()
 
 
-          vm.updatedGroup = updatedGroup.data.data;
-          vm.group = vm.updatedGroup;
+          var updatedGroup = updatedGroup.data.data;
+          
+          vm.group = updatedGroup;
           // $scope.$apply();
-          console.log(vm.updatedGroup)
-          $log.debug('updatedGroup', vm.updatedGroup);
+          console.log(vm.group)
+          $log.debug('updatedGroup', vm.group);
           if(!responseMessage)
             var responseMessage = 'group Updated'
           ngDialog.open({

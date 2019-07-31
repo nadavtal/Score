@@ -10,98 +10,146 @@
 
   angular
     .module('boilerplate')
-    .component('accountList', {
+    .component('accountsList', {
       bindings: {
-        games: '<'
+        accounts: '<'
       },
       templateUrl: 'app/account-list/account-list.html',
       controllerAs: 'vm',
-      controller: accountListCtrl
+      controller: accountsListCtrl
     });
 
-    accountListCtrl.$inject = ['$log', 'QueryService', '$rootScope', 'localStorage', '$stateParams'];
+    accountsListCtrl.$inject = ['$log', 'QueryService', '$rootScope', 'localStorage', '$stateParams', 'accountsService', 'platformService', 'clashUserService', 'ngDialog'];
 
-  function accountListCtrl($log, QueryService, $rootScope, localStorage, $stateParams) {
-    // console.log('accountList component')
+  function accountsListCtrl($log, QueryService, $rootScope, localStorage, $stateParams, accountsService, platformService, clashUserService, ngDialog) {
+    // console.log('accountsList component')
     var vm = this;
     vm.user = localStorage.get('user');
-    
-    
+    vm.toggleAddAccount = toggleAddAccount;
+    vm.createNewAccount = createNewAccount
+    vm.AddAccountForm = AddAccountForm;
     vm.$onInit = function() {
 
-      var userId = vm.user._d || $stateParams.userId;
-      var groupId = vm.groupId || $stateParams.groupId;
-      // console.log('userId: ' + userId, 'groupId: '+groupId);
+      var userId = vm.user._id || $stateParams.userId;
+      if(userId){
+        accountsService.getAccountsByUserID(userId)
+        .then(function(accounts) {
+          // console.log(game)
+          vm.accounts = accounts.data.data;
+          console.log(vm.accounts)
+          $log.debug('accounts', vm.accounts);
+        })
+        .catch(function(err) {
+          $log.debug(err);
+        });
+      }
 
-
-      if (userId)
-        getGroupsByUserId(userId);
-      
-      
-      else 
-      getGroups();
+      if(!$rootScope.platforms) {
+        platformService.getAllPlatformsFromDataBase()
+        .then((platforms) => {
+          console.log(platforms)
+          $rootScope.platforms = platforms.data.data;
+          vm.platforms = $rootScope.platforms
+         
+        })
+      } else{
+        vm.platforms = $rootScope.platforms
+      };
     };
 
     
 
-    vm.removeGame = function(index, gameId){
+    vm.removeAccount = function(index, gameId){
       QueryService
-        .query('POST', 'games/'+ gameId, null, null)
-        .then(function(deletedgame) {
-          console.log('deletedgame', deletedgame)
-          vm.games.splice(index,1)
+        .query('POST', 'accounts/'+ accountId, null, null)
+        .then(function(deletedaccount) {
+          console.log('deletedaccount', deletedaccount)
+          vm.accounts.splice(index,1)
         })
+      
+    }
+
+    function createNewAccount(){
+      var data = {
+        platforms: vm.platforms
+      }
+      var dialog = ngDialog.open({
+        template: '\
+          <add-account-directive></add-account-directive>',
+        plain: true,
+        data: data
+      });
+    }
+
+    function toggleAddAccount(){
+      if(vm.showAddAccount) vm.showAddAccount = false
+        else vm.showAddAccount = true
+      
+      console.log(vm.showAddAccount)
+    }
+
+    function AddAccountForm(account, userId){
+      if (!account) return;
+      account.userId = userId;
+      console.log(account.accountId)
+      clashUserService.getClashUser(account.accountId)
+          .then(function(user) {
+            console.log(user);
+            if(user.data.reason){
+              ngDialog.open({
+                template: '\
+                  <p>cant find clash user with tag: '+ account.accountId +'</p>\
+                  <div class=\"ngdialog-buttons\">\
+                      <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click=\"closeThisDialog()\">OK</button>\
+                  </div>',
+                plain: true
+              });
+            } else if (user.data.name != account.userName){
+              ngDialog.open({
+                template: '\
+                  <p>The name of this clash user is not '+ account.userName +'</p>\
+                  <div class=\"ngdialog-buttons\">\
+                      <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click=\"closeThisDialog()\">OK</button>\
+                  </div>',
+                plain: true
+              });
+            }
+            else {
+              QueryService
+                .query('POST', 'accounts/', null, account)
+                .then(function(newAccount) {
+                  vm.newAccount = newAccount.data.data;
+                  console.log(vm.newAccount)
+                  $log.debug('newAccount', vm.newAccount);
+
+                  var dialog = ngDialog.open({
+                    template: '\
+                      <p>New account created</p>\
+                      <div class="ngdialog-buttons">\
+                          <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click="closeThisDialog(\'ok\')">OK</button>\
+                      </div>',
+                    plain: true
+                  });
+
+                  // dialog.closePromise.then(function(closedDialog) {
+                  //   $state.go('displayAccount', { accountId: vm.newAccount._id });
+                  // });
+
+                })
+                .catch(function(err) {
+                  $log.debug(err);
+                });
+              
+            }
+            
+            
+      })
+      
       
     }
 
     /// definitions
 
-    /**
-     * Get users
-     */
-    function getGroups() {
-      QueryService
-        .query('GET', 'groups/', null, null)
-        .then(function(groups) {
-          // console.log(game)
-          vm.groups = groups.data.data;
-          console.log(vm.groups)
-          $log.debug('groups', vm.groups);
-        })
-        .catch(function(err) {
-          $log.debug(err);
-        });
-    }
-
-    function getGroupsByUserId(userId) {
-      // console.log(userId)
-      QueryService
-        .query('GET', 'users/'+userId + '/groups', null, null)
-        .then(function(groups) {
-          console.log(groups)
-          
-          vm.groups = groups.data.data;
-          console.log(vm.groups)
-          $log.debug('groups', vm.groups);
-        })
-        .catch(function(err) {
-          $log.debug(err);
-        });
-    }
-
-    function getGamesOfUserId() {
-      console.log($stateParams.userId)
-      QueryService
-        .query('GET', 'games/user/'+$stateParams.userId, null, null)
-        
-        .then(function(data) {
-          console.log(data)
-          
-        })
-        .catch(function(err) {
-          $log.debug(err);
-        });
-    }
   }
 
 })();

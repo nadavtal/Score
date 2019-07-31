@@ -1,28 +1,17 @@
-<div class="container-fluid user-list list">
+<div class="container user-list list">
 
-	<div class="button d-flex between">
-		<div class="col-xs-6 userContentTitle">
-			<h3 class="">{{vm.user.userName | uppercase}}'s  Games</h3>
+	<div class="">
+		<div class="col-xs-7 userContentTitle">
+			<h3>Games</h3>
 		</div> 
-		<div class="col-xs-6">
-			<md-fab-toolbar md-direction="left" class="componentToolBox" ng-if="vm.isUser || vm.currentUser.role == 'admin'">
-				<md-fab-trigger>
-					<md-button aria-label="Add..."><md-icon md-svg-src="assets/img/icons/settings.svg"></md-icon></md-button>
-				</md-fab-trigger>
-				
-				<md-toolbar>
-					<md-fab-actions class="d-flex arround">
-						<md-button ng-click="vm.createGame()" aria-label="edit">
-							<md-icon md-svg-src="assets/img/icons/add.svg"></md-icon>
-						</md-button>
-					
-						<md-button aria-label="search games " <div ui-sref="changePassword">
-							<md-icon md-svg-src="assets/img/icons/search.svg"></md-icon>
-						</md-button>
-						
-					</md-fab-actions>
-				</md-toolbar>
-			</md-fab-toolbar>
+		<div class="col-xs-4 d-flex between">
+			<md-button ng-click="vm.createGame()" aria-label="edit">
+				<md-icon md-svg-src="assets/img/icons/add.svg"></md-icon>
+			</md-button>
+		
+			<md-button aria-label="search games " <div ui-sref="changePassword">
+				<md-icon md-svg-src="assets/img/icons/search.svg"></md-icon>
+			</md-button>
 			
 		</div>
 		<!-- <div ui-sref="createGame" class="create-game-link customButton bg-green white" ui-sref-opts="{reload: true, notify: true}">Create game</div>

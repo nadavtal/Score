@@ -24,7 +24,7 @@
       
       
       
-      this.addAccountToDB = addAccountToDB;
+      this.creatAccount = creatAccount;
       
       this.getAccount = getAccount;
       this.checkIfAccountExists = checkIfAccountExists; 
@@ -50,15 +50,7 @@
       }
   
   
-      
-  
-      
-  
-      
-  
-      
-  
-      function addAccountToDB(account){
+      function creatAccount(account){
           
             return QueryService.query('POST', 'accounts', null, account)
           }

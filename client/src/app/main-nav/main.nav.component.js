@@ -37,7 +37,8 @@
        */
       $scope.$on('user:login', function() {
         vm.user = localStorage.get('user');
-        $rootScope.user = vm.user
+        $rootScope.user = vm.user;
+        console.log(vm.user)
         
       });
 

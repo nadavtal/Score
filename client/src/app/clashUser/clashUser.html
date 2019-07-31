@@ -1,12 +1,42 @@
+<div class="pageNav bg-orange d-flex between">
+	<div class="navBackButton white" ui-sref="displayUser({ userId: vm.currentUser._id })">
+		<back-to-main-button-directive></back-to-main-button-directive>	
+	</div>
+	<div class="pageNav__item white center" ng-class="vm.activeTab == 'info'? 'active' : ''">
+		
+		<div ng-click="vm.changeActiveTab('info')"  class="">
+			<md-icon md-svg-src="assets/img/icons/info.svg" class="groupActionButton white"></md-icon>
+			Info
+		</div>
+	</div>
+	<div class="pageNav__item white center" ng-class="vm.activeTab == 'stats'? 'active' : ''">
+		<div ng-click="vm.changeActiveTab('stats')" class="">
+			<md-icon md-svg-src="assets/img/icons/timeline.svg" class="groupActionButton white"></md-icon>
+			stats
+		</div>
+	</div>
+	<div class="pageNav__item white center" ng-class="vm.activeTab == 'cards'? 'active' : ''">
+		<div ng-click="vm.changeActiveTab('cards')" class="">
+			<md-icon md-svg-src="assets/img/icons/shield.svg" class="groupActionButton white"></md-icon>
+			Cards
+		</div>
+	</div>
+	<div class="pageNav__item white center" ng-class="vm.activeTab == 'battles'? 'active' : ''">
+		<div ng-click="vm.changeActiveTab('battles')" class="">
+			<md-icon md-svg-src="assets/img/icons/games.svg" class="groupActionButton white"></md-icon>
+			Battles
+		</div>
+	</div>
+	
+</div>
 <div class="container-fluid user form">
-
-	<div class="userTabs d-flex arround" >
+	<!-- <div class="userTabs d-flex arround" >
 		<div ng-click="vm.changeActiveTab('info')" ng-class="vm.activeTab == 'info'? 'active' : ''" class="">Info</div>
 		<div ng-click="vm.changeActiveTab('stats')" ng-class="vm.activeTab == 'stats'? 'active' : ''" class="">Stats</div>
 		<div ng-click="vm.changeActiveTab('cards')" ng-class="vm.activeTab == 'cards'? 'active' : ''" class="">Cards</div>
 		<div ng-click="vm.changeActiveTab('battles')" ng-class="vm.activeTab == 'battles'? 'active' : ''" class="">Battles</div>
 		
-	</div>
+	</div> -->
 	<div class="userContent">
 		<div ng-class="vm.activeTab == 'info'? 'block' : 'hidden' " >
 			<div class="row">
@@ -63,12 +93,12 @@
 			</div>
 		</div>
 		<div ng-class="vm.activeTab == 'battles'? 'block' : 'hidden' ">
-			<div class="row tableHeaderRow">
-				<div class="col-xs-3">battleTime</div>
-				<div class="col-xs-2">type</div>
-				<div class="col-xs-3">teamMate</div>
-				<div class="col-xs-2">opponent</div>
-				<div class="col-xs-2">winner</div>
+			<div class="row table-header">
+				<div class="col-xs-3">Time</div>
+				<div class="col-xs-3">Type</div>
+				<div class="col-xs-3">Mate</div>
+				<div class="col-xs-3">Rival</div>
+				
 			</div>
 			<div class="" ng-repeat="battle in vm.userBattles">
 				<battle-directive battle="{{battle}}"></battle-directive>

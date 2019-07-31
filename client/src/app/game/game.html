@@ -283,3 +283,33 @@
 		
 	</div>
 </div>
+<div class="row bottomToolBar" >
+	<div class="col-md-12">
+		<md-fab-toolbar md-direction="left" class="userToolBar bg-black" ng-if="vm.actionType != 'editGame'">
+			<md-fab-trigger>
+				<md-button aria-label="Add..."><md-icon md-svg-src="assets/img/icons/threeLines.svg" class="white"></md-icon></md-button>
+			</md-fab-trigger>
+			
+			<md-toolbar class="">
+				<md-fab-actions class="d-flex arround">
+					<md-button aria-label="Chat" ng-click="" class="" >
+						<md-icon md-svg-src="assets/img/icons/edit.svg" ui-sref="editGame({ gameId: vm.game._id })" class="blue"></md-icon>
+					</md-button>
+				
+					<md-button aria-label="group chat" ng-click="">
+						<md-icon md-svg-src="assets/img/icons/chat.svg" class="blue"></md-icon>
+					</md-button>
+					<md-button aria-label="Invite to group" ng-click="" class="blue">
+						<md-icon md-svg-src="assets/img/icons/baseline-person_add-24px.svg"></md-icon>
+					</md-button>
+					<md-button aria-label="challenge for battle" ng-click="">
+						<md-icon md-svg-src="assets/img/icons/shield.svg" class="blue"></md-icon>
+					</md-button>
+				</md-fab-actions>
+			</md-toolbar>
+		</md-fab-toolbar>
+		<!-- <button class="customButton bg-green white" ui-sref="editGroup({ groupId: vm.group._id })" title="edit group">
+			Edit group
+		</button> -->
+	</div>
+</div>

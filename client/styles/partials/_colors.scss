@@ -4,6 +4,10 @@
 
 .bg-green {
     background-color: $green !important;
+
+    &-faded{
+        background-color: $green-faded
+    }
 }
 
 .border-green{
@@ -15,6 +19,10 @@
 
 .bg-purple {
     background-color: $purple !important;
+
+    &-faded{
+        background-color: $purple-faded
+    }
 }
 
 .border-purple{
@@ -27,6 +35,8 @@
 
 .bg-white {
     background-color: $white !important;
+
+    
 }
 
 .border-white{
@@ -39,6 +49,10 @@
 
 .bg-blue {
     background-color: $alert-blue !important;
+
+    &-faded{
+        background-color: $alert-blue-faded
+    }
 }
 
 .border-blue{
@@ -51,6 +65,10 @@
 
 .bg-black {
     background-color: $black !important;
+
+    &-faded{
+        background-color: $black-faded
+    }
 }
 
 .border-black{
@@ -62,6 +80,10 @@
 
 .bg-red {
     background-color: $red !important;
+
+    &-faded{
+        background-color: $red-faded;
+    }
 }
 
 .border-red{
@@ -74,6 +96,10 @@
 
 .bg-orange {
     background-color: $orange !important;
+
+    &-faded{
+        background-color: $orange-faded
+    }
 }
 
 .border-orange{
@@ -86,6 +112,10 @@
 
 .bg-pink {
     background-color: $pink !important;
+
+    &-faded{
+        background-color: $pink-faded
+    }
 }
 
 .border-pink{
@@ -98,6 +128,10 @@
 
 .bg-yellow {
     background-color: $yellow !important;
+
+    &-faded{
+        background-color: $yellow-faded
+    }
 }
 
 .border-yellow{

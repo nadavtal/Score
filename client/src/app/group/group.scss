@@ -3,3 +3,7 @@
     padding: .5rem;
     border-bottom: 1px solid lightgrey
 }
+
+md-toolbar.md-default-theme:not(.md-menu-toolbar) md-icon, md-toolbar:not(.md-menu-toolbar) md-icon {
+    color: blue
+}

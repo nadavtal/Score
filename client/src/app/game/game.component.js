@@ -40,7 +40,7 @@
     var gameId = vm.gameId || $stateParams.gameId;
     var groupId = vm.groupId || $stateParams.groupId;
     
-    console.log(groupId);
+    
 
     
     if(!$rootScope.users){
@@ -75,7 +75,9 @@
       .then(function(game) {
         
         vm.game = game.data.data;
+        console.log(vm.game.time, typeof(vm.game.time))
         vm.game.time = new Date(vm.game.time);
+        console.log(typeof(vm.game.time))
         vm.timeOption = new Date(vm.game.time);
         checkIfRegistered();
         checkIfInOptionalPlayer();
@@ -100,8 +102,8 @@
     } else {
       vm.game = {};
       vm.game.players = [];
-      vm.host = ''
-      vm.time = Date.now
+      vm.game.host = ''
+      vm.game.time = new Date(Date.now());
       vm.group = groupId
     console.log(vm.actionType);
     }
@@ -119,7 +121,11 @@
    
     function submitGameForm(game, gameId) {
       console.log(game, gameId);
-      console.log(vm.actionType)
+
+      console.log(typeof(game.time) );
+      // game.time = game.time.getTime();
+      // console.log(game.time);
+      // console.log(game, gameId);
       vm[vm.actionType](game, gameId);
     }
 
@@ -189,7 +195,7 @@
      */
     
     vm.selectWinner = function(user){
-      console.log(user)
+      // console.log(user)
       vm.newWinner = {
         userName: user.userName, 
         userId: user.userId
@@ -198,10 +204,10 @@
     }
 
     function editGame(game, gameId, responseMessage) {
-      
+      console.log('editing game', vm.newWinner, game.winner)
       if (!game) return;
       if(vm.newWinner && game.winner){
-        if(vm.newWinner.userid != game.winner.userid){
+        if(vm.newWinner.userId != game.winner.userId){
           console.log('winner has been changed ', game.winner, 'vm.newWinner:' + vm.newWinner);
           $scope.$emit('selectNewWinner', game.winner, vm.newWinner);
           game.winner = vm.newWinner;
@@ -213,16 +219,18 @@
         $scope.$emit('selectWinner', vm.newWinner);
         game.winner = vm.newWinner;
       }
-     
+      console.log(game)
       QueryService
         .query('PUT', 'games/' + gameId, null, game)
         .then(function(updatedGame) {
           checkIfRegistered()
 
 
-          vm.updatedGame = updatedGame.data.data;
-          console.log(vm.updatedGame);
-          vm.game = vm.updatedGame
+          var updatedGame = updatedGame.data.data;
+          updatedGame.time = new Date(updatedGame.time)
+          vm.game = updatedGame;
+          console.log(vm.game);
+
           $log.debug('updatedGame', vm.updatedGame);
 
           ngDialog.open({
@@ -234,7 +242,7 @@
             plain: true
           });
 
-          return 'updaed'
+          
 
         })
         .catch(function(err) {

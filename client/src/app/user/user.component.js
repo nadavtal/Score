@@ -14,10 +14,10 @@
     });
 
   UserCtrl.$inject = ['$log', '$state', '$stateParams', 'QueryService', 'localStorage', 'platformService', 'accountsService', 
-    'ngDialog', '$rootScope', '$scope', 'clashUserService', 'gamesService','usersService', 'groupsService'];
+    'ngDialog', '$rootScope', '$scope', 'clashUserService', 'gamesService','usersService', 'groupsService','friendsService'];
 
   function UserCtrl($log, $state, $stateParams, QueryService, localStorage, platformService, accountsService, 
-      ngDialog, $rootScope, $scope, clashUserService, gamesService, usersService, groupsService) {
+      ngDialog, $rootScope, $scope, clashUserService, gamesService, usersService, groupsService, friendsService) {
     var vm = this;
     
     
@@ -27,15 +27,22 @@
     vm.editUser = editUser;
     vm.submitUserForm = submitUserForm;
     vm.changeActiveTab = changeActiveTab;
-    vm.AddAccountForm = AddAccountForm;
-    vm.toggleAddAccount = toggleAddAccount;
+    
+    
     vm.sendMessageToUser = sendMessageToUser;
     vm.inviteUserToGroup = inviteUserToGroup;
     vm.inviteUserToGame  = inviteUserToGame;
     vm.sendFriendRequest = sendFriendRequest;
     vm.backToMain = backToMain;
-    vm.addToFriends = addToFriends   
+    vm.addToFriends = addToFriends;
     
+    
+    $scope.$on('user:login', function() {
+      vm.user = localStorage.get('user');
+      $rootScope.user = vm.user;
+      console.log('user from logging in', vm.user)
+      
+    });
     vm.$onInit = function() {
       vm.showMenuTab = false
       
@@ -46,7 +53,9 @@
       vm.currentUser = localStorage.get('user');
       vm.user = vm.user || {};
       vm.activeTab = '';
-      vm.isUser = false
+      vm.isUser = false;
+      vm.areFriends = false;
+      vm.userLoaded = false
 
       // if(localStorage.get('activeTab')){
       //   vm.changeActiveTab(localStorage.get('activeTab'))
@@ -75,21 +84,17 @@
            .then(function(user) {
             vm.user = user.data.data;
             console.log(vm.user);
+            vm.userLoaded = true;
+            $log.debug('user', vm.user);
+
             if(vm.currentUser._id == vm.user._id){
               vm.isUser = true
             }
-            $log.debug('user', vm.user);
-  
-            accountsService.getAccountsByUserID(vm.user._id)
-              .then((accounts) => {
-               
-                vm.accounts = accounts.data.data;
-                console.log(vm.accounts)
-              })
+            if(!vm.isUser){
+              vm.areFriends = friendsService.checkIfFriends(vm.currentUser, vm.user)
+            }
+            console.log('areFriends', vm.areFriends)
             
-              .catch(function(err) {
-                $log.debug(err);
-              });
             gamesService.getGamesByUserID(userId)
               .then((games)=>{
                 console.log(games)
@@ -109,12 +114,7 @@
        
     };
 
-    function toggleAddAccount(){
-      if(vm.showAddAccount) vm.showAddAccount = false
-        else vm.showAddAccount = true
-      
-      console.log(vm.showAddAccount)
-    }
+    
 
    
     function findItemById(array, id){
@@ -242,65 +242,7 @@
      * @return {object}            Promise
      */
 
-    function AddAccountForm(account, userId){
-      if (!account) return;
-      account.userId = userId;
-      console.log(account.accountId)
-      clashUserService.getClashUser(account.accountId)
-          .then(function(user) {
-            console.log(user);
-            if(user.data.reason){
-              ngDialog.open({
-                template: '\
-                  <p>cant find clash user with tag: '+ account.accountId +'</p>\
-                  <div class=\"ngdialog-buttons\">\
-                      <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click=\"closeThisDialog()\">OK</button>\
-                  </div>',
-                plain: true
-              });
-            } else if (user.data.name != account.userName){
-              ngDialog.open({
-                template: '\
-                  <p>The name of this clash user is not '+ account.userName +'</p>\
-                  <div class=\"ngdialog-buttons\">\
-                      <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click=\"closeThisDialog()\">OK</button>\
-                  </div>',
-                plain: true
-              });
-            }
-            else {
-              QueryService
-                .query('POST', 'accounts/', null, account)
-                .then(function(newAccount) {
-                  vm.newAccount = newAccount.data.data;
-                  console.log(vm.newAccount)
-                  $log.debug('newAccount', vm.newAccount);
-
-                  var dialog = ngDialog.open({
-                    template: '\
-                      <p>New account created</p>\
-                      <div class="ngdialog-buttons">\
-                          <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click="closeThisDialog(\'ok\')">OK</button>\
-                      </div>',
-                    plain: true
-                  });
-
-                  // dialog.closePromise.then(function(closedDialog) {
-                  //   $state.go('displayAccount', { accountId: vm.newAccount._id });
-                  // });
-
-                })
-                .catch(function(err) {
-                  $log.debug(err);
-                });
-              
-            }
-            
-            
-      })
-      
-      
-    }
+    
 
     function editUser(user, userId) {
       if (!user) return;
