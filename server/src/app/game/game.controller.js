@@ -39,15 +39,20 @@
     var params = req.body;
     console.log('creating game with params:', params)
     var game = new Game({
-      gametype: params.gametype,
+      name: params.name,
+      gameType: params.gameType,
+      platformType : params.platformType,
       host: params.host,
       time: params.time,
-      group: params.group
+      group: params.group,
+      players : params.players,
+      optionalPlayers : params.optionalPlayers,
       
     });
     console.log('game before saving:', game)
     // req params validation for required fields
-    req.checkBody('gametype', 'gametype must be defined').notEmpty();
+    req.checkBody('gameType', 'gameType must be defined').notEmpty();
+    req.checkBody('platformType', 'platformType must be defined').notEmpty();
     req.checkBody('host', 'host must be defined').notEmpty();
 
     // validate user input
@@ -111,9 +116,25 @@
    * Get games by user
    * GET '/games/:userId'
    */
+  function getUser(req, res, next) {
+    var params = req.params;
+
+    User
+      .findOne({ '_id': ObjectId(params.userId) }, { password: 0, __v: 0 })
+      .exec((err, user) => {
+        if (err) return next(err);
+        if (!user) return next({
+          message: 'User not found.',
+          status: 404
+        });
+        // console.log(res)
+        utils.sendJSONresponse(res, 200, user);
+      });
+  }
 
   function getGamesByUserId(req,res,next){
     console.log('getting games by userId:', req.params.userId);
+    
     var params = req.params;
     Game.find({ 'players.userId': params.userId }, { 'players.$': 1 })
     .exec((err, data) => {

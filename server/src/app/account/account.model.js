@@ -26,7 +26,7 @@
     },
     accountId: {
       type: String,
-      required: true
+      
     },
     userId: ObjectId
   })

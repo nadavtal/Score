@@ -38,6 +38,7 @@
       vm.registerd = false;
       vm.activeTab = 'info'
       vm.searchTerm;
+      vm.showBottomToolBar = false;
       if(!$rootScope.users){
         console.log('no rootscope users');
         usersService.getAllUsers()
@@ -65,6 +66,7 @@
           vm.group = group.data.data;
           localStorage.set('group', vm.group)
           console.log('group', vm.group);
+          vm.showBottomToolBar = true;
           vm.registerd = checkIfRegistered();
           console.log(vm.registerd)
           $log.debug('group', vm.group);
@@ -85,7 +87,8 @@
                               userId : vm.user._id}]
         vm.group.groupManager = {userName: vm.user.userName,
                                 userId : vm.user._id}
-        vm.groupManager = vm.group.groupManager
+        vm.groupManager = vm.group.groupManager;
+        vm.showBottomToolBar = true;
       }
       $element.find('input').on('keydown', function(ev) {
         console.log(ev)

@@ -387,11 +387,11 @@
         </div>
         <!-- <button class="customButton backToMainButton" ng-click="vm.backToMain()" ng-if="vm.showMenuTab">Back to main</button>   -->
     </div>
-    <div class="bottomToolBar" ng-if="vm.showMenuTab">
-            <md-fab-toolbar md-direction="left" class="userToolBar">
+    <div class="bottomToolBar bg-{{vm.background_color}}" ng-if="vm.showMenuTab">
+            <md-fab-toolbar md-direction="left" class="userToolBar ">
 
-                    <md-fab-trigger class="fabTrigger">
-                        <md-button aria-label="Add..."><md-icon md-svg-src="assets/img/icons/threeLines.svg"></md-icon></md-button>
+                    <md-fab-trigger class="fabTrigger ">
+                        <md-button aria-label="Add..."><md-icon md-svg-src="assets/img/icons/threeLines.svg" class="white"></md-icon></md-button>
                     </md-fab-trigger>
                     
                     <md-toolbar>

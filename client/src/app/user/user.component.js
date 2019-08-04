@@ -55,8 +55,18 @@
       vm.activeTab = '';
       vm.isUser = false;
       vm.areFriends = false;
-      vm.userLoaded = false
+      vm.userLoaded = false;
+      vm.background_color = 'bg-green'
 
+      var colorPerActiveTab = {
+        myProfile : 'green',
+        accounts : 'orange',
+        groups : 'blue',
+        friends : 'purple',
+        games : 'black',
+        messages : 'pink',
+        
+      }
       // if(localStorage.get('activeTab')){
       //   vm.changeActiveTab(localStorage.get('activeTab'))
       //   console.log(vm.activeTab)
@@ -179,10 +189,34 @@
     }
 
     function changeActiveTab(tab){
-      // console.log(tab);
-      vm.activeTab = tab;
+      console.log(tab);
       vm.showMenuTab = true;
-      console.log($scope)
+      vm.activeTab = tab;
+      if(tab == 'myProfile') vm.background_color = 'green'
+      else if(tab == 'accounts') vm.background_color = 'orange'
+      else if(tab == 'groups') vm.background_color = 'blue'
+      else if(tab == 'friends') vm.background_color = 'purple'
+      else if(tab == 'games') vm.background_color = 'black'
+      else if(tab == 'messages') vm.background_color = 'pink'
+
+
+      // switch (vm.activeTab) {
+      //   case 'myProfile':
+      //     vm.background_color = 'green'
+      //   case 'accounts':
+      //     vm.background_color = 'orange'
+      //   case 'groups':
+      //     vm.background_color = 'blue'
+      //   case 'friends':
+      //     vm.background_color = 'purple'
+      //   case 'games':
+      //     vm.background_color = 'black'
+      //   case 'messages':
+      //     vm.background_color = 'pink'
+        
+      // }
+      
+      console.log(vm.background_color)
       $('.userContent').css('top', '5rem')
       
       $('.userContentWrapper').css({

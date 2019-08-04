@@ -31,17 +31,27 @@
 
 
   var gameSchema = new Schema({
-    gametype: {
+    name: {
+      type: String,
+      
+      
+    },
+    gameType: {
       type: String,
       required: true,
-      unique: false
+     
+    },
+    platformType: {
+      type: String,
+      required: true,
+     
     },
     players: [{
       userName: String,
       userId: ObjectId
       
     }],
-    optionalplayers: [{
+    optionalPlayers: [{
       userName: String,
       userId: ObjectId
       

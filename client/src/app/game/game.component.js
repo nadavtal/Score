@@ -18,7 +18,7 @@
 
     angular
     .module('boilerplate').controller('GameCtrl' , function($log, $state, $stateParams, QueryService, localStorage, usersService, gamesService, groupsService,
-      ngDialog, $rootScope, $scope) {
+      ngDialog, $rootScope, $scope, gameTypesService, platformService) {
 
     console.log('initializing GameCtrl', $scope)
     var vm = this;
@@ -33,15 +33,17 @@
     vm.addToOptionalPLayers = addToOptionalPLayers;
     vm.removeFromOptionalPLayers = removeFromOptionalPLayers;
     vm.addPlayerToTimeOption = addPlayerToTimeOption;
+    vm.selectGameType = selectGameType
+    vm.selectPlatformType = selectPlatformType
     vm.removePlayerfromTimeOption = removePlayerfromTimeOption;
     vm.clearSearchTerm = clearSearchTerm;
     vm.searchTerm = '';
-    
+    vm.showBottomToolBar = false;
     var gameId = vm.gameId || $stateParams.gameId;
     var groupId = vm.groupId || $stateParams.groupId;
-    
-    
-
+    vm.user = localStorage.get('user') || {};
+    vm.registerd = false;
+    vm.users = []
     
     if(!$rootScope.users){
       
@@ -75,17 +77,19 @@
       .then(function(game) {
         
         vm.game = game.data.data;
-        console.log(vm.game.time, typeof(vm.game.time))
+        
         vm.game.time = new Date(vm.game.time);
-        console.log(typeof(vm.game.time))
+        
         vm.timeOption = new Date(vm.game.time);
+        vm.showBottomToolBar = true;
+        console.log('game', vm.game);
         checkIfRegistered();
         checkIfInOptionalPlayer();
-
-        console.log('game', vm.game);
         
+        console.log(vm.registerd)
         $log.debug('game', vm.game);
-
+        
+        // $scope.$apply();
         if(vm.game.group){
 
           groupsService.getGroup(vm.game.group)
@@ -101,31 +105,42 @@
       });
     } else {
       vm.game = {};
-      vm.game.players = [];
-      vm.game.host = ''
+      vm.game.players = [{userName: vm.user.userName, userId: vm.user._id}];
+      vm.game.optionalPlayers = [];
+      vm.game.host = vm.user.userName
       vm.game.time = new Date(Date.now());
-      vm.group = groupId
+      vm.group = groupId;
+      vm.showBottomToolBar = true;
     console.log(vm.actionType);
     }
 
     var state = $state.current.name;
-    console.log(state)
-    vm.user = localStorage.get('user') || {};
-    vm.registerd = false;
-    vm.users = []
+    // console.log(state)
+   
     
 
     vm.actionType = setActionType(state, gameId);
-    console.log('actioType: ', vm.actionType) 
+    console.log('actionType: ', vm.actionType) 
+
+    platformService.getAllPlatformsFromDataBase()
+      .then((platforms) => {
+        vm.platforms = platforms.data.data;
+        // console.log('platforms:', vm.platforms)
+        
+        });
+
+    gameTypesService.getAllGameTypes()
+      .then((gameTypes) => {
+        vm.gameTypes = gameTypes.data.data;
+        // console.log('gameTypes:', vm.gameTypes)
+        
+        });
 
    
     function submitGameForm(game, gameId) {
       console.log(game, gameId);
 
-      console.log(typeof(game.time) );
-      // game.time = game.time.getTime();
-      // console.log(game.time);
-      // console.log(game, gameId);
+      
       vm[vm.actionType](game, gameId);
     }
 
@@ -137,7 +152,23 @@
     }
       
       
-        
+    function selectGameType(typeName){
+      // console.log(typeName);
+      // console.log(vm.game)
+
+      vm.game.gameType = typeName
+      console.log(vm.game);
+      // $scope.$apply()
+    }  
+
+    function selectPlatformType(typeName){
+      // console.log(typeName);
+      // console.log(vm.game)
+
+      vm.game.platformType = typeName
+      console.log(vm.game);
+      // $scope.$apply()
+    }    
       
     
 
@@ -273,9 +304,8 @@
     function registerToGame() {
       
       if (!vm.game) return;
-
-      var registerd = checkIfUserInArrayByUsername(vm.game.players, vm.user.userName);
-      var inOptionalPlayers = checkIfUserInArrayByUsername(vm.game.optionalplayers, vm.user.userName)
+      console.log(vm.game)
+      
       
       if(inOptionalPlayers){
         vm.game.optionalplayers = vm.game.optionalplayers.filter(function(value){
@@ -302,7 +332,7 @@
           userid: vm.user._id
         })
         console.log(vm.game);
-        editGame(vm.game, vm.game._id, 'registered to '+ vm.game.gametype + ' at ' + vm.game.host);
+        editGame(vm.game, vm.game._id, 'registered to '+ vm.game.name + ' at ' + vm.game.host);
       }
       
       

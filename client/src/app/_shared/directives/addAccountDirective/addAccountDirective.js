@@ -12,9 +12,9 @@
       .module('boilerplate')
       .directive('addAccountDirective', addAccountDirective);
   
-      addAccountDirective.$inject = ['$q', '$rootScope', '$injector','accountsService','ngDialog', 'clashUserService', 'platformService'];
+      addAccountDirective.$inject = ['$q', '$rootScope', '$injector','accountsService','ngDialog', 'clashUserService', 'platformService', '$log'];
   
-    function addAccountDirective($q, $rootScope, $injector, accountsService, ngDialog, clashUserService,platformService) {
+    function addAccountDirective($q, $rootScope, $injector, accountsService, ngDialog, clashUserService,platformService, $log) {
         console.log('addAccountDirective');
         return {
             templateUrl: 'app/_shared/directives/addAccountDirective/addAccountDirective.htm',
@@ -44,8 +44,9 @@
                     if (!account) return;
                     account.userId = userId;
                     console.log(account)
-                    console.log(account.platform)
-                    clashUserService.getClashUser(account.accountId)
+                    console.log(account.platform);
+                    if(account.platform == 'Clash'){
+                        clashUserService.getClashUser(account.accountId)
                         .then(function(user) {
                             console.log(user);
                             if(user.data.reason){
@@ -98,6 +99,33 @@
                             
                             
                     })
+                    } else{
+                        accountsService.createAccount(account)
+                            .then(function(newAccount) {
+                                scope.newAccount = newAccount.data.data;
+                                console.log(scope.newAccount)
+                                $log.debug('newAccount', scope.newAccount);
+
+                                var dialog = ngDialog.open({
+                                    template: '\
+                                    <p>New account created</p>\
+                                    <div class="ngdialog-buttons">\
+                                        <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click="closeThisDialog(\'ok\')">OK</button>\
+                                    </div>',
+                                    plain: true
+                                });
+
+                                // dialog.closePromise.then(function(closedDialog) {
+                                //   $state.go('displayAccount', { accountId: vm.newAccount._id });
+                                // });
+
+                                })
+                                .catch(function(err) {
+                                $log.debug(err);
+                                });
+                            
+                    }
+                   
                     
                     
                 }   

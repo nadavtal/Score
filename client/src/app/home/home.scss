@@ -166,9 +166,24 @@
 
 .bottomToolBar{
 	position: fixed;
-	bottom: 1vh;
-	right: 1vw;
-	width: 100%;
+	bottom: 0;
+	right: 0;
+	width: 100vw;
+}
+
+
+.bottomToolBar.ng-enter{
+	transition: .2s linear all;
+	right: -100vw;
+	opacity: 0;
+}
+.bottomToolBar.ng-enter-active{
+	right: 0;
+	opacity: 1;
+}
+
+.userToolBar{
+	transition: .2s all
 }
 
 .componentToolBox{

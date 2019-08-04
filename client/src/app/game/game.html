@@ -14,13 +14,13 @@
 	</div>
 <div class="container-fluid user form">
 
-	<div class="row" ng-if="vm.user.role == 'admin' && vm.actionType != 'editGame'">
+	<!-- <div class="row" ng-if="vm.user.role == 'admin' && vm.actionType != 'editGame'">
 		<div class="col-md-12">
 			<button class="customButton bg-green white" ui-sref="editGame({ gameId: vm.game._id })" title="edit game">
 			    Edit game
 			</button>
 		</div>
-	</div>
+	</div> -->
 
 	<!-- game form -->
 	<div>
@@ -47,45 +47,113 @@
 					>
 				</div>
 			</div>
-
+			<br>
 			<div class="row">
-				<label for="gametype" class="col-xs-5">Game type</label>
-				<div class="col-xs-7">
-					<input
-						type="text"
-						ng-model="vm.game.gametype"
-						ng-disabled="vm.actionType == 'displayGame'"
-						name="gametype"
-						id="gametype"
-						autocomplete="off"
-						placeholder="gametype"
-						
-					>
-				</div>
-				<label for="gametype" class="col-xs-5">Game time</label>
 				
 				<div class="col-xs-7">
-					<input type="datetime-local" id="gametime" name="gametime" ng-model="vm.game.time"
-						 min="2019-07-01T00:00:00" max="2030-12-31T00:00:00" 
-						 ng-disabled="vm.actionType == 'displayGame'"/>
-					
+					<md-input-container class="md-block" flex-gt-sm>
+						<label>Give your game a name</label>
+						<input ng-model="vm.game.name"
+							   ng-disabled="vm.actionType == 'displayGame'">
+					</md-input-container>
+					<!-- <input
+						type="text"
+						ng-model="vm.game.name"
+						ng-disabled="vm.actionType == 'displayGame'"
+						name="gameNane"
+						id="gameNane"
+						autocomplete="off"
+						placeholder="Give your game a name"> -->
 				</div>
+				<!-- <label for="gametype" class="col-xs-5">Game type</label> -->
+				<div class="col-xs-5">
+					<md-input-container flex-gt-md="30">
+						<label>Game Time</label>
+						<input mdc-datetime-picker date="true" time="true" type="text" id="time" short-time="true"
+								show-todays-date click-outside-to-close="true"
+								placeholder="Time" auto-ok="true"
+								min-date="minDate" minute-steps="1"
+								format="hh:mm a"
+								ng-change="vm.saveChange()"
+								ng-model="vm.game.time"
+								ng-disabled="vm.actionType == 'displayGame'">
+								
+					</md-input-container>
+				</div>	
+				<div class="col-xs-6">
+					<md-input-container>
+						<label>Game types</label>
+						<md-select ng-model="vm.game.gameType"
+									md-on-close="vm.clearSearchTerm()"
+									data-md-container-class="selectdemoSelectHeader"
+									ng-disabled="vm.actionType == 'displayGame'"
+									>
+							<md-select-header class="demo-select-header">
+							<input ng-model="vm.searchTerm"
+									type="search"
+									placeholder="Search for a game type.."
+									class="demo-header-searchbox md-text">
+							</md-select-header>
+							<md-optgroup label="game types">
+							<md-option ng-value="type.name" ng-repeat="type in vm.gameTypes | filter:searchTerm"
+								ng-click="vm.selectGameType(type.name)">{{type.name}}
+							</md-option>
+							</md-optgroup>
+						</md-select>
+					
+					
+					
+					</md-input-container>
+				</div>		
+				<div class="col-xs-6">
+					<md-input-container>
+						<label>Platfrom types</label>
+						<md-select ng-model="vm.game.platformType"
+									md-on-close="vm.clearSearchTerm()"
+									data-md-container-class="selectdemoSelectHeader"
+									ng-disabled="vm.actionType == 'displayGame'"
+									>
+							<md-select-header class="demo-select-header">
+							<input ng-model="vm.searchTerm"
+									type="search"
+									placeholder="Search for a platform type.."
+									class="demo-header-searchbox md-text">
+							</md-select-header>
+							<md-optgroup label="platform types">
+							<md-option ng-value="type.name" ng-repeat="type in vm.platforms | filter:searchTerm"
+								ng-click="vm.selectPlatformType(type.name)">{{type.name}}
+							</md-option>
+							</md-optgroup>
+						</md-select>
+					
+					
+					
+					</md-input-container>
+				</div>		
+				
 			</div>
-
+			<br>
 			<div class="row">
-				<label for="host" class="col-xs-5">Host:</label>
+				<div class="col-xs-7">
+					<md-input-container class="md-block" flex-gt-sm>
+						<label>Host</label>
+						<input ng-model="vm.game.host"
+								ng-disabled="vm.actionType == 'displayGame'">
+					</md-input-container>
+				</div>
+				<!-- <label for="host" class="col-xs-5">Host:</label>
 				<div class="col-xs-7">
 					<input
 						type="text"
 						ng-model="vm.game.host"
-						ng-disabled="vm.actionType == 'displayGame'"
+						
 						name="host"
 						id="host"
 						autocomplete="off"
 						placeholder="host"
 						required
 					>
-				</div>
+				</div> -->
 			</div>
 			<br>
 			<div class="row">
@@ -283,33 +351,33 @@
 		
 	</div>
 </div>
-<div class="row bottomToolBar" >
-	<div class="col-md-12">
-		<md-fab-toolbar md-direction="left" class="userToolBar bg-black" ng-if="vm.actionType != 'editGame'">
-			<md-fab-trigger>
-				<md-button aria-label="Add..."><md-icon md-svg-src="assets/img/icons/threeLines.svg" class="white"></md-icon></md-button>
-			</md-fab-trigger>
+<div class="bottomToolBar" ng-if="vm.showBottomToolBar">
+	
+	<md-fab-toolbar md-direction="left" class="userToolBar bg-black" ng-if="vm.actionType != 'editGame'">
+		<md-fab-trigger>
+			<md-button aria-label="Add..."><md-icon md-svg-src="assets/img/icons/threeLines.svg" class="white"></md-icon></md-button>
+		</md-fab-trigger>
+		
+		<md-toolbar class="">
+			<md-fab-actions class="d-flex arround">
+				<md-button aria-label="Chat" ng-click="" class="" >
+					<md-icon md-svg-src="assets/img/icons/edit.svg" ui-sref="editGame({ gameId: vm.game._id })" class="blue"></md-icon>
+				</md-button>
 			
-			<md-toolbar class="">
-				<md-fab-actions class="d-flex arround">
-					<md-button aria-label="Chat" ng-click="" class="" >
-						<md-icon md-svg-src="assets/img/icons/edit.svg" ui-sref="editGame({ gameId: vm.game._id })" class="blue"></md-icon>
-					</md-button>
-				
-					<md-button aria-label="group chat" ng-click="">
-						<md-icon md-svg-src="assets/img/icons/chat.svg" class="blue"></md-icon>
-					</md-button>
-					<md-button aria-label="Invite to group" ng-click="" class="blue">
-						<md-icon md-svg-src="assets/img/icons/baseline-person_add-24px.svg"></md-icon>
-					</md-button>
-					<md-button aria-label="challenge for battle" ng-click="">
-						<md-icon md-svg-src="assets/img/icons/shield.svg" class="blue"></md-icon>
-					</md-button>
-				</md-fab-actions>
-			</md-toolbar>
-		</md-fab-toolbar>
-		<!-- <button class="customButton bg-green white" ui-sref="editGroup({ groupId: vm.group._id })" title="edit group">
-			Edit group
-		</button> -->
-	</div>
+				<md-button aria-label="group chat" ng-click="">
+					<md-icon md-svg-src="assets/img/icons/chat.svg" class="blue"></md-icon>
+				</md-button>
+				<md-button aria-label="Invite to group" ng-click="" class="blue">
+					<md-icon md-svg-src="assets/img/icons/baseline-person_add-24px.svg"></md-icon>
+				</md-button>
+				<md-button aria-label="challenge for battle" ng-click="">
+					<md-icon md-svg-src="assets/img/icons/shield.svg" class="blue"></md-icon>
+				</md-button>
+			</md-fab-actions>
+		</md-toolbar>
+	</md-fab-toolbar>
+	<!-- <button class="customButton bg-green white" ui-sref="editGroup({ groupId: vm.group._id })" title="edit group">
+		Edit group
+	</button> -->
+	
 </div>

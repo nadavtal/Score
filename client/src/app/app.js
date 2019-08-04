@@ -11,6 +11,7 @@
       'btford.socket-io',
       'angularUtils.directives.dirPagination',
       'ngAnimate',
+      'ngMaterialDatePicker',
     ])
     .config(config);
 

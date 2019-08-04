@@ -55,7 +55,7 @@
         vm.platforms = platforms.data.data;
         console.log('platforms:', vm.platforms)
         
-       }) ;
+       });
 
        gameTypesService.getAllGameTypes()
        .then((gameTypes) => {

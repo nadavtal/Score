@@ -24,7 +24,7 @@
       
       
       
-      this.creatAccount = creatAccount;
+      this.createAccount = createAccount;
       
       this.getAccount = getAccount;
       this.checkIfAccountExists = checkIfAccountExists; 
@@ -50,7 +50,7 @@
       }
   
   
-      function creatAccount(account){
+      function createAccount(account){
           
             return QueryService.query('POST', 'accounts', null, account)
           }

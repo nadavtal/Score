@@ -30,7 +30,8 @@
     vm.AddAccountForm = AddAccountForm;
     vm.$onInit = function() {
 
-      var userId = vm.user._id || $stateParams.userId;
+      var userId = $stateParams.userId;
+      console.log(userId)
       if(userId){
         accountsService.getAccountsByUserID(userId)
         .then(function(accounts) {
