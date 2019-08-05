@@ -6,6 +6,7 @@ var del = require('del');
 var runSequence = require('run-sequence');
 var modRewrite = require('connect-modrewrite');
 
+const terser = require('gulp-terser');
 // optimize images
 gulp.task('images', function() {
   return gulp.src('./src/assets/img/**/*')
@@ -128,8 +129,8 @@ gulp.task('usemin', function() {
     }))
     .pipe($.usemin({
       css: [$.minifyCss(), 'concat'],
-      angularlibs: [$.uglify()],
-      appcomponents: [$.uglify()],
+      angularlibs: [$.terser()],
+      appcomponents: [$.terser()],
     }))
     .pipe(gulp.dest('./_build/'));
 });

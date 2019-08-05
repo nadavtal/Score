@@ -26,6 +26,7 @@
     "gulp-rev": "^7.1.2",
     "gulp-sass": "^3.2.1",
     "gulp-sourcemaps": "^1.9.1",
+    "gulp-terser": "^1.2.0",
     "gulp-uglify": "^2.0.0",
     "gulp-usemin": "^0.3.26",
     "jshint": "^2.9.4",
