@@ -1,6 +1,6 @@
 node_modules
 bower_components
-_build
+
 .idea
 .jsbeautifyrc
 style.css
