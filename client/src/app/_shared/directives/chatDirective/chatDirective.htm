@@ -1,0 +1,59 @@
+<div class="chatWrapper bg-black" ng-class="{chatClosed : !chatOpen, chatClosedCorner : !vm.showMenuTab}" >
+    <button class="chatToggelButton" ng-click="toggleChat()" "bg-{{vm.background_color}}">
+        <md-icon md-svg-src="assets/img/icons/chat.svg" class="white" ng-class="chatOpen? '' : ''" ></md-icon>
+
+    </button>
+    <button class="chatCloseButton" ng-click="toggleChat()" ng-if="chatOpen">
+        <md-icon md-svg-src="assets/img/icons/close.svg" class="white" ng-class="chatOpen? '' : ''" ></md-icon>
+
+    </button>  
+    <div class="container" ng-if="chatOpen">
+        <br><br>
+        <div class="row">
+            <div class="col-xs-3">
+                <h4>Friends</h4>
+                <div ng-repeat="user in vm.currentUser.friends" 
+                     ng-click="chatWith(user)">{{user.userName}}
+                </div>
+                <br>
+                <h4>Groups</h4>
+                <div ng-repeat="group in groups" 
+                     ng-click="chatWithGroup(group)">{{group.groupName}}
+                </div>
+            </div>
+            <div class="col-xs-9 ">
+                <!-- <div class="black">{{user.userName}}</div> -->
+                
+                
+                    
+                    
+                <div class="messagesWrapper bg-white">
+                    <div ng-repeat="message in messages | orderBy:'$index':true">
+                        <div class="chatLineWrapper" ng-if="showLines">
+                            <div class="chatLine"  ng-class="message.sender.userId != vm.currentUser._id ? 'text-right' : ''">
+                                <div class="chatLine--userName" ng-class="message.sender.userId != vm.currentUser._id ? 'blue' : 'green'">
+                                    {{message.sender.userName}}
+                                </div>
+                                <div class="chatLine--content bg-black-faded white">{{message.content}}</div>
+                            </div> 
+                        </div>
+                        
+                    </div>
+                </div>
+                
+                <br>
+                    
+                
+            </div>
+        </div>
+        <div class="{{statusColor}}">{{status}}</div>
+        <div class="messageForm d-flex white">
+            
+            <input ng-keypress="sendTypingStatus()" class="chatInput black" ng-model="message" placeholder="Enter message..."></input>
+            <md-icon md-svg-src="assets/img/icons/send.svg" ng-click="sendMessage(message)" class="white"></md-icon>
+            <!-- <div  class="customButton">Send</div> -->
+
+        </div>
+    </div>
+
+</div>

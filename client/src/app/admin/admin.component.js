@@ -14,29 +14,30 @@
     });
 
   adminCtrl.$inject = ['$log', '$state', '$stateParams', 'platformTypesService', 'localStorage', 'platformService', 'accountsService', 
-    'ngDialog', '$rootScope', '$scope', 'clashUserService', 'gamesService','usersService', 'groupsService','gameTypesService'];
+    'ngDialog', '$rootScope', '$scope', 'clashUserService', 'gamesService','usersService', 'groupsService','gameTypesService', 'messagesService'];
 
   function adminCtrl($log, $state, $stateParams, platformTypesService, localStorage, platformService, accountsService, 
-      ngDialog, $rootScope, $scope, clashUserService, gamesService, usersService, groupsService, gameTypesService) {
+      ngDialog, $rootScope, $scope, clashUserService, gamesService, usersService, groupsService, gameTypesService, messagesService) {
     var vm = this;
     
     vm.submitAddPlatform = submitAddPlatform;
     vm.submitAddGameType = submitAddGameType;
-    vm.submitAddPlatformType = submitAddPlatformType
+    vm.submitAddPlatformType = submitAddPlatformType;
+    vm.submitUserForm = submitUserForm
     
     // methods
     
     
     
     $scope.$on('user:login', function() {
-      vm.user = localStorage.get('user');
-      $rootScope.user = vm.user;
+      vm.currentUser = localStorage.get('user');
+      $rootScope.user = vm.currentUser;
       console.log('user from logging in', vm.user)
       
     });
     vm.$onInit = function() {
       
-      vm.user = localStorage.get('user');;
+      vm.currentUser = localStorage.get('user');
       
       usersService.getAllUsers()
           .then((data) => {
@@ -87,6 +88,10 @@
           .catch(function(err) {
             $log.debug(err);
           });
+        messagesService.getAllMessages()
+          .then((messages) => {
+            console.log('all messages: ', messages.data.data)
+          })
 
     
     
@@ -100,6 +105,31 @@
         .then((data)=> {
           console.log(data)
         })
+    }
+
+    function submitUserForm(user) {
+      console.log(user);
+      usersService.createUser(user)
+        .then(function(newUser) {
+          vm.newUser = newUser.data.data;
+          $log.debug('newUser', vm.newUser);
+
+          var dialog = ngDialog.open({
+            template: '\
+              <p>New user created</p>\
+              <div class="ngdialog-buttons">\
+                  <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click="closeThisDialog(\'ok\')">OK</button>\
+              </div>',
+            plain: true
+          });
+
+          
+
+        })
+        .catch(function(err) {
+          $log.debug(err);
+        });
+      
     }
 
     function submitAddPlatformType(platformType){

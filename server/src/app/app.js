@@ -14,13 +14,14 @@
   var paginate = require('express-paginate');
   var cors = require('cors');
   var expressValidator = require('express-validator');
-
+  // var messagesCtrl = require('./message/message.controller.js');
+  var Message = require('./message/message.model.js');
   var errorHandling = require('./app.error-handling.js');
 
   /**
    * MongoDB init
    */
-  require('../config/db.js');
+  var db = require('../config/db.js');
 
   /**
    * ExpressJS app init
@@ -33,18 +34,113 @@
    * Socket.Io init
    */
   // socket.io server url: http://localhost:5000
+  var users = [];
+  var connections = [];
+  // console.log(server)
   var io = require('socket.io')(server);
   io.sockets.on('connection', (socket) => {
-    // console.log(socket)
-    console.log('io connected!');
+    // console.log(db)
+    connections.push(socket);
+    console.log('connected: %s sockets connected', connections.length);
+
+    
+  
+          
+    //     });
+    // //function to send status
+    var sendStatus = function(s){
+      socket.emit('status', s)
+    }
+
+    socket.on('userLoggedIn', function(data){
+      console.log('userLoggedInData', data);
+      Message
+        .find({$or:[{'receiver.userId':  data.currentUser._id,
+                      'sender.userId': data.user.userId}, 
+                    {'receiver.userId' : data.user.userId,
+                     'sender.userId': data.currentUser._id}]})
+        .exec((err, messages) => {
+          if (err) return next(err);
+          if (!messages) return next({
+            message: 'message not found.',
+            status: 404
+          });
+
+          socket.emit('messages', messages);
+
+      });
+    });
+
+    socket.on('groupLoggedIn', function(data){
+      console.log('groupLoggedInData', data.messageType, data.group._id);
+      Message
+        .find({ 
+                'receiver.userId' : data.group._id}
+                  )
+        .exec((err, messages) => {
+          if (err) return next(err);
+          if (!messages) return next({
+            message: 'message not found.',
+            status: 404
+          });
+
+          socket.emit('messages', messages);
+
+      });
+    });
+
+    socket.on('input', function(data){
+      console.log('input data: ', data);
+      var message = new Message({
+        subject : '',
+        content: data.message,
+        messageType : data.messageType,
+        sender : data.sender,
+        receiver : data.receiver,
+        
+  
+        
+      });
+      console.log(message)
+        
+      message.save((err, newMessage) => {
+        console.log('saving message', newMessage)
+        if (err) return next({ err: err, status: 400 });
+        if (!newMessage) return next({ message: 'Message not created.', status: 400 });
+        socket.emit('output', newMessage);
+        sendStatus({
+                message: 'Message sent', 
+                clear: true
+              })
+        
+      });
+      
+    })
+
+    //handle clear
+    socket.on('clear', function(data){
+      //Remove all chats from collection
+      
+
+      socket.emit('cleared')
+      
+    })
+
+    socket.on('typing', function(data){
+      // console.log('typing')
+      sendStatus(data.user.userName + ' is typing...')
+    })
+
+
 
     socket.on('disconnect', (socket) => {
-       console.log('io disconnected!');
-       console.log(socket)
+      connections.splice(connections.indexOf(socket), 1);
+      console.log('disconnected: %s sockets connected', connections.length);
+      
     });
     socket.on('error', function(e){
-      console.log(e);
-  });
+        console.log(e);
+    });
   });
   console.log(__dirname)
   // app.use(express.static(path.join(__dirname, 'src')));
@@ -53,6 +149,8 @@
       req.io = io;
       next();
   });
+
+  
 
   /**
    * Middleware section

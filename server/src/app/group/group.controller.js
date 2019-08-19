@@ -205,7 +205,7 @@
   }
 
   function getGroupsByUserId(req,res,next){
-    console.log(req.params);
+    // console.log(req.params);
     var params = req.params;
     Group.find({ 'members.userId': params.userId }, { 'members.$': 1 })
     .exec((err, data) => {
@@ -216,11 +216,11 @@
       });
       var groupIds = []
       for (var i = 0; i < data.length; i++){
-        console.log(data[i]);
+        // console.log(data[i]);
         groupIds.push(data[i]._id);
         
       }
-      console.log('IDS', groupIds);
+      // console.log('IDS', groupIds);
       
       
     })

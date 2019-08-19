@@ -139,6 +139,7 @@ gulp.task('usemin', function() {
 gulp.task('templates', function() {
   return gulp.src([
       './src/**/*.html',
+      './src/**/*.htm',
       '!bower_components/**/*.*',
       '!node_modules/**/*.*',
       '!_build/**/*.*'

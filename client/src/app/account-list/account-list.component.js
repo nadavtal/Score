@@ -27,7 +27,7 @@
     vm.user = localStorage.get('user');
     vm.toggleAddAccount = toggleAddAccount;
     vm.createNewAccount = createNewAccount
-    vm.AddAccountForm = AddAccountForm;
+    // vm.AddAccountForm = AddAccountForm;
     vm.$onInit = function() {
 
       var userId = $stateParams.userId;
@@ -72,7 +72,8 @@
 
     function createNewAccount(){
       var data = {
-        platforms: vm.platforms
+        platforms: vm.platforms,
+        userId: vm.user._id
       }
       var dialog = ngDialog.open({
         template: '\

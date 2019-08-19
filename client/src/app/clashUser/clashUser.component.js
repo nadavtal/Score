@@ -32,7 +32,11 @@
       var state = $state.current.name;
       vm.currentUser = localStorage.get('user');
       vm.user = vm.user || {};
-      vm.activeTab = 'info'
+      vm.activeTab = 'info';
+      vm.loading = true;
+      
+
+
       vm.changeActiveTab = function(tab){
         vm.activeTab = tab
         console.log(vm.activeTab)
@@ -44,9 +48,9 @@
       if (usertag)
         clashUserService.getClashUser(usertag)
           .then(function(user) {
-            
+            console.log(vm.user)
             vm.user = user.data;
-            
+            vm.labels = ['All Games', 'Wins', 'losses', 'WinPercentage']
 
             console.log('user', vm.user);
             
@@ -75,8 +79,8 @@
         .then(function(battles) {
           
           vm.userBattles = battles.data;
+          vm.loading = false;
           
-
           console.log('vm.userBattles', vm.userBattles);
           
           $log.debug('vm.userBattles', vm.userBattles);

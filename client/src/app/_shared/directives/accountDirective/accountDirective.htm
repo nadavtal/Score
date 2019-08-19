@@ -1,0 +1,13 @@
+
+<a ui-sref="clashUser({ usertag: account.accountId })" title="display clash user" ng-if="account.platform == 'Clash'">
+    <div class="col-xs-4">
+        <img class="accountImage" src="../../assets/img/platforms/{{account.platform}}.png" alt=""></div>
+    <div class="col-xs-4">{{account.userName}}</div>
+    <div class="col-xs-4">{{account.accountId}}</div>
+</a>
+<a ui-sref="displayAccount({_id : account._id})" ng-if="account.platform != 'Clash'">
+    <div class="col-xs-4">
+        <img class="accountImage" src="../../assets/img/platforms/{{account.platform}}.png" alt=""></div>
+    <div class="col-xs-4">{{account.userName}}</div>
+    <div class="col-xs-4">{{account.accountId}}</div>
+</a>

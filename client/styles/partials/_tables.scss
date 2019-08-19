@@ -13,3 +13,12 @@
     }
 }
 
+.list-item .ng-leave{
+    transition: .3s linear all;
+    transform: translateX(0);
+}
+
+.list-item .ng-leave-active{
+    transform: translateX(-100vw)
+}
+

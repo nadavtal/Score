@@ -34,12 +34,13 @@
 		<link rel="stylesheet" type="text/css" href="bower_components/ng-dialog/css/ngDialog-theme-plain.min.css" />
 		<link rel="stylesheet" type="text/css" href="bower_components/angular-material/angular-material.css" />
 		<link rel="stylesheet" type="text/css" href="bower_components/ng-material-datetimepicker/dist/material-datetimepicker.min.css" />
+		<link rel="stylesheet" type="text/css" href="bower_components/chart.js/dist/Chart.min.css" />
 		<link rel="stylesheet" type="text/css" href="assets/styles/style.css" />
 		<!-- endbuild -->
 
 	</head>
 
-	<body class="main-wrapper" ng-controller="mainController">
+	<body class="main-wrapper">
 
 		<!--[if lt IE 8]>
 		    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
@@ -47,9 +48,11 @@
 
 		<!-- Navigation -->
 		<main-nav></main-nav>
-			
 		<!-- Main view -->
-		<div ui-view></div>
+		<div ui-view>
+			
+
+		</div>
 
 	</body>
 
@@ -61,12 +64,12 @@
 	<!-- build:libs js/libs.js -->
 	<!-- endbuild -->
 
-	<!-- replace localhost:5000 based URL where API app will be deployed -->
-	<script src="http://localhost:5000/socket.io/socket.io.js"></script>
-
+	<!-- replace score.netdesign.media based URL where API app will be deployed -->
+	 <script src="http://score.netdesign.media/socket.io/socket.io.js"></script>
+	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script> -->
 	<!-- Angular external libraries for application -->
-	<script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
 	<!-- build:angularlibs js/angularlibs.js -->
+	<script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
 	<script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
 	<script type="text/javascript" src="bower_components/angular-aria/angular-aria.js"></script>
 	<script type="text/javascript" src="bower_components/angular-animate/angular-animate.js"></script>
@@ -78,7 +81,12 @@
 	<script type="text/javascript" src="bower_components/angular-sanitize/angular-sanitize.min.js"></script>
 	<script type="text/javascript" src="bower_components/ng-dialog/js/ngDialog.min.js"></script>
 	<script type="text/javascript" src="bower_components/angular-socket-io/socket.min.js"></script>
+	<!-- <script type="text/javascript" src="bower_components/angular-socket-io/mock/socket-io.js"></script> -->
 	<script type="text/javascript" src="bower_components/angularUtils-pagination/dirPagination.js"></script>
+	<script type="text/javascript" src="bower_components/chart.js/dist/Chart.min.js"></script>
+	<script type="text/javascript" src="bower_components/angular-chart.js/dist/angular-chart.min.js"></script>
+	<!-- <script type="text/javascript" src="bower_components/sweetalert2/dist/angular-chart.min.js"></script> -->
+	<!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script> -->
 	<!-- endbuild -->
 
 
@@ -128,6 +136,7 @@
 	<script type="text/javascript" src="app/account-list/account-list.component.js"></script>
 	<script type="text/javascript" src="app/friends-list/friends-list.component.js"></script>
 	<script type="text/javascript" src="app/admin/admin.component.js"></script>
+	<script type="text/javascript" src="app/account/account.component.js"></script>
 
 
 	<!--DIRECTIVES-->
@@ -137,6 +146,9 @@
 	<script type="text/javascript" src="app/_shared/directives/cubeMenuItemDirective/cubeMenuItemDirective.js"></script>
 	<script type="text/javascript" src="app/_shared/directives/backToMainButtonDirective/backToMainButtonDirective.js"></script>
 	<script type="text/javascript" src="app/_shared/directives/addAccountDirective/addAccountDirective.js"></script>
+	<script type="text/javascript" src="app/_shared/directives/accountDirective/accountDirective.js"></script>
+	<script type="text/javascript" src="app/_shared/directives/loadingDirective/loadingDirective.js"></script>
+	<script type="text/javascript" src="app/_shared/directives/chatDirective/chatDirective.js"></script>
 	<!-- endbuild -->
 
 	<!-- templates from $templateCache -->

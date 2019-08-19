@@ -34,7 +34,7 @@
    * POST '/games'
    */
   function createPlatform(req, res, next) {
-    console.log('creating game')
+    console.log('creating platfrom')
     var params = req.body;
     // console.log(params)
     var platform = new Platform({
@@ -49,7 +49,7 @@
     // validate user input
     var errors = req.validationErrors();
     if (errors) {
-      console.log('errorserrorserrors')
+      console.log('error in creating platform')
         utils.sendJSONresponse(res, 400, errors);
         return;
     }

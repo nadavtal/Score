@@ -26,8 +26,12 @@
      * Connect to Socket.IO server
      */
     function connect() {
+      // console.log(io)
       if (!socket)
-        socket = io.connect('http://localhost:5000/');
+        socket = io.connect('http://score.netdesign.media/');
+        if(socket !== undefined){
+              console.log('Connected to socket...', socket);
+        }
     }
 
     /**
@@ -46,7 +50,11 @@
      * Emit event with data
      */
     function emit(eventName, data, callback) {
+      console.log('emitting', eventName, data);
+      
+
       socket.emit(eventName, data, function() {
+        console.log(socket)
         var args = arguments;
         $rootScope.$apply(function() {
           if (callback)

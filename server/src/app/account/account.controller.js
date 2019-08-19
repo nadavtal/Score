@@ -25,6 +25,7 @@
     updateAccount,
     removeAccount,
     getAccountsByUserId,
+    getAccountsByUserName,
     getAccountsByPlatformName
   };
 
@@ -128,6 +129,23 @@
         });
    }
 
+   function getAccountsByUserName(req, res, next){
+    var params = req.params;
+     console.log(params.userName)
+    Account
+       .find( {userName : params.userName})
+       
+       .exec((err, accounts) => {
+         if (err) return next(err);
+         if (!accounts) return next({
+           message: 'game not found.',
+           status: 404
+         });
+ 
+         utils.sendJSONresponse(res, 200, accounts);
+       });
+  }
+
    /**
    * Get account by platform name
    * GET '/account/platforms/:name'
@@ -156,13 +174,13 @@
    */
   function getAccount(req, res, next) {
     var params = req.params;
-
+    console.log(params)
     Account
-      .findOne({ '_id': ObjectId(params._id) }, { password: 0, __v: 0 })
+      .findOne({ '_id': ObjectId(params.accountId) })
       .exec((err, game) => {
         if (err) return next(err);
         if (!game) return next({
-          message: 'game not found.',
+          message: 'account not found.',
           status: 404
         });
 

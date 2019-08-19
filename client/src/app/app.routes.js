@@ -153,6 +153,11 @@
         component: 'user',
         // role: 'admin' // accessible only for admin roles
       })
+      .state('displayAccount', {
+        url: '/accounts/:_id',
+        component: 'account',
+        // role: 'admin' // accessible only for admin roles
+      })
       
       
 

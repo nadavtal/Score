@@ -223,14 +223,21 @@
           $log.debug('updatedGroup', vm.group);
           if(!responseMessage)
             var responseMessage = 'group Updated'
-          ngDialog.open({
-            template: '\
-              <p>'+responseMessage+'</p>\
-              <div class=\"ngdialog-buttons\">\
-                  <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click=\"closeThisDialog()\">OK</button>\
-              </div>',
-            plain: true
-          });
+          Swal.fire({
+            position: 'center',
+            type: 'success',
+            title: responseMessage,
+            showConfirmButton: false,
+            timer: 1500
+          })
+          // ngDialog.open({
+          //   template: '\
+          //     <p>'+responseMessage+'</p>\
+          //     <div class=\"ngdialog-buttons\">\
+          //         <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click=\"closeThisDialog()\">OK</button>\
+          //     </div>',
+          //   plain: true
+          // });
 
           
 

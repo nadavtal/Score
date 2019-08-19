@@ -10,11 +10,11 @@ $gray:              #cbd9ee;
 $disabled-gray:     #cfcfcf;
 $green:             rgb(22, 167, 22);
 
-$red: red;
+$red: #ff0000;
 $yellow:            yellow;
 $pink:              #e9204f;
-$orange:            orange;
-$purple:            rgb(189, 40, 189);
+$orange:            #ffa500;
+$purple:            #bd28bd;
 $alert-blue-faded: rgba(0, 0, 255, 0.521);
 $black-faded:       rgba(0,0,0,.5);
             
@@ -35,4 +35,4 @@ $link-hover:        darken($link-color, 9%);
 // alerts
 $alert-red:			red;
 $alert-green:		#645564;
-$alert-blue:		blue;
+$alert-blue:		#0000ff;

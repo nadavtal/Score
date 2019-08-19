@@ -10,11 +10,12 @@ novalidate
         <option value="">---Please select---</option> 
         <option ng-repeat="user in users" value="{{user}}">{{user.userName}}</option> 
     </select> -->
-    <md-input-container class="full-width" ng-if="!receiver">
-        <label>To:</label>
+    <md-input-container class="full-width" >
+        <label>To: {{group.groupName}}</label>
         <md-select ng-model="receiver"
                     md-on-close="clearSearchTerm()"
                     data-md-container-class="selectdemoSelectHeader"
+                    ng-if="!receiver"
                     multiple
                     >
             <md-select-header class="demo-select-header">
@@ -24,14 +25,14 @@ novalidate
                     class="demo-header-searchbox md-text">
             </md-select-header>
             <md-optgroup label="users">
-            <md-option ng-value="user.userName" ng-repeat="user in users | filter:searchTerm">
+            <md-option ng-value="user.userName" ng-repeat="user in vm.user.friends | filter:searchTerm">
                 {{user.userName}}
             </md-option>
             </md-optgroup>
         </md-select>
     </md-input-container>
-    <br>
-    <md-input-container class="full-width" ng-if="ngDialogData.groups">
+    <br><br>
+    <!-- <md-input-container class="" ng-if="ngDialogData.groups || ngDialogData.group">
         <label>Groups:</label>
         <md-select ng-model="group"
                     md-on-close="clearSearchTerm()"
@@ -50,11 +51,11 @@ novalidate
             </md-option>
             </md-optgroup>
         </md-select>
-    </md-input-container>
+    </md-input-container> -->
     
-    <select name="groups" id="" ng-model="group" ng-change="pickGroup(group)" ng-if="ngDialogData.groups">
-        <option value="">---Please select group---</option> <!-- not selected / blank option -->
-        <option ng-repeat="group in groups" value="{{group}}">{{group.groupName}}</option> <!-- interpolation -->
+    <select name="groups" id="" ng-model="group" ng-change="pickGroup(group)" ng-if="ngDialogData.groups || ngDialogData.group">
+        <option value="">---Please add group---</option> 
+        <option ng-repeat="group in groups" value="{{group}}">{{group.groupName}}</option>
         
     </select>
     <div class="contanier">
@@ -95,8 +96,8 @@ novalidate
         </div> -->
     </div>
 
-    <div class="">
-        <div class="buttons pull-right">
+    <!-- <div class=""> -->
+        <div class="buttons">
             <button class="textIconButton" type="submit"
                     ng-disabled="messageForm.$invalid">
                     
@@ -108,5 +109,5 @@ novalidate
             </button>
 
         </div>
-    </div>
+    <!-- </div> -->
 </form>

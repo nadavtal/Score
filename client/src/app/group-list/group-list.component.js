@@ -19,12 +19,12 @@
       controller: GroupListCtrl
     });
 
-    GroupListCtrl.$inject = ['$log', 'QueryService', 'usersService', 'localStorage', '$stateParams', 'groupsService'];
+    GroupListCtrl.$inject = ['$log', 'QueryService', 'usersService', 'localStorage', '$stateParams', 'groupsService', 'ngDialog'];
 
-  function GroupListCtrl($log, QueryService, usersService, localStorage, $stateParams, groupsService) {
+  function GroupListCtrl($log, QueryService, usersService, localStorage, $stateParams, groupsService, ngDialog) {
     // console.log('groupList component')
     var vm = this;
-    
+    vm.sendMessageToGroup = sendMessageToGroup
     
     
     vm.$onInit = function() {
@@ -78,10 +78,10 @@
     function getGroupsByUserId(userId) {
       groupsService.getGroupsByUserID(userId)
       .then(function(groups) {
-        console.log(groups)
+        // console.log(groups)
         
         vm.groups = groups.data.data;
-        console.log(vm.groups)
+        console.log('groups', vm.groups)
         $log.debug('groups', vm.groups);
       })
       .catch(function(err) {
@@ -90,6 +90,40 @@
       // console.log(userId)
       
         
+    }
+
+    function sendMessageToGroup(group){
+      var data = {
+        sender: vm.currentUser,
+        group: group,
+        messageType : 'groupMessage',
+        groups: vm.groups
+      }
+      var dialog = ngDialog.open({
+        template: '\
+          <message-form-directive></message-form-directive>',
+        plain: true,
+        data: data
+      });
+      // for (let member of group.memnbers){
+        
+      // }
+    }
+
+    function sendMessageToUser(user){
+      console.log(vm.currentUser, user)
+      user._id = user.userId
+      var users = {
+        sender: vm.currentUser,
+        receiver: user,
+        messageType: 'chatMessage'
+      }
+      var dialog = ngDialog.open({
+        template: '\
+          <message-form-directive></message-form-directive>',
+        plain: true,
+        data: users
+      });
     }
 
     

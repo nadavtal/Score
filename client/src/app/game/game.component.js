@@ -10,15 +10,17 @@
       },
       templateUrl: 'app/game/game.html',
       controllerAs: 'vm',
-      controller: 'GameCtrl'
+      controller: GameCtrl
     });
 
-  // GameCtrl.$inject = ['$log', '$state', '$stateParams', 'QueryService', 'localStorage', 'usersService', 'gamesService'
-  //   'ngDialog', '$rootScope', '$scope'];
+  GameCtrl.$inject = ['$log', '$state', '$stateParams', 'QueryService', 'localStorage', 'usersService', 'gamesService', 'groupsService', 
+    'ngDialog', '$rootScope', '$scope', 'gameTypesService', 'platformService'];
 
-    angular
-    .module('boilerplate').controller('GameCtrl' , function($log, $state, $stateParams, QueryService, localStorage, usersService, gamesService, groupsService,
-      ngDialog, $rootScope, $scope, gameTypesService, platformService) {
+    // angular
+    // .module('boilerplate').controller('GameCtrl' , function($log, $state, $stateParams, QueryService, localStorage, usersService, gamesService, groupsService,
+    //   ngDialog, $rootScope, $scope, gameTypesService, platformService) {
+    function GameCtrl($log, $state, $stateParams, QueryService, localStorage, usersService, gamesService, groupsService,
+      ngDialog, $rootScope, $scope, gameTypesService, platformService){
 
     console.log('initializing GameCtrl', $scope)
     var vm = this;
@@ -39,9 +41,10 @@
     vm.clearSearchTerm = clearSearchTerm;
     vm.searchTerm = '';
     vm.showBottomToolBar = false;
-    var gameId = vm.gameId || $stateParams.gameId;
-    var groupId = vm.groupId || $stateParams.groupId;
-    vm.user = localStorage.get('user') || {};
+    var gameId = $stateParams.gameId;
+    var groupId = $stateParams.groupId;
+    vm.user = localStorage.get('user');
+    // console.log(vm.user)
     vm.registerd = false;
     vm.users = []
     
@@ -51,7 +54,7 @@
         .then((data) => {
           vm.users = data.data.data;
           if(!groupId){
-            vm.optionalPlayers = vm.users;
+            // vm.optionalPlayers = vm.users;
 
           }
           
@@ -69,9 +72,9 @@
           vm.optionalPlayers = data.data.data.members
           
         })
-    }
+    } 
 
-    if (gameId) {
+    else if (gameId) {
       console.log('game component has gameId: ', gameId)
       gamesService.getGame(gameId)
       .then(function(game) {
@@ -109,13 +112,16 @@
       vm.game.optionalPlayers = [];
       vm.game.host = vm.user.userName
       vm.game.time = new Date(Date.now());
-      vm.group = groupId;
+      vm.game.timeoptions =[];
+      vm.today = new Date(Date.now())
+      vm.group = '';
       vm.showBottomToolBar = true;
-    console.log(vm.actionType);
+      vm.optionalPlayers = vm.user.friends
+   
     }
 
     var state = $state.current.name;
-    // console.log(state)
+    console.log(vm.optionalPlayers)
    
     
 
@@ -125,7 +131,7 @@
     platformService.getAllPlatformsFromDataBase()
       .then((platforms) => {
         vm.platforms = platforms.data.data;
-        // console.log('platforms:', vm.platforms)
+        console.log('platforms:', vm.platforms)
         
         });
 
@@ -307,8 +313,8 @@
       console.log(vm.game)
       
       
-      if(inOptionalPlayers){
-        vm.game.optionalplayers = vm.game.optionalplayers.filter(function(value){
+      if(vm.inOptionalPlayers){
+        vm.game.optionalPlayers = vm.game.optionalPlayers.filter(function(value){
           console.log(value)
           return value.userName != vm.user.userName;
       
@@ -316,7 +322,7 @@
         
       }
 
-      if (registerd) {
+      if (vm.registerd) {
         ngDialog.open({
           template: '\
             <p>You are allready registered to this game</p>\
@@ -329,7 +335,7 @@
       else {
         vm.game.players.push({
           userName: vm.user.userName,
-          userid: vm.user._id
+          userId: vm.user._id
         })
         console.log(vm.game);
         editGame(vm.game, vm.game._id, 'registered to '+ vm.game.name + ' at ' + vm.game.host);
@@ -341,20 +347,31 @@
     function unRegisterToGame() {
       
       if (!vm.game) return;
+      if(vm.game.host == vm.user.userName){
+        ngDialog.open({
+          template: '\
+            <p>A host cant leave game without changing to another host</p>\
+            <div class=\"ngdialog-buttons\">\
+                <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click=\"closeThisDialog()\">OK</button>\
+            </div>',
+          plain: true
+        });
+      }else{
       vm.game.players = vm.game.players.filter(function(value){
         
         return value.userName != vm.user.userName;
     
       });
-   
       editGame(vm.game, vm.game._id, 'Unregistered '+ vm.user.userName +' from '+ vm.game.gametype + ' at ' + vm.game.host)
+    }
+   
       
     }
 
 
 
     function addOptionalTime(){
-      // console.log(vm.timeOption);
+      console.log(vm.game);
       vm.game.timeoptions.push({
         date: vm.timeOption,
         players: [{
@@ -403,7 +420,7 @@
     }
 
     function addToOptionalPLayers(responsMessage){
-      var inArray = checkIfUserInArrayByUsername(vm.game.optionalplayers, vm.user.userName)
+      var inArray = checkIfUserInArrayByUsername(vm.game.optionalPlayers, vm.user.userName)
 
       if(inArray){
         ngDialog.open({
@@ -415,7 +432,7 @@
           plain: true
         });
       }else{
-        vm.game.optionalplayers.push({
+        vm.game.optionalPlayers.push({
           userName: vm.user.userName, 
           userid: vm.user._id
         });
@@ -430,15 +447,15 @@
         // $scope.$apply()
       }
 
-      checkIfInOptionalPlayer()
+      
       
     }
 
     function removeFromOptionalPLayers(){
-      var inArray = checkIfUserInArrayByUsername(vm.game.optionalplayers, vm.user.userName)
+      var inArray = checkIfUserInArrayByUsername(vm.game.optionalPlayers, vm.user.userName)
       
       if (inArray) {
-        vm.game.optionalplayers = vm.game.optionalplayers.filter(function(value){
+        vm.game.optionalPlayers = vm.game.optionalPlayers.filter(function(value){
           console.log(value)
           return value.userName != vm.user.userName;
       
@@ -487,7 +504,7 @@
 
     function checkIfInOptionalPlayer(){
       
-      var isOptional = checkIfUserInArrayByUsername(vm.game.optionalplayers, vm.user.userName)
+      var isOptional = checkIfUserInArrayByUsername(vm.game.optionalPlayers, vm.user.userName)
       // console.log(isOptional)
       if (isOptional) vm.isOptional = true
       else vm.isOptional = false
@@ -504,6 +521,6 @@
     }
     
 
-  })
+  }
 
 })();

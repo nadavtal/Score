@@ -1,10 +1,161 @@
-<div ng-if="vm.user.role == 'admin'">
+<div ng-if="vm.currentUser.role == 'admin'">
+    <div class="bg-green white">Add User</div>
+    <form
+        ng-submit="vm.submitUserForm(vm.user, vm.user._id)"
+        name="vm.userForm"
+        role="form"
+        id="addUser"
+        novalidate
+    >
+
+        <div class="row">
+            
+            <div class="col-md-5">
+                
+                <input
+                    type="text"
+                    ng-model="vm.user.userName"
+                    
+                    name="userName"
+                    id="userName"
+                    autocomplete="off"
+                    placeholder="Username"
+                    required
+                >
+            </div>
+        </div>
+
+        <div class="row" >
+            <!-- <label for="password" class="col-md-5">Password</label> -->
+            <div class="col-md-5">
+                <input
+                    type="password"
+                    ng-model="vm.user.password"
+                    
+                    name="password"
+                    id="password"
+                    autocomplete="off"
+                    placeholder="Password"
+                    required
+                >
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- <label for="firstName" class="col-md-5">First name</label> -->
+            <div class="col-md-5">
+                <input
+                    type="text"
+                    ng-model="vm.user.firstName"
+                    
+                    name="firstName"
+                    id="firstName"
+                    autocomplete="off"
+                    placeholder="First name"
+                >
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- <label for="surname" class="col-md-5">Surname</label> -->
+            <div class="col-md-5">
+                <input
+                    type="text"
+                    ng-model="vm.user.surname"
+                    
+                    name="surname"
+                    id="surname"
+                    autocomplete="off"
+                    placeholder="Surname"
+                >
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- <label for="email" class="col-md-5">Email</label> -->
+            <div class="col-md-5">
+                <input
+                    type="email"
+                    ng-model="vm.user.email"
+                    
+                    name="email"
+                    id="email"
+                    autocomplete="off"
+                    placeholder="Email"
+                >
+            </div>
+        </div>
+
+        <div class="row">
+            <label for="role" class="col-md-5">Role</label>
+            <div class="col-md-5">
+                <input
+                    type="text"
+                    ng-model="vm.user.role"
+                    
+                    name="role"
+                    id="role"
+                    autocomplete="off"
+                    placeholder="Role"
+                    ng-if="vm.actionType == 'loadUser'"
+                >
+                <select
+                    type="text"
+                    ng-model="vm.user.role"
+                    
+                    name="role"
+                    id="role"
+                    autocomplete="off"
+                    placeholder="Role"
+                    ng-if="vm.actionType != 'loadUser'"
+                    required
+                >
+                    <option value="user">user</option>
+                    <option value="admin">admin</option>
+                    <option value="group-manager">group-manager</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <label for="wins" class="col-md-5">wins</label>
+            <div class="col-md-5">
+                <input
+                    type="text"
+                    ng-model="vm.user.wins"
+                    
+                    name="wins"
+                    id="wins"
+                    autocomplete="off"
+                    placeholder="wins"
+                    
+                >
+                
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-5 col-md-offset-5">
+                <button class="customButton"
+                    type="submit"
+                    
+                    
+                >
+                    Create
+                </button>
+
+                
+            </div>
+        </div>
+    </form> 
+</div>
+<div ng-if="vm.currentUser.role == 'admin'">
     <div class="bg-green white">Add Platform</div>
     <form
         ng-submit="vm.submitAddPlatform(vm.platform)"
         name="addPlatform"
         role="form"
-        id="user"
+        id="AddPlatformForm"
         novalidate
     >
 
@@ -18,12 +169,25 @@
                     name="platform"
                     id="platform"
                     autocomplete="off"
-                    placeholder="Platform"
+                    placeholder="Platform name"
                 >
             </div>
             <label for="platformType" class="col-xs-5">type</label>
             <div class="col-xs-7">
-                <input
+                <select
+                    type="text"
+                    ng-model="vm.platform.type"
+                    
+                    name="platformType"
+                    id="platformType"
+                    autocomplete="off"
+                    placeholder="Role"
+                    ng-if="vm.actionType != 'loadUser'"
+                    required>
+                    <option ng-repeat="platformType in vm.platformTypes" value="{{platformType.name}}">{{platformType.name}}</option>
+                    
+                </select>
+                <!-- <input
                     type="text"
                     ng-model="vm.platform.type"
                     
@@ -31,7 +195,7 @@
                     id="platformType"
                     autocomplete="off"
                     placeholder="platformType"
-                >
+                > -->
             </div>
             
         </div>
@@ -48,7 +212,7 @@
     </form>
 </div>
 <br>
-<div ng-if="vm.user.role == 'admin'">
+<div ng-if="vm.currentUser.role == 'admin'">
         <div class="bg-green white">Add Platform type</div>
         <form
             ng-submit="vm.submitAddPlatformType(vm.platformType)"
@@ -66,7 +230,7 @@
                         ng-model="vm.platformType"
                     
                         name="platformType"
-                        id="platformType"
+                        id="platformTypeName"
                         autocomplete="off"
                         placeholder="Platform type "
                     >
@@ -88,13 +252,13 @@
         </form>
 </div>
 <br>
-<div ng-if="vm.user.role == 'admin'">
+<div ng-if="vm.currentUser.role == 'admin'">
         <div class="bg-green white">Add game type</div>
         <form
         ng-submit="vm.submitAddGameType(vm.gameType)"
         name="addGameType"
         role="form"
-        id="user"
+        id="userAdmin"
         novalidate
     >
 

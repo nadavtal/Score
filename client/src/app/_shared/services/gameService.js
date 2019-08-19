@@ -23,9 +23,7 @@
     function gamesService($http, CONSTANTS, QueryService) {
       
       
-      
-      this.addGameToDB = addGameToDB;
-      
+    
       this.getGame = getGame;
       this.createGame = createGame
       this.checkIfGameExists = checkIfGameExists; 
@@ -61,10 +59,6 @@
           .query('POST', 'games/', null, game)
       }
 
-      function addGameToDB(game){
-          
-            return QueryService.query('POST', 'games', null, game)
-          }
             
       function getAllGamesFromDataBase(){
         return QueryService.query('GET', 'games/', null, null)

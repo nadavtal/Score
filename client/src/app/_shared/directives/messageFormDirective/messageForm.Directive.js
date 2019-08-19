@@ -15,90 +15,138 @@
       messageFormDirective.$inject = ['$q', '$injector','messagesService','ngDialog'];
   
     function messageFormDirective($q, $injector, messagesService, ngDialog) {
-        console.log('messageFormDirective');
+        
         return {
             templateUrl: 'app/_shared/directives/messageFormDirective/messageForm.Directive.htm',
             link: function (scope, element, attributes) {
-                console.log(scope)
-                scope.message = {}
+                console.log(scope);
+                scope.message = {};
                      
-                scope.message.links = []
+                scope.message.links = [];
                 if(scope.ngDialogData){
                     if(scope.ngDialogData.messageType){
                         scope.messageType = scope.ngDialogData.messageType;
     
                     }else{
-                        scope.messageType ="chatMessage"
+                        scope.messageType ="privatChatMessage";
                     }
-                    if(ngDialogData.receiver){
-                        scope.receiver = ngDialogData.receiver.userName
+                    if(scope.ngDialogData.receiver){
+                        scope.receiver = scope.ngDialogData.receiver.userName;
                     } 
 
                 }else{
-                    scope.messageType ="chatMessage"
+                    scope.messageType ="privatChatMessage";
                 }
                 
-                console.log(scope.messageType)
+                
 
                 if(scope.messageType == 'groupInvite' && scope.ngDialogData.groups){
                     scope.groups = scope.ngDialogData.groups;
                     
-                    console.log(scope.groups)
+                    console.log(scope.groups);
                 }
 
                 if(scope.messageType == 'friendRequest'){
-                    scope.message.subject = 'Come be my friend'
+                    scope.message.subject = 'Come be my friend';
+                }
+                if(scope.messageType == 'groupMessage' && scope.ngDialogData.group){
+                    scope.group = scope.ngDialogData.group;
+                    scope.receiver = scope.ngDialogData.group.groupName;
+                    if(scope.ngDialogData.groups){
+                        scope.groups = scope.ngDialogData.groups;
+                        
+                        // console.log(scope.groups);
+                    }
                 }
                 
                 scope.pickReceiver = function(user){
-                    user = JSON.parse(user)
-                    console.log(user)
-                }
+                    user = JSON.parse(user);
+                    // console.log(user);
+                };
+
+                console.log(scope.messageType, scope.group, scope.groups);
 
                 scope.pickGroup = function(group){
-                    console.log(group);
+                    // console.log(group);
                     scope.group = JSON.parse(group);
-                    scope.message.subject = 'Come hoin our group "'+ scope.group.groupName + '"'
-                    scope.message.links.push({
-                        linkName: 'group',
-                        linkId: scope.group._id})
-                    console.log(scope.message)
-                }
+                    if(scope.messageType == 'groupInvite') {
+                        scope.message.subject = 'Come hoin our group "'+ scope.group.groupName + '"';
+                        scope.message.links.push({
+                            linkName: 'group',
+                            linkId: scope.group._id});
+                        // console.log(scope.message);
+                    }
+                    else scope.message.subject = '';
+                   
+                };
                 scope.submitMessageForm = function(message){
-                    console.log(message)
-                    scope.closeThisDialog(0)
-                    message.receiver = {
-                        userName : scope.ngDialogData.receiver.userName,
-                        userId : scope.ngDialogData.receiver._id
+                    
+                    scope.closeThisDialog(0);
+
+                    if (scope.messageType == 'privateChatMessage'){
+                        message.receiver = {
+                            userName : scope.ngDialogData.receiver.userName,
+                            userId : scope.ngDialogData.receiver._id
+                        };
+                        message.messageType = scope.messageType;
+                        message.sender = {
+                            userName : scope.ngDialogData.sender.userName,
+                            userId : scope.ngDialogData.sender._id,
+                        };
                     }
-                    message.messageType = scope.messageType;
-                    message.sender = {
-                        userName : scope.ngDialogData.sender.userName,
-                        userId : scope.ngDialogData.sender._id,
-                    }
-                    if(scope.group){
-                        message.group = scope.group
+                    
+                    if(scope.group && scope.messageType == 'groupMessage'){
+                        message.receiver = {
+                            userName : scope.ngDialogData.group.groupName,
+                            userId : scope.ngDialogData.group._id
+                        };
+                        message.messageType = scope.messageType;
+                        message.sender = {
+                            userName : scope.ngDialogData.sender.userName,
+                            userId : scope.ngDialogData.sender._id,
+                        };
                     }
                     
                     messagesService.createMessage(message)
-                        .then((message) => {
+                        .then(function(message) {
                             console.log(message);
-                            message = message.data.data
-                            var dialog = ngDialog.open({
-                                template: '\
-                                  <p>message has benn sent to '+ message.receiver.userName+' from: '+ message.sender.userName +'</p>\
-                                  <div class="ngdialog-buttons">\
-                                      <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click="closeThisDialog(\'ok\')">OK</button>\
-                                  </div>',
-                                plain: true
-                              });
-                        })
-                    console.log(message)
-                }
+                            if(message.statusText == 'Created'){
+                                message = message.data.data;
+
+                                Swal.fire({
+                                    position: 'center',
+                                    type: 'success',
+                                    title: 'message has been sent to '+ message.receiver.userName+' from: '+ message.sender.userName,
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                  });
+    
+                            } else {
+                                Swal.fire({
+                                    position: 'center',
+                                    type: 'error',
+                                    title: 'message could not been sent to '+ message.receiver.userName+' from: '+ message.sender.userName,
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                  }) ;
+                            }
+                        
+                            
+                            // var dialog = ngDialog.open({
+                            //     template: '\
+                            //       <p>message has benn sent to '+ message.receiver.userName+' from: '+ message.sender.userName +'</p>\
+                            //       <div class="ngdialog-buttons">\
+                            //           <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click="closeThisDialog(\'ok\')">OK</button>\
+                            //       </div>',
+                            //     plain: true
+                            //   });
+                        });
+                    
+                };
 
                 scope.clearSearchTerm = function(){
                     
-                }
+                };
                 
                 
             },

@@ -97,7 +97,8 @@
    */
   router.post('/accounts', accountsCtrl.createAccount); // create new Account
   router.get('/accounts', accountsCtrl.getAllAccounts); // get all accounts
-  router.get('/accounts/:userId', accountsCtrl.getAccountsByUserId); // get accounts by userid
+  router.get('/accounts/users/:userId', accountsCtrl.getAccountsByUserId); // get accounts by userid
+  router.get('/accounts/:accountId', accountsCtrl.getAccount); // get accounts by userid
   router.get('/accounts/platforms/:name', accountsCtrl.getAccountsByPlatformName); // get accounts by userid
 
   module.exports = router;

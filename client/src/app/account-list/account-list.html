@@ -5,63 +5,7 @@
 		<md-button aria-label="Add..." class=""><md-icon md-svg-src="assets/img/icons/add.svg" ng-click="vm.createNewAccount()"></md-icon></md-button>
 
 	</div>
-	<!-- <button ng-click="vm.toggleAddAccount()" class="customButton bg-green white">Add account</button> 
-	<form ng-if="vm.showAddAccount == true"
-		ng-submit="vm.AddAccountForm(vm.account, vm.user._id)"
-		name="vm.addAccountForm"
-		role="form"
-		id="user"
-		novalidate>
 	
-	
-		<div class="row">
-			<label for="platform" class="col-xs-5">Platform</label>
-			<div class="col-xs-7">
-				
-				<select name="platform" id="platform" ng-model="vm.account.platform">
-					<option value="">---Please select---</option> 
-					<option ng-repeat="platform in vm.platforms" value="{{platform.name}}">{{platform.name}}</option> 
-					
-				</select>
-				
-			</div>
-			<label for="userName" class="col-xs-5">UserName</label>
-			<div class="col-xs-7">
-				<input
-					type="text"
-					ng-model="vm.account.userName"
-					
-					name="userName"
-					id="userName"
-					autocomplete="off"
-					placeholder="UserName"
-				>
-			</div>
-			<label for="accountId" class="col-xs-5">Account Id</label>
-			<div class="col-xs-7">
-				<input
-					type="text"
-					ng-model="vm.account.accountId"
-					
-					name="accountId"
-					id="accountId"
-					autocomplete="off"
-					placeholder="ID"
-				>
-			</div>
-		</div>
-	
-		
-		<button class="customButton"
-			type="submit"
-			ng-disabled="vm.addAccountForm.$invalid"
-			
-		>
-			Add
-		</button>
-			
-	</form>-->
-
 	<div class="row table-header" >
 		<div class="col-xs-4">Platform</div>
 		<div class="col-xs-4">UserName</div>
@@ -69,12 +13,17 @@
 		
 	</div>
 	<div class="row accountRow" ng-repeat="account in vm.accounts" >
-		<a ui-sref="clashUser({ usertag: account.accountId })" title="display clash user" ng-if="account.platform == 'Clash'">
+		<account-directive account="account"></account-directive>
+		<!--<a ui-sref="clashUser({ usertag: account.accountId })" title="display clash user" ng-if="account.platform == 'Clash'">
 			<div class="col-xs-4">
-				<img class="accountImage" src="../../assets/img/platforms/clashroyal.png" alt=""></div>
+				<img class="accountImage" src="../../assets/img/platforms/{{account.platform}}.png" alt=""></div>
 			<div class="col-xs-4">{{account.userName}}</div>
 			<div class="col-xs-4">{{account.accountId}}</div>
 		</a>
+		<div class="col-xs-4">
+			<img class="accountImage" src="../../assets/img/platforms/{{account.platform}}.png" alt=""></div>
+		<div class="col-xs-4">{{account.userName}}</div>
+		<div class="col-xs-4">{{account.accountId}}</div>-->
 		
 	</div>
 </div>

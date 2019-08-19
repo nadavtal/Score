@@ -29,7 +29,7 @@
       this.getMessage = getMessage;
       this.createMessage = createMessage
       this.checkIfMessageExists = checkIfMessageExists; 
-      this.getAllMessagesFromDataBase = getAllMessagesFromDataBase;
+      this.getAllMessages = getAllMessages;
       this.getMessagesByUserID = getMessagesByUserID;
       this.getMessagesByGroupId = getMessagesByGroupId;
       this.getMessagesByPlatform = getMessagesByPlatform 
@@ -63,7 +63,7 @@
 
       
             
-      function getAllMessagesFromDataBase(){
+      function getAllMessages(){
         return QueryService.query('GET', 'messages/', null, null)
       }
   

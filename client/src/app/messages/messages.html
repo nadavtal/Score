@@ -7,8 +7,8 @@
 		<button ng-click="vm.getGamesOfUserId()" class="customButton">find messages by user</button> -->
 	<!-- </div> -->
 	
-	<md-content class="">
-		<md-tabs class="md-accent" md-selected="data.selectedIndex" md-align-tabs="{{data.bottom ? 'bottom' : 'top'}}">
+	<md-content class="messagesTabs">
+		<md-tabs class="md-accent " md-selected="data.selectedIndex" md-align-tabs="{{data.bottom ? 'bottom' : 'top'}}">
 			<md-tab id="tab1">
 			<md-tab-label>Inbox</md-tab-label>
 			<md-tab-body>
@@ -39,8 +39,8 @@
 	
 								</a>
 							</div>
-							<div class="col-xs-7" ng-if="message.messageType=='groupInvite'">
-								<a ui-sref="displayGroup({ groupId: message.links[0].linkId })">
+							<div class="col-xs-7" >
+								<a ui-sref="displayGroup({ groupId: message.links[0].linkId })" ng-if="message.messageType=='groupInvite'">
 									<div class="messageSubject">
 										{{message.subject}}
 									</div>
@@ -106,8 +106,8 @@
 		
 									</a>
 								</div>
-								<div class="col-xs-7" ng-if="message.messageType=='groupInvite'">
-									<a ui-sref="displayGroup({ groupId: message.links[0].linkId })">
+								<div class="col-xs-7" >
+									<a ui-sref="displayGroup({ groupId: message.links[0].linkId })" ng-if="message.messageType=='groupInvite'">
 										<div class="messageSubject">
 											{{message.subject}}
 										</div>

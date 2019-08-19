@@ -34,7 +34,9 @@
   function createMessage(req, res, next) {
     var params = req.body;
     console.log('creating message', params)
-    
+    if(params.messageType == 'groupMessage'){
+      console.log('this is a groupMessage')
+    } 
     var message = new Message({
       subject : params.subject,
       content: params.content,
@@ -52,7 +54,7 @@
     // validate user input
     var errors = req.validationErrors();
     if (errors) {
-      console.log('errorserrorserrors')
+      console.log('error in creating message')
         utils.sendJSONresponse(res, 400, errors);
         return;
     }
@@ -64,6 +66,8 @@
 
       utils.sendJSONresponse(res, 201, newMessage);
     });
+    
+    
   }
 
   /**
@@ -80,8 +84,8 @@
     // });
 
     var options = {
-        page: page,
-        limit: limit,
+        page: 1,
+        limit: 1000,
         lean: true
     };
 

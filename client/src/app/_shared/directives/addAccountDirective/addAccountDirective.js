@@ -12,15 +12,16 @@
       .module('boilerplate')
       .directive('addAccountDirective', addAccountDirective);
   
-      addAccountDirective.$inject = ['$q', '$rootScope', '$injector','accountsService','ngDialog', 'clashUserService', 'platformService', '$log'];
+      addAccountDirective.$inject = ['$q', '$state', '$injector','accountsService','ngDialog', 'clashUserService', 'platformService', '$log'];
   
-    function addAccountDirective($q, $rootScope, $injector, accountsService, ngDialog, clashUserService,platformService, $log) {
+    function addAccountDirective($q, $state, $injector, accountsService, ngDialog, clashUserService,platformService, $log) {
         console.log('addAccountDirective');
         return {
             templateUrl: 'app/_shared/directives/addAccountDirective/addAccountDirective.htm',
             link: function (scope, element, attributes) {
                 console.log(scope.ngDialogData);
                 scope.platforms = scope.ngDialogData.platforms
+                scope.userId = scope.ngDialogData.userId
                 scope.account = {}
                 scope.AddAccountForm = AddAccountForm;
                 scope.clearSearchTerm = clearSearchTerm;
@@ -40,9 +41,9 @@
 
 
                 
-                function AddAccountForm(account, userId){
+                function AddAccountForm(account){
                     if (!account) return;
-                    account.userId = userId;
+                    account.userId = scope.userId;
                     console.log(account)
                     console.log(account.platform);
                     if(account.platform == 'Clash'){
@@ -115,9 +116,9 @@
                                     plain: true
                                 });
 
-                                // dialog.closePromise.then(function(closedDialog) {
-                                //   $state.go('displayAccount', { accountId: vm.newAccount._id });
-                                // });
+                                dialog.closePromise.then(function(closedDialog) {
+                                  $state.go('accountList', { accountId: scope.newAccount.userId });
+                                });
 
                                 })
                                 .catch(function(err) {

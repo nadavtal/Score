@@ -16,18 +16,12 @@
   function HomeCtrl($scope, QueryService, $log, $rootScope, localStorage, platformService, accountsService, $timeout) {
     // console.log('rootscope', $rootScope);
     var vm = this
-    vm.submitAddPlatform = submitAddPlatform;
+    vm.loaded = true;
     vm.user = localStorage.get('user');
     
     
 
-    function submitAddPlatform(platform){
-      console.log(platform)
-      platformService.addPlatformToDB(platform)
-        .then((data)=> {
-          console.log(data)
-        })
-    }
+    
 
 
 

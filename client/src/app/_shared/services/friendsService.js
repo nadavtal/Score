@@ -7,14 +7,14 @@
       .module('boilerplate')
       .service('friendsService', friendsService);
   
-      friendsService.$inject = ['$http', 'CONSTANTS', 'QueryService'];
+      friendsService.$inject = ['$http', 'CONSTANTS', 'QueryService', 'usersService'];
   
-    function friendsService($http, CONSTANTS, QueryService) {
+    function friendsService($http, CONSTANTS, QueryService, usersService) {
       
       
       
       this.checkIfFriends = checkIfFriends;
-      
+      this.addToFriends = addToFriends;
       
       
   
@@ -35,6 +35,47 @@
             return true
           }
         }
+      }
+
+      function addToFriends(userToAdd, targetUser){
+        console.log('userToAdd: ', userToAdd);
+        console.log('add to: ', targetUser);
+        if(!userToAdd) return;
+        if(!targetUser) return;
+  
+        if(targetUser.friends){
+          targetUser.friends.push({
+            userName :userToAdd.userName,
+            userId: userToAdd._id
+          })
+  
+        } else{
+          targetUser.friends = [];
+          targetUser.friends.push({
+            userName :userToAdd.userName,
+            userId: userToAdd._id
+          })
+  
+        }
+        if(userToAdd.friends){
+          userToAdd.friends.push({
+            userName :targetUser.userName,
+            userId: targetUser._id
+          })
+  
+        } else{
+          userToAdd.friends = [];
+          userToAdd.friends.push({
+            userName :targetUser.userName,
+            userId: targetUser._id
+          })
+  
+        }
+        
+        // console.log(userToAdd)
+        // console.log(targetUser)
+        // editUser(userToAdd, userToAdd._id);
+        // editUser(targetUser, targetUser._id);
       }
   
     }

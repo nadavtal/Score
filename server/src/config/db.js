@@ -40,7 +40,7 @@
 
         });
     }
-    removeCollection('games');
+    // removeCollection('games');
     // removeCollection('messages');
   });
 

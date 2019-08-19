@@ -3,12 +3,12 @@
   'use strict';
 
   /**
-   * game endpoint controller
-   * @desc Handler functions for all /game routes
+   * battle endpoint controller
+   * @desc Handler functions for all /battle routes
    */
   var mongoose = require('mongoose');
   var ObjectId = mongoose.Types.ObjectId;
-  var Game = require('./game.model.js.js');
+  var Battle = require('./battle.model.js.js');
 
   var bcrypt = require('bcryptjs');
   var SALT_WORK_FACTOR = 10;
@@ -19,63 +19,63 @@
 
   // public
   module.exports = {
-    createGame,
-    getAllGames,
-    getGame,
-    updateGame,
-    removeGame,
-    getGamesByUserId
+    createBattle,
+    getAllBattles,
+    getBattle,
+    updateBattle,
+    removeBattle,
+    getBattlesByUserId
   };
 
   /// definitions
 
    /**
-   * Create new game
-   * POST '/games'
+   * Create new battle
+   * POST '/battles'
    */
-  function createGame(req, res, next) {
-    console.log('creating game')
+  function createBattle(req, res, next) {
+    console.log('creating battle')
     var params = req.body;
     // console.log(params)
-    var game = new Game({
-      gametype: params.gametype,
+    var battle = new Battle({
+      battletype: params.battletype,
       host: params.host,
       time: params.time
       
     });
-    console.log(game)
+    console.log(battle)
     // req params validation for required fields
-    req.checkBody('gametype', 'gametype must be defined').notEmpty();
+    req.checkBody('battletype', 'battletype must be defined').notEmpty();
     req.checkBody('host', 'host must be defined').notEmpty();
 
     // validate user input
     var errors = req.validationErrors();
     if (errors) {
-      console.log('errorserrorserrors')
+      console.log('error in creting battle')
         utils.sendJSONresponse(res, 400, errors);
         return;
     }
 
-    game.save((err, newGame) => {
-      console.log('saving game', newGame)
+    battle.save((err, newBattle) => {
+      console.log('saving battle', newBattle)
       if (err) return next({ err: err, status: 400 });
-      if (!newGame) return next({ message: 'Game not created.', status: 400 });
+      if (!newBattle) return next({ message: 'Battle not created.', status: 400 });
 
-      utils.sendJSONresponse(res, 201, newGame);
+      utils.sendJSONresponse(res, 201, newBattle);
     });
   }
 
   /**
-   * Get games (paginated)
-   * GET '/games/'
+   * Get battles (paginated)
+   * GET '/battles/'
    */
-  function getAllGames(req, res, next) {
+  function getAllBattles(req, res, next) {
     var page = req.query.page || 1;
     var limit = req.query.limit || 10;
 
 
-    // Game.find({}, function (err, games) {
-    //   res.send(games);
+    // Battle.find({}, function (err, battles) {
+    //   res.send(battles);
     // });
 
     var options = {
@@ -86,73 +86,73 @@
 
 
 
-    Game.paginate({}, options, (err, games) => {
-      // console.log(games)
+    Battle.paginate({}, options, (err, battles) => {
+      // console.log(battles)
       if (err) return next(err);
-      if (!games) return next({
-        message: 'No games found.',
+      if (!battles) return next({
+        message: 'No battles found.',
         status: 404
       });
 
       var pagination = {
-        pageNumber: games.page,
-        itemsPerPage: games.limit,
+        pageNumber: battles.page,
+        itemsPerPage: battles.limit,
         prev: res.locals.paginate.href(true),
         next: res.locals.paginate.href(),
       };
 
-      utils.sendJSONresponse(res, 200, games, false, pagination);
+      utils.sendJSONresponse(res, 200, battles, false, pagination);
     });
   }
 
   /**
-   * Get games by user
-   * GET '/games/:userId'
+   * Get battles by user
+   * GET '/battles/:userId'
    */
 
-   function getGamesByUserId(req, res, next){
+   function getBattlesByUserId(req, res, next){
      var params = req.params;
       console.log(params.userId)
-     Game
+     Battle
         .find({'players': {userid : params.userId}})
         
-        .exec((err, games) => {
+        .exec((err, battles) => {
           if (err) return next(err);
-          if (!games) return next({
-            message: 'game not found.',
+          if (!battles) return next({
+            message: 'battle not found.',
             status: 404
           });
   
-          utils.sendJSONresponse(res, 200, games);
+          utils.sendJSONresponse(res, 200, battles);
         });
    }
 
    /**
-   * Get games by gameID
-   * GET '/games/:gameId'
+   * Get battles by battleID
+   * GET '/battles/:battleId'
    */
-  function getGame(req, res, next) {
+  function getBattle(req, res, next) {
     var params = req.params;
 
-    Game
-      .findOne({ '_id': ObjectId(params.gameId) }, { password: 0, __v: 0 })
-      .exec((err, game) => {
+    Battle
+      .findOne({ '_id': ObjectId(params.battleId) }, { password: 0, __v: 0 })
+      .exec((err, battle) => {
         if (err) return next(err);
-        if (!game) return next({
-          message: 'game not found.',
+        if (!battle) return next({
+          message: 'battle not found.',
           status: 404
         });
 
-        utils.sendJSONresponse(res, 200, game);
+        utils.sendJSONresponse(res, 200, battle);
       });
   }
 
-  function removeGame(req, res, next){
-    console.log('removing game')
+  function removeBattle(req, res, next){
+    console.log('removing battle')
     var params = req.params;
-    console.log('removing game',params.gameId)
-    Game
-      .update({ _id: params.gameId }, { "$pull": { "gameId": params.gameId } }, { safe: true, multi:true }, function(err, obj) {
+    console.log('removing battle',params.battleId)
+    Battle
+      .update({ _id: params.battleId }, { "$pull": { "battleId": params.battleId } }, { safe: true, multi:true }, function(err, obj) {
       //do something smart
       console.log(obj)
       if (err) return next(err);
@@ -167,20 +167,20 @@
   }
 
   /**
-   * Update game
-   * PUT '/games/:userId'
+   * Update battle
+   * PUT '/battles/:userId'
    */
-  function updateGame(req, res, next) {
+  function updateBattle(req, res, next) {
     // console.log(req.body)
     var bodyParams = req.body;
     
-    // console.log(currentGame)
+    // console.log(currentBattle)
 
-    Game
+    Battle
       .findOneAndUpdate(
         { _id: ObjectId(bodyParams._id) },
         { '$set': {
-          'gametype': bodyParams.gametype,
+          'battletype': bodyParams.battletype,
           'host': bodyParams.host,
           'optionalplayers': bodyParams.optionalplayers,
           'players': bodyParams.players,
@@ -193,14 +193,14 @@
           }
         },
         { upsert: false, new: true, fields: { password: 0 }, runValidators: true, setDefaultsOnInsert: true })
-      .exec((err, game) => {
+      .exec((err, battle) => {
         if (err) return next({ err: err, status: 400 });
-        if (!game) return next({
-          message: 'Game not found.',
+        if (!battle) return next({
+          message: 'Battle not found.',
           status: 404
         });
 
-        utils.sendJSONresponse(res, 200, game);
+        utils.sendJSONresponse(res, 200, battle);
       });
   }
 

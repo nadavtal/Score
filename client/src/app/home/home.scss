@@ -1,10 +1,40 @@
-.home {
 
-	ul {
-		margin: 0 0 20px 0;
-	}
+.homepage{
+	height: 100vh;
+	width: 100vw;
+	padding: 1rem;
+	
 }
 
+.homepage .ng-enter{
+	transition: .5s linear all;
+	opacity: 0;
+	// width: 100vw;
+	// height: 0vh;
+}
+.homepage .ng-enter-active{
+	opacity: 1;
+	// height: 100vh;
+	// width: 100vw;
+	// padding: 1rem;
+}
+.homepage.ng-leave{
+	transition: .5s linear all;
+	height: 0;
+	width: 100vw;
+	
+}
+.homepage.ng-leave-active{
+	height: 33vh;
+	width: 50vw;
+}
+.mainAppTitle{
+	font-size: 6rem;
+}
+
+.mainAppSlogen{
+	font-size: 2rem;
+}
 .mainCubeMenu{
 	width: 100vw;
 	position: relative
@@ -35,6 +65,8 @@
 		float: left !important;
 		width: 50vw !important;
 		height: 33vh !important;
+		box-sizing: border-box;
+
 	}
 
 	&--active{
@@ -57,12 +89,7 @@
 	
 	
 
-	&--title{
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%)
-	}
+	
 
 	&--icon{
 		width: 5rem;
@@ -102,9 +129,22 @@
 .userContent{
 	transition: .3s linear all;
 	position: absolute;
-	top: 100vh;
+	top: 5rem;
 	// left: -100vw;
-    width: 100%;
+	width: 100%;
+	height: 86vh;
+}
+
+.userContent.ng-enter{
+	transition: .2s linear all;
+	transform: translateY(100vh);
+	opacity: 0;
+}
+
+.userContent.ng-active{
+	
+	transform: translateY(0);
+	opacity: 1;
 }
 
 
@@ -115,7 +155,7 @@
 
 
 .cubeMenuItemWrapper.ng-enter{
-	transition: .1s linear all;
+	transition: .3s linear all;
 	transform: translateY(100vh);
 	
 	opacity: 0;
@@ -127,7 +167,7 @@
 
 .cubeMenuItemWrapper.ng-enter-stagger {
 	/* this will have a 100ms delay between each successive leave animation */
-	transition-delay: 0.1s;
+	transition-delay: 0.2s;
   
 	/* As of 1.4.4, this must always be set: it signals ngAnimate
 	  to not accidentally inherit a delay property from another CSS class */
@@ -138,37 +178,42 @@
 	  animation-duration: 0s; */
   }
 
-// .userContentWrapper{
-// 	// transition: .3s linear all;
-// 	height: auto;
-// 	// opacity: 1;
-// }
+.userContentWrapper{
+	// transition: .3s linear all;
+	height: 100%;
+	// opacity: 1;
+}
 
 .userContentWrapper.ng-enter{
-	transition: .3s linear all;
-	transform: translateX(-100vw);
+	transition: .2s linear all;
+	// transform: translateX(-100vw);
 	opacity: 0;
 }
 .userContentWrapper.ng-enter-active{
-	transform: translateX(0);
+	// transform: translateX(0);
 	opacity: 1;
 }
 
-.userContentWrapper.ng-leave{
-	transition: .1s linear all;
-	transform: translateX(0);
-	opacity: 1;
-}
-.userContentWrapper.ng-leave-active{
-	transform: translateX(100vw);
-	opacity: 0;
-}
+// .userContentWrapper.ng-leave{
+// 	transition: .2s linear all;
+// 	// transform: translateX(0);
+// 	opacity: 1;
+// }
+// .userContentWrapper.ng-leave-active{
+// 	// transform: translateX(100vw);
+// 	opacity: 0;
+// }
 
 .bottomToolBar{
+	transition: all .3s;
 	position: fixed;
 	bottom: 0;
 	right: 0;
 	width: 100vw;
+
+	&--toolbar{
+		padding: 0 1rem;
+	}
 }
 
 
@@ -279,3 +324,19 @@
 .md-input-has-placeholder{
 	margin: 0
 }
+
+.fullPageForm{
+	padding-bottom: 4rem; 
+}
+
+.md-fab-toolbar-background{
+	width: 0 !important;
+	background-color: transparent !important;
+}
+
+// #loadingCanvas{
+//     position: fixed ;
+//     top: 25%;
+//     width: 10rem ;
+//     // height: 10rem;
+// }

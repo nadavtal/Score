@@ -31,24 +31,25 @@
 	<!-- table body -->
 	<div class="game-list">
 		<div
-			class="list-item row"
+			class=" row"
 			ng-repeat="group in vm.groups">
-			<div class="groupBlock">
+			<div class="groupBlock list-item">
 				<div class="row">
 					<a ui-sref="displayGroup({ groupId: group._id })" title="display groups">
-						<div class="col-xs-3">
-							<img class="groupBlock--image" src="../../assets/img/platforms/clashroyal.png" alt="">
+						<div class="col-xs-2">
+							<img class="groupBlock--image" src="../../assets/img/platforms/Clash.png" alt="">
 						</div>
 						<div class="col-xs-7 groupBlock__details">
-							<h3>{{group.groupName}}</h3>
+							<h4>{{group.groupName}}</h4>
 							<div class="groupBlock__details--numMembers">
 								{{group.members.length}} members
 							</div>
 
 						</div>
 					</a>
-					<div class="col-xs-2 d-flex">
+					<div class="col-xs-3 d-flex">
 						<md-icon md-svg-src="assets/img/icons/edit.svg" class="groupActionButton" ui-sref="editGroup({ groupId: group._id })"></md-icon>
+						<md-icon md-svg-src="assets/img/icons/email.svg" class="groupActionButton blue" ng-click="vm.sendMessageToGroup(group)"></md-icon>
 						<md-icon md-svg-src="assets/img/icons/remove.svg" class="groupActionButton red" ng-click="vm.removeGame($index, group._id)"></md-icon>
 						
 					</div>

@@ -66,22 +66,42 @@
       }
 
       function logout() {
-        var dialog = ngDialog.open({
-          template: '\
-            <p>Do you really want to log out?</p>\
-            <div class="ngdialog-buttons">\
-                <button type="button" class="ngdialog-button ngdialog-button-secondary" ng-click="closeThisDialog()">No</button>\
-                <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click="closeThisDialog(\'logout\')">Yes</button>\
-            </div>',
-          plain: true
-        });
-
-        // log out user after confirmation
-        dialog.closePromise.then(function(closedDialog) {
-          if (closedDialog.value == 'logout')
+        Swal.fire({
+          title: 'Are you sure you want to log out?',
+          text: "",
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes please'
+        }).then((result) => {
+          if (result.value) {
             $rootScope.$broadcast('user:logout');
             $rootScope.user = null;
-        });
+            Swal.fire(
+          
+              'loggedout!',
+              'Have a great day, see you soon',
+              'success'
+            )
+          }
+        })
+        // var dialog = ngDialog.open({
+        //   template: '\
+        //     <p>Do you really want to log out?</p>\
+        //     <div class="ngdialog-buttons">\
+        //         <button type="button" class="ngdialog-button ngdialog-button-secondary" ng-click="closeThisDialog()">No</button>\
+        //         <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click="closeThisDialog(\'logout\')">Yes</button>\
+        //     </div>',
+        //   plain: true
+        // });
+
+        // // log out user after confirmation
+        // dialog.closePromise.then(function(closedDialog) {
+        //   if (closedDialog.value == 'logout')
+        //     $rootScope.$broadcast('user:logout');
+        //     $rootScope.user = null;
+        // });
       }
 
       $scope.$on('user:logout', function() {

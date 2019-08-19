@@ -25,7 +25,7 @@
 	<!-- game form -->
 	<div>
 
-		<form
+		<form class="fullPageForm"
 			ng-submit="vm.submitGameForm(vm.game, vm.game._id)"
 			name="vm.gameForm"
 			role="form"
@@ -50,7 +50,7 @@
 			<br>
 			<div class="row">
 				
-				<div class="col-xs-7">
+				<div class="col-xs-8">
 					<md-input-container class="md-block" flex-gt-sm>
 						<label>Give your game a name</label>
 						<input ng-model="vm.game.name"
@@ -65,10 +65,21 @@
 						autocomplete="off"
 						placeholder="Give your game a name"> -->
 				</div>
-				<!-- <label for="gametype" class="col-xs-5">Game type</label> -->
-				<div class="col-xs-5">
+				
+				<div class="col-xs-4">
+					<md-input-container class="md-block" flex-gt-sm>
+						<label>Host</label>
+						<input ng-model="vm.game.host"
+								ng-disabled="vm.actionType == 'displayGame'">
+					</md-input-container>
+				</div>
+						
+				<div class="col-xs-12">
 					<md-input-container flex-gt-md="30">
 						<label>Game Time</label>
+						<!-- <input type="datetime-local" id="gameTime" ng-model="vm.game.time"
+								name="gameTime" 
+								min="{{vm.today}}" max="2025-06-14T00:00"> -->
 						<input mdc-datetime-picker date="true" time="true" type="text" id="time" short-time="true"
 								show-todays-date click-outside-to-close="true"
 								placeholder="Time" auto-ok="true"
@@ -81,7 +92,7 @@
 					</md-input-container>
 				</div>	
 				<div class="col-xs-6">
-					<md-input-container>
+					<md-input-container class="gameSelectBox">
 						<label>Game types</label>
 						<md-select ng-model="vm.game.gameType"
 									md-on-close="vm.clearSearchTerm()"
@@ -106,7 +117,7 @@
 					</md-input-container>
 				</div>		
 				<div class="col-xs-6">
-					<md-input-container>
+					<md-input-container class="gameSelectBox">
 						<label>Platfrom types</label>
 						<md-select ng-model="vm.game.platformType"
 									md-on-close="vm.clearSearchTerm()"
@@ -133,27 +144,34 @@
 				
 			</div>
 			<br>
-			<div class="row">
-				<div class="col-xs-7">
-					<md-input-container class="md-block" flex-gt-sm>
-						<label>Host</label>
-						<input ng-model="vm.game.host"
-								ng-disabled="vm.actionType == 'displayGame'">
+			<div class="row" ng-if="vm.actionType != 'displayGame'">
+				
+				<div class="col-xs-6">
+					<!--<users-select-directive userlist="vm.game.players"></users-select-directive>-->
+					<md-input-container class="full-width">
+						<label>add player</label>
+						<md-select ng-model="vm.selectedPlayer"
+									md-on-close="vm.clearSearchTerm()"
+									data-md-container-class="selectdemoSelectHeader"
+									>
+							<md-select-header class="demo-select-header">
+							<input ng-model="vm.searchTerm"
+									type="search"
+									placeholder="Search for a user.."
+									class="demo-header-searchbox md-text">
+							</md-select-header>
+							<md-optgroup label="users">
+							<md-option ng-value="user._id" ng-repeat="user in vm.optionalPlayers | filter:searchTerm"
+								ng-click="vm.addPlayer(user)">{{user.userName}}
+							</md-option>
+							</md-optgroup>
+						</md-select>
 					</md-input-container>
+					<!-- <select ng-options="user as user.userName for user in vm.optionalPlayers" 
+						ng-model="user" ng-change="vm.addPlayer(user)">
+					</select> -->
 				</div>
-				<!-- <label for="host" class="col-xs-5">Host:</label>
-				<div class="col-xs-7">
-					<input
-						type="text"
-						ng-model="vm.game.host"
-						
-						name="host"
-						id="host"
-						autocomplete="off"
-						placeholder="host"
-						required
-					>
-				</div> -->
+				
 			</div>
 			<br>
 			<div class="row">
@@ -233,15 +251,15 @@
 			<br>
 
 			<div class="row" ng-if="!vm.registerd">
-				<div class="col-xs-5">
+				<div class="col-xs-6">
 					<button	class="customButton" type="button"
 						
 						ng-click="vm.addOptionalTime()">
-						optional time
-						<md-icon md-svg-src="assets/img/icons/add.svg" class="groupActionButton"></md-icon>
+						Add optional time
+						<!-- <md-icon md-svg-src="assets/img/icons/add.svg" class="groupActionButton"></md-icon> -->
 					</button>
 				</div>
-				<div class="col-xs-7 optionalTime">
+				<div class="col-xs-6 optionalTime">
 						<input type="datetime-local" id="gametimeOption" name="gametimeOption" ng-model="vm.timeOption"
 						min="2019-07-01T00:00:00" max="2030-12-31T00:00:00" />
 						
@@ -249,35 +267,7 @@
 				
 				
 			</div>
-			<div class="row" ng-if="vm.actionType != 'displayGame'">
-				<div class="col-xs-5">add player</div>
-				<div class="col-xs-7">
-					<!--<users-select-directive userlist="vm.game.players"></users-select-directive>-->
-					<md-input-container>
-						<label>Optional Players</label>
-						<md-select ng-model="vm.game.optionalPlayers"
-									md-on-close="vm.clearSearchTerm()"
-									data-md-container-class="selectdemoSelectHeader"
-									>
-							<md-select-header class="demo-select-header">
-							<input ng-model="vm.searchTerm"
-									type="search"
-									placeholder="Search for a user.."
-									class="demo-header-searchbox md-text">
-							</md-select-header>
-							<md-optgroup label="users">
-							<md-option ng-value="user._id" ng-repeat="user in vm.optionalPlayers | filter:searchTerm"
-								ng-click="vm.addPlayer(user)">{{user.userName}}
-							</md-option>
-							</md-optgroup>
-						</md-select>
-					</md-input-container>
-					<!-- <select ng-options="user as user.userName for user in vm.optionalPlayers" 
-						ng-model="user" ng-change="vm.addPlayer(user)">
-					</select> -->
-				</div>
-				
-			</div>
+			
 			<br>
 			<div class="row" ng-if="vm.actionType == 'editGame'">
 				<div class="col-xs-5">select winner</div>
@@ -339,7 +329,7 @@
 					<button	class="customButton bg-green white" ng-click="vm.registerToGame()">Register</button>
 			</div>
 			<div ng-if="!vm.isOptional">
-				<button class="customButton bg-blue white" ng-click="vm.addToOptionalPLayers()">Tentative</button>
+				<button class="customButton bg-blue white" ng-click="vm.addToOptionalPLayers()" ng-if="!vm.registerd">Tentative</button>
 			</div>
 			<div ng-if="vm.registerd">
 				<button class="customButton bg-black white" ng-click="vm.unRegisterToGame()">Unregister</button>
@@ -351,11 +341,11 @@
 		
 	</div>
 </div>
-<div class="bottomToolBar" ng-if="vm.showBottomToolBar">
+<div class="bottomToolBar" ng-if="vm.showBottomToolBar && vm.game.host == vm.user.userName">
 	
 	<md-fab-toolbar md-direction="left" class="userToolBar bg-black" ng-if="vm.actionType != 'editGame'">
 		<md-fab-trigger>
-			<md-button aria-label="Add..."><md-icon md-svg-src="assets/img/icons/threeLines.svg" class="white"></md-icon></md-button>
+			<md-button aria-label="Add..." class="text-right"><md-icon md-svg-src="assets/img/icons/threeLines.svg" class="white"></md-icon></md-button>
 		</md-fab-trigger>
 		
 		<md-toolbar class="">

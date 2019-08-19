@@ -70,6 +70,10 @@ Helpers
   text-transform: lowercase !important;
 }
 
+.uppercase {
+  text-transform: uppercase !important;
+}
+
 small {
     font-size: 80%;
 }
@@ -166,6 +170,13 @@ strong {
 
 .center {
     margin: 0 auto;
+}
+
+.absCenter{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%)
 }
 
 .smooth {

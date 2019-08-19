@@ -49,7 +49,7 @@
     // validate user input
     var errors = req.validationErrors();
     if (errors) {
-      console.log('errorserrorserrors')
+      console.log('error creating platformType')
         utils.sendJSONresponse(res, 400, errors);
         return;
     }

@@ -1,0 +1,497 @@
+$anime-time: 8s;
+
+$box-size: 200px;
+$clip-distance: 0;
+$clip-size: $box-size * (1 + $clip-distance * 2);
+$path-width: 2px;
+
+$main-color: black;
+
+
+
+%full-fill {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+//   width: 100%;
+//   height: 100%;
+}
+
+.bb {
+  @extend %full-fill;
+//   width: $box-size;
+//   height: $box-size;
+  margin: auto;
+//   background: $codepen-logo-path no-repeat 50% / 70% rgba(#000, .1);
+  color: $main-color;
+  box-shadow: inset 0 0 0 1px rgba($main-color, .5);
+
+  &::before,
+  &::after {
+    @extend %full-fill;
+    content: '';
+    z-index: -1;
+    margin: 0 * $clip-distance * 100%;
+    box-shadow: inset 0 0 0 $path-width; 
+    animation: clipMe $anime-time linear infinite;
+  }
+
+  &::before {
+    animation-delay: $anime-time * -.5;
+  }
+
+  // for debug
+  &:hover {
+    &::after,
+    &::before {
+      background-color: rgba(#f00, .3);
+    }
+  }
+
+}
+
+@keyframes clipMe {
+  0%, 100% {clip: rect(0px, $clip-size, $path-width, 0px); }
+  25% {clip: rect(0px, $path-width, $clip-size, 0px); }
+  50% {clip: rect($clip-size - $path-width, $clip-size, $clip-size, 0px); }
+  75% {clip: rect(0px, $clip-size, $clip-size, $clip-size - $path-width); }
+}
+
+/////
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+
+
+
+.shineText {
+    position: relative;
+    
+    text-transform: uppercase;
+    
+    letter-spacing: 4px;
+    overflow: hidden;
+    background: linear-gradient(90deg, #000, #fff, #000);
+    background-repeat: no-repeat;
+    background-size: 80%;
+    animation: animate 6s linear infinite;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: rgba(255, 255, 255, 0);
+  }
+
+.shineText2 {
+  position: relative;
+  
+  text-transform: uppercase;
+  
+  letter-spacing: 4px;
+  overflow: hidden;
+  background: linear-gradient(90deg, #000, #fff, #000);
+  background-repeat: no-repeat;
+  background-size: 80%;
+  background-position: -500%;
+  animation: animate 6s linear infinite;
+  animation-delay: 2s;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: rgba(255, 255, 255, 0);
+}
+
+.shineTextColors {
+  position: relative;
+  
+  text-transform: uppercase;
+  
+  letter-spacing: 4px;
+  overflow: hidden;
+  background: linear-gradient(270deg, #16a716, #ffa500, #0000ff, #bd28bd, #e9204f);
+  background-repeat: no-repeat;
+  background-size: 100%;
+  // animation: animate 6s linear infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: rgba(255, 255, 255, 0);
+}
+
+.shineTextColors2 {
+position: relative;
+
+text-transform: uppercase;
+
+letter-spacing: 4px;
+overflow: hidden;
+background: linear-gradient(270deg, #16a716, #ffa500, #0000ff, #bd28bd, #e9204f);
+background-repeat: no-repeat;
+background-size: 80%;
+background-position: -500%;
+animation: animate 6s linear infinite;
+animation-delay: 2s;
+-webkit-background-clip: text;
+-webkit-text-fill-color: rgba(255, 255, 255, 0);
+}
+  
+@keyframes animate {
+    0% {
+        background-position: -500%;
+    }
+    100% {
+        background-position: 500%;
+    }
+}
+
+
+.lines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100vh;
+    margin: auto;
+    width: 100vw;
+  }
+.lines .line {
+    position: absolute;
+    width: 1px;
+    height: 100%;
+    top: 0;
+    left: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+    z-index: 10;
+  }
+.lines .line::after {
+    content: "";
+    display: block;
+    position: absolute;
+    height: 15vh;
+    width: 100%;
+    top: -50%;
+    left: 0;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, #ffffff 75%, #ffffff 100%);
+    -webkit-animation: run 7s 0s infinite;
+            animation: run 7s 0s infinite;
+    -webkit-animation-fill-mode: forwards;
+            animation-fill-mode: forwards;
+    -webkit-animation-timing-function: cubic-bezier(0.4, 0.26, 0, 0.97);
+            animation-timing-function: cubic-bezier(0.4, 0.26, 0, 0.97);
+  }
+.lines .line:nth-child(1) {
+    margin-left: -49.5%;
+  }
+.lines .line:nth-child(1)::after {
+    -webkit-animation-delay: 2s;
+            animation-delay: 2s;
+  }
+.lines .line:nth-child(3) {
+    margin-left: 49.5%;
+  }
+.lines .line:nth-child(3)::after {
+    -webkit-animation-delay: 2.5s;
+            animation-delay: 2.5s;
+  }
+  
+@-webkit-keyframes run {
+    0% {
+      top: -50%;
+    }
+    100% {
+      top: 110%;
+    }
+  }
+  
+@keyframes run {
+    0% {
+      top: -50%;
+    }
+    100% {
+      top: 110%;
+    }
+  }
+
+.lines .lineWidth {
+    position: absolute;
+    height: 1px;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background: rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+    z-index: 10;
+  }
+.lines .lineWidth::after {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 15vh;
+    height: 100%;
+    left: -50%;
+    top: 0;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, #ffffff 75%, #ffffff 100%);
+    -webkit-animation: runLeft 7s 0s infinite;
+            animation: runLeft 7s 0s infinite;
+    -webkit-animation-fill-mode: forwards;
+            animation-fill-mode: forwards;
+    -webkit-animation-timing-function: cubic-bezier(0.4, 0.26, 0, 0.97);
+            animation-timing-function: cubic-bezier(0.4, 0.26, 0, 0.97);
+  }
+.lines .lineWidth:nth-child(1) {
+    margin-top: 0;
+  }
+.lines .lineWidth:nth-child(1)::after {
+    -webkit-animation-delay: 2s;
+            animation-delay: 2s;
+  }
+.lines .lineWidth:nth-child(2) {
+    margin-top: 33vh;
+  }
+.lines .lineWidth:nth-child(2)::after {
+    -webkit-animation-delay: 2.5s;
+            animation-delay: 2.5s;
+  }
+  .lines .lineWidth:nth-child(3) {
+    margin-top: 66vh;
+  }
+.lines .lineWidth:nth-child(3)::after {
+    -webkit-animation-delay: 2s;
+            animation-delay: 2s;
+  }
+.lines .lineWidth:nth-child(4) {
+    margin-top: 99vh;
+  }
+.lines .lineWidth:nth-child(4)::after {
+    -webkit-animation-delay: 2.5s;
+            animation-delay: 2.5s;
+  }
+  
+@-webkit-keyframes runLeft {
+    0% {
+      left: -50%;
+    }
+    100% {
+      left: 110%;
+    }
+  }
+  
+@keyframes runLeft {
+    0% {
+      left: -50%;
+    }
+    100% {
+      left: 110%;
+    }
+  }
+  
+
+  $borderWidth : 2px;
+  $randomNumber: random(7)+s;
+  .bar{
+    background: $green;
+    box-shadow: 0px 0px 0 #40ff22,
+      0px 0px 4px #30ff1f,
+      0px 0px 8px #20ff1b,
+      0px 0px 16px #10ff18;
+    border-radius: 4px;
+    position: absolute;
+  }
+
+  .bar-orange{
+    background: $orange;
+    box-shadow: 0px 0px 0 $orange,
+      0px 0px 4px $orange,
+      0px 0px 8px $orange,
+      0px 0px 16px $orange;
+    border-radius: 4px;
+    position: absolute;
+  }
+
+  .bar-pink{
+    background: $pink;
+    box-shadow: 0px 0px 0 $pink,
+      0px 0px 4px $pink,
+      0px 0px 8px $pink,
+      0px 0px 16px $pink;
+    border-radius: 4px;
+    position: absolute;
+  }
+
+  .bar-purple{
+    background: $purple;
+    box-shadow: 0px 0px 0 $purple,
+      0px 0px 4px $purple,
+      0px 0px 8px $purple,
+      0px 0px 16px $purple;
+    border-radius: 4px;
+    position: absolute;
+  }
+
+  .bar-blue{
+    background: $alert-blue;
+    box-shadow: 0px 0px 0 $alert-blue,
+      0px 0px 4px $alert-blue,
+      0px 0px 8px $alert-blue,
+      0px 0px 16px $alert-blue;
+    border-radius: 4px;
+    position: absolute;
+  }
+
+  .bar-black{
+    background: $black;
+    box-shadow: 0px 0px 0 $black,
+      0px 0px 4px $black,
+      0px 0px 8px $black,
+      0px 0px 16px $black;
+    border-radius: 4px;
+    position: absolute;
+  }
+
+  .left{
+    width: 2px;
+    -webkit-animation: left $randomNumber+s linear infinite;
+  }
+  @-webkit-keyframes left{
+    0%  {height: 0; top: 99%; left: 0;}
+    20% {height: 99%; top: 0; left: 0;}
+    40% {height: 0; top: 0; left: 0;}
+  }
+  .top{
+    height: 2px;
+    -webkit-animation: top $randomNumber+s linear infinite;
+  }
+  @-webkit-keyframes top{
+    0%  {width: 0; top: 0; left: 0;}
+    20% {width: 0; top: 0; left: 0;}
+    40% {width: 99%; top: 0; left: 0;}
+    60% {width: 0; top:0; left: 99%;}
+  }
+  .right{
+    width: 2px;
+    -webkit-animation: right $randomNumber+s linear infinite;
+  }
+  @-webkit-keyframes right{
+    0%  {height: 0; top: 0; left: 99%;}
+    40% {height: 0; top: 0; left: 99%;}
+    60% {height: 99%; top: 0; left: 99%;}
+    80% {height: 0; top: 100px;left: 99%;}
+  }
+  .bottom{
+    height: 2px;
+    -webkit-animation: bottom $randomNumber+s linear infinite;
+  }
+  @-webkit-keyframes bottom{
+    0%  {width: 0; top: 99%; left: 99%;}
+    60% {width: 0; top: 99%; left: 99%;}
+    80% {width: 99%; top:99%; left: 0px;}
+    100% {width: 0px; top:100%; left: 0px;}
+  }
+
+
+
+
+
+  .pulse-green {
+    -webkit-animation-name: greenPulse;
+    -webkit-animation-duration: 6s;
+    -webkit-animation-iteration-count: infinite;
+  }
+  .pulse-pink {
+    -webkit-animation-name: pinkPulse;
+    -webkit-animation-duration: 7s;
+    -webkit-animation-iteration-count: infinite;
+  }
+  .pulse-blue {
+    -webkit-animation-name: bluePulse;
+    -webkit-animation-duration: 5s;
+    -webkit-animation-iteration-count: infinite;
+  }
+  .pulse-purple {
+    -webkit-animation-name: purplePulse;
+    -webkit-animation-duration: 7s;
+    -webkit-animation-iteration-count: infinite;
+  }
+  .pulse-orange {
+    -webkit-animation-name: orangePulse;
+    -webkit-animation-duration: 6s;
+    -webkit-animation-iteration-count: infinite;
+  }
+  .pulse-black {
+    -webkit-animation-name: blackPulse;
+    -webkit-animation-duration: 6s;
+    -webkit-animation-iteration-count: infinite;
+  }
+
+
+
+  @-webkit-keyframes greenPulse {
+    from { background-color: #16a716cc;; -webkit-box-shadow: 3px 0 0px #333; }
+    50% { background-color: #16a716;; -webkit-box-shadow: 0 0 0 $black; }
+    to { background-color:#16a716cc;; -webkit-box-shadow: 3px 0 0px #333; }
+  }
+
+  @-webkit-keyframes pinkPulse {
+    from { background-color: #e9204fb9; -webkit-box-shadow: 0 0 9px #333; }
+    50% { background-color: #e9204f; -webkit-box-shadow: 0 0 0 $black; }
+    to { background-color:#e9204fb9; -webkit-box-shadow: 0 0 9px #333; }
+  }
+  @-webkit-keyframes bluePulse {
+    from { background-color: rgba(0, 0, 255, 0.795); -webkit-box-shadow: 3px 3px 0px #333; }
+    50% { background-color: blue; -webkit-box-shadow: 0 0 0 $black; }
+    to { background-color:rgba(0, 0, 255, 0.795); -webkit-box-shadow: 3px 3px 0px #333; }
+  }
+  @-webkit-keyframes purplePulse {
+    from { background-color: rgba(189, 40, 189, 0.801); -webkit-box-shadow: 0 0 9px #333; }
+    50% { background-color: rgb(189, 40, 189); -webkit-box-shadow: 0 0 0 $black; }
+    to { background-color:rgba(189, 40, 189, 0.801); -webkit-box-shadow: 0 0 9px #333; }
+  }
+  @-webkit-keyframes orangePulse {
+    from { background-color: rgba(255, 166, 0, 0.781); -webkit-box-shadow: 0 0 9px #333; }
+    50% { background-color: orange; -webkit-box-shadow: 0 0 0 $black; }
+    to { background-color:rgba(255, 166, 0, 0.781); -webkit-box-shadow: 0 0 9px #333; }
+  }
+  @-webkit-keyframes blackPulse {
+    from { background-color: rgba(0, 0, 0, 0.9); -webkit-box-shadow: 0 0 9px #333; }
+    50% { background-color: $black; -webkit-box-shadow: 0 0 0 $black; }
+    to { background-color:rgba(0, 0, 0, 0.9); -webkit-box-shadow: 0 0 9px #333; }
+  }
+
+
+//ELASTIC STROKE EFFECT
+  $colors: #16a716, #ffa500, #0000ff, #bd28bd, #e9204f;
+  svg {
+    // position: absolute;
+    width: 100%;
+    height: 100%;
+    }
+  
+  $max: 5;
+  $stroke-step: 7%; 
+  .text-copy {
+    
+    stroke: white;
+    stroke-dasharray: $stroke-step $stroke-step * ($max - 1);
+    stroke-width: 2px;
+    
+    animation: stroke-offset 9s infinite linear;
+    
+    @for $item from 1 through $max {
+      $stroke-color: nth($colors, $item);
+      
+      &:nth-child(#{$item}) {
+        stroke: $stroke-color;
+        stroke-dashoffset: $stroke-step * $item;
+        }
+      }
+    }
+  
+  @keyframes stroke-offset {
+    50% {
+      fill: white;
+      stroke-dashoffset: $stroke-step * $max;  
+      stroke-dasharray: 0 $stroke-step * $max*2.5;
+    }
+  }
+  
+  .text--line{
+    font-size: 6rem;
+  }

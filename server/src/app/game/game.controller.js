@@ -58,18 +58,20 @@
     // validate user input
     var errors = req.validationErrors();
     if (errors) {
-      console.log('errorserrorserrors')
-        utils.sendJSONresponse(res, 400, errors);
-        return;
+      console.log('error creating game')
+      utils.sendJSONresponse(res, 400, errors);
+      return;
+    } else{
+      game.save((err, newGame) => {
+        console.log('saved game', newGame)
+        if (err) return next({ err: err, status: 400 });
+        if (!newGame) return next({ message: 'Game not created.', status: 400 });
+  
+        utils.sendJSONresponse(res, 201, newGame);
+      });
     }
 
-    game.save((err, newGame) => {
-      console.log('saved game', newGame)
-      if (err) return next({ err: err, status: 400 });
-      if (!newGame) return next({ message: 'Game not created.', status: 400 });
-
-      utils.sendJSONresponse(res, 201, newGame);
-    });
+    
   }
 
   /**
@@ -133,7 +135,7 @@
   }
 
   function getGamesByUserId(req,res,next){
-    console.log('getting games by userId:', req.params.userId);
+    // console.log('getting games by userId:', req.params.userId);
     
     var params = req.params;
     Game.find({ 'players.userId': params.userId }, { 'players.$': 1 })
@@ -146,11 +148,11 @@
       });
       var gamesIds = []
       for (var i = 0; i < data.length; i++){
-        console.log(data[i]);
+        // console.log(data[i]);
         gamesIds.push(data[i]._id);
         
       }
-      console.log('IDS', gamesIds);
+      // console.log('IDS', gamesIds);
       
       
     })
@@ -223,7 +225,7 @@
   }
 
   function removeGame(req, res, next){
-    console.log('removing game')
+    // console.log('removing game')
     var params = req.params;
     console.log('removing game',params.gameId)
     Game
@@ -257,7 +259,7 @@
         { '$set': {
           'gametype': bodyParams.gametype,
           'host': bodyParams.host,
-          'optionalplayers': bodyParams.optionalplayers,
+          'optionalPlayers': bodyParams.optionalPlayers,
           'players': bodyParams.players,
           'time': bodyParams.time,
           'timeoptions': bodyParams.timeoptions,

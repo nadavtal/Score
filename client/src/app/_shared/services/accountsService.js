@@ -44,9 +44,13 @@
        * @param  {object} headers    Headers
        * @return {object}            Promise
        */
-      function getAccount(accountId){
+      function getClashAccount(accountId){
         
         return QueryService.query('GET', 'clashaccounts/'+accountId, null, null)
+      }
+      function getAccount(_id){
+        
+        return QueryService.query('GET', 'accounts/'+_id, null, null)
       }
   
   
@@ -67,7 +71,7 @@
       }
 
       function getAccountsByUserID(userId){
-        return QueryService.query('GET', 'accounts/'+userId, null, null)
+        return QueryService.query('GET', 'accounts/users/'+userId, null, null)
       }
   
       function checkIfAccountExists(account){

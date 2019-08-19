@@ -31,6 +31,8 @@ Date: Jan 2017
 
 // import tables
 @import "partials/tables";
+// import effects
+@import "partials/effects";
 
 /*********************
 IMPORTING MODULES
@@ -128,6 +130,10 @@ auth
 @import "../src/app/messages/messages.scss";
 @import "../src/app/account-list/account-list.scss";
 @import "../src/app/group-list/group-list.scss";
+
+//DIRECTIVES
+@import "../src/app/_shared/directives/loadingDirective/loadingDirective.scss";
+@import "../src/app/_shared/directives/chatDirective/chatDirective.scss";
 
 
 /*********************

@@ -19,13 +19,13 @@
       controller: messagesCtrl
     });
 
-    messagesCtrl.$inject = ['$log', 'usersService', '$rootScope', 'localStorage', '$stateParams', 'messagesService', 'groupsService'];
+    messagesCtrl.$inject = ['$log', 'usersService', '$scope', 'localStorage', '$stateParams', 'messagesService', 'groupsService'];
 
-  function messagesCtrl($log, usersService, $rootScope, localStorage, $stateParams, messagesService, groupsService) {
-    // console.log('messages controler')
+  function messagesCtrl($log, usersService, $scope, localStorage, $stateParams, messagesService, groupsService) {
+    console.log($scope)
     var vm = this;
-    vm.user = localStorage.get('user');
-    console.log(vm.user)
+    vm.currentUser = localStorage.get('user');
+    console.log(vm.currentUser)
     vm.data = {
       selectedIndex: 0,
       
@@ -41,14 +41,19 @@
     vm.$onInit = function() {
 
       var userId = vm.userId || $stateParams.userId;
-      var messageId = vm.messageId || $stateParams.messageId;
+     
       // console.log('userId: ' + userId, 'messageId: '+messageId);
 
 
       if (userId){
+        usersService.getUser(userId)
+        .then((user) => {
+          vm.user = user.data.data;
+          // console.log(vm.user)
+        });
         messagesService.getMessagesByUserID(userId)
         .then((messages)=>{
-          console.log(messages)
+          // console.log(messages)
           vm.userMessages = messages.data.data;
           console.log(vm.userMessages)
         })
@@ -58,7 +63,8 @@
 
         groupsService.getGroupsByUserID(userId)
           .then((groups) => {
-            vm.groups = groups.data.data
+            vm.groups = groups.data.data;
+            // console.log(vm.groups)
           })
       
       
@@ -80,7 +86,7 @@
 
         usersService.getAllUsers()
           .then((users) => {
-            vm.users = users.data.daya
+            vm.users = users.data.data
           })
         
 

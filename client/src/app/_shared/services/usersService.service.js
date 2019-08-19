@@ -20,6 +20,7 @@
     this.getAllUsers = getAllUsers;
     this.getUser = getUser;
     this.editUser = editUser;
+    this.createUser = createUser
 
     /// definitions
 
@@ -46,6 +47,14 @@
       return QueryService
         .query('PUT', 'users/' + userId, null, user)
     }
+
+    function createUser(user){
+
+      return QueryService
+        .query('POST', 'users/', null, user)
+    }
+
+    
 
 
 

@@ -26,11 +26,9 @@
 					placeholder="Password"
 				>
 
-				<div>Don't have an account? Please <a ui-sref="createUser">register</a></div>
-
-				<button
-					type="submit"
-				>
+				<div>Don't have an account? Please <a ui-sref="createUser "><span class="white strong">Register </span></a></div>
+				<br>
+				<button class="customButton black" type="submit">
 					Log in
 				</button>
 
@@ -39,8 +37,8 @@
 	</div>
 
 	<!-- logout -->
-	<div class="row" ng-if="vm.user">
-		<button class="logOutButton" ng-click="vm.logout()">Log out</button>
-	</div>
+	
+		<button class="logOutButton text-center" ng-click="vm.logout()" ng-if="vm.user">Log out</button>
+	
 </div>
 

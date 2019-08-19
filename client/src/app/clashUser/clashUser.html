@@ -1,3 +1,4 @@
+<loading-directive ng-if="vm.loading"></loading-directive>
 <div class="pageNav bg-orange d-flex between">
 	<div class="navBackButton white" ui-sref="displayUser({ userId: vm.currentUser._id })">
 		<back-to-main-button-directive></back-to-main-button-directive>	
@@ -29,7 +30,7 @@
 	</div>
 	
 </div>
-<div class="container-fluid user form">
+<div class="container-fluid">
 	<!-- <div class="userTabs d-flex arround" >
 		<div ng-click="vm.changeActiveTab('info')" ng-class="vm.activeTab == 'info'? 'active' : ''" class="">Info</div>
 		<div ng-click="vm.changeActiveTab('stats')" ng-class="vm.activeTab == 'stats'? 'active' : ''" class="">Stats</div>
@@ -37,7 +38,7 @@
 		<div ng-click="vm.changeActiveTab('battles')" ng-class="vm.activeTab == 'battles'? 'active' : ''" class="">Battles</div>
 		
 	</div> -->
-	<div class="userContent">
+	<div class="pageContent" ng-if="!vm.loading">
 		<div ng-class="vm.activeTab == 'info'? 'block' : 'hidden' " >
 			<div class="row">
 				<div class="col-xs-5">name: </div>
@@ -71,6 +72,9 @@
 				
 				
 			</div>
+			<canvas id="doughnut" class="chart chart-doughnut"
+				chart-data="vm.data" chart-labels="vm.labels">
+			</canvas> 
 		</div>
 		<div ng-class="vm.activeTab == 'cards'? 'block' : 'hidden' ">
 			<div class="row">
