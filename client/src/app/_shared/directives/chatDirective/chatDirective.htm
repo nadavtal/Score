@@ -10,16 +10,27 @@
     <div class="container" ng-if="chatOpen">
         <br><br>
         <div class="row">
-            <div class="col-xs-3">
-                <h4>Friends</h4>
-                <div ng-repeat="user in vm.currentUser.friends" 
-                     ng-click="chatWith(user)">{{user.userName}}
+            <div class="col-xs-3 white">
+                <div class="chatSection">
+                    <h4>
+                        <md-icon md-svg-src="assets/img/icons/heart.svg" class="white"></md-icon>
+                        Friends
+                    </h4>
+                    <div ng-repeat="friend in vm.currentUser.friends" ng-class="user.userName == friend.userName? 'active' : ''"
+                            ng-click="chatWith(friend)">{{friend.userName}}
+                    </div>
                 </div>
+                
                 <br>
-                <h4>Groups</h4>
-                <div ng-repeat="group in groups" 
-                     ng-click="chatWithGroup(group)">{{group.groupName}}
+                <div class="chatSection">
+                    <h4>
+                        <md-icon md-svg-src="assets/img/icons/group.svg" class="white"></md-icon>                        
+                        Groups</h4>
+                    <div ng-repeat="grp in groups" ng-class="group.groupName == grp.groupName? 'active' : ''" 
+                            ng-click="chatWithGroup(grp)">{{grp.groupName}}
+                    </div>
                 </div>
+                
             </div>
             <div class="col-xs-9 ">
                 <!-- <div class="black">{{user.userName}}</div> -->

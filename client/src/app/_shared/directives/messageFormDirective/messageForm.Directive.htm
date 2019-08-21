@@ -1,113 +1,118 @@
-<form
-ng-submit="submitMessageForm(message, user._id)"
-name="messageForm"
-role="form"
-id="messageForm"
-novalidate
->   
-    <!-- <label for="users" class="col-md-5">To: {{receiver}}</label>
-    <select name="users" id="" ng-model="receiver" ng-change="pickReceiver(receiver)" ng-if="!receiver">
-        <option value="">---Please select---</option> 
-        <option ng-repeat="user in users" value="{{user}}">{{user.userName}}</option> 
-    </select> -->
-    <md-input-container class="full-width" >
-        <label>To: {{group.groupName}}</label>
-        <md-select ng-model="receiver"
-                    md-on-close="clearSearchTerm()"
-                    data-md-container-class="selectdemoSelectHeader"
-                    ng-if="!receiver"
-                    multiple
-                    >
-            <md-select-header class="demo-select-header">
-            <input ng-model="searchTerm"
-                    type="search"
-                    placeholder="Search for a user.."
-                    class="demo-header-searchbox md-text">
-            </md-select-header>
-            <md-optgroup label="users">
-            <md-option ng-value="user.userName" ng-repeat="user in vm.user.friends | filter:searchTerm">
-                {{user.userName}}
-            </md-option>
-            </md-optgroup>
-        </md-select>
-    </md-input-container>
-    <br><br>
-    <!-- <md-input-container class="" ng-if="ngDialogData.groups || ngDialogData.group">
-        <label>Groups:</label>
-        <md-select ng-model="group"
-                    md-on-close="clearSearchTerm()"
-                    data-md-container-class="selectdemoSelectHeader"
-                    multiple
-                    >
-            <md-select-header class="demo-select-header">
-            <input ng-model="searchTerm"
-                    type="search"
-                    placeholder="Search for a user.."
-                    class="demo-header-searchbox md-text">
-            </md-select-header>
-            <md-optgroup label="groups">
-            <md-option ng-value="group.groupName" ng-repeat="group in groups | filter:searchTerm">
-                {{group.groupName}}
-            </md-option>
-            </md-optgroup>
-        </md-select>
-    </md-input-container> -->
-    
-    <select name="groups" id="" ng-model="group" ng-change="pickGroup(group)" ng-if="ngDialogData.groups || ngDialogData.group">
-        <option value="">---Please add group---</option> 
-        <option ng-repeat="group in groups" value="{{group}}">{{group.groupName}}</option>
-        
-    </select>
-    <div class="contanier">
-        <md-input-container class="md-block" flex-gt-sm>
-            <label>Subject</label>
-            <input md-maxlength="50" required name="messageSubject" ng-model="message.subject" />
-        </md-input-container>
-        <!-- <label for="messageSubject" class="col-md-5">Subject</label>
-        <div class="col-md-5">
-            <input
-                type="text"
-                ng-model="message.subject"
-                ng-disabled=""
-                name="messageSubject"
-                id="messageSubject"
-                autocomplete="off"
-                placeholder="{{message.subject}}"
-                required
-            >
-        </div> -->
-    
-            <md-input-container class="md-block">
-                <label>Content</label>
-                <textarea ng-model="message.content" rows="5" md-select-on-focus></textarea>
+<div class="messageformModal">
+        <form
+        ng-submit="submitMessageForm(message, user._id)"
+        name="messageForm"
+        role="form"
+        id="messageForm"
+        novalidate
+        >   
+            <!-- <label for="users" class="col-md-5">To: {{receiver}}</label>
+            <select name="users" id="" ng-model="receiver" ng-change="pickReceiver(receiver)" ng-if="!receiver">
+                <option value="">---Please select---</option> 
+                <option ng-repeat="user in users" value="{{user}}">{{user.userName}}</option> 
+            </select> -->
+            <md-input-container class="full-width" >
+                <label>To: 
+                    <!-- <span>{{group.groupName}}</span> -->
+                    <span>{{receiver}}</span>
+                </label>
+                <md-select ng-model="receiver"
+                            md-on-close="clearSearchTerm()"
+                            data-md-container-class="selectdemoSelectHeader"
+                            ng-if="!receiver"
+                            multiple
+                            >
+                    <md-select-header class="demo-select-header">
+                    <input ng-model="searchTerm"
+                            type="search"
+                            placeholder="Search for a user.."
+                            class="demo-header-searchbox md-text">
+                    </md-select-header>
+                    <md-optgroup label="users">
+                    <md-option ng-value="user.userName" ng-repeat="user in vm.user.friends | filter:searchTerm">
+                        {{user.userName}}
+                    </md-option>
+                    </md-optgroup>
+                </md-select>
             </md-input-container>
-        <!-- <label for="massageContent" class="col-md-5">Content</label>
-        <div class="col-md-5">
-            <input
-                type="text"
-                ng-model="message.content"
-                ng-disabled=""
-                name="massageContent"
-                id="massageContent"
-                autocomplete="off"
-                placeholder="Message Content"
+            <br><br>
+            <!-- <md-input-container class="" ng-if="ngDialogData.groups || ngDialogData.group">
+                <label>Groups:</label>
+                <md-select ng-model="group"
+                            md-on-close="clearSearchTerm()"
+                            data-md-container-class="selectdemoSelectHeader"
+                            multiple
+                            >
+                    <md-select-header class="demo-select-header">
+                    <input ng-model="searchTerm"
+                            type="search"
+                            placeholder="Search for a user.."
+                            class="demo-header-searchbox md-text">
+                    </md-select-header>
+                    <md-optgroup label="groups">
+                    <md-option ng-value="group.groupName" ng-repeat="group in groups | filter:searchTerm">
+                        {{group.groupName}}
+                    </md-option>
+                    </md-optgroup>
+                </md-select>
+            </md-input-container> -->
+            
+            <select name="groups" id="" ng-model="group" ng-change="pickGroup(group)" ng-if="ngDialogData.groups || ngDialogData.group">
+                <option value="">---Please add group---</option> 
+                <option ng-repeat="group in groups" value="{{group}}">{{group.groupName}}</option>
                 
-            >
-        </div> -->
-    </div>
-
-    <!-- <div class=""> -->
-        <div class="buttons">
-            <button class="textIconButton" type="submit"
-                    ng-disabled="messageForm.$invalid">
-                    
-                    <md-icon md-svg-src="assets/img/icons/save.svg" class="backToHomePageButton orange"></md-icon>
-            </button>
-            <button class="textIconButton " type="submit">
-                
-                <md-icon md-svg-src="assets/img/icons/send.svg" class="backToHomePageButton green"></md-icon>
-            </button>
-
-        </div>
-    <!-- </div> -->
-</form>
+            </select>
+            <div class="contanier">
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Subject</label>
+                    <input md-maxlength="50" required name="messageSubject" ng-model="message.subject" />
+                </md-input-container>
+                <!-- <label for="messageSubject" class="col-md-5">Subject</label>
+                <div class="col-md-5">
+                    <input
+                        type="text"
+                        ng-model="message.subject"
+                        ng-disabled=""
+                        name="messageSubject"
+                        id="messageSubject"
+                        autocomplete="off"
+                        placeholder="{{message.subject}}"
+                        required
+                    >
+                </div> -->
+            
+                    <md-input-container class="md-block">
+                        <label>Content</label>
+                        <textarea ng-model="message.content" rows="5" md-select-on-focus></textarea>
+                    </md-input-container>
+                <!-- <label for="massageContent" class="col-md-5">Content</label>
+                <div class="col-md-5">
+                    <input
+                        type="text"
+                        ng-model="message.content"
+                        ng-disabled=""
+                        name="massageContent"
+                        id="massageContent"
+                        autocomplete="off"
+                        placeholder="Message Content"
+                        
+                    >
+                </div> -->
+            </div>
+        
+            <!-- <div class=""> -->
+                <div class="buttons">
+                    <button class="textIconButton" type="submit"
+                            ng-disabled="messageForm.$invalid">
+                            
+                            <md-icon md-svg-src="assets/img/icons/save.svg" class="backToHomePageButton orange"></md-icon>
+                    </button>
+                    <button class="textIconButton " type="submit">
+                        
+                        <md-icon md-svg-src="assets/img/icons/send.svg" class="backToHomePageButton green"></md-icon>
+                    </button>
+        
+                </div>
+            <!-- </div> -->
+        </form>
+</div>
