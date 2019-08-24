@@ -159,7 +159,7 @@
   app.use(compression());
   app.use(helmet());
   app.use(methodOverride('X-HTTP-Method-Override'));
-
+  app.use(methodOverride('_method'));
   /**
    * express pagination, include pagination links in response
    * keep this before all routes that will use pagination
@@ -170,6 +170,7 @@
 
   app.use(bodyParser.text());
   app.use(bodyParser.json());
+  
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(expressValidator());
   app.use(cookieParser());

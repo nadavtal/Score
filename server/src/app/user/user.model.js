@@ -70,6 +70,10 @@
       userId: ObjectId
       
     }],
+    profileImageFileName: {
+      type: String,
+      default: ''
+    },
     accounts: [Account.schema],
     messages: [Message.schema],
     createdAt: {

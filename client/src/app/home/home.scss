@@ -155,19 +155,19 @@
 
 
 .cubeMenuItemWrapper.ng-enter{
-	transition: .3s linear all;
-	transform: translateY(100vh);
+	transition: .2s linear all;
+	transform: translateX(100vw);
 	
 	opacity: 0;
 }
 .cubeMenuItemWrapper.ng-enter-active{
-	transform: translateY(0);
+	transform: translateX(0);
 	opacity: 1;
 }
 
 .cubeMenuItemWrapper.ng-enter-stagger {
 	/* this will have a 100ms delay between each successive leave animation */
-	transition-delay: 0.2s;
+	transition-delay: 0.15s;
   
 	/* As of 1.4.4, this must always be set: it signals ngAnimate
 	  to not accidentally inherit a delay property from another CSS class */
@@ -238,7 +238,11 @@
 
 .userContentTitle{
 	margin-top: .5rem;
-	padding: 0;
+	// padding: 0;
+	&--profileImg{
+		height: 6rem;
+		width: auto;
+	}
 }
 
 .groupLogo{
@@ -350,4 +354,12 @@
 .messageformModal {
 	border-radius: 5px;
     // padding: 1rem;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0; 
 }

@@ -44,6 +44,13 @@
             vm.users = data.data.data;
             console.log('all users: ', vm.users)
           })
+
+      usersService.getAllFiles()
+      .then((data) => {
+        console.log(data)
+        vm.files = data.data.data;
+        console.log('all files: ', vm.files)
+      })
             
       accountsService.getAllAccountsFromDataBase()
       .then((accounts) => {
@@ -92,6 +99,8 @@
           .then((messages) => {
             console.log('all messages: ', messages.data.data)
           })
+
+        
 
     
     

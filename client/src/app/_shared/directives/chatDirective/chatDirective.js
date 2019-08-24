@@ -157,7 +157,7 @@
 
                 // Connect to socket.io
                 // console.log(io)
-                // var socket2 = io.connect('http://score.netdesign.media');
+                // var socket2 = io.connect('http://localhost:5000');
                 // Check for connection
                 // if(socket2 !== undefined){
                 //     console.log('Connected to socket2...');

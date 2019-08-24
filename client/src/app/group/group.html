@@ -33,7 +33,7 @@
 			<div ng-click="vm.changeActiveTab('stats')" ng-class="vm.activeTab == 'stats'? 'active' : ''" class="">Stats</div>
 		</div> -->
 	<div class="userContentArea">
-		<div ng-class="vm.activeTab == 'info'? 'block' : 'hidden' " >
+		<div class="createGroupForm" ng-class="vm.activeTab == 'info'? 'block' : 'hidden' " >
 			<form
 				ng-submit="vm.submitGroupForm(vm.group, vm.group._id)"
 				name="vm.groupForm"
@@ -115,7 +115,7 @@
 				<br>
 				<div class="row">
 					<label class="col-xs-5">Members</label>
-					<div class="col-xs-7">
+					<div class="col-xs-7 createGroupForm__members" >
 						<div class="row" ng-repeat="member in vm.group.members">
 							<div class="col-xs-9">
 								<a ui-sref="displayUser({ userId: member.userId })">

@@ -13,6 +13,13 @@
     }
 }
 
+.list-item{
+    &--profileImg{
+        height: 3rem;
+        width: 3rem;
+    }
+}
+
 .list-item .ng-leave{
     transition: .3s linear all;
     transform: translateX(0);

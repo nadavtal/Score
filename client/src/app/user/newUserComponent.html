@@ -163,58 +163,62 @@
         <div class="userContentWrapper" ng-if="vm.activeTab == 'myProfile'" id="myProfileContent">
             <div class="lineBreak" ng-class="vm.activeTab == 'myProfile'? 'border-green lineOpen' : 'lineClosed' "></div>
             <div class="container">
-                <div class="col-xs-4 userContentTitle">
-                    <h3 class="">{{vm.user.userName | uppercase}}</h3>
-                </div> 
-                <div class="col-xs-8">
-                    <md-fab-toolbar md-direction="left" class="componentToolBox" ng-if="vm.isUser || vm.currentUser.role == 'admin'">
-                        <md-fab-trigger>
-                            <md-button aria-label="Add..." class="text-right"><md-icon md-svg-src="assets/img/icons/settings.svg" class="green"></md-icon></md-button>
-                        </md-fab-trigger>
-                        
-                        <md-toolbar>
-                            <md-fab-actions class="d-flex between">
-                                <md-button aria-label="edit" ui-sref="editUser({ userId: vm.user._id })" class="bg-green">
-                                    <md-icon md-svg-src="assets/img/icons/edit.svg" ></md-icon>
-                                </md-button>
+                <div class="row">
+                    <div class="col-xs-4 userContentTitle">
+                           
+                            <h3 class="">{{vm.user.userName | uppercase}}</h3>
+                    </div> 
+                    <div class="col-xs-8">
+                        <md-fab-toolbar md-direction="left" class="componentToolBox" ng-if="vm.isUser || vm.currentUser.role == 'admin'">
+                            <md-fab-trigger>
+                                <md-button aria-label="Add..." class="text-right"><md-icon md-svg-src="assets/img/icons/settings.svg" class="green"></md-icon></md-button>
+                            </md-fab-trigger>
                             
-                                <md-button aria-label="Invite to group" <div ui-sref="changePassword" class="bg-green">
-                                    <md-icon md-svg-src="assets/img/icons/password.svg" ></md-icon>
-                                </md-button>
+                            <md-toolbar>
+                                <md-fab-actions class="d-flex between">
+                                    <md-button aria-label="edit" ui-sref="editUser({ userId: vm.user._id })" class="bg-green">
+                                        <md-icon md-svg-src="assets/img/icons/edit.svg" ></md-icon>
+                                    </md-button>
                                 
-                            </md-fab-actions>
-                        </md-toolbar>
-                    </md-fab-toolbar>
-                    
-                </div>
-                <div class="col-xs-12">
-                    <md-fab-toolbar md-direction="left" class="userToolBar" ng-if="!vm.isUser && vm.currentUser">
-                        <md-fab-trigger>
-                            <md-button aria-label="Add..." class="text-right "><md-icon md-svg-src="assets/img/icons/email.svg" class="green"></md-icon></md-button>
-                        </md-fab-trigger>
+                                    <md-button aria-label="Invite to group" <div ui-sref="changePassword" class="bg-green">
+                                        <md-icon md-svg-src="assets/img/icons/password.svg" ></md-icon>
+                                    </md-button>
+                                    
+                                </md-fab-actions>
+                            </md-toolbar>
+                        </md-fab-toolbar>
                         
-                        <md-toolbar>
-                            <md-fab-actions class="d-flex between">
-                                <md-button aria-label="Chat" ng-click="vm.sendMessageToUser()" class="bg-green">
-                                    <md-icon md-svg-src="assets/img/icons/chat.svg" class=""></md-icon>
-                                </md-button>
+                    </div>
+                    <div class="col-xs-12">
+                        <md-fab-toolbar md-direction="left" class="userToolBar" ng-if="!vm.isUser && vm.currentUser">
+                            <md-fab-trigger>
+                                <md-button aria-label="Add..." class="text-right "><md-icon md-svg-src="assets/img/icons/email.svg" class="green"></md-icon></md-button>
+                            </md-fab-trigger>
                             
-                                <md-button aria-label="Invite to group" ng-click="vm.inviteUserToGroup()" class="bg-green">
-                                    <md-icon md-svg-src="assets/img/icons/addGroup.svg" class=""></md-icon>
-                                </md-button>
-                                <md-button aria-label="Invite to friend" ng-click="vm.removeFromFriends(vm.user, vm.currentUser)" ng-if="vm.areFriends" class="bg-green">
-                                    <md-icon md-svg-src="assets/img/icons/remove.svg" class=""></md-icon>
-                                </md-button>
-                                <md-button aria-label="Invite to friend" ng-click="vm.addToFriends(vm.user, vm.currentUser)" ng-if="!vm.areFriends" class="bg-green">
-                                    <md-icon md-svg-src="assets/img/icons/baseline-person_add-24px.svg" class=""></md-icon>
-                                </md-button>
-                                <md-button aria-label="challenge for battle" ng-click="vm.inviteUserToGame()" class="bg-green">
-                                    <md-icon md-svg-src="assets/img/icons/shield.svg" class=""></md-icon>
-                                </md-button>
-                            </md-fab-actions>
-                        </md-toolbar>
-                    </md-fab-toolbar> 
+                            <md-toolbar>
+                                <md-fab-actions class="d-flex">
+                                    <md-button aria-label="Chat" ng-click="vm.sendMessageToUser()" class="bg-green">
+                                        <md-icon md-svg-src="assets/img/icons/chat.svg" class=""></md-icon>
+                                    </md-button>
+                                
+                                    <md-button aria-label="Invite to group" ng-click="vm.inviteUserToGroup()" class="bg-green">
+                                        <md-icon md-svg-src="assets/img/icons/addGroup.svg" class=""></md-icon>
+                                    </md-button>
+                                    <md-button aria-label="Invite to friend" ng-click="vm.removeFromFriends(vm.user, vm.currentUser)" ng-if="vm.areFriends" class="bg-green">
+                                        <md-icon md-svg-src="assets/img/icons/remove.svg" class=""></md-icon>
+                                    </md-button>
+                                    <md-button aria-label="Invite to friend" ng-click="vm.addToFriends(vm.user, vm.currentUser)" ng-if="!vm.areFriends" class="bg-green">
+                                        <md-icon md-svg-src="assets/img/icons/baseline-person_add-24px.svg" class=""></md-icon>
+                                    </md-button>
+                                    <md-button aria-label="challenge for battle" ng-click="vm.inviteUserToGame()" class="bg-green">
+                                        <md-icon md-svg-src="assets/img/icons/shield.svg" class=""></md-icon>
+                                    </md-button>
+                                </md-fab-actions>
+                            </md-toolbar>
+                        </md-fab-toolbar> 
+                    </div>
                 </div>
+                
                     
                 
                 
@@ -239,8 +243,8 @@
                     id="user"
                     novalidate
                 >
-    
-                    <div ng-if="vm.actionType != 'createUser'" class="row">
+                <img class="userContentTitle--profileImg" src="http://localhost:5000/api/v1/image/{{vm.user.profileImageFileName}}" alt="">
+                    <div ng-if="vm.actionType != 'createUser'" class="row hidden">
                         <label for="user-id" class="col-md-5">ID</label>
                         <div class="col-md-5">
                             <input
@@ -361,6 +365,23 @@
                                 <option value="group-manager">group-manager</option>
                             </select>
                         </div>
+                    </div>
+                    <!-- <form action="vm.uploadFile()" method="POST" enctype="multipart/form-data">
+                        <div class="custom-file mb-3">
+                          <input type="file" name="file" id="file" class="custom-file-input">
+                          <label for="file" class="custom-file-label">Choose File</label>
+                        </div>
+                        <input type="submit" value="Submit" class="btn btn-primary btn-block">
+                      </form>
+                    <div class="row">
+                        <label for="file" >Upload Image</label>
+                        <input type="file" name="file" id="file" ng-model="vm.file">
+                        <span ng-click="vm.uploadFile(vm.file)">Upload</span>
+                    </div> -->
+
+                    <div >
+                        <input name="file" class="customButton" ngf-select="vm.upload($file)"/placeholder="Upload on file select" ng-if="vm.actionType == 'editUser'">
+                        
                     </div>
     
                     <div class="row" ng-if="vm.actionType != 'createUser'">

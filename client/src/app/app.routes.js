@@ -34,7 +34,7 @@
         component: 'userList',
         
       })
-
+      //CLASH STATES
       .state('clashUsers', {
         url: '/clashusers',
         component: 'clashUsers',
@@ -58,12 +58,15 @@
         component: 'clan',
         
       })
-
+      //GAMES STATES
       .state('games', {
         url: '/games',
         component: 'gameList',
         
       })
+
+
+      //GROUP STATES
       .state('groups', {
         url: '/groups',
         component: 'groupList',
@@ -158,6 +161,28 @@
         component: 'account',
         // role: 'admin' // accessible only for admin roles
       })
+      .state('tournament', {
+        url: '/tournament',
+        component: 'tournament',
+        // role: 'admin' // accessible only for admin roles
+      })
+      .state('createTournament', {
+        url: '/tournaments/create',
+        component: 'tournament',
+        // role: 'admin' // accessible only for admin roles
+      })
+
+      .state('editTournament', {
+        url: '/tournaments/:tournamentId/edit',
+        component: 'tournament',
+        // role: 'admin' // accessible only for admin roles
+      })
+
+      .state('displayTournament', {
+        url: '/tournaments/:tournamentId',
+        component: 'tournament',
+      })
+
       
       
 

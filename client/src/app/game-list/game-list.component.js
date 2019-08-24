@@ -23,7 +23,8 @@
 
   function GameListCtrl($scope,$log, QueryService, gamesService, localStorage, $stateParams, ngDialog, $state, usersService) {
     var vm = this;
-    
+    vm.createGame = createNewGame;
+    vm.createNewTournament = createNewTournament;
     
     
     vm.removeGame = function(index, gameId){
@@ -45,7 +46,7 @@
           console.log(data)
         });
       if(userId){
-        vm.createGame = createNewGame;
+        
         console.log('getting games of user:' , userId)
         usersService.getUser(userId)
           .then((user) => {
@@ -82,20 +83,15 @@
 
     
     function createNewGame(){
-      console.log('creating new game');
+      // console.log('creating new game');
       $state.go('createGame');
-      // var dialog = ngDialog.open({
-      //   template:'app/game/game.html',
-      //   controller: 'GameCtrl',
-      //   data: {
-      //     myProperty: 'test'
-      // }
-        
-      // });
+      
+    }
 
-      // dialog.closePromise.then(function(closedDialog) {
-      //   $state.go('displayGame', { gameId: newGame._id });
-      // });
+    function createNewTournament(){
+      // console.log('creating new game');
+      $state.go('createTournament');
+      
     }
 
     function createNewGroupGame(groupId){

@@ -20,8 +20,10 @@
     this.getAllUsers = getAllUsers;
     this.getUser = getUser;
     this.editUser = editUser;
-    this.createUser = createUser
-
+    this.createUser = createUser;
+    this.getAllFiles = getAllFiles;
+    this.getFilesByUserId = getFilesByUserId;
+    
     /// definitions
 
     
@@ -33,6 +35,17 @@
         
     }
 
+    function getAllFiles(){
+      console.log('getting files')
+      return QueryService
+        .query('GET', 'uploads/', null, null)
+    }
+
+    function getFilesByUserId(userId){
+      return QueryService
+        .query('GET', 'uploads/'+ userId, null, null)
+    }
+
     function getUser(userId) {
       if (!userId) return;
 
@@ -40,6 +53,8 @@
         .query('GET', 'users/' + userId, null, null)
         
     }
+
+    
     
     function editUser(user, userId) {
       if (!user) return;

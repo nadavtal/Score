@@ -19,20 +19,33 @@
       controller: accountsListCtrl
     });
 
-    accountsListCtrl.$inject = ['$log', 'QueryService', '$rootScope', 'localStorage', '$stateParams', 'accountsService', 'platformService', 'clashUserService', 'ngDialog'];
+    accountsListCtrl.$inject = ['$log', 'QueryService', '$rootScope', 'localStorage', '$stateParams', 'accountsService', 'platformService',
+    'clashUserService', 'ngDialog', 'usersService'];
 
-  function accountsListCtrl($log, QueryService, $rootScope, localStorage, $stateParams, accountsService, platformService, clashUserService, ngDialog) {
+  function accountsListCtrl($log, QueryService, $rootScope, localStorage, $stateParams, accountsService, platformService, 
+    clashUserService, ngDialog, usersService) {
     // console.log('accountsList component')
     var vm = this;
-    vm.user = localStorage.get('user');
+    
     vm.toggleAddAccount = toggleAddAccount;
     vm.createNewAccount = createNewAccount
     // vm.AddAccountForm = AddAccountForm;
     vm.$onInit = function() {
-
+      vm.currentUser = localStorage.get('user');
       var userId = $stateParams.userId;
-      console.log(userId)
+      // console.log(userId)
       if(userId){
+        usersService.getUser(userId)
+        .then((user) => {
+          vm.user = user.data.data
+          
+          console.log('currentUser: ' , vm.currentUser);
+          console.log('vm.user: ' , vm.user)
+          if(vm.currentUser._id == vm.user._id){
+            vm.isUser = true
+          }
+        });
+
         accountsService.getAccountsByUserID(userId)
         .then(function(accounts) {
           // console.log(game)

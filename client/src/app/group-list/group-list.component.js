@@ -47,20 +47,19 @@
           getGroupsByUserId(userId);
         })
       
+      } else {
+        groupsService.getAllGroupsFromDataBase()
+        .then(function(groups) {
+          // console.log(game)
+          vm.groups = groups.data.data;
+          console.log(vm.groups)
+          $log.debug('groups', vm.groups);
+        })
+        .catch(function(err) {
+          $log.debug(err);
+        });
       }
-       
       
-      else 
-      groupsService.getAllGroupsFromDataBase()
-      .then(function(groups) {
-        // console.log(game)
-        vm.groups = groups.data.data;
-        console.log(vm.groups)
-        $log.debug('groups', vm.groups);
-      })
-      .catch(function(err) {
-        $log.debug(err);
-      });;
     };
 
     

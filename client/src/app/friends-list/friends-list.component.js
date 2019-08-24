@@ -19,12 +19,12 @@
       controller: FriendListCtrl
     });
 
-    FriendListCtrl.$inject = ['$log', 'QueryService', 'usersService', 'localStorage', '$stateParams', 'groupsService', 'utils', 'ngDialog'];
+    FriendListCtrl.$inject = ['$log', 'QueryService', 'usersService', 'localStorage', '$stateParams', 'groupsService', 'friendsService', 'ngDialog'];
 
-  function FriendListCtrl($log, QueryService, usersService, localStorage, $stateParams, groupsService, utils, ngDialog) {
+  function FriendListCtrl($log, QueryService, usersService, localStorage, $stateParams, groupsService, friendsService, ngDialog) {
     // console.log('friendList component')
     var vm = this;
-    
+    vm.sendMessageToUser = sendMessageToUser
     
     
     vm.$onInit = function() {
@@ -33,28 +33,38 @@
       
       vm.isUser = false
       vm.currentUser = localStorage.get('user');
-      console.log(userId)
+      
       if (userId){
         usersService.getUser(userId)
         .then((user) => {
           vm.user = user.data.data
          
-          console.log(vm.currentUser, vm.user)
+          console.log('vm.user: ', vm.user);
+          
           if(vm.currentUser._id == vm.user._id){
             vm.isUser = true
           }
 
+          if(vm.user.friends.length > 0){
+            getUsersProfiles(vm.user.friends)
+            .then(data => {
+              vm.friends = data
+              console.log('friends', vm.friends);
+            })
+          }
+          
+
           groupsService.getGroupsByUserID(userId)
             .then(function(groups) {
               vm.groups = groups.data.data;
-              console.log('groups', vm.groups)
+              // console.log('groups', vm.groups)
               $log.debug('groups', vm.groups);
-              console.log(vm.user)
-              for (var i=0; i<vm.user.friends.length; i++){
-                console.log(vm.user.friends[i].userId);
-                var sharedGroups = findSharedGroupsWithUser(vm.groups, vm.user.friends[i].userId);
-                vm.user.friends[i].sharedGroups = sharedGroups
-                console.log(vm.user.friends[i])
+              // console.log(vm.user)
+              for (var i=0; i<vm.friends.length; i++){
+                // console.log(vm.friends[i].userId);
+                var sharedGroups = findSharedGroupsWithUser(vm.groups, vm.friends[i]._id);
+                vm.friends[i].sharedGroups = sharedGroups
+                // console.log(vm.friends[i])
                  } 
             })
             .catch(function(err) {
@@ -73,33 +83,54 @@
 
     
 
-    vm.removeFriend = function(index){
-      vm.user.friends.splice(index, 1)
+    vm.removeFriend = function(index, user){
+      console.log(user, vm.user);
+      friendsService.removeFromFriends(user, vm.user)
+      console.log(user, vm.user);
+      usersService.editUser(user, user._id);
+        
+      usersService.editUser(vm.user, vm.user._id)
+      .then(function(updatedUser) {
+        vm.user = updatedUser.data.data
+        console.log(vm.user);
+        vm.friends = vm.friends.filter(function( obj ) {
+          return obj._id !== user._id;
+        });
+        if(vm.user._id == vm.currentUser._id){
+          localStorage.update('user', vm.user)
+        }
+        // if(vm.user.friends.length > 0){
+        //   getUsersProfiles(vm.user.friends)
+        //     .then(data => {
+        //       vm.friends = data
+        //       console.log('friends', vm.friends);
+        //     })
+        // } else{
+        //   vm.friends = [];
+        // }
+        
+        
+      });
+      // localStorage.update('user', vm.user);
+      vm.areFriends = false;
+    }
+
+    vm.removeAllFriends = function (){
+      vm.user.friends = [];
+      vm.friends = [];
+      console.log(vm.user);
       usersService.editUser(vm.user)
         .then(function(updatedUser) {
           // console.log(updatedUser);
           var updatedUser = updatedUser.data.data;
           console.log('updatedUser', updatedUser);
-          $log.debug('updatedUser', updatedUser);
+          vm.user = updatedUser;
 
-
-
-          ngDialog.open({
-            template: '\
-              <p>'+ updatedUser.userName +'Update successful!</p>\
-              <div class=\"ngdialog-buttons\">\
-                  <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click=\"closeThisDialog()\">OK</button>\
-              </div>',
-            plain: true
-          });
-
+          // localStorage.update('user', updatedUser)
         })
-        .catch(function(err) {
-          $log.debug(err);
-        });
     }
 
-    vm.sendMessageToUser = sendMessageToUser
+    
 
     /// definitions
     function findSharedGroupsWithUser(groupsArray, user){
@@ -119,6 +150,36 @@
       // console.log(sharedGroups)
       return sharedGroups;
 
+    }
+
+    function getUsersProfiles(users){
+      var promiseArr = [];
+      
+        console.log(users)
+        for (var i = 0; i<users.length; i++){
+          let promise = new Promise(function(resolve, reject){
+            // console.log(i, users[i].userId);
+            usersService.getUser(users[i].userId)
+            .then(user =>{
+              console.log(user);
+              // users[i] = user.data.data
+              // console.log(i);
+              resolve(user.data.data);
+              // if (i == users.length-1){
+                
+                
+              // }
+            });
+          });
+          promiseArr.push(promise)
+          
+
+          
+            
+        }
+        
+      
+        return Promise.all(promiseArr)
     }
 
     function sendMessageToUser(user){

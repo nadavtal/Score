@@ -15,7 +15,7 @@
       
       this.checkIfFriends = checkIfFriends;
       this.addToFriends = addToFriends;
-      
+      this.removeFromFriends = removeFromFriends;
       
   
       function checkIfFriends(user1, user2){
@@ -38,8 +38,8 @@
       }
 
       function addToFriends(userToAdd, targetUser){
-        console.log('userToAdd: ', userToAdd);
-        console.log('add to: ', targetUser);
+        // console.log('userToAdd: ', userToAdd);
+        // console.log('add to: ', targetUser);
         if(!userToAdd) return;
         if(!targetUser) return;
   
@@ -71,13 +71,23 @@
           })
   
         }
-        
-        // console.log(userToAdd)
-        // console.log(targetUser)
-        // editUser(userToAdd, userToAdd._id);
-        // editUser(targetUser, targetUser._id);
+       
       }
-  
+
+      function removeFromFriends(userToRemove, targetUser){
+        console.log('userToRemove: ', userToRemove);
+        console.log('remove from: ', targetUser);
+        if(!userToRemove) return 'there is no "userToRemove"';
+        if(!targetUser) return 'there is no "targetUser"';
+        
+        targetUser.friends = targetUser.friends.filter(function( obj ) {
+          return obj.userId !== userToRemove._id;
+        }); 
+        userToRemove.friends = userToRemove.friends.filter(function( obj ) {
+          return obj.userId !== targetUser._id;
+        }); 
+      }
+ 
     }
   
   })();

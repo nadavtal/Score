@@ -1,0 +1,143 @@
+$battlesPerRouns: 16;
+$tournamentRoundHeader: 2rem;
+$fontSize: 1rem;
+
+$tournamentHeight: calc(100Vh - 7rem - #{$tournamentRoundHeader - $fontSize});
+$battleHeight: calc((#{$tournamentHeight} / #{$battlesPerRouns }) );
+.tournamentWrapper{
+    width: 100%;
+    // margin-top: 2rem;
+    // padding: 1rem;
+    // padding-top: 1rem;
+    // padding-bottom: 1rem;
+    height: $tournamentHeight;
+    overflow: hidden;
+    max-height: $tournamentHeight;
+    // background-color: red;
+}
+.battleDirective{
+    // margin-top: 2rem;
+    position: relative;
+    // background-color: rgb(250, 245, 239);
+    // padding: .5rem;
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
+    border-top: 1px solid black;
+    // box-shadow: -10px 0px 13px -7px #000000, 10px 0px 13px -7px #000000, 5px 5px 3px 0px rgba(0,0,0,0);
+
+    &__user{
+        width: 100%;
+        // height: $fontSize;
+        // padding: .5rem;
+        // background-color: rgb(210, 232, 240);
+        // -webkit-box-shadow: -5px 0px 5px -7px #000000, 10px 0px 13px -7px #000000, 5px 5px 3px 0px rgba(0,0,0,0); 
+
+        &--name{
+            font-size: 0.8rem;
+        }
+
+        &--score{
+            font-size: 1rem;
+        }
+
+        
+    }
+
+    // &::before{
+    //     content: '';
+    //     position: absolute;
+    //     top: $fontSize/2;
+    //     // top: 0;
+    //     left: 0;
+    //     bottom: $fontSize/2;
+    //     bottom: 0;
+    //     right: 0;
+    //     border-right: 1px solid black;
+    //     border-bottom: 1px solid black;
+        // border-top: 1px solid black;
+    // }
+
+    
+}
+
+.battleDirective .winner{
+    background-color: $green-faded;
+}
+
+.battleDirective .loser{
+    background-color: $red-faded;
+}
+
+.user1{
+    position: absolute;
+    // top: calc(-#{$fontSize /2 });
+    
+    top: 0;
+}
+.user2{
+    position: absolute;
+    // bottom: calc(-#{$fontSize /2 });
+    bottom: -$fontSize/2;
+    bottom: 0;
+}
+
+
+.tournamentColoumn{
+    width: 20%;
+    float: left;
+
+    h4{
+        height: $tournamentRoundHeader;
+    }
+}
+
+.round0 .battleDirective{
+    // border: 1px solid blue;
+    height: #{$battleHeight};
+}
+
+.round1 .user1, .round2 .user1, .round3 .user1{
+    // top: -$fontSize/2;
+}
+.round1 .user2, .round2 .user2, .round3 .user2{
+    // bottom: -$fontSize/2;
+}
+
+.round1 .battleDirective{
+    // border: 1px solid red;
+    height: calc(#{$battleHeight});
+    margin-top: calc(#{$battleHeight}/2);
+    margin-bottom: #{$battleHeight};
+}
+
+.round2 .battleDirective{
+    // border: 1px solid orangered;
+    height: calc(#{$battleHeight} *2);
+    margin-top: calc(#{$battleHeight});
+    margin-bottom: calc(#{$battleHeight} *2);
+}
+
+.round3 .battleDirective{
+    // border: 1px solid rgb(61, 243, 167);
+    height: calc(#{$battleHeight} *4);
+    margin-top: calc(#{$battleHeight} * 2);
+    margin-bottom: calc(#{$battleHeight} *4);
+}
+
+.round4 .battleDirective{
+    // border: 1px solid rgb(61, 243, 167);
+    height: calc(#{$battleHeight} *8);
+    margin-top: calc(#{$battleHeight} * 4);
+    margin-bottom: calc(#{$battleHeight} *8);
+}
+
+.round5 .battleDirective{
+    // border: 1px solid rgb(61, 243, 167);
+    height: calc(#{$battleHeight} *4);
+    margin-top: calc(#{$battleHeight} * 2);
+    margin-bottom: calc(#{$battleHeight} *4);
+}
+
+#tournament .numberInput{
+    // width: 3.3rem;
+}

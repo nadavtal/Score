@@ -14,10 +14,10 @@
     });
 
   UserCtrl.$inject = ['$log', '$state', '$stateParams', 'QueryService', 'localStorage', 'platformService', 'accountsService', 
-    'ngDialog', '$rootScope', '$scope', 'clashUserService', 'gamesService','usersService', 'groupsService','friendsService', 'utils'];
+    'ngDialog', '$rootScope', '$scope', 'clashUserService', 'gamesService','usersService', 'groupsService','friendsService', 'Upload'];
 
   function UserCtrl($log, $state, $stateParams, QueryService, localStorage, platformService, accountsService, 
-      ngDialog, $rootScope, $scope, clashUserService, gamesService, usersService, groupsService, friendsService, utils) {
+      ngDialog, $rootScope, $scope, clashUserService, gamesService, usersService, groupsService, friendsService, Upload) {
     var vm = this;
     
     
@@ -35,7 +35,8 @@
     vm.sendFriendRequest = sendFriendRequest;
     vm.backToMain = backToMain;
     vm.addToFriends = addToFriends;
-    vm.removeFromFriends = removeFromFriends
+    vm.removeFromFriends = removeFromFriends;
+    vm.upload = upload;
     
     
     $scope.$on('user:login', function() {
@@ -45,9 +46,15 @@
       
     });
     vm.$onInit = function() {
-      vm.showMenuTab = false
       
       
+      if(localStorage.get('activeTab')){
+        vm.activeTab = localStorage.get('activeTab');
+        vm.showMenuTab = true;
+      } else{
+        vm.activeTab = '';
+        vm.showMenuTab = false;
+      }
       vm.showAddAccount = false;
       var userId = vm.userId || $stateParams.userId;
       var state = $state.current.name;
@@ -55,12 +62,12 @@
       vm.loading = false;
       vm.currentUser = localStorage.get('user');
       vm.user = vm.user || {};
-      vm.activeTab = '';
+      
       vm.isUser = false;
       vm.areFriends = false;
       vm.userLoaded = false;
-      vm.background_color = 'black'
-
+      vm.background_color = 'black';
+      
       var colorPerActiveTab = {
         myProfile : 'green',
         accounts : 'orange',
@@ -110,13 +117,20 @@
           if(!vm.isUser){
             vm.areFriends = friendsService.checkIfFriends(vm.currentUser, vm.user)
           }
-          console.log('areFriends: ', vm.areFriends)
-          
+          console.log('areFriends: ', vm.areFriends);
+          // console.log(userId)
+          usersService.getFilesByUserId(userId)
+            .then(files => {
+              vm.files = files.data.data;
+              console.log(vm.files)
+            })
+
+
           gamesService.getGamesByUserID(userId)
             .then((games)=>{
-              console.log(games)
+              // console.log(games)
               vm.userGames = games.data.data;
-              console.log(vm.userGames)
+              // console.log(vm.userGames)
             })
             .catch(function(err) {
               $log.debug(err);
@@ -132,7 +146,7 @@
     };
 
     
-
+    
    
     function findItemById(array, id){
       console.log(id)
@@ -157,8 +171,8 @@
       newWinner.wins += 1;
       oldWinner.wins -= 1;
       console.log('selectNewWinner after incrementing ', oldWinner, newWinner)
-      editUser(newWinner, newWinner.userid);
-      editUser(oldWinner, oldWinner.userid);
+      editUser(newWinner, newWinner.userid, newWinner.userName +' wins upadted to '+ newWinner.wins);
+      editUser(oldWinner, oldWinner.userid, oldWinner.userName + ' wins upadted to ' + oldWinner.wins);
     });
 
     $rootScope.$on('selectWinner', function(event, newWinner) {
@@ -167,7 +181,7 @@
       newWinner = findItemById($rootScope.users, newWinner.userid);
       newWinner.wins += 1;
      
-      editUser(newWinner, newWinner._id);
+      editUser(newWinner, newWinner._id, newWinner.userName +' wins upadted to '+ newWinner.wins);
       
     });
     /**
@@ -207,40 +221,36 @@
       else if(tab == 'games') vm.background_color = 'black'
       else if(tab == 'messages') vm.background_color = 'pink'
 
+      if(localStorage.get('activeTab')){
+        localStorage.update('activeTab', vm.activeTab);
 
-      // switch (vm.activeTab) {
-      //   case 'myProfile':
-      //     vm.background_color = 'green'
-      //   case 'accounts':
-      //     vm.background_color = 'orange'
-      //   case 'groups':
-      //     vm.background_color = 'blue'
-      //   case 'friends':
-      //     vm.background_color = 'purple'
-      //   case 'games':
-      //     vm.background_color = 'black'
-      //   case 'messages':
-      //     vm.background_color = 'pink'
-        
-      // }
-      
-      // console.log(vm.background_color)
-      // $('.userContent').css('top', '5rem')
-      
-      // $('.userContentWrapper').css({
-      //                           'opacity': 1,
-      //                             // 'height' : 'auto'
-      //                           })
-      
-      // $('.cubeMenuItem--iconSmall').on('click', function(){
-      //   // $(this).css('transform', 'rotateY(180deg)')
-      // })
-      localStorage.update('activeTab', vm.activeTab);
+      } else{
+        localStorage.set('activeTab', vm.activeTab)
+      }
       
     }
     /**
      * Submit form: either create or edit user
      */
+    function upload (file) {
+      console.log(file)
+      Upload.upload({
+        
+          url: 'http://localhost:5000/api/v1/uploads',
+          data: {file: file, 'userId': vm.currentUser._id}
+      }).then(function (resp) {
+        vm.profileImage = resp.data.data
+        console.log('profileImage: ', vm.profileImage);
+          console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
+      }, function (resp) {
+          console.log('Error status: ' + resp.status);
+      }, function (evt) {
+          var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+          console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+      });
+  };
+    
+
     function submitUserForm(user, userId) {
       console.log(user, userId)
       vm[vm.actionType](user, userId);
@@ -286,15 +296,25 @@
 
     
 
-    function editUser(user, userId) {
+    function editUser(user, userId, msg) {
+      if(!msg){
+        var msg = user.userName + 'upadte sccessfull';
+      }
+      if(vm.profileImage){
+        user.profileImageFileName = vm.profileImage.file.filename
+
+      }
       if (!user) return;
       console.log('user before update', user);
       usersService.editUser(user, userId)
         .then(function(updatedUser) {
-          console.log(updatedUser);
+          // console.log(updatedUser);
           var updatedUser = updatedUser.data.data;
-          console.log('updatedUser', updatedUser);
-
+          vm.user = updatedUser;
+          console.log('updatedUser', vm.user);
+          // if(vm.isUser){
+          //   localStorage.update('user', vm.user)
+          // }
           $log.debug('updatedUser', updatedUser);
           
 
@@ -304,10 +324,11 @@
           Swal.fire({
             position: 'center',
             type: 'success',
-            title: updatedUser.userName +' Update successful!',
+            title: msg,
             showConfirmButton: false,
-            timer: 1500
-          })
+            timer: 1200
+          });
+          // $scope.$apply();
           // ngDialog.open({
           //   template: '\
           //     <p>'+ updatedUser.userName +'Update successful!</p>\
@@ -316,6 +337,7 @@
           //     </div>',
           //   plain: true
           // });
+
 
         })
         .catch(function(err) {
@@ -390,44 +412,13 @@
     }
 
     function addToFriends(userToAdd, targetUser){
-      console.log('userToAdd: ', userToAdd);
-      console.log('add to: ', targetUser);
-      if(!userToAdd) return;
-      if(!targetUser) return;
-
-      if(targetUser.friends){
-        targetUser.friends.push({
-          userName :userToAdd.userName,
-          userId: userToAdd._id
-        })
-
-      } else{
-        targetUser.friends = [];
-        targetUser.friends.push({
-          userName :userToAdd.userName,
-          userId: userToAdd._id
-        })
-
-      }
-      if(userToAdd.friends){
-        userToAdd.friends.push({
-          userName :targetUser.userName,
-          userId: targetUser._id
-        })
-
-      } else{
-        userToAdd.friends = [];
-        userToAdd.friends.push({
-          userName :targetUser.userName,
-          userId: targetUser._id
-        })
-
-      }
-
-      // console.log(userToAdd)
-      // console.log(targetUser)
-      editUser(userToAdd, userToAdd._id);
-      editUser(targetUser, targetUser._id);
+      
+      friendsService.addToFriends(userToAdd, targetUser);
+      
+      vm.areFriends = true;
+      
+      editUser(userToAdd, userToAdd._id, userToAdd.userName +' friends updated ' );
+      editUser(targetUser, targetUser._id, targetUser.userName +' friends updated ' );
       localStorage.update('user', targetUser);
       vm.currentUser = targetUser
     }
@@ -435,22 +426,12 @@
     function removeFromFriends(userToRemove, targetUser){
       console.log('userToRemove: ', userToRemove);
       console.log('remove from: ', targetUser);
-      if(!userToRemove) return 'there is no "userToRemove"';
-      if(!targetUser) return 'there is no "targetUser"';
-      // console.log(utils.findUserInArrayById(targetUser.friends, userToRemove))
-      targetUser.friends = targetUser.friends.filter(function( obj ) {
-        return obj.userId !== userToRemove._id;
-      }); 
-      userToRemove.friends = userToRemove.friends.filter(function( obj ) {
-        return obj.userId !== targetUser._id;
-      }); 
-      // console.log(targetUser.friends)
-      // console.log(userToRemove.friends)
+      friendsService.removeFromFriends(userToRemove, targetUser)
       
-      editUser(userToRemove, userToRemove._id);
-      editUser(targetUser, targetUser._id);
+      editUser(userToRemove, userToRemove._id, userToRemove.userName +' friends updated ' );
+      editUser(targetUser, targetUser._id, targetUser.userName +' friends updated ' );
       localStorage.update('user', targetUser);
-      vm.currentUser = targetUser
+      vm.areFriends = false;
     }
 
     

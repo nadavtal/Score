@@ -237,6 +237,8 @@
       });
     })
   }
+
+  
   /**
    * Change password
    * PUT '/users/change-password'

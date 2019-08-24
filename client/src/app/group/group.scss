@@ -7,3 +7,11 @@
 md-toolbar.md-default-theme:not(.md-menu-toolbar) md-icon, md-toolbar:not(.md-menu-toolbar) md-icon {
     color: blue
 }
+
+.createGroupForm{
+
+    &__members{
+        max-height: 10rem;
+        overflow: auto;
+    }
+}

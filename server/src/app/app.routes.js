@@ -7,6 +7,101 @@
    */
   var express = require('express');
   var router = express.Router();
+  var mongoose = require('mongoose');
+  var ObjectId = mongoose.Types.ObjectId;
+  var mongoose = require('mongoose');
+  var ENV = process.env.NODE_ENV || 'development';
+  var config = require('../config/config');
+  var DB_URI = config.db[ENV].url;
+  const path = require('path');
+  const crypto = require('crypto');
+  const multer = require('multer');
+  const GridFsStorage = require('multer-gridfs-storage');
+  const Grid = require('gridfs-stream');
+  const methodOverride = require('method-override');
+
+  var conn = mongoose.createConnection(DB_URI);
+  mongoose.connection.on('connected', () => {
+    // console.log(`Mongoosesssssssss connected to`);
+
+    //Init stream
+    var gfs = Grid(conn.db, mongoose.mongo);
+    gfs.collection('uploads');
+
+    //Create storage engine
+    const storage = new GridFsStorage({
+      url: DB_URI,
+      file: (req, file) => {
+        // console.log(req)
+        return new Promise((resolve, reject) => {
+          crypto.randomBytes(16, (err, buf) => {
+            if (err) {
+              return reject(err);
+            }
+            const filename = buf.toString('hex') + path.extname(file.originalname);
+            const fileInfo = {
+              filename: filename,
+              bucketName: 'uploads'
+            };
+            resolve(fileInfo);
+          });
+        });
+      }
+    });
+    const upload = multer({ storage });
+    router.post('/uploads', upload.single('file'), uploadsCtrl.uploadImage);
+    router.get('/files', (req,res) => {
+      gfs.files.find().toArray((err, files) => {
+        //check if files
+        if(!files || files.lengh === 0) {
+          return res.status(404).json({
+            err: 'no files exist'
+          });
+
+        }
+        return res.json(files)
+      });
+    });
+
+    router.get('/files/:filename', (req,res) => {
+      
+      gfs.files.findOne({filename: req.params.filename}, (err, file) => {
+        if(!file || file.lengh === 0) {
+          return res.status(404).json({
+            err: 'no file exist'
+          });
+
+        }
+        return res.json(file)
+      })
+    });
+    //getImage and display
+    router.get('/image/:filename', (req, res) => {
+      gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
+        // Check if file
+        if (!file || file.length === 0) {
+          return res.status(404).json({
+            err: 'No file exists'
+          });
+        }
+    
+        // Check if image
+        if (file.contentType === 'image/jpeg' || file.contentType === 'image/png') {
+          // Read output to browser
+          const readstream = gfs.createReadStream(file.filename);
+          // console.log(readstream)
+          readstream.pipe(res);
+        } else {
+          res.status(404).json({
+            err: 'Not an image'
+          });
+        }
+      });
+    });
+  });
+
+
+
 
   // controllers
   var usersCtrl = require('./user/users.controller.js');
@@ -19,6 +114,13 @@
   var messagesCtrl = require('./message/message.controller.js');
   var gameTypesCtrl = require('./gameType/gameType.controller.js');
   var platformTypesCtrl = require('./platformType/platformType.controller.js');
+  var uploadsCtrl = require('./updoads/updoads.controller.js');
+
+  /**
+   * uploads
+   */
+  router.get('/uploads', uploadsCtrl.getUploads); // get all uploads
+  router.get('/uploads/:userId', uploadsCtrl.getUploadsByUserId); // get uploads by userId
   
   // router.get('/clashusers/:clantag/:usertag', clashUserCtrl.getClashPlayer); // get clash clan
   router.get('/clashusers/:userId/battles', clashUserCtrl.getClashPlayerBattles); // get clash user battles

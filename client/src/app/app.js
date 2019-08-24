@@ -13,6 +13,8 @@
       'ngAnimate',
       'ngMaterialDatePicker',
       'chart.js',
+      
+      'ngFileUpload'
     ])
     .config(config);
 
@@ -73,105 +75,72 @@
 
   
   
-    // angular
-    //   .module('boilerplate').controller('mainController' , function(QueryService, $log, $rootScope, clanService, localStorage, platformService){
-    //     console.log('mainController');
-    //     var vm = this
+    angular
+      .module('boilerplate').controller('mainController' , function(QueryService, $log, $rootScope, clanService, localStorage, platformService){
+        console.log('mainController');
+        var vm = this
 
         
 
-    //     // getUsers();
+        // getUsers();
 
-    //     // platformService.getAllPlatformsFromDataBase()
-    //     //   .then((platforms) => {
-    //     //     console.log(platforms.data.data)
-    //     //     $rootScope.platforms = platforms.data.data;
-    //     //     localStorage.set('platforms', platforms.data.data);
-    //     //     // console.log($rootScope.platforms)
-    //     //   })
+        // platformService.getAllPlatformsFromDataBase()
+        //   .then((platforms) => {
+        //     console.log(platforms.data.data)
+        //     $rootScope.platforms = platforms.data.data;
+        //     localStorage.set('platforms', platforms.data.data);
+        //     // console.log($rootScope.platforms)
+        //   })
 
         
 
-    //     // clanService.getAllBattlesFromDataBase()
-    //     //   .then((friendlyBattles) =>{
-    //     //     console.log(friendlyBattles)
-    //     //   })
-    //     // updateNewFriendlyBattlesFromAllClans();  
-    // // $interval(updateNewFriendlyBattlesFromAllClans, 1800000);
+        // clanService.getAllBattlesFromDataBase()
+        //   .then((friendlyBattles) =>{
+        //     console.log(friendlyBattles)
+        //   })
+        // updateNewFriendlyBattlesFromAllClans();  
+    // $interval(updateNewFriendlyBattlesFromAllClans, 1800000);
 
 
-    //     function updateNewFriendlyBattlesFromAllClans(){
-    //       clanService.getClansFromDatabase()
-    //       .then(function(data){
-    //         // console.log(data)
-    //         vm.clans = data.data.data;
+        function updateNewFriendlyBattlesFromAllClans(){
+          clanService.getClansFromDatabase()
+          .then(function(data){
+            // console.log(data)
+            vm.clans = data.data.data;
             
-    //         for(var i = 0; i<vm.clans.length; i++){
-    //           // console.log(vm.clans[i].Name)
-    //           clanService.getFriendlyBattlesByClan(vm.clans[i].Name)
-    //           .then((friendlyBattles) => {
-    //             // console.log(friendlyBattles)
-    //             for(var i = 0; i<friendlyBattles.length; i++){
-    //               clanService.checkIfBattleExists(friendlyBattles[i])
-    //                 .then((battle)=>{
-    //                   // console.log(battle)
-    //                   if(battle){
+            for(var i = 0; i<vm.clans.length; i++){
+              // console.log(vm.clans[i].Name)
+              clanService.getFriendlyBattlesByClan(vm.clans[i].Name)
+              .then((friendlyBattles) => {
+                // console.log(friendlyBattles)
+                for(var i = 0; i<friendlyBattles.length; i++){
+                  clanService.checkIfBattleExists(friendlyBattles[i])
+                    .then((battle)=>{
+                      // console.log(battle)
+                      if(battle){
                         
-    //                     clanService.addBattleToDB(battle)
-    //                     .then((data) => {
-    //                       console.log('added to DB')
-    //                     })
-    //                   } else{
-    //                     console.log('battle exists in DB')
-    //                   }
-    //                 })
+                        clanService.addBattleToDB(battle)
+                        .then((data) => {
+                          console.log('added to DB')
+                        })
+                      } else{
+                        console.log('battle exists in DB')
+                      }
+                    })
                   
-    //             }
-    //           })
-    //         }
-    //       })
-    //     } 
+                }
+              })
+            }
+          })
+        } 
         
-    //     function createInitialUsers(){
-    //       var users = [
-    //         {userName: 'Nadi', firstName: 'Nadav', surname: 'Almagor', password: 'asd', email: 'nadavtalalmagor@gmail.com', role: 'admin'},
-    //         {userName: 'Gads', firstName: 'Gadi', surname: 'Grosz', password: 'asd', email: 'gadi@gmail.com', role: 'user'},
-    //         {userName: 'Fatz', firstName: 'Tal', surname: 'Akta', password: 'asd', email: 'tal@gmail.com', role: 'user'},
-    //         {userName: 'Yos', firstName: 'Yosi', surname: 'Gez', password: 'asd', email: 'yosi@gmail.com', role: 'admin'},
-    //         {userName: 'Iris', firstName: 'Iris', surname: 'Tokatly', password: 'asd', email: 'iris@gmail.com', role: 'user'},
-    //         {userName: 'Eli', firstName: 'Eli', surname: 'Yahu', password: 'asd', email: 'eli@gmail.com', role: 'user'},
-    //       ]
-
-    //       var clashTags = ['#2JYGLLPU', '#Y8GRG9JY', "#GU8R2CCY"]
-    
-    //       for (let user  of users) {
-    //         QueryService
-    //         .query('POST', 'users/', null, user)
-    //         .then(function(newUser) {
-    //           var newUser = newUser.data.data;
-    
-    //           console.log('new user created: ', newUser)
-    //           $log.debug('newUser', vm.newUser);
-    
-              
-    
-    //           // dialog.closePromise.then(function(closedDialog) {
-    //           //   $state.go('displayUser', { userId: vm.newUser._id });
-    //           // });
-    
-    //         })
-    //         .catch(function(err) {
-    //           $log.debug(err);
-    //         });
-    //       } 
-    //     }
-    //   // createInitialUsers()
+        
 
 
 
         
       
 
-    //   })
+      })
 
 })();

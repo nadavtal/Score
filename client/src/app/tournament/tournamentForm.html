@@ -1,0 +1,373 @@
+<div class="pageNav bg-black d-flex between">
+		<div class="navBackButton white" ui-sref="displayUser({ userId: vm.user._id })">
+			<back-to-main-button-directive></back-to-main-button-directive>	
+		</div>
+		<div class="pageNav__item white center" class="active">
+			
+			<div ng-click="vm.changeActiveTab('info')"  class="">
+				<md-icon md-svg-src="assets/img/icons/games.svg" class="groupActionButton white"></md-icon>
+				{{vm.tournament.gametype}}
+			</div>
+		</div>
+		
+		
+	</div>
+<div class="container-fluid user form">
+
+	<!-- <div class="row" ng-if="vm.user.role == 'admin' && vm.actionType != 'editGame'">
+		<div class="col-md-12">
+			<button class="customButton bg-green white" ui-sref="editGame({ gameId: vm.tournament._id })" title="edit tournament">
+			    Edit tournament
+			</button>
+		</div>
+	</div> -->
+
+	<!-- tournament form -->
+	<div>
+
+		<form class="fullPageForm"
+			ng-submit="vm.submitGameForm(vm.tournament, vm.tournament._id)"
+			name="vm.gameForm"
+			role="form"
+			id="tournament"
+			novalidate
+		>
+
+			<div ng-if="vm.actionType != 'createGame'" class="row hidden">
+				<label for="tournament-id" class="col-md-5">ID</label>
+				<div class="col-md-5">
+					<input
+						type="text"
+						ng-model="vm.tournament._id"
+						ng-disabled="'always'"
+						name="tournament-id"
+						id="tournament-id"
+						autocomplete="off"
+						placeholder="tournament ID"
+					>
+				</div>
+			</div>
+			<br>
+			<div class="row">
+				
+				<div class="col-xs-8">
+					<md-input-container class="md-block" flex-gt-sm>
+						<label>Give your tournament a name</label>
+						<input ng-model="vm.tournament.name"
+							   ng-disabled="vm.actionType == 'displayGame'">
+					</md-input-container>
+					<!-- <input
+						type="text"
+						ng-model="vm.tournament.name"
+						ng-disabled="vm.actionType == 'displayGame'"
+						name="gameNane"
+						id="gameNane"
+						autocomplete="off"
+						placeholder="Give your tournament a name"> -->
+				</div>
+				
+				<div class="col-xs-4">
+					<md-input-container class="md-block" flex-gt-sm>
+						<label>Host</label>
+						<input ng-model="vm.tournament.host"
+								ng-disabled="vm.actionType == 'displayGame'">
+					</md-input-container>
+				</div>
+						
+				<div class="col-xs-12">
+					<md-input-container flex-gt-md="30">
+						<label>Tournament Time</label>
+						<!-- <input type="datetime-local" id="gameTime" ng-model="vm.tournament.time"
+								name="gameTime" 
+								min="{{vm.today}}" max="2025-06-14T00:00"> -->
+						<input mdc-datetime-picker date="true" time="true" type="text" id="time" short-time="true"
+								show-todays-date click-outside-to-close="true"
+								placeholder="Time" auto-ok="true"
+								min-date="minDate" minute-steps="1"
+								format="hh:mm a"
+								ng-change="vm.saveChange()"
+								ng-model="vm.tournament.time"
+								ng-disabled="vm.actionType == 'displayGame'">
+								
+					</md-input-container>
+				</div>	
+				<div class="col-xs-6">
+					<md-input-container class="gameSelectBox">
+						<label>Tournament types</label>
+						<md-select ng-model="vm.tournament.gameType"
+									md-on-close="vm.clearSearchTerm()"
+									data-md-container-class="selectdemoSelectHeader"
+									ng-disabled="vm.actionType == 'displayGame'"
+									>
+							<md-select-header class="demo-select-header">
+							<input ng-model="vm.searchTerm"
+									type="search"
+									placeholder="Search for a tournament type.."
+									class="demo-header-searchbox md-text">
+							</md-select-header>
+							<md-optgroup label="tournament types">
+							<md-option ng-value="type.name" ng-repeat="type in vm.gameTypes | filter:searchTerm"
+								ng-click="vm.selectGameType(type.name)">{{type.name}}
+							</md-option>
+							</md-optgroup>
+						</md-select>
+					
+					
+					
+					</md-input-container>
+				</div>		
+				<div class="col-xs-6">
+					<md-input-container class="gameSelectBox">
+						<label>Platfrom types</label>
+						<md-select ng-model="vm.tournament.platformType"
+									md-on-close="vm.clearSearchTerm()"
+									data-md-container-class="selectdemoSelectHeader"
+									ng-disabled="vm.actionType == 'displayGame'"
+									>
+							<md-select-header class="demo-select-header">
+							<input ng-model="vm.searchTerm"
+									type="search"
+									placeholder="Search for a platform type.."
+									class="demo-header-searchbox md-text">
+							</md-select-header>
+							<md-optgroup label="platform types">
+							<md-option ng-value="type.name" ng-repeat="type in vm.platforms | filter:searchTerm"
+								ng-click="vm.selectPlatformType(type.name)">{{type.name}}
+							</md-option>
+							</md-optgroup>
+						</md-select>
+					
+					
+					
+					</md-input-container>
+				</div>		
+				
+			</div>
+			<br>
+			<div class="row" ng-if="vm.actionType != 'displayGame'">
+				
+				<div class="col-xs-6">
+					<!--<users-select-directive userlist="vm.tournament.players"></users-select-directive>-->
+					<md-input-container class="full-width">
+						<label>add player</label>
+						<md-select ng-model="vm.selectedPlayer"
+									md-on-close="vm.clearSearchTerm()"
+									data-md-container-class="selectdemoSelectHeader"
+									>
+							<md-select-header class="demo-select-header">
+							<input ng-model="vm.searchTerm"
+									type="search"
+									placeholder="Search for a user.."
+									class="demo-header-searchbox md-text">
+							</md-select-header>
+							<md-optgroup label="users">
+							<md-option ng-value="user._id" ng-repeat="user in vm.optionalPlayers | filter:searchTerm"
+								ng-click="vm.addPlayer(user)">{{user.userName}}
+							</md-option>
+							</md-optgroup>
+						</md-select>
+					</md-input-container>
+					<!-- <select ng-options="user as user.userName for user in vm.optionalPlayers" 
+						ng-model="user" ng-change="vm.addPlayer(user)">
+					</select> -->
+				</div>
+				
+			</div>
+			<br>
+			<div class="row">
+				<label class="col-xs-5">Players</label>
+				<div class="col-xs-7">
+					<div class="row" ng-repeat="player in vm.tournament.players">
+						<div class="col-xs-9">
+							<a ui-sref="displayUser({ userId: player.userid })">
+								{{player.userName}}
+							</a>
+								
+						</div>
+						<div class="col-xs-2 " >
+							<md-icon md-svg-src="assets/img/icons/remove.svg" class="groupActionButton" ng-click="vm.removePlayer($index)"></md-icon>
+							<!-- <button ng-if="vm.actionType == 'editGame'" ng-click="vm.removePlayer($index)">X</button> -->
+						</div>
+					</div>
+					
+				</div>
+			</div>
+			<hr>
+			<div class="row" ng-if="vm.actionType != createGame">
+				<label class="col-xs-5 col-md-2">Tentative Players:</label>
+				<div class="col-xs-7 col-md-10">
+					<div class="row">
+						<div class="col-xs-12 col-md-2 d-flex between" ng-repeat="player in vm.tournament.optionalplayers" >
+							<a ui-sref="displayUser({ userId: player.userid })">
+								{{player.userName}}
+							</a>
+							<md-icon md-svg-src="assets/img/icons/remove.svg" class="groupActionButton" ng-click="vm.removeFromOptionalPLayers()"></md-icon>
+							<!-- <button ng-if="player.userName == vm.user.userName" ng-click="vm.removeFromOptionalPLayers()">X</button>	 -->
+						</div>
+						
+					</div>
+					
+				</div>
+			</div>
+			<hr>
+			<div class="row" ng-if="vm.actionType != createGame">
+				<div class="col-xs-12 col-md-2">
+					<label>Optional Times: </label>
+					
+				</div>
+				<div class="col-xs-12 col-md-10">
+					<div class="row tabbleRow" ng-repeat="time in vm.tournament.timeoptions" ng-if="time.players.length > 0">
+						<div class="col-xs-5 col-md-2" >
+							<span class="timeOption" ng-click="vm.addPlayerToTimeOption(time)">
+								{{time.date | date:'dd-MM-yy H:mm'}}
+
+							</span>
+						</div>
+						<div class="col-xs-7">
+							<div ng-repeat="player in time.players" class="d-flex between">
+								<span>{{player.userName}}</span>
+								<md-icon md-svg-src="assets/img/icons/remove.svg" class="groupActionButton" ng-click="vm.removePlayerfromTimeOption(time)"></md-icon>
+								<!-- <button ng-if="player.userName == vm.user.userName" ng-click="vm.removePlayerfromTimeOption(time)">X</button> -->
+							</div>
+						
+						</div>
+						
+					</div>
+					
+					
+				</div>
+			</div>
+			
+			
+			<hr>
+			
+			
+			<div class="row" ng-if="vm.tournament.winner">
+				<label class="col-xs-5"><h3>Winner:</h3></label>
+				<div class="col-xs-7">
+					<h3>{{vm.tournament.winner.userName}}	</h3> 				
+				</div>
+			</div>
+			<br>
+
+			<div class="row" ng-if="!vm.registerd">
+				<div class="col-xs-6">
+					<button	class="customButton" type="button"
+						
+						ng-click="vm.addOptionalTime()">
+						Add optional time
+						<!-- <md-icon md-svg-src="assets/img/icons/add.svg" class="groupActionButton"></md-icon> -->
+					</button>
+				</div>
+				<div class="col-xs-6 optionalTime">
+						<input type="datetime-local" id="gametimeOption" name="gametimeOption" ng-model="vm.timeOption"
+						min="2019-07-01T00:00:00" max="2030-12-31T00:00:00" />
+						
+				</div>
+				
+				
+			</div>
+			
+			<br>
+			<div class="row" ng-if="vm.actionType == 'editGame'">
+				<div class="col-xs-5">select winner</div>
+				<div class="col-xs-7">
+					<md-input-container>
+						<label>Players</label>
+						<md-select ng-model="vm.selectedWinner"
+									md-on-close="vm.clearSearchTerm()"
+									data-md-container-class="selectdemoSelectHeader"
+									>
+							<md-select-header class="demo-select-header">
+							<input ng-model="vm.searchTerm"
+									type="search"
+									placeholder="Search for a user.."
+									class="demo-header-searchbox md-text">
+							</md-select-header>
+							<md-optgroup label="users">
+							<md-option ng-value="user._id" ng-repeat="user in vm.tournament.players |
+								filter:searchTerm"
+								ng-click="vm.selectWinner(user)">{{user.userName}}
+							</md-option>
+							</md-optgroup>
+						</md-select>
+					</md-input-container>
+					<!-- <select ng-options="user as user.userName for user in vm.tournament.players" 
+						ng-model="user" ng-change="vm.selectWinner(user)">
+					</select> -->
+				</div>
+				
+			</div>
+
+			
+			<div class="row">
+				<div class="col-md-5 col-md-offset-5">
+					<button
+						class="customButton bg-green white"
+						type="submit"
+						
+						ng-if="vm.actionType == 'createGame' || vm.actionType == 'createGroupGame'"
+					>
+						Create
+					</button>
+
+					<button
+						class="customButton"
+						type="submit"
+						ng-disabled="vm.gameForm.$invalid"
+						ng-if="vm.actionType == 'editGame'"
+					>
+						Save
+					</button>
+					
+					
+				</div>
+			</div>
+		</form>
+		<div class="buttons d-flex arround" ng-if="vm.actionType == 'loadGame' || vm.actionType == 'displayGame'">
+			<div ng-if="!vm.registerd">
+					<button	class="customButton bg-green white" ng-click="vm.registerToGame()">Register</button>
+			</div>
+			<div ng-if="!vm.isOptional">
+				<button class="customButton bg-blue white" ng-click="vm.addToOptionalPLayers()" ng-if="!vm.registerd">Tentative</button>
+			</div>
+			<div ng-if="vm.registerd">
+				<button class="customButton bg-black white" ng-click="vm.unRegisterToGame()">Unregister</button>
+			</div>
+		</div>
+		
+		
+			
+		
+	</div>
+</div>
+<div class="bottomToolBar" ng-if="vm.showBottomToolBar && vm.tournament.host == vm.user.userName">
+	
+	<md-fab-toolbar md-direction="left" class="userToolBar bg-black" ng-if="vm.actionType != 'editGame'">
+		<md-fab-trigger>
+			<md-button aria-label="Add..." class="text-right"><md-icon md-svg-src="assets/img/icons/threeLines.svg" class="white"></md-icon></md-button>
+		</md-fab-trigger>
+		
+		<md-toolbar class="">
+			<md-fab-actions class="d-flex arround">
+				<md-button aria-label="Chat" ng-click="" class="" >
+					<md-icon md-svg-src="assets/img/icons/edit.svg" ui-sref="editGame({ gameId: vm.tournament._id })" class="blue"></md-icon>
+				</md-button>
+			
+				<md-button aria-label="group chat" ng-click="">
+					<md-icon md-svg-src="assets/img/icons/chat.svg" class="blue"></md-icon>
+				</md-button>
+				<md-button aria-label="Invite to group" ng-click="" class="blue">
+					<md-icon md-svg-src="assets/img/icons/baseline-person_add-24px.svg"></md-icon>
+				</md-button>
+				<md-button aria-label="challenge for battle" ng-click="">
+					<md-icon md-svg-src="assets/img/icons/shield.svg" class="blue"></md-icon>
+				</md-button>
+			</md-fab-actions>
+		</md-toolbar>
+	</md-fab-toolbar>
+	<!-- <button class="customButton bg-green white" ui-sref="editGroup({ groupId: vm.group._id })" title="edit group">
+		Edit group
+	</button> -->
+	
+</div>

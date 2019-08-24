@@ -78,12 +78,19 @@
           if (result.value) {
             $rootScope.$broadcast('user:logout');
             $rootScope.user = null;
-            Swal.fire(
+            Swal.fire({
+              position: 'center',
+              type: 'success',
+              title: 'Have a great day, see you soon!',
+              showConfirmButton: false,
+              timer: 1200
+            });
+            // Swal.fire(
           
-              'loggedout!',
-              'Have a great day, see you soon',
-              'success'
-            )
+            //   'loggedout!',
+            //   'Have a great day, see you soon',
+            //   'success'
+            // )
           }
         })
         // var dialog = ngDialog.open({
@@ -106,6 +113,7 @@
 
       $scope.$on('user:logout', function() {
         vm.user = null;
+        localStorage.remove('activeTab');
       });
 
   }

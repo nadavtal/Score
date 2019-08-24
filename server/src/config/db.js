@@ -6,16 +6,51 @@
   var config = require('./config.js');
   var ENV = process.env.NODE_ENV || 'development';
   var DB_URI = config.db[ENV].url;
-  console.log(DB_URI)
+//   const path = require('path');
+//   const crypto = require('crypto');
+//   const multer = require('multer');
+//   const GridFsStorage = require('multer-gridfs-storage');
+//   const Grid = require('gridfs-stream');
+//   const methodOverride = require('method-override');
+//   console.log(DB_URI);
+  
+//   let gfs;
 
   // set mongoose.Promise to native ES6 Promise implementation
   mongoose.Promise = Promise;
-
+  var conn = mongoose.createConnection(DB_URI);
   mongoose.connect(DB_URI);
 
   // connection events
   mongoose.connection.on('connected', () => {
       console.log(`Mongoose connected to ${DB_URI}`);
+
+      //Init stream
+    //   var gfs = Grid(conn.db, mongoose.mongo);
+    //   gfs.collection('uploads');
+
+    //   //Create storage engine
+    //   const storage = new GridFsStorage({
+    //     url: DB_URI,
+    //     file: (req, file) => {
+    //       return new Promise((resolve, reject) => {
+    //         crypto.randomBytes(16, (err, buf) => {
+    //           if (err) {
+    //             return reject(err);
+    //           }
+    //           const filename = buf.toString('hex') + path.extname(file.originalname);
+    //           const fileInfo = {
+    //             filename: filename,
+    //             bucketName: 'uploads'
+    //           };
+    //           resolve(fileInfo);
+    //         });
+    //       });
+    //     }
+    //   });
+    //   const upload = multer({ storage });
+    //   console.log(upload);
+    //   module.exports = upload;
   });
   
 
@@ -40,8 +75,9 @@
 
         });
     }
-    // removeCollection('games');
-    // removeCollection('messages');
+    // removeCollection('users');
+    // removeCollection('uploads');
+    // removeCollection('uploads.files');
   });
 
   // for nodemon restarts

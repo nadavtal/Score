@@ -21,15 +21,15 @@
         return {
             templateUrl: 'app/_shared/directives/accountDirective/accountDirective.htm',
             link: function (scope, element, attributes) {
-                console.log(scope)
-                console.log(attributes);
+                // console.log(scope)
+                // console.log(attributes);
                
 
                 
                 scope.goTo = function(){
                     
                     if(scope.account.platform == 'Clash'){
-                        console.log('clicked')
+                        // console.log('clicked')
                         // scope.link = 'clashUser({ usertag: '+scope.account.accountId+' })'
                         $state.go('clashUser({ usertag: '+scope.account.accountId+' })')
                         

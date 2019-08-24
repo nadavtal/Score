@@ -3,6 +3,7 @@
 	<div class="buttons d-flex between">
 		<div class="userContentTitle">
 			<h3 class="">{{vm.user.userName}}'s Friends</h3>
+			<md-button aria-label="Add..." ng-click="vm.removeAllFriends()"><md-icon md-svg-src="assets/img/icons/remove.svg"></md-icon></md-button>
 		</div> 
 		<div class="">
 			<md-fab-toolbar md-direction="left" class="componentToolBox" ng-if="vm.isUser">
@@ -30,7 +31,7 @@
 
 	</div>
 	<!-- header -->
-	<div class="row table-header">
+	<!-- <div class="row table-header">
 		<div class="col-xs-2">logo</div>
 		<div class="col-xs-2">Name</div>
 		<div class="col-xs-5">Shared groups</div>
@@ -39,16 +40,20 @@
 		
 		
 		<div class="col-xs-3">Actions</div>
-	</div>
+	</div> -->
 
 	<!-- table body -->
 	<div class="table-body game-list">
 		<div
 			class="list-item row"
-			ng-repeat="user in vm.user.friends">
+			ng-repeat="user in vm.friends">
 
-			<a ui-sref="displayUser({ userId: user.userId })" title="display user">
-				<div class="col-xs-2"><md-icon md-svg-src="assets/img/icons/profile.svg" class="groupLogo"></md-icon></div>
+			<a ui-sref="displayUser({ userId: user._id })" title="display user">
+				
+				<div class="col-xs-2">
+					<img class="list-item--profileImg" src="http://localhost:5000/api/v1/image/{{user.profileImageFileName}}" alt="" ng-if="user.profileImageFileName">
+					<md-icon md-svg-src="assets/img/icons/profile.svg" class="groupLogo" ng-if="!user.profileImageFileName"></md-icon>
+				</div>
 				<div class="col-xs-2">{{user.userName}}</div>
 				
 				
@@ -58,8 +63,8 @@
 			</div>
 			<div class="col-xs-3 d-flex">
 				<!-- <md-icon md-svg-src="assets/img/icons/edit.svg" class="groupActionButton" ui-sref="editGroup({ groupId: group._id })"></md-icon> -->
-				<md-icon md-svg-src="assets/img/icons/chat.svg" class="groupActionButton purple" ng-click="vm.sendMessageToUser(user)"></md-icon>
-				<md-icon md-svg-src="assets/img/icons/remove.svg" class="groupActionButton red" ng-click="vm.removeFriend($index)"></md-icon>
+				<md-icon md-svg-src="assets/img/icons/chat.svg" class="groupActionButton purple" ng-click="vm.sendMessageToUser(user)" ng-if="vm.isUser"></md-icon>
+				<md-icon md-svg-src="assets/img/icons/remove.svg" class="groupActionButton red" ng-click="vm.removeFriend($index, user)" ng-if="vm.isUser"></md-icon>
 				<!-- <a class="editButton" ui-sref="editGroup({ groupId: group._id })" class="icon" title="edit group">
 					Edit 
 				</a> -->
