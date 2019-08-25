@@ -19,12 +19,11 @@
       controller: GameListCtrl
     });
 
-    GameListCtrl.$inject = ['$scope', '$log', 'QueryService', 'gamesService', 'localStorage', '$stateParams', 'ngDialog', '$state', 'usersService'];
+    GameListCtrl.$inject = ['$scope', '$log', 'QueryService', 'gamesService', 'localStorage', '$stateParams', 'ngDialog', '$state', 'usersService', 'tournamentsService'];
 
-  function GameListCtrl($scope,$log, QueryService, gamesService, localStorage, $stateParams, ngDialog, $state, usersService) {
+  function GameListCtrl($scope,$log, QueryService, gamesService, localStorage, $stateParams, ngDialog, $state, usersService, tournamentsService) {
     var vm = this;
-    vm.createGame = createNewGame;
-    vm.createNewTournament = createNewTournament;
+    
     
     
     vm.removeGame = function(index, gameId){
@@ -41,38 +40,53 @@
       
       vm.currentUser = localStorage.get('user');
       var userId = vm.userId || $stateParams.userId;
-      gamesService.getAllGamesFromDataBase()
-        .then((data) => {
-          console.log(data)
-        });
+      var groupId = vm.groupId || $stateParams.groupId
+      // gamesService.getAllGamesFromDataBase()
+      //   .then((data) => {
+      //     console.log(data)
+      //   });
       if(userId){
+        vm.createGame = createNewGame;
+        vm.createTournament = createNewTournament;
+        vm.createNewTournament = createNewTournament;
         
-        console.log('getting games of user:' , userId)
         usersService.getUser(userId)
           .then((user) => {
             vm.user = user.data.data
             if(vm.currentUser._id == vm.user._id){
-              vm.isUser = true
+              vm.isUser = true;
+              console.log('vm.isUser: ', vm.isUser)
             };
             gamesService.getGamesByUserID(userId)
               .then((games) => {
                 vm.games = games.data.data;
                 console.log(vm.games)
+              });
+            tournamentsService.getAllTournaments()
+              .then(tournaments => {
+                vm.tournaments = tournaments.data.data
+                console.log('vm.tournaments: ', vm.tournaments);
+              });
+            tournamentsService.getTournamentsByUserID(vm.user._id)
+              .then(tournaments => {
+                vm.tournaments = tournaments.data.data
+                console.log('vm.tournaments: ', vm.tournaments);
               })
+
           })
 
-      } else if ($stateParams.groupId){
-        console.log('getting games of group:' , $stateParams.groupId)
-          // getGamesOfGroupId($stateParams.groupId);
-          vm.createGame = createNewGroupGame;
-      }
-      
-      
+      } 
+      else if (groupId){
+          
+        vm.createGame = createNewGroupGame;
+        vm.createTournament = createNewGroupTournament;
+        console.log('groupid ', vm)
+      }      
       else{
-
-        console.log('getting all games')
-        // getGames();
+        console.log('no userId or groupId')
+        
         vm.createGame = createNewGame;
+        vm.createTournament = createNewTournament;
       }
       
 
@@ -89,13 +103,17 @@
     }
 
     function createNewTournament(){
-      // console.log('creating new game');
+      console.log('creating new tournament');
       $state.go('createTournament');
       
     }
 
-    function createNewGroupGame(groupId){
+    function createNewGroupGame(){
       $state.go('createGroupGame', {'groupId': $stateParams.groupId});
+    }
+    function createNewGroupTournament(){
+      console.log('group tournament')
+      $state.go('createGroupTournament', {'groupId': $stateParams.groupId});
     }
     
 

@@ -106,6 +106,7 @@
   // controllers
   var usersCtrl = require('./user/users.controller.js');
   var gamesCtrl = require('./game/game.controller.js');
+  var tournamentsCtrl = require('./tournament/tournament.controller.js');
   var groupsCtrl = require('./group/group.controller.js');
   var clanCtrl = require('./clan/clan.controller.js');
   var clashUserCtrl = require('./clashUSer/clashUSer.controller.js');
@@ -162,6 +163,18 @@
   router.post('/games/:gameId', gamesCtrl.removeGame); // remove game
   router.get('/games/user/:userId', gamesCtrl.getGamesByUserId); // get games by user
   router.get('/games/group/:groupId', gamesCtrl.getGamesByGroupId); // get games by group
+
+    /**
+   * Tournaments
+   */
+  router.post('/tournaments', tournamentsCtrl.createTournament); // create new game
+  router.get('/tournaments/', tournamentsCtrl.getAllTournaments); // get all tournaments
+  router.get('/tournaments/:tournamentId', tournamentsCtrl.getTournament); // get game
+  router.put('/tournaments/:tournamentId', tournamentsCtrl.updateTournament); // update game
+  router.post('/tournaments/:tournamentId', tournamentsCtrl.removeTournament); // remove game
+  router.get('/tournaments/user/:userId', tournamentsCtrl.getTournamentsByUserId); // get tournaments by user
+  router.get('/tournaments/group/:groupId', tournamentsCtrl.getTournamentsByGroupId); // get tournaments by group
+
   /**
    * Groups
    */

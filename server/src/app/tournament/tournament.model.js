@@ -3,19 +3,15 @@
   'use strict';
 
   /**
-   * Define Game model
+   * Define tournament model
    */
   var mongoose = require('mongoose');
   var Schema = mongoose.Schema;
   var ObjectId = Schema.ObjectId;
   var mongoosePaginate = require('mongoose-paginate');
   
-
-  var User = require('../user/user.model')
-  // var userSchema = new User
-  // console.log(userSchema)
   /**
-   * Game schema definition
+   * tournament schema definition
    */
   var timeOptionSchema = new Schema({
     date: Date,
@@ -27,47 +23,43 @@
   })
 
 
-  var gameSchema = new Schema({
+  var tournamentSchema = new Schema({
     name: {
       type: String,
-      
-      
     },
-    gameType: {
+    manager: {
       type: String,
       required: true,
-     
     },
     platformType: {
       type: String,
       required: true,
      
     },
-    players: [{
+    maxPlayers: Number,
+    playerPerBattle: Number,
+    rounds: Number,
+    buyIn: Number,
+    placesPaid: Number,
+    winsToWinRound: Number,
+    winner: {
       userName: String,
       userId: ObjectId
-      
+    },
+    registered: [{
+      userName: String,
+      userId: ObjectId
     }],
     optionalPlayers: [{
       userName: String,
-      userId: ObjectId
-      
+      userId: ObjectId      
     }],
     winner: {
       userName: String,
       userId: ObjectId
-      
     },
     time: {
       type: Date,
-      
-      
-    },
-
-    timeoptions: [timeOptionSchema],
-
-    host: {
-      type: String,
       required: true,
     },
     group: ObjectId,
@@ -78,23 +70,24 @@
     updatedAt: {
       type: Date
     },
+    tree: String
   });
 
   /**
    * On every save...
    */
-  gameSchema.pre('save', function(next) {
-    var game = this;
+  tournamentSchema.pre('save', function(next) {
+    var tournament = this;
     next();
     
   });
 
-  gameSchema.pre('findOneAndUpdate', function(next) {
-    var game = this;
+  tournamentSchema.pre('findOneAndUpdate', function(next) {
+    var tournament = this;
 
     // update updateAt value
     var currentDate = new Date();
-    game.update({}, { $set: { updatedAt: currentDate } });
+    tournament.update({}, { $set: { updatedAt: currentDate } });
     next();
   });
 
@@ -102,7 +95,7 @@
   /**
    * Schema plugins
    */
-  gameSchema.plugin(mongoosePaginate);
+  tournamentSchema.plugin(mongoosePaginate);
 
   /**
    * Schema methods
@@ -110,10 +103,10 @@
 
 
   // create model
-  var Game = mongoose.model('Game', gameSchema);
+  var tournament = mongoose.model('tournament', tournamentSchema);
 
   // public
-  module.exports = Game;
+  module.exports = tournament;
 
 
 })();

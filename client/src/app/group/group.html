@@ -23,199 +23,196 @@
 	</div>
 	
 </div>
-<div class="container-fluid group form">
+
 	
 
-	<h3 class="">{{vm.group.groupName}}</h3>
-		<!-- <div class="userTabs d-flex arround" >
-			<div ng-click="vm.changeActiveTab('info')" ng-class="vm.activeTab == 'info'? 'active' : ''" class="">Info</div>
-			<div ng-click="vm.changeActiveTab('games')" ng-class="vm.activeTab == 'games'? 'active' : ''" class="">Games</div>
-			<div ng-click="vm.changeActiveTab('stats')" ng-class="vm.activeTab == 'stats'? 'active' : ''" class="">Stats</div>
-		</div> -->
+	
+		
 	<div class="userContentArea">
 		<div class="createGroupForm" ng-class="vm.activeTab == 'info'? 'block' : 'hidden' " >
-			<form
-				ng-submit="vm.submitGroupForm(vm.group, vm.group._id)"
-				name="vm.groupForm"
-				role="form"
-				id="group"
-				novalidate
-			>
-			
-				<div ng-if="vm.actionType != 'createGroup'" class="row hidden">
-					<label for="group-id" class="col-md-5">ID</label>
-					<div class="col-md-5">
-						<input
-							type="text"
-							ng-model="vm.group._id"
-							ng-disabled="'always'"
-							name="group-id"
-							id="group-id"
-							autocomplete="off"
-							placeholder="group ID"
-						>
+			<div class="container-fluid group form">
+				<h3 class="">{{vm.group.groupName}}</h3>
+				<form
+					ng-submit="vm.submitGroupForm(vm.group, vm.group._id)"
+					name="vm.groupForm"
+					role="form"
+					id="group"
+					novalidate
+				>
+				
+					<div ng-if="vm.actionType != 'createGroup'" class="row hidden">
+						<label for="group-id" class="col-md-5">ID</label>
+						<div class="col-md-5">
+							<input
+								type="text"
+								ng-model="vm.group._id"
+								ng-disabled="'always'"
+								name="group-id"
+								id="group-id"
+								autocomplete="off"
+								placeholder="group ID"
+							>
+						</div>
 					</div>
-				</div>
-
-				<div class="row" ng-if="vm.actionType != 'displayGroup'"> 
-					<label for="grouptype" class="col-xs-5">Group name</label>
-					<div class="col-xs-7">
-						<input
-							type="text"
-							ng-model="vm.group.groupName"
-							
-							name="groupname"
-							id="groupname"
-							autocomplete="off"
-							placeholder="groupname"
-							
-						>
-					</div>
-					
-				</div>
-				<br>
-				<div class="row">
-					<label for="grouptype" class="col-xs-5">Group Manager: </label>
-					<div class="col-xs-7">
-						<a ui-sref="displayUser({ userId: vm.group.groupManager._id })">
-						{{vm.group.groupManager.userName}}
-						</a>
-					</div>
-					
-				</div>
-				<br>
-				<div class="row" ng-if="vm.actionType == 'editGroup'">
-					<label  class="col-xs-5">change manager:</label>
-					<div class="col-xs-7">
-							<md-input-container>
-								<label>Members</label>
-								<md-select ng-model="vm.selectedMember"
-											md-on-close="vm.clearSearchTerm()"
-											data-md-container-class="selectdemoSelectHeader"
-											>
-									<md-select-header class="demo-select-header">
-									<input ng-model="vm.searchTerm"
-											type="search"
-											placeholder="Search for a user.."
-											class="demo-header-searchbox md-text">
-									</md-select-header>
-									<md-optgroup label="users">
-									<md-option ng-value="user._id" ng-repeat="user in vm.group.members |
-										filter:searchTerm"
-										ng-click="vm.selectManager(user)">{{user.userName}}
-									</md-option>
-									</md-optgroup>
-								</md-select>
-							</md-input-container>
-							<!-- <select ng-options="user as user.userName for user in vm.group.members" 
-								ng-model="user" ng-change="vm.selectManager(user)" >
-							</select> -->
-					</div>
-				</div>
-				<br>
-				<div class="row">
-					<label class="col-xs-5">Members</label>
-					<div class="col-xs-7 createGroupForm__members" >
-						<div class="row" ng-repeat="member in vm.group.members">
-							<div class="col-xs-9">
-								<a ui-sref="displayUser({ userId: member.userId })">
-									{{member.userName}}
-								</a>
-									
-							</div>
-							<div class="col-xs-2">
-								<md-icon md-svg-src="assets/img/icons/remove.svg" 
-									class="groupActionButton" 
-									ng-click="vm.removePlayer($index)"
-									ng-if="vm.actionType == 'editGroup'"
-									aria-label="remove from group">
-								</md-icon>
+	
+					<div class="row" ng-if="vm.actionType != 'displayGroup'"> 
+						<label for="grouptype" class="col-xs-5">Group name</label>
+						<div class="col-xs-7">
+							<input
+								type="text"
+								ng-model="vm.group.groupName"
 								
-							</div>
+								name="groupname"
+								id="groupname"
+								autocomplete="off"
+								placeholder="groupname"
+								
+							>
 						</div>
 						
 					</div>
-				</div>
-				
-				
-				<br>
-				<div class="row" ng-if="vm.actionType != 'displayGroup'">
-					<div class="col-xs-5">add member</div>
-					<div class="col-xs-7">
-							
-							
+					<br>
+					<div class="row">
+						<label for="grouptype" class="col-xs-5">Group Manager: </label>
+						<div class="col-xs-7">
+							<a ui-sref="displayUser({ userId: vm.group.groupManager._id })">
+							{{vm.group.groupManager.userName}}
+							</a>
+						</div>
+						
+					</div>
+					<br>
+					<div class="row" ng-if="vm.actionType == 'editGroup'">
+						<label  class="col-xs-5">change manager:</label>
+						<div class="col-xs-7">
 								<md-input-container>
-								<label>Users</label>
-								<md-select ng-model="vm.selectedUsers"
-											md-on-close="vm.clearSearchTerm()"
-											data-md-container-class="selectdemoSelectHeader"
-											>
-									<md-select-header class="demo-select-header">
-									<input ng-model="vm.searchTerm"
-											type="search"
-											placeholder="Search for a user.."
-											class="demo-header-searchbox md-text">
-									</md-select-header>
-									<md-optgroup label="users">
-									<md-option ng-value="user._id" ng-repeat="user in vm.users |
-										filter:searchTerm"
-										ng-click="vm.addPlayer(user)">{{user.userName}}
-									</md-option>
-									</md-optgroup>
-								</md-select>
+									<label>Members</label>
+									<md-select ng-model="vm.selectedMember"
+												md-on-close="vm.clearSearchTerm()"
+												data-md-container-class="selectdemoSelectHeader"
+												>
+										<md-select-header class="demo-select-header">
+										<input ng-model="vm.searchTerm"
+												type="search"
+												placeholder="Search for a user.."
+												class="demo-header-searchbox md-text">
+										</md-select-header>
+										<md-optgroup label="users">
+										<md-option ng-value="user._id" ng-repeat="user in vm.group.members |
+											filter:searchTerm"
+											ng-click="vm.selectManager(user)">{{user.userName}}
+										</md-option>
+										</md-optgroup>
+									</md-select>
 								</md-input-container>
+								<!-- <select ng-options="user as user.userName for user in vm.group.members" 
+									ng-model="user" ng-change="vm.selectManager(user)" >
+								</select> -->
+						</div>
+					</div>
+					<br>
+					<div class="row">
+						<label class="col-xs-5">Members</label>
+						<div class="col-xs-7 createGroupForm__members" >
+							<div class="row" ng-repeat="member in vm.group.members">
+								<div class="col-xs-9">
+									<a ui-sref="displayUser({ userId: member.userId })">
+										{{member.userName}}
+									</a>
+										
+								</div>
+								<div class="col-xs-2">
+									<md-icon md-svg-src="assets/img/icons/remove.svg" 
+										class="groupActionButton" 
+										ng-click="vm.removePlayer($index)"
+										ng-if="vm.actionType == 'editGroup'"
+										aria-label="remove from group">
+									</md-icon>
+									
+								</div>
+							</div>
 							
-						<!--<users-select-directive userlist="vm.group.players"></users-select-directive>-->
-						
-						<!-- <select ng-options="user as user.userName for user in vm.users" 
-							ng-model="user" ng-change="vm.addPlayer(user)">
-						</select> -->
+						</div>
 					</div>
 					
-				</div>
-
-				<div class="row" ng-if="vm.actionType == 'createGroup'">
-					<div class="col-xs-5">select manager</div>
-					<div class="col-xs-7">
-						<select name="platform" id="platform" ng-model="vm.groupManager">
-							<option value="">---Please select---</option> <!-- not selected / blank option -->
-							<option ng-click="vm.selectManager(user)" ng-repeat="user in vm.group.members" value="{{user}}">{{user.userName}}</option> <!-- interpolation -->
-							
-						</select>
-						<!--<select ng-options="user as user.username for user in vm.group.members" 
-							ng-model="user" ng-change="vm.selectManager(user)">
-						</select>-->
-					</div>
 					
-				</div>
-
-				
-				<div class="row">
-					<div class="col-md-5 col-md-offset-5">
-						<button
-							class="customButton bg-green white"
-							type="submit"
-							ng-disabled="vm.groupForm.$invalid"
-							ng-if="vm.actionType == 'createGroup'"
-						>
-							Create
-						</button>
-
-						<button
-							class="customButton bg-green white"
-							type="submit"
-							ng-disabled="vm.groupForm.$invalid"
-							ng-if="vm.actionType == 'editGroup'"
-						>
-							Save
-						</button>
-						
+					<br>
+					<div class="row" ng-if="vm.actionType != 'displayGroup'">
+						<div class="col-xs-5">add member</div>
+						<div class="col-xs-7">
+								
+								
+									<md-input-container>
+									<label>Users</label>
+									<md-select ng-model="vm.selectedUsers"
+												md-on-close="vm.clearSearchTerm()"
+												data-md-container-class="selectdemoSelectHeader"
+												>
+										<md-select-header class="demo-select-header">
+										<input ng-model="vm.searchTerm"
+												type="search"
+												placeholder="Search for a user.."
+												class="demo-header-searchbox md-text">
+										</md-select-header>
+										<md-optgroup label="users">
+										<md-option ng-value="user._id" ng-repeat="user in vm.users |
+											filter:searchTerm"
+											ng-click="vm.addPlayer(user)">{{user.userName}}
+										</md-option>
+										</md-optgroup>
+									</md-select>
+									</md-input-container>
+								
+							<!--<users-select-directive userlist="vm.group.players"></users-select-directive>-->
+							
+							<!-- <select ng-options="user as user.userName for user in vm.users" 
+								ng-model="user" ng-change="vm.addPlayer(user)">
+							</select> -->
+						</div>
 						
 					</div>
-				</div>
-			</form>
-			
-			
+	
+					<div class="row" ng-if="vm.actionType == 'createGroup'">
+						<div class="col-xs-5">select manager</div>
+						<div class="col-xs-7">
+							<select name="platform" id="platform" ng-model="vm.groupManager">
+								<option value="">---Please select---</option> <!-- not selected / blank option -->
+								<option ng-click="vm.selectManager(user)" ng-repeat="user in vm.group.members" value="{{user}}">{{user.userName}}</option> <!-- interpolation -->
+								
+							</select>
+							<!--<select ng-options="user as user.username for user in vm.group.members" 
+								ng-model="user" ng-change="vm.selectManager(user)">
+							</select>-->
+						</div>
+						
+					</div>
+	
+					
+					<div class="row">
+						<div class="col-md-5 col-md-offset-5">
+							<button
+								class="customButton bg-green white"
+								type="submit"
+								ng-disabled="vm.groupForm.$invalid"
+								ng-if="vm.actionType == 'createGroup'"
+							>
+								Create
+							</button>
+	
+							<button
+								class="customButton bg-green white"
+								type="submit"
+								ng-disabled="vm.groupForm.$invalid"
+								ng-if="vm.actionType == 'editGroup'"
+							>
+								Save
+							</button>
+							
+							
+						</div>
+					</div>
+				</form>
+			</div>
 		</div>
 		<div ng-class="vm.activeTab == 'games'? 'block' : 'hidden' " >
 			
@@ -269,7 +266,7 @@
 		</md-toolbar>
 	</md-fab-toolbar>
 	
-</div>	
+	
 		
 			
 

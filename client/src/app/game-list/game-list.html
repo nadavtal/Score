@@ -6,10 +6,10 @@
 			<div class="container user-list list">
 
 				<div class="">
-					<div class="col-xs-7 userContentTitle">
+					<div class="col-xs-6 userContentTitle">
 						<h3>Games</h3>
 					</div> 
-					<div class="col-xs-4 d-flex between">
+					<div class="col-xs-6 d-flex between">
 						<md-button ng-click="vm.createGame()" aria-label="edit">
 							<md-icon md-svg-src="assets/img/icons/add.svg"></md-icon>
 						</md-button>
@@ -102,11 +102,11 @@
 		<md-tab-label>Tournaments</md-tab-label>
 		<md-tab-body>
 			<div class="container">
-				<div class="col-xs-7 userContentTitle">
+				<div class="col-xs-6 userContentTitle">
 					<h3>Tournaments</h3>
 				</div> 
-				<div class="col-xs-4 d-flex between">
-					<md-button ng-click="vm.createNewTournament()" aria-label="edit">
+				<div class="col-xs-6 d-flex between">
+					<md-button ng-click="vm.createTournament()" aria-label="edit">
 						<md-icon md-svg-src="assets/img/icons/add.svg"></md-icon>
 					</md-button>
 				
@@ -114,6 +114,33 @@
 						<md-icon md-svg-src="assets/img/icons/search.svg"></md-icon>
 					</md-button>
 					
+				</div>
+				
+				<div class="gameBlock" ng-repeat="tournament in vm.tournaments">
+					<div class="row">
+						<a ui-sref="displayTournament({ tournamentId: tournament._id, groupId: tournament.group })">
+							<div class="col-xs-2">
+								<img class="gameBlock--image" src="../../assets/img/platforms/{{tournament.platformType}}.png" alt="">
+							</div>
+							<div class="col-xs-5 gameBlock__details">
+								<h4>{{tournament.name}}</h4>
+								<div class="gameBlock__details--numMembers">
+									{{tournament.registered.length}} players
+								</div>
+			
+							</div>
+							<div class="col-xs-3">
+								{{tournament.time | date:'dd-MM-yy H:mm'}}
+							</div>
+						</a>
+						<div class="col-xs-2 d-flex">
+							<md-icon md-svg-src="assets/img/icons/edit.svg" class="groupActionButton" ui-sref="editTournament({ tournamentId: tournament._id })" 
+								ng-if="tournament.manager == vm.currentUser.userName"></md-icon>
+							<md-icon md-svg-src="assets/img/icons/remove.svg" class="groupActionButton red" ng-click="vm.removeTournament($index, tournament._id)" 
+								ng-if="vm.isUser"></md-icon>
+							
+						</div>
+					</div>
 				</div>
 			</div>
 		</md-tab-body>

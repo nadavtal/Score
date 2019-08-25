@@ -13,10 +13,10 @@
       controller: adminCtrl
     });
 
-  adminCtrl.$inject = ['$log', '$state', '$stateParams', 'platformTypesService', 'localStorage', 'platformService', 'accountsService', 
+  adminCtrl.$inject = ['$log', 'tournamentsService', 'platformTypesService', 'localStorage', 'platformService', 'accountsService', 
     'ngDialog', '$rootScope', '$scope', 'clashUserService', 'gamesService','usersService', 'groupsService','gameTypesService', 'messagesService'];
 
-  function adminCtrl($log, $state, $stateParams, platformTypesService, localStorage, platformService, accountsService, 
+  function adminCtrl($log, tournamentsService, platformTypesService, localStorage, platformService, accountsService, 
       ngDialog, $rootScope, $scope, clashUserService, gamesService, usersService, groupsService, gameTypesService, messagesService) {
     var vm = this;
     
@@ -98,6 +98,11 @@
         messagesService.getAllMessages()
           .then((messages) => {
             console.log('all messages: ', messages.data.data)
+          });
+
+        tournamentsService.getAllTournaments()
+          .then(tournaments => {
+            console.log('all tournaments: ', tournaments.data.data)
           })
 
         

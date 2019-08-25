@@ -1,5 +1,5 @@
-$battlesPerRouns: 16;
-$tournamentRoundHeader: 2rem;
+$battlesPerRouns: 8;
+$tournamentRoundHeader: 1.5rem;
 $fontSize: 1rem;
 
 $tournamentHeight: calc(100Vh - 7rem - #{$tournamentRoundHeader - $fontSize});
@@ -10,9 +10,9 @@ $battleHeight: calc((#{$tournamentHeight} / #{$battlesPerRouns }) );
     // padding: 1rem;
     // padding-top: 1rem;
     // padding-bottom: 1rem;
-    height: $tournamentHeight;
-    overflow: hidden;
-    max-height: $tournamentHeight;
+    // height: $tournamentHeight;
+    // overflow: hidden;
+    // max-height: $tournamentHeight;
     // background-color: red;
 }
 .battleDirective{
@@ -26,14 +26,17 @@ $battleHeight: calc((#{$tournamentHeight} / #{$battlesPerRouns }) );
     // box-shadow: -10px 0px 13px -7px #000000, 10px 0px 13px -7px #000000, 5px 5px 3px 0px rgba(0,0,0,0);
 
     &__user{
+        transition: all .3s;
         width: 100%;
         // height: $fontSize;
-        // padding: .5rem;
+        padding-left: .2rem;
         // background-color: rgb(210, 232, 240);
         // -webkit-box-shadow: -5px 0px 5px -7px #000000, 10px 0px 13px -7px #000000, 5px 5px 3px 0px rgba(0,0,0,0); 
 
         &--name{
+            transition: all .3s;
             font-size: 0.8rem;
+            
         }
 
         &--score{
@@ -86,8 +89,10 @@ $battleHeight: calc((#{$tournamentHeight} / #{$battlesPerRouns }) );
     width: 20%;
     float: left;
 
-    h4{
-        height: $tournamentRoundHeader;
+    &--title{
+        // height: $tournamentRoundHeader;
+        font-size: .6rem;
+        text-align: center;
     }
 }
 
@@ -138,6 +143,126 @@ $battleHeight: calc((#{$tournamentHeight} / #{$battlesPerRouns }) );
     margin-bottom: calc(#{$battleHeight} *4);
 }
 
-#tournament .numberInput{
-    // width: 3.3rem;
+.tournamentForm{
+
+    &__registered{
+        max-height: 7rem;
+        overflow: auto;
+    }
+
+    &--text{
+        // background-color: #fff;
+        border-radius: 3px;
+        border: 0;
+        box-shadow: none;
+        color: #5c6b80;
+        display: block;
+        font-family: "Open Sans", Helvetica, Arial, sans-serif;
+        font-size: 1em;
+        height: 40px;
+        line-height: 40px;
+        margin-bottom: 14px;
+        padding: 0 12px;
+        vertical-align: middle;
+        // width: 100%;
+        -webkit-transition: background-color 0.24s ease-in-out;
+        transition: background-color 0.24s ease-in-out;
+    }
+
+    &--numberInput{
+        text-align: center;
+        width: 4rem !important;
+    }
 }
+
+
+
+.object-to-animate {
+    -webkit-animation: move-the-object .5s 1;
+    -moz-animation:    move-the-object .5s 1;
+    -o-animation:      move-the-object .5s 1;
+    animation:         move-the-object .5s 1;
+  }
+
+  @-webkit-keyframes move-the-object {
+    0%   { left: 0; }
+    100% { left: 20vw; }
+  }
+  @-moz-keyframes move-the-object {
+    0%   { left: 100px; }
+    100% { left: 200px; }
+  }
+  @-o-keyframes move-the-object {
+    0%   { left: 100px; }
+    100% { left: 200px; }
+  }
+  @keyframes move-the-object {
+    0%   { left: 0; }
+    100% { left: 20vw; }
+  }
+
+  @mixin animation($animate...) {
+    $max: length($animate);
+    $animations: '';
+
+    @for $i from 1 through $max {
+        $animations: #{$animations + nth($animate, $i)};
+
+        @if $i < $max {
+            $animations: #{$animations + ", "};
+        }
+    }
+    -webkit-animation: $animations;
+    -moz-animation:    $animations;
+    -o-animation:      $animations;
+    animation:         $animations;
+}
+
+@mixin keyframes($animationName) {
+    @-webkit-keyframes #{$animationName} {
+        @content;
+    }
+    @-moz-keyframes #{$animationName} {
+        @content;
+    }
+    @-o-keyframes #{$animationName} {
+        @content;
+    }
+    @keyframes #{$animationName} {
+        @content;
+    }
+}
+
+@include keyframes(move-the-object-right) {
+    0%   { left: 0;
+        border: 1px solid black;
+            opacity: 1; }
+    100% { 
+        left: 20vw;
+        border: 1px solid black;
+        opacity: 1
+    
+    }
+}
+
+@include keyframes(move-in-right) {
+    0%   { left: 0;
+            opacity: 1; }
+    100% { 
+        left: 20vw;
+        transform: translateX(20vw);
+        opacity: 1
+    
+    }
+}
+
+
+
+
+.moveRight{
+    @include animation('move-the-object-right .5s 1');
+}
+.moveInRight{
+    @include animation('move-in-right .5s 1');
+}
+

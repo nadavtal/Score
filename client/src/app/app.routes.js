@@ -29,10 +29,34 @@
         component: 'admin',
         
       })
+      //USERS STATES
       .state('users', {
         url: '/users',
         component: 'userList',
         
+      })
+      .state('changePassword', {
+        url: '/users/change-password',
+        component: 'changePassword',
+        // role: 'admin' // accessible only for admin roles
+      })
+
+      .state('createUser', {
+        url: '/users/create',
+        component: 'user',
+        // role: 'admin' // accessible only for admin roles
+      })
+
+      .state('editUser', {
+        url: '/users/:userId/edit',
+        component: 'user',
+        // role: 'admin' // accessible only for admin roles
+      })
+
+      .state('displayUser', {
+        url: '/users/:userId',
+        component: 'user',
+        // role: 'admin' // accessible only for admin roles
       })
       //CLASH STATES
       .state('clashUsers', {
@@ -63,6 +87,36 @@
         url: '/games',
         component: 'gameList',
         
+      })
+      .state('gamesByUserId', {
+        url: '/games/user/:userId',
+        component: 'gameList',
+        // role: 'admin' // accessible only for admin roles
+      })
+
+      .state('createGame', {
+        url: '/games/create',
+        component: 'game',
+        // role: 'admin' // accessible only for admin roles
+      })
+
+      
+      .state('displayGame', {
+        url: '/games/:gameId',
+        component: 'game',
+        // role: 'admin' // accessible only for admin roles
+      })
+      
+      .state('registerToGame', {
+        url: '/games/:gameId/register',
+        component: 'game',
+        // role: 'admin' // accessible only for admin roles
+      })
+
+      .state('editGame', {
+        url: '/games/:gameId/edit',
+        component: 'game',
+        // role: 'admin' // accessible only for admin roles
       })
 
 
@@ -96,74 +150,29 @@
         component: 'group',
         // role: 'admin' // accessible only for admin roles
       })
-
-      .state('gamesByUserId', {
-        url: '/games/user/:userId',
-        component: 'gameList',
-        // role: 'admin' // accessible only for admin roles
-      })
-
-      .state('createGame', {
-        url: '/games/create',
-        component: 'game',
-        // role: 'admin' // accessible only for admin roles
-      })
-
       .state('createGroupGame', {
         url: '/groups/:groupId/createGame',
         component: 'game',
         // role: 'admin' // accessible only for admin roles
       })
-
-      .state('displayGame', {
-        url: '/games/:gameId',
-        component: 'game',
+      .state('createGroupTournament', {
+        url: '/groups/:groupId/createTournament',
+        component: 'tournament',
         // role: 'admin' // accessible only for admin roles
       })
       
-      .state('registerToGame', {
-        url: '/games/:gameId/register',
-        component: 'game',
-        // role: 'admin' // accessible only for admin roles
-      })
-
-      .state('editGame', {
-        url: '/games/:gameId/edit',
-        component: 'game',
-        // role: 'admin' // accessible only for admin roles
-      })
-
-      .state('changePassword', {
-        url: '/users/change-password',
-        component: 'changePassword',
-        // role: 'admin' // accessible only for admin roles
-      })
-
-      .state('createUser', {
-        url: '/users/create',
-        component: 'user',
-        // role: 'admin' // accessible only for admin roles
-      })
-
-      .state('editUser', {
-        url: '/users/:userId/edit',
-        component: 'user',
-        // role: 'admin' // accessible only for admin roles
-      })
-
-      .state('displayUser', {
-        url: '/users/:userId',
-        component: 'user',
-        // role: 'admin' // accessible only for admin roles
-      })
+      //ACCOUNTS STATES
       .state('displayAccount', {
         url: '/accounts/:_id',
         component: 'account',
         // role: 'admin' // accessible only for admin roles
+
+
+      //TOURNAMENTS STATES
       })
-      .state('tournament', {
-        url: '/tournament',
-        component: 'tournament',
+      .state('tournaments', {
+        url: '/tournaments',
+        component: 'tournamentList',
         // role: 'admin' // accessible only for admin roles
       })
       .state('createTournament', {
@@ -182,6 +191,7 @@
         url: '/tournaments/:tournamentId',
         component: 'tournament',
       })
+      
 
       
       

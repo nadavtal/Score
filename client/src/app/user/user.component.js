@@ -13,10 +13,10 @@
       controller: UserCtrl
     });
 
-  UserCtrl.$inject = ['$log', '$state', '$stateParams', 'QueryService', 'localStorage', 'platformService', 'accountsService', 
+  UserCtrl.$inject = ['$log', '$state', '$stateParams', 'tournamentsService', 'localStorage', 'platformService', 'accountsService', 
     'ngDialog', '$rootScope', '$scope', 'clashUserService', 'gamesService','usersService', 'groupsService','friendsService', 'Upload'];
 
-  function UserCtrl($log, $state, $stateParams, QueryService, localStorage, platformService, accountsService, 
+  function UserCtrl($log, $state, $stateParams, tournamentsService, localStorage, platformService, accountsService, 
       ngDialog, $rootScope, $scope, clashUserService, gamesService, usersService, groupsService, friendsService, Upload) {
     var vm = this;
     
@@ -124,17 +124,21 @@
               vm.files = files.data.data;
               console.log(vm.files)
             })
-
-
-          gamesService.getGamesByUserID(userId)
-            .then((games)=>{
-              // console.log(games)
-              vm.userGames = games.data.data;
-              // console.log(vm.userGames)
-            })
-            .catch(function(err) {
-              $log.debug(err);
-            });
+          
+          // tournamentsService.getAllTournaments()
+          //   .then(tournaments => {
+          //     vm.tournaments = tournaments.data.data
+          //     console.log('vm.tournaments: ', vm.tournaments);
+          //   })
+          // gamesService.getGamesByUserID(userId)
+          //   .then((games)=>{
+          //     // console.log(games)
+          //     vm.userGames = games.data.data;
+          //     // console.log(vm.userGames)
+          //   })
+          //   .catch(function(err) {
+          //     $log.debug(err);
+          //   });
 
           
         })

@@ -25,9 +25,10 @@
       
     
       this.getTournament = getTournament;
-      this.createTournament = createTournament
+      this.createTournament = createTournament;
+      this.editTournament = editTournament;
       this.checkIfTournamentExists = checkIfTournamentExists; 
-      this.getAllTournamentsFromDataBase = getAllTournamentsFromDataBase;
+      this.getAllTournaments = getAllTournaments;
       this.getTournamentsByUserID = getTournamentsByUserID;
       this.getTournamentsByGroupId = getTournamentsByGroupId;
       this.getTournamentsByPlatform = getTournamentsByPlatform 
@@ -52,15 +53,22 @@
           .query('GET', 'tournaments/' + tournamentId, null, null)
       }
       function createTournament(tournament) {
-        console.log(tournament)
+        console.log(tournament);
         if (!tournament) return;
   
         return QueryService
           .query('POST', 'tournaments/', null, tournament)
       }
 
+      function editTournament(tournament) {
+        if (!tournament) return;
+  
+        return QueryService
+          .query('PUT', 'tournaments/' + tournament._id, null, tournament)
+      }
+
             
-      function getAllTournamentsFromDataBase(){
+      function getAllTournaments(){
         return QueryService.query('GET', 'tournaments/', null, null)
       }
   
