@@ -19,9 +19,9 @@
       controller: FriendListCtrl
     });
 
-    FriendListCtrl.$inject = ['$log', 'QueryService', 'usersService', 'localStorage', '$stateParams', 'groupsService', 'friendsService', 'ngDialog'];
+    FriendListCtrl.$inject = ['$log', 'messagesService', 'usersService', 'localStorage', '$stateParams', 'groupsService', 'friendsService', 'ngDialog'];
 
-  function FriendListCtrl($log, QueryService, usersService, localStorage, $stateParams, groupsService, friendsService, ngDialog) {
+  function FriendListCtrl($log, messagesService, usersService, localStorage, $stateParams, groupsService, friendsService, ngDialog) {
     // console.log('friendList component')
     var vm = this;
     vm.sendMessageToUser = sendMessageToUser
@@ -183,19 +183,7 @@
     }
 
     function sendMessageToUser(user){
-      console.log(vm.currentUser, user)
-      user._id = user.userId
-      var users = {
-        sender: vm.currentUser,
-        receiver: user,
-        messageType: 'privateChatMessage'
-      }
-      var dialog = ngDialog.open({
-        template: '\
-          <message-form-directive></message-form-directive>',
-        plain: true,
-        data: users
-      });
+      messagesService.sendMessageToUser(user, vm.currentUser)
     }
     /**
      * Get users

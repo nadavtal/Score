@@ -8,10 +8,8 @@
   var mongoose = require('mongoose');
   var Schema = mongoose.Schema;
 
-  var bcrypt = require('bcryptjs');
-  var SALT_WORK_FACTOR = 10;
   var mongoosePaginate = require('mongoose-paginate');
-  var userHelpers = require('./clashUser.helpers.js');
+  
   var Battle = require('../battle/battle.model')
   // var Game = require('../game/game.model')
   /**

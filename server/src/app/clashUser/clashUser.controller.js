@@ -8,7 +8,7 @@
    */
   var mongoose = require('mongoose');
   var ObjectId = mongoose.Types.ObjectId;
-  var ClashUser = require('./ClashUser.model.js');
+  var ClashUser = require('./clashuser.model.js');
 
   var utils = require('../utils/utils.js');
   var request = require("request");

@@ -11,5 +11,33 @@ md-tab-content {
     margin-top: .5rem;
 }
 
+.messageRow{
+    transition: .3 all;
+    border-bottom: 1px solid black;
+    font-size: 0.9rem;
+    padding: 0;
+
+    &__main{
+        border-bottom: 1px solid lightgrey;
+        padding: 0.2rem 0.5rem;
+    }
+
+    &__date{
+        // font-size: .7rem;
+    }
+
+    &__content{
+        
+        transition: .3 all;
+        padding: .5rem 1.5rem;
+        // border-bottom: 1px solid black;
+        background-color: #e9204f17;
+    }
+}
+
+.unread {
+    font-weight: bold;
+}
+
 
 

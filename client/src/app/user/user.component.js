@@ -14,10 +14,10 @@
     });
 
   UserCtrl.$inject = ['$log', '$state', '$stateParams', 'tournamentsService', 'localStorage', 'platformService', 'accountsService', 
-    'ngDialog', '$rootScope', '$scope', 'clashUserService', 'gamesService','usersService', 'groupsService','friendsService', 'Upload'];
+    'ngDialog', '$rootScope', '$scope', 'clashUserService', 'gamesService','usersService', 'groupsService','friendsService', 'Upload', 'messagesService'];
 
   function UserCtrl($log, $state, $stateParams, tournamentsService, localStorage, platformService, accountsService, 
-      ngDialog, $rootScope, $scope, clashUserService, gamesService, usersService, groupsService, friendsService, Upload) {
+      ngDialog, $rootScope, $scope, clashUserService, gamesService, usersService, groupsService, friendsService, Upload, messagesService) {
     var vm = this;
     
     
@@ -106,24 +106,41 @@
         // console.log('getting user', userId)
         usersService.getUser(userId)
           .then(function(user) {
-          vm.user = user.data.data;
-          // console.log(vm.user);
-          vm.userLoaded = true;
-          $log.debug('user', vm.user);
+            vm.user = user.data.data;
+            // console.log(vm.user);
+            vm.userLoaded = true;
+            $log.debug('user', vm.user);
 
-          if(vm.currentUser._id == vm.user._id){
-            vm.isUser = true
-          }
-          if(!vm.isUser){
-            vm.areFriends = friendsService.checkIfFriends(vm.currentUser, vm.user)
-          }
-          console.log('areFriends: ', vm.areFriends);
-          // console.log(userId)
-          usersService.getFilesByUserId(userId)
-            .then(files => {
-              vm.files = files.data.data;
-              console.log(vm.files)
-            })
+            if(vm.currentUser._id == vm.user._id){
+              vm.isUser = true
+            }
+            if(!vm.isUser){
+              vm.areFriends = friendsService.checkIfFriends(vm.currentUser, vm.user)
+            }
+            console.log('areFriends: ', vm.areFriends);
+            // console.log(userId)
+            usersService.getFilesByUserId(userId)
+              .then(files => {
+                vm.files = files.data.data;
+                console.log(vm.files)
+              });
+            messagesService.getMessagesByUserID(userId)
+              .then((messages)=>{
+                console.log(messages);
+                vm.userMessages = messages.data.data
+                $rootScope.sumUnreadMessages = messagesService.sumUnreadMessages(vm.userMessages);
+                console.log(  $rootScope)
+                vm.sumUnreadMessages =  $rootScope.sumUnreadMessages
+                console.log('sumUnreadMessages', vm.sumUnreadMessages);
+                // for(var i=0; i<messages.data.data.length; i++){
+                //   vm.userMessages.push(messages.data.data[i]);
+      
+                // }
+                console.log(vm.userMessages)
+              })
+              .catch(function(err) {
+                $log.debug(err);
+              });
           
           // tournamentsService.getAllTournaments()
           //   .then(tournaments => {

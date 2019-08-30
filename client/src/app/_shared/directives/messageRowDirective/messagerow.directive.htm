@@ -1,0 +1,40 @@
+<div class="messageRow">
+    <div class="row messageRow__main" 
+        ng-class="message.status == 'unread' ? 'unread' : read"
+        ng-click="vm.messageClicked($event, message, 'inbox')">
+        <div class="col-xs-3">
+            <!-- <a ui-sref="displayUser({ userId: message.sender.userId })"> -->
+                <div class="messageUser">
+                    {{message.sender.userName}}
+                </div>
+
+            <!-- </a> -->
+        </div>
+        <!-- <div class="col-xs-6" >
+            <a ui-sref="displayGroup({ groupId: message.links[0].linkId })" ng-if="message.messageType=='groupInvite'">
+                <div class="messageSubject">
+                    {{message.subject}}
+                </div>
+
+            </a>
+        </div> -->
+        <!-- <div class="col-xs-6" ng-if="message.messageType=='friendRequest' || message.messageType=='privateChatMessage'">
+        
+                <div class="messageSubject">
+                    {{message.subject}}
+                </div>
+
+        </div> -->
+        <div class="col-xs-6">
+            {{message.subject}}
+        </div>
+        <div class="col-xs-3 messageRow__date">
+            {{message.sentdAt | date:'dd-MM-yy H:mm'}}
+        </div>
+    </div>
+    <div class="messageRow__content full-width hidden" ng-if="message.content" ng-click="linkTo()">
+
+        {{message.content}}
+    </div>
+
+</div>

@@ -24,8 +24,8 @@
     messageType: {
       type: String,
       enum: {
-        values: ['groupInvite', 'groupMessage', 'gameInvite', 'privateChatMessage', 'groupChatMessage', 'systemMessage', 'friendRequest'],
-        message: 'Only "groupInvite", "groupMessage", gameInvite", "privateChatMessage", "groupChatMessage", systemMessage" , "friendRequest", messages are allowed.'
+        values: ['groupInvite', 'groupMessage', 'gameInvite', 'privateChatMessage', 'groupChatMessage', 'systemMessage', 'friendRequest', 'tournamentInvite'],
+        message: 'Only "groupInvite", "groupMessage", gameInvite", "privateChatMessage", "groupChatMessage", systemMessage" , "friendRequest", "tournamentInvitey", messages are allowed.'
       }
     },
     sender: {
@@ -50,8 +50,8 @@
       default: 'unread'
     },
     links: {
-      type: Array,
-      default: []
+      type: Object,
+      default: {}
     }
     
     

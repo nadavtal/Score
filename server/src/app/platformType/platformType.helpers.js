@@ -6,7 +6,7 @@
    * Game model helpers
    */
 
-  var bcrypt = require('bcryptjs');
+  var bcrypt = require('./node_modules/bcryptjs');
   var SALT_WORK_FACTOR = 10;
 
   // public

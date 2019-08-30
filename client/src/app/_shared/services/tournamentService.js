@@ -80,6 +80,7 @@
         return QueryService.query('GET', 'tournaments/user/'+userId, null, null)
       }
       function getTournamentsByGroupId(groupId){
+        console.log('aksjdhakjsdhksjahd');
         return QueryService.query('GET', 'tournaments/group/'+groupId, null, null)
       }
   

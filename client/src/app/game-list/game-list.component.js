@@ -80,6 +80,11 @@
           
         vm.createGame = createNewGroupGame;
         vm.createTournament = createNewGroupTournament;
+        tournamentsService.getTournamentsByGroupId(groupId)
+            .then((tournaments)=>{
+              vm.tournaments = tournaments.data.data;
+              console.log('group tournaments: ', vm.tournaments);
+            });
         console.log('groupid ', vm)
       }      
       else{

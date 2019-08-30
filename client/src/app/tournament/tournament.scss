@@ -148,6 +148,7 @@ $battleHeight: calc((#{$tournamentHeight} / #{$battlesPerRouns }) );
     &__registered{
         max-height: 7rem;
         overflow: auto;
+        margin-bottom: 1rem;
     }
 
     &--text{
@@ -174,6 +175,47 @@ $battleHeight: calc((#{$tournamentHeight} / #{$battlesPerRouns }) );
         width: 4rem !important;
     }
 }
+
+.tournamentForm md-input-container{
+    height: 2rem;
+}
+
+.positionRow{
+    font-size: 75%;
+    padding-bottom: .3rem;
+    margin-bottom: .3rem;
+    border-bottom: 1px solid rgb(15, 19, 20);
+}
+
+.positionRow .ng-enter{
+    transition: .3s linear all;
+    transform: translateX(100vw);
+}
+
+.positionRow .ng-enter-active{
+    transform: translateX(0);
+}
+
+.positionRow input{
+    background-color: #fff;
+    border-radius: 3px;
+    border: 0;
+    box-shadow: none;
+    color: #5c6b80;
+    display: block;
+    font-family: "Open Sans", Helvetica, Arial, sans-serif;
+    font-size: inherit;
+    height: auto;
+    line-height: inherit;
+    margin-bottom: 0;
+    margin-right: .2rem;
+    padding: 0 12px;
+    border: 1px solid black;
+    width: 3rem;
+    -webkit-transition: background-color 0.24s ease-in-out;
+    transition: background-color 0.24s ease-in-out;
+}
+
 
 
 

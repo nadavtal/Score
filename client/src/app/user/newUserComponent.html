@@ -136,10 +136,7 @@
     <div ng-click="vm.changeActiveTab('messages')" ng-class="vm.activeTab == 'messages'? 'active' : ''" class="cubeMenuItemWrapper" ng-if="vm.userLoaded">
         <div class="cubeMenuItem bg-pink white holder "
             ng-class="!vm.showMenuTab ? 'cubeMenuItem--cube pulse-pink' : 'cubeMenuItem--tab'">
-            <!-- <div class="bar-pink left"></div>
-            <div class="bar-pink top"></div>
-            <div class="bar-pink right"></div>
-            <div class="bar-pink bottom"></div> -->
+            <span class="cubeMenuItem--messagesNumber" ng-if="vm.sumUnreadMessages > 0">{{vm.sumUnreadMessages}}</span>
             <div class="cubeMenuItem--title absCenter" >
                 <div class="absCenter">
                         <div >
@@ -240,10 +237,10 @@
                     ng-submit="vm.submitUserForm(vm.user, vm.user._id)"
                     name="vm.userForm"
                     role="form"
-                    id="user"
+                    id="userForm"
                     novalidate
                 >
-                <img class="userContentTitle--profileImg" src="http://localhost:5000/api/v1/image/{{vm.user.profileImageFileName}}" alt="">
+                
                     <div ng-if="vm.actionType != 'createUser'" class="row hidden">
                         <label for="user-id" class="col-md-5">ID</label>
                         <div class="col-md-5">
@@ -260,25 +257,26 @@
                     </div>
     
                     <div class="row">
-                        <div class="col-md-5">
-                            
-                            <input
-                                type="text"
-                                ng-model="vm.user.userName"
-                                ng-disabled="vm.actionType == 'loadUser'"
-                                name="userName"
-                                id="userName"
-                                autocomplete="off"
-                                placeholder="Username"
-                                required
-                            >
+                        <div class="col-xs-6">
+                            <md-input-container>
+								<label>User Name</label>
+								<input type="text" ng-model="vm.user.userName" ng-disabled="vm.actionType == 'loadUser'">
+							</md-input-container>
+                           
+                        </div>
+                        <div class="col-xs-6">
+                            <img class="userContentTitle--profileImg" src="http://localhost:5000/api/v1/image/{{vm.user.profileImageFileName}}" alt="">
                         </div>
                     </div>
     
                     <div class="row" ng-if="vm.actionType == 'createUser'">
                         <!-- <label for="password" class="col-md-5">Password</label> -->
                         <div class="col-md-5">
-                            <input
+                            <md-input-container>
+								<label>Password</label>
+								<input type="text" ng-model="vm.user.password"  ng-disabled="vm.actionType == 'loadUser'">
+							</md-input-container>
+                            <!-- <input
                                 type="password"
                                 ng-model="vm.user.password"
                                 ng-disabled="vm.actionType != 'createUser'"
@@ -287,59 +285,57 @@
                                 autocomplete="off"
                                 placeholder="Password"
                                 required
-                            >
+                            > -->
                         </div>
                     </div>
     
                     <div class="row">
                         <!-- <label for="firstName" class="col-md-5">First name</label> -->
-                        <div class="col-md-5">
-                            <input
-                                type="text"
-                                ng-model="vm.user.firstName"
-                                ng-disabled="vm.actionType == 'loadUser'"
-                                name="firstName"
-                                id="firstName"
-                                autocomplete="off"
-                                placeholder="First name"
-                            >
+                        <div class="col-xs-6">
+                            <md-input-container>
+								<label>First Name</label>
+								<input type="text" ng-model="vm.user.firstName"  ng-disabled="vm.actionType == 'loadUser'">
+                            </md-input-container>
+                        </div>
+                        <div class="col-xs-6">
+                            <md-input-container>
+								<label>Last Name</label>
+								<input type="text" ng-model="vm.user.surname"  ng-disabled="vm.actionType == 'loadUser'">
+							</md-input-container>
                         </div>
                     </div>
     
+                    
                     <div class="row">
-                        <!-- <label for="surname" class="col-md-5">Surname</label> -->
-                        <div class="col-md-5">
-                            <input
-                                type="text"
-                                ng-model="vm.user.surname"
-                                ng-disabled="vm.actionType == 'loadUser'"
-                                name="surname"
-                                id="surname"
-                                autocomplete="off"
-                                placeholder="Surname"
-                            >
+                        <div class="col-xs-7">
+
+                            <md-input-container>
+                                <label>Email</label>
+                                <input type="text" ng-model="vm.user.email"  ng-disabled="vm.actionType == 'loadUser'">
+                            </md-input-container>
                         </div>
-                    </div>
-    
-                    <div class="row">
-                        <!-- <label for="email" class="col-md-5">Email</label> -->
-                        <div class="col-md-5">
-                            <input
-                                type="email"
-                                ng-model="vm.user.email"
-                                ng-disabled="vm.actionType == 'loadUser'"
-                                name="email"
-                                id="email"
-                                autocomplete="off"
-                                placeholder="Email"
-                            >
-                        </div>
-                    </div>
-    
-                    <div class="row">
-                        <label for="role" class="col-md-5">Role</label>
-                        <div class="col-md-5">
-                            <input
+                        <div class="col-xs-5">
+                            <md-input-container>
+								<label>Role</label>
+								<input type="text" ng-model="vm.user.role"  ng-disabled="vm.actionType == 'loadUser'">
+                            </md-input-container>
+                            <md-input-container class="" ng-if="vm.actionType !== 'loadUser'">
+							
+								<label>Roles</label>
+								<md-select ng-model="vm.tournament.role"
+										md-on-close="vm.clearSearchTerm()"
+										data-md-container-class="selectdemoSelectHeader"
+										
+										>
+									<md-optgroup label="platform types">
+                                           
+									<md-option ng-value="type.name" ng-repeat="type in vm.platforms | filter:searchTerm"
+										ng-click="vm.selectPlatformType(type.name)">{{type.name}}
+									</md-option>
+									</md-optgroup>
+								</md-select>
+							</md-input-container>
+                            <!-- <input
                                 type="text"
                                 ng-model="vm.user.role"
                                 ng-disabled="vm.actionType == 'loadUser'"
@@ -348,7 +344,7 @@
                                 autocomplete="off"
                                 placeholder="Role"
                                 ng-if="vm.actionType == 'loadUser'"
-                            >
+                            > -->
                             <select
                                 type="text"
                                 ng-model="vm.user.role"
@@ -366,6 +362,8 @@
                             </select>
                         </div>
                     </div>
+    
+                    
                     <!-- <form action="vm.uploadFile()" method="POST" enctype="multipart/form-data">
                         <div class="custom-file mb-3">
                           <input type="file" name="file" id="file" class="custom-file-input">

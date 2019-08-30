@@ -84,7 +84,7 @@
               promiseArr.push(promise);
           }
           // console.log(promiseArr)
-          return Promise.all(promiseArr)
+          return Promise.all(promiseArr);
     }
 
     function getFriendlyBattlesByClan(clanId){

@@ -41,9 +41,11 @@
       maxPlayers: params.maxPlayers,
       playerPerBattle: params.playerPerBattle,
       rounds: params.rounds,
-      buyin: params.buyin,
+      buyIn: params.buyIn,
       placesPaid: params.placesPaid,
+      winners : params.winners,
       registered: params.registered,
+      prizePool : params.prizePool,
       optionalPlayers: params.optionalPlayers,
       winsToWinRound: params.winsToWinRound,
       winner: params.winner, 
@@ -97,9 +99,11 @@
           'maxPlayers': bodyParams.maxPlayers,
           'playerPerBattle': bodyParams.playerPerBattle,
           'rounds': bodyParams.rounds,
-          'buyin': bodyParams.buyin,
+          'buyIn': bodyParams.buyIn,
           'placesPaid': bodyParams.placesPaid,
+          'winners' : bodyParams.winners,
           'registered': bodyParams.registered,
+          'prizePool' : bodyParams.prizePool,
           'optionalPlayers': bodyParams.optionalPlayers,
           'winsToWinRound': bodyParams.winsToWinRound,
           'winner': bodyParams.winner, 
@@ -195,7 +199,7 @@
       .exec((err, data) => {
         if (err) return next(err);
         if (!data) return next({
-          message: 'groups not found.',
+          message: 'tournaments not found.',
           status: 404
         });
         utils.sendJSONresponse(res, 200, data);

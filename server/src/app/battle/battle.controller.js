@@ -8,7 +8,7 @@
    */
   var mongoose = require('mongoose');
   var ObjectId = mongoose.Types.ObjectId;
-  var Battle = require('./battle.model.js.js');
+  var Battle = require('./battle.model.js');
 
   var bcrypt = require('bcryptjs');
   var SALT_WORK_FACTOR = 10;

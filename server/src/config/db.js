@@ -4,7 +4,7 @@
 
   var mongoose = require('mongoose');
   var config = require('./config.js');
-  var ENV = process.env.NODE_ENV || 'development';
+  var ENV = process.env.NODE_ENV || 'developement';
   var DB_URI = config.db[ENV].url;
 //   const path = require('path');
 //   const crypto = require('crypto');
@@ -12,13 +12,14 @@
 //   const GridFsStorage = require('multer-gridfs-storage');
 //   const Grid = require('gridfs-stream');
 //   const methodOverride = require('method-override');
-//   console.log(DB_URI);
+
+  console.log(DB_URI);
   
 //   let gfs;
 
   // set mongoose.Promise to native ES6 Promise implementation
   mongoose.Promise = Promise;
-  var conn = mongoose.createConnection(DB_URI);
+//   var conn = mongoose.createConnection(DB_URI);
   mongoose.connect(DB_URI);
 
   // connection events
@@ -75,7 +76,7 @@
 
         });
     }
-    // removeCollection('users');
+    // removeCollection('messages');
     // removeCollection('uploads');
     // removeCollection('uploads.files');
   });

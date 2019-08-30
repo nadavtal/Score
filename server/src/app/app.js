@@ -14,7 +14,7 @@
   var paginate = require('express-paginate');
   var cors = require('cors');
   var expressValidator = require('express-validator');
-  // var messagesCtrl = require('./message/message.controller.js');
+ 
   var Message = require('./message/message.model.js');
   var errorHandling = require('./app.error-handling.js');
 

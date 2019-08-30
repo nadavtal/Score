@@ -109,12 +109,12 @@
   var tournamentsCtrl = require('./tournament/tournament.controller.js');
   var groupsCtrl = require('./group/group.controller.js');
   var clanCtrl = require('./clan/clan.controller.js');
-  var clashUserCtrl = require('./clashUSer/clashUSer.controller.js');
+  var clashUserCtrl = require('./clashUser/clashuser.controller.js');
   var platformsCtrl = require('./platform/platform.controller.js');
   var accountsCtrl = require('./account/account.controller.js');
   var messagesCtrl = require('./message/message.controller.js');
-  var gameTypesCtrl = require('./gameType/gameType.controller.js');
-  var platformTypesCtrl = require('./platformType/platformType.controller.js');
+  var gameTypesCtrl = require('./gametype/gameType.controller.js');
+  var platformTypesCtrl = require('./platformtype/platformType.controller.js');
   var uploadsCtrl = require('./updoads/updoads.controller.js');
 
   /**
@@ -203,9 +203,11 @@
    * Messages
    */
   router.post('/messages', messagesCtrl.createMessage); // create new Message
+  router.put('/messages/:messageId', messagesCtrl.updateMessage); // create new Message
   router.get('/messages/', messagesCtrl.getAllMessages); // get all messages
   router.get('/messages/user/:userId', messagesCtrl.getMessagesByUserID); // get all messages
-
+  router.get('/messages/group/:groupId', messagesCtrl.getMessagesByGroupId); // get all messages
+  
 
    /**
    * Accounts

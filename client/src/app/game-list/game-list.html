@@ -116,7 +116,7 @@
 					
 				</div>
 				
-				<div class="gameBlock" ng-repeat="tournament in vm.tournaments">
+				<div class="gameBlock" ng-repeat="tournament in vm.tournaments | orderBy: time">
 					<div class="row">
 						<a ui-sref="displayTournament({ tournamentId: tournament._id, groupId: tournament.group })">
 							<div class="col-xs-2">

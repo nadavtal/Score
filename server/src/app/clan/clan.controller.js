@@ -10,10 +10,6 @@
   var ObjectId = mongoose.Types.ObjectId;
   var Clan = require('./clan.model.js');
 
-  var bcrypt = require('bcryptjs');
-  var SALT_WORK_FACTOR = 10;
-  var jwt = require('jsonwebtoken');
-  var config = require('../../config/config.js');
   var utils = require('../utils/utils.js');
   var request = require("request");
   var Battle = require('../battle/battle.model');

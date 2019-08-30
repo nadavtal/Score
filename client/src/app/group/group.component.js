@@ -14,10 +14,10 @@
     });
 
   GroupCtrl.$inject = ['$log', '$state', '$stateParams', 'QueryService', 'localStorage', 'groupsService', 'usersService',
-    'ngDialog', '$rootScope', '$scope', 'gamesService', '$element'];
+    'ngDialog', '$rootScope', '$scope', 'gamesService', '$element', 'tournamentsService'];
 
   function GroupCtrl($log, $state, $stateParams, QueryService, localStorage, groupsService, usersService, 
-      ngDialog, $rootScope, $scope, gamesService, $element) {
+      ngDialog, $rootScope, $scope, gamesService, $element, tournamentsService) {
     var vm = this;
 
     // methods
@@ -68,13 +68,20 @@
           console.log('group', vm.group);
           vm.showBottomToolBar = true;
           vm.registerd = checkIfRegistered();
-          console.log(vm.registerd)
+          console.log('registered', vm.registerd)
           $log.debug('group', vm.group);
+
           gamesService.getGamesByGroupId(groupId)
             .then((games)=>{
               vm.games = games.data.data;
-              console.log(vm.games)
-            })
+              console.log('group games: ', vm.games);
+            });
+          tournamentsService.getTournamentsByGroupId(groupId)
+            .then((tournaments)=>{
+              vm.tournaments = tournaments.data.data;
+              console.log('group tournaments: ', vm.tournaments);
+            });
+          
         })
         .catch(function(err) {
           $log.debug(err);
@@ -164,7 +171,13 @@
           console.log(newGroup)
           var newGroup = newGroup.data.data;
           $log.debug('newGroup', newGroup);
-
+          Swal.fire({
+            position: 'center',
+            type: 'success',
+            title: newGroup.groupName + " created",
+            showConfirmButton: false,
+            timer: 1200
+          });
           var dialog = ngDialog.open({
             template: '\
               <p>New group created</p>\
@@ -261,13 +274,12 @@
       var registerd = checkIfUserInArrayByUsername(vm.group.members, user.userName);
       console.log(registerd)
       if(registerd){
-        ngDialog.open({
-          template: '\
-            <p>'+ user.userName+' is allready registered to this group</p>\
-            <div class=\"ngdialog-buttons\">\
-                <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click=\"closeThisDialog()\">OK</button>\
-            </div>',
-          plain: true
+        Swal.fire({
+          position: 'center',
+          type: 'error',
+          title: user.userName +" is allready registered to this group",
+          showConfirmButton: false,
+          timer: 1200
         });
       } else{
         vm.group.members.push({userName: user.userName,
@@ -293,14 +305,21 @@
       
 
       if (registerd) {
-        ngDialog.open({
-          template: '\
-            <p>You are allready registered to this group</p>\
-            <div class=\"ngdialog-buttons\">\
-                <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click=\"closeThisDialog()\">OK</button>\
-            </div>',
-          plain: true
+        Swal.fire({
+          position: 'center',
+          type: 'error',
+          title: "You are allready registered to this group",
+          showConfirmButton: false,
+          timer: 1200
         });
+        // ngDialog.open({
+        //   template: '\
+        //     <p>You are allready registered to this group</p>\
+        //     <div class=\"ngdialog-buttons\">\
+        //         <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click=\"closeThisDialog()\">OK</button>\
+        //     </div>',
+        //   plain: true
+        // });
       }
       else {
         vm.group.members.push(vm.user)
@@ -315,14 +334,14 @@
       
       if (!vm.group) return;
       if(vm.group.groupManager.userName == vm.user.userName){
-        ngDialog.open({
-          template: '\
-            <p>A manager cant leave group without changing to another manager</p>\
-            <div class=\"ngdialog-buttons\">\
-                <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click=\"closeThisDialog()\">OK</button>\
-            </div>',
-          plain: true
+        Swal.fire({
+          position: 'center',
+          type: 'error',
+          title: 'A manager cant leave group without changing to another manager',
+          showConfirmButton: false,
+          timer: 1200
         });
+        
       }else{
         vm.group.members = vm.group.members.filter(function(value){
         

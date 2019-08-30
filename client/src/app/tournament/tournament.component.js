@@ -14,11 +14,11 @@
     });
 
   TournamentCtrl.$inject = ['$log', '$state', '$stateParams', 'QueryService', 'localStorage', 'usersService', 'tournamentsService', 'groupsService', 
-    'ngDialog', '$rootScope', '$scope', 'platformService'];
+    'ngDialog', '$rootScope', '$scope', 'platformService', 'messagesService'];
 
     
     function TournamentCtrl($log, $state, $stateParams, QueryService, localStorage, usersService, tournamentsService, groupsService,
-      ngDialog, $rootScope, $scope, platformService){
+      ngDialog, $rootScope, $scope, platformService, messagesService){
 
     console.log('initializing TournamentCtrl', $scope)
     var vm = this;
@@ -32,8 +32,11 @@
     vm.addPlayer = addPlayer;
     vm.removePlayer = removePlayer;
     vm.addAll = addAll;
-    // vm.registerToTournament = registerToTournament;
-    // vm.unRegisterToTournament = unRegisterToTournament;
+    vm.registerToTournament = registerToTournament;
+    vm.unRegisterToTournament = unRegisterToTournament;
+    vm.initializeWinners = initializeWinners;
+    vm.calculatePrize = calculatePrize;
+    vm.calculatePrizePool = calculatePrizePool;
     // vm.addOptionalTime = addOptionalTime;
     // vm.addToOptionalPLayers = addToOptionalPLayers;
     // vm.removeFromOptionalPLayers = removeFromOptionalPLayers;
@@ -55,6 +58,12 @@
       vm.actionType = setActionType(state, tournamentId);
       console.log('actionType: ', vm.actionType) 
 
+      platformService.getAllPlatformsFromDataBase()
+        .then((platforms) => {
+          vm.platforms = platforms.data.data;
+          // console.log('platforms:', vm.platforms)
+          
+          });
       if(groupId) {
         console.log('tournament component has groupId: ', groupId)
         groupsService.getGroup(groupId)
@@ -62,39 +71,36 @@
             vm.group = data.data.data;
             vm.optionalPlayers = vm.group.members;
             console.log('vm.optionalPlayers:', vm.optionalPlayers);
+            
+            console.log('initializing new tournament object')
+            vm.tournament = {};
+            vm.tournament.name
+            vm.tournament.manager = vm.currentUser.userName;
+            vm.tournament.platformType = ''
+            vm.tournament.maxPlayers = 32;
+            vm.tournament.playerPerBattle = 2;
+            vm.tournament.rounds = calcNumRounds(vm.tournament.maxPlayers, vm.tournament.playerPerBattle);
+            vm.tournament.buyIn = 100;
+            vm.tournament.placesPaid = 4;
+            vm.tournament.winners = [];
+            vm.tournament.registered = [];
+            vm.tournament.prizePool = vm.tournament.registered.length * vm.tournament.buyIn;
+            vm.tournament.optionalPlayers = [];
+            vm.tournament.winsToWinRound = 3;
+            vm.tournament.winner = '';
+            vm.tournament.time = new Date(Date.now());
+            vm.tournament.timeoptions =[];
+            vm.today = new Date(Date.now());
+            vm.tournament.group = vm.group._id;
+            vm.showBottomToolBar = true;
+      
+            console.log(vm.tournament);
           })
       } 
-      // else{
-      //   vm.optionalPlayers = vm.currentUser.friends;
-      //   console.log('vm.optionalPlayers:', vm.optionalPlayers);
-      // }
-      
-      platformService.getAllPlatformsFromDataBase()
-        .then((platforms) => {
-          vm.platforms = platforms.data.data;
-          console.log('platforms:', vm.platforms)
-          
-          });
-      // if(!$rootScope.users){
         
-      //   usersService.getAllUsers()
-      //     .then((data) => {
-      //       vm.users = data.data.data;
-      //       vm.tournament.players = vm.users;
-      //       console.log(vm.users);
-      //       // $scope.$apply();
-      //       startTournament();
-      //     })
+  
+      else if (tournamentId) {
         
-      // } else{
-      //   vm.users = $rootScope.users;
-      //   console.log('vm.users in tournament', vm.users);
-      // }
-  
-      
-  
-      if (tournamentId) {
-        console.log('tournament component has tournamentId: ', tournamentId)
         tournamentsService.getTournament(tournamentId)
         .then(function(tournament) {
           
@@ -102,8 +108,8 @@
           vm.tournament.time = new Date(vm.tournament.time);
           vm.timeOption = new Date(vm.tournament.time);
           vm.showBottomToolBar = true;
+          if(!vm.tournament.prizePool) vm.tournament.prizePool = vm.tournament.registered.length * vm.tournament.buyIn;
           console.log('tournament', vm.tournament);
-
           if(vm.tournament.group){
             
             groupsService.getGroup(vm.tournament.group)
@@ -118,23 +124,17 @@
             initializeTournament(vm.tournament);
           } else{
             vm.tournamentStructureObj = JSON.parse(vm.tournament.tree);
-          }
-          // checkIfRegistered();
-          // checkIfInOptionalPlayer();
+          };
+
           
-          // console.log(vm.registerd)
+          checkIfRegistered(vm.tournamentStructureObj);
+          // checkIfInOptionalPlayer();
+          console.log('registered: ', vm.registerd);
+          console.log('tournamentStructureObj: ', vm.tournamentStructureObj);
+          getWinners(vm.tournamentStructureObj);
+          getLosers(vm.tournamentStructureObj);
           $log.debug('tournament', vm.tournament);
           
-          // $scope.$apply();
-          // if(vm.tournament.group){
-  
-          //   groupsService.getGroup(vm.tournament.group)
-          //     .then((data) => {
-          //       vm.optionalPlayers = data.data.data.members
-          //       console.log(vm.optionalPlayers);
-          //       // $scope.$apply();
-          //     })
-          // }
         })
         .catch(function(err) {
           $log.debug(err);
@@ -150,18 +150,20 @@
         vm.tournament.playerPerBattle = 2;
         vm.tournament.rounds = calcNumRounds(vm.tournament.maxPlayers, vm.tournament.playerPerBattle);
         vm.tournament.buyIn = 100;
-        vm.tournament.placesPaid = 4;
+        vm.tournament.placesPaid = 0;
+        vm.tournament.winners = [];
         vm.tournament.registered = [];
+        vm.tournament.prizePool = vm.tournament.registered.length * vm.tournament.buyIn;
         vm.tournament.optionalPlayers = [];
         vm.tournament.winsToWinRound = 3;
         vm.tournament.winner = '';
         vm.tournament.time = new Date(Date.now());
         vm.tournament.timeoptions =[];
         vm.today = new Date(Date.now());
-        vm.group = '';
+        vm.tournament.group = 'no group';
         vm.showBottomToolBar = true;
   
-        console.log(vm.tournament)
+        console.log(vm.tournament);
        
         
       }
@@ -175,7 +177,7 @@
   } 
 
   function initializeTournament(){
-    console.log(vm.tournament.registered)
+    // console.log(vm.tournament.registered)
     vm.tournamentStructureObj = createTournamentStrctureObj(vm.tournament);
     vm.tournament.rounds = calcNumRounds(vm.tournament.maxPlayers, vm.tournament.playerPerBattle);
     vm.firstRoundBattles = drawFirstRound(vm.tournament.registered, vm.tournament.playerPerBattle);
@@ -260,18 +262,24 @@
     // element.addClass('moveRight');
     // console.log(nextRoundIndex);
     // console.log(index%2);
-    if(index%2 === 0){
-      vm.tournamentStructureObj[currentRound + 1 ][nextRoundIndex].player1 = player;
-      // element.addClass('moveDown');
-
+    if (vm.tournamentStructureObj[currentRound + 1 ]){
+      if(index%2 === 0){
+        vm.tournamentStructureObj[currentRound + 1 ][nextRoundIndex].player1 = player;
+        // element.addClass('moveDown');
+  
+      } else{
+        vm.tournamentStructureObj[currentRound + 1 ][nextRoundIndex].player2 = player;
+        // element.addClass('moveUp');
+      }
     } else{
-      vm.tournamentStructureObj[currentRound + 1 ][nextRoundIndex].player2 = player;
-      // element.addClass('moveUp');
+      console.log('there are no more rounds');
+
     }
+    
     // console.log(vm.tournamentStructureObj[currentRound + 1 ][nextRoundIndex]);
     console.log(vm.tournamentStructureObj);
     vm.tournament.tree = JSON.stringify(vm.tournamentStructureObj);
-    console.log(vm.tournament)
+    
     tournamentsService.editTournament(vm.tournament)
       .then(tournament => {
         vm.tournament = tournament.data.data;
@@ -280,19 +288,102 @@
     
   }
 
+  function getWinners(tourObj){
+    console.log(tourObj);
+    var winners = {};
+    var rounds = Object.keys(tourObj).length;
+    for (var i=0; i < rounds; i++){
+      winners[i] =[]
+      for(var j=0; j < tourObj[i].length; j++){
+        winners[i].push(tourObj[i][j].winner)
+
+      }
+    }
+    // console.log('winners', winners);
+    console.log(vm.tournament.winners[1].userName)
+    
+    vm.tournament.winners[0].userName = winners[rounds-1][0].userName;
+    vm.tournament.winners[0].userId = winners[rounds-1][0].userId;
+    
+    console.log(vm.tournament);
+    
+  }
+
+  function getLosers(tourObj){
+    console.log(tourObj);
+    var losers = {};
+    var rounds = Object.keys(tourObj).length;
+    for (var i=0; i < rounds; i++){
+      losers[i] =[]
+      for(var j=0; j < tourObj[i].length; j++){
+        if(tourObj[i][j].winner.userName == tourObj[i][j].player1.userName){
+          losers[i].push(tourObj[i][j].player2)
+        } else{
+          losers[i].push(tourObj[i][j].player1)
+        }
+        
+
+      }
+    }
+    console.log('losers', losers);
+
+    vm.tournament.winners[1].userName = losers[rounds-1][0].userName;
+    vm.tournament.winners[1].userId = losers[rounds-1][0].userId;
+    console.log(vm.tournament);
+  }
+
   function random_item(items){
   
     return items[Math.floor(Math.random()*items.length)];
         
   }
 
+  function initializeWinners(numWinners){
+    vm.tournament.winners = [];
+    console.log(numWinners);
+    for(var i=0; i<numWinners;i++){
+      vm.tournament.winners[i] = {position: i+1,
+                                  percentage: 0,
+                                  prize: 0,
+                                  userName: '',
+                                  userId: ''};
+    }
 
     
-    
-    
+  }
 
+  function sumPercetages(){
+    var sum = 0;
+    for(var i =0; i< vm.tournament.winners.length; i++){
+      sum += vm.tournament.winners[i].percentage;
+    }
+    return sum
+  }
     
-
+  function calculatePrize(percentage, position) {
+    var currentPercentage = sumPercetages();
+    if (currentPercentage > 100){
+      console.log('percentage has bigger the 100')
+    }
+    var prize = vm.tournament.prizePool *(percentage/100);
+    vm.tournament.winners[position].prize = prize;
+    console.log(vm.tournament);
+  }  
+    
+  function calculatePrizePool(){
+    var prizePool = vm.tournament.buyIn * vm.tournament.registered.length;
+    // console.log(prizePool);
+    vm.tournament.prizePool = prizePool;
+    updateWinners();
+    
+  }
+    
+  function updateWinners(){
+    // console.log(vm.tournament.winners);
+    for(var i =0; i< vm.tournament.winners.length; i++){
+      vm.tournament.winners[i].prize = vm.tournament.prizePool *(vm.tournament.winners[i].percentage/100)
+    }
+  }
    
   function submitTournamentForm(tournament, tournamentId) {
     console.log(vm.actionType);
@@ -349,11 +440,35 @@
     tournament.rounds = calcNumRounds(vm.tournament.maxPlayers, vm.tournament.playerPerBattle);
     console.log(tournament);
     if (!tournament) return;
-    if(groupId) tournament.group = groupId
+    
 
     tournamentsService.createTournament(tournament)
       .then(function(newTournament) {
-        console.log(newTournament)
+        Swal.fire({
+          position: 'center',
+          type: 'success',
+          title: 'New tournament created!',
+          showConfirmButton: false,
+          timer: 1200
+        });
+        newTournament = newTournament.data.data
+        console.log(newTournament);
+        var message = {
+          subject : 'New Tournament from: ' + vm.group.groupName,
+          content: 'Check out this tournament: ' +newTournament.name,
+          messageType : 'groupMessage',
+          sender : {userName: vm.currentUser.userName,
+                    userId: vm.currentUser._id},
+          receiver : {userName: vm.group.groupName,
+                      userId: vm.group._id},
+          links: {tournamentId: newTournament._id,
+                  userId: vm.currentUser._id,
+                  groupId: vm.group._id}
+        }
+        messagesService.createMessage(message)
+          .then(function(message){
+            console.log(message)
+          });
         var newTournament = newTournament.data.data;
         $log.debug('newTournament', newTournament);
 
@@ -385,20 +500,7 @@
       });
   }
 
-    /**
-     * Update tournament attributes
-     * @param  {object} editTournament Tournament form
-     * @return {object}            Promise
-     */
     
-    // vm.selectWinner = function(user){
-    //   // console.log(user)
-    //   vm.newWinner = {
-    //     userName: user.userName, 
-    //     userId: user.userId
-    //   }
-    //   console.log(vm.newWinner)
-    // }
 
     function editTournament(tournament, tournamentId, responseMessage) {
       console.log('editing tournament', vm.newWinner, tournament.winner, responseMessage)
@@ -431,13 +533,7 @@
         $log.debug('updatedTournament', vm.tournament);
 
         if(!responseMessage) responseMessage = vm.tournament.name + ' updated!'
-        Swal.fire({
-          position: 'center',
-          type: 'success',
-          title: responseMessage,
-          showConfirmButton: false,
-          timer: 1200
-        });
+        
         // ngDialog.open({
         //   template: '\
         //     <p>'+responseMessage+'</p>\
@@ -461,17 +557,24 @@
           updatedTournament.time = new Date(updatedTournament.time)
           vm.tournament = updatedTournament;
           console.log(vm.tournament);
-
-          $log.debug('updatedTournament', vm.updatedTournament);
-
-          ngDialog.open({
-            template: '\
-              <p>'+responseMessage+'</p>\
-              <div class=\"ngdialog-buttons\">\
-                  <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click=\"closeThisDialog()\">OK</button>\
-              </div>',
-            plain: true
+          // console.log('aksjdhakjshdkasjhd');
+          Swal.fire({
+            position: 'center',
+            type: 'success',
+            title: responseMessage,
+            showConfirmButton: false,
+            timer: 1500
           });
+          $log.debug('updatedTournament', vm.updatedTournament);
+          
+          // ngDialog.open({
+          //   template: '\
+          //     <p>'+responseMessage+'</p>\
+          //     <div class=\"ngdialog-buttons\">\
+          //         <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click=\"closeThisDialog()\">OK</button>\
+          //     </div>',
+          //   plain: true
+          // });
 
           
 
@@ -483,16 +586,10 @@
          
     }
 
-    /**
-     * Get user
-     * @param  {object} userId User ID
-     * @return {object}      Promise
-     */
-    
-
     function addPlayer(user){
       // console.log(user)
-      vm.tournament.registered.push({userName: user.userName, userId: user.userId})
+      vm.tournament.registered.push({userName: user.userName, userId: user.userId});
+      calculatePrizePool();
     }
 
     function removePlayer(index){
@@ -536,11 +633,11 @@
       }
       else {
         vm.tournament.registered.push({
-          userName: vm.user.userName,
-          userId: vm.user._id
+          userName: vm.currentUser.userName,
+          userId: vm.currentUser._id
         })
         console.log(vm.tournament);
-        editTournament(vm.tournament, vm.tournament._id, 'registered to '+ vm.tournament.name + ' at ' + vm.tournament.host);
+        editTournament(vm.tournament, vm.tournament._id, 'registered to '+ vm.tournament.name + ' GOOD LUCK '+ vm.currentUser.userName);
       }
       
       
@@ -549,26 +646,17 @@
     function unRegisterToTournament() {
       
       if (!vm.tournament) return;
-      if(vm.tournament.host == vm.user.userName){
-        ngDialog.open({
-          template: '\
-            <p>A host cant leave tournament without changing to another host</p>\
-            <div class=\"ngdialog-buttons\">\
-                <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click=\"closeThisDialog()\">OK</button>\
-            </div>',
-          plain: true
-        });
-      }else{
-      vm.tournament.players = vm.tournament.players.filter(function(value){
+      
+      vm.tournament.registered = vm.tournament.registered.filter(function(value){
         
-        return value.userName != vm.user.userName;
+        return value.userName != vm.currentUser.userName;
     
       });
-      editTournament(vm.tournament, vm.tournament._id, 'Unregistered '+ vm.user.userName +' from '+ vm.tournament.tournamenttype + ' at ' + vm.tournament.host)
+      editTournament(vm.tournament, vm.tournament._id, 'Unregistered '+ vm.currentUser.userName)
     }
    
       
-    }
+   
 
 
 
@@ -686,7 +774,7 @@
         
         if(array[i].userName == userName){
           var foundUser = array[i]
-          console.log(foundUser)
+          // console.log(foundUser)
         }
       }
       return foundUser
@@ -713,13 +801,14 @@
       
     }
 
-    function checkIfRegistered(){
-      console.log(vm.tournament.players, vm.user.userName)
-      var registerd = checkIfUserInArrayByUsername(vm.tournament.players, vm.user.userName)
-      console.log(registerd)
+    function checkIfRegistered(){ 
+      
+      // console.log(vm.tournament.registered, vm.currentUser.userName)
+      var registerd = checkIfUserInArrayByUsername(vm.tournament.registered, vm.currentUser.userName)
+      // console.log(registerd)
       if (registerd) vm.registerd = true
       else vm.registerd = false
-      
+       
     }
     
 

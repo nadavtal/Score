@@ -20,7 +20,8 @@
     createMessage,
     getAllMessages,
     getMessage,
-    
+    updateMessage,
+    getMessagesByGroupId,
     removeMessage,
     getMessagesByUserID
   };
@@ -68,6 +69,37 @@
     });
     
     
+  }
+
+  function updateMessage(req, res, next) {
+    console.log('ajhsgjahgsdjhasgd')
+    var bodyParams = req.body;
+    
+    console.log('message body params', bodyParams)
+
+    Message
+      .findOneAndUpdate(
+        { _id: ObjectId(bodyParams._id) },
+        { '$set': {
+          'subject' : bodyParams.subject,
+          'content': bodyParams.content,
+          'messageType' : bodyParams.messageType,
+          'sender' : bodyParams.sender,
+          'receiver' : bodyParams.receiver,
+          'links': bodyParams.links,
+          'status': bodyParams.status
+ }
+        },
+        { upsert: false, new: true, fields: { password: 0 }, runValidators: true, setDefaultsOnInsert: true })
+      .exec((err, message) => {
+        if (err) return next({ err: err, status: 400 });
+        if (!message) return next({
+          message: 'message not found.',
+          status: 404
+        });
+
+        utils.sendJSONresponse(res, 200, message);
+      });
   }
 
   /**
@@ -131,6 +163,22 @@
           utils.sendJSONresponse(res, 200, games);
         });
    }
+   function getMessagesByGroupId(req, res, next){
+     var params = req.params;
+      console.log('getting messages of groupId: ', params.groupId)
+     Message
+        .find({$or:[{'receiver.userId':  params.groupId}, {'sender.userId' : params.groupId}]})
+        
+        .exec((err, messages) => {
+          if (err) return next(err);
+          if (!messages) return next({
+            message: 'message not found.',
+            status: 404
+          });
+  
+          utils.sendJSONresponse(res, 200, messages);
+        });
+   }
 
    
 
@@ -177,39 +225,7 @@
    * Update game
    * PUT '/games/:userId'
    */
-  function updateMessage(req, res, next) {
-    // console.log(req.body)
-    var bodyParams = req.body;
-    
-    // console.log(currentMessage)
-
-    Message
-      .findOneAndUpdate(
-        { _id: ObjectId(bodyParams._id) },
-        { '$set': {
-          'gametype': bodyParams.gametype,
-          'host': bodyParams.host,
-          'optionalplayers': bodyParams.optionalplayers,
-          'players': bodyParams.players,
-          'time': bodyParams.time,
-          'timeoptions': bodyParams.timeoptions,
-          'updatedat': bodyParams.updatedAt,
-          'winner': bodyParams.winner,
-
-         
-          }
-        },
-        { upsert: false, new: true, fields: { password: 0 }, runValidators: true, setDefaultsOnInsert: true })
-      .exec((err, game) => {
-        if (err) return next({ err: err, status: 400 });
-        if (!game) return next({
-          message: 'Message not found.',
-          status: 404
-        });
-
-        utils.sendJSONresponse(res, 200, game);
-      });
-  }
+ 
 
 
   

@@ -8,12 +8,10 @@
   var mongoose = require('mongoose');
   var Schema = mongoose.Schema;
   var ObjectId = Schema.ObjectId;
-  var bcrypt = require('bcryptjs');
-  var SALT_WORK_FACTOR = 10;
+  
   var mongoosePaginate = require('mongoose-paginate');
-  var userHelpers = require('./group.helpers.js');
-  var Game = require('../game/game.model')
-  var User = require('../user/user.model')
+  
+  
   /**
    * User schema definition
    */

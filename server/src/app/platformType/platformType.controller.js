@@ -8,12 +8,8 @@
    */
   var mongoose = require('mongoose');
   var ObjectId = mongoose.Types.ObjectId;
-  var PlatformType = require('./platformType.model.js');
+  var PlatformType = require('./platformtype.model.js');
 
-  var bcrypt = require('bcryptjs');
-  var SALT_WORK_FACTOR = 10;
-  var jwt = require('jsonwebtoken');
-  var config = require('../../config/config.js');
   var utils = require('../utils/utils.js');
 
 

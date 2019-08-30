@@ -50,14 +50,18 @@
       userName: String,
       userId: ObjectId
     }],
+    prizePool: Number,
     optionalPlayers: [{
       userName: String,
       userId: ObjectId      
     }],
-    winner: {
+    winners: [{
+      position: Number,
+      percentage: Number,
+      prize: Number,
       userName: String,
-      userId: ObjectId
-    },
+      userId: String
+    }],
     time: {
       type: Date,
       required: true,
