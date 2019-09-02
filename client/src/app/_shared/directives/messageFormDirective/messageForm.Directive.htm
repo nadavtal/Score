@@ -6,20 +6,17 @@
         id="messageForm"
         novalidate
         >   
-            <!-- <label for="users" class="col-md-5">To: {{receiver}}</label>
-            <select name="users" id="" ng-model="receiver" ng-change="pickReceiver(receiver)" ng-if="!receiver">
-                <option value="">---Please select---</option> 
-                <option ng-repeat="user in users" value="{{user}}">{{user.userName}}</option> 
-            </select> -->
+            
             <md-input-container class="full-width" >
                 <label>To: 
-                    <!-- <span>{{group.groupName}}</span> -->
-                    <span>{{receiver}}</span>
+                    <!-- <span>{{message.receiver.userName}}</span> -->
+                    <span>{{message.receiver.userName}}</span>
                 </label>
-                <md-select ng-model="receiver"
+                <md-select ng-model="message.userReceiver"
                             md-on-close="clearSearchTerm()"
                             data-md-container-class="selectdemoSelectHeader"
                             ng-if="!receiver"
+                            
                             multiple
                             >
                     <md-select-header class="demo-select-header">
@@ -29,16 +26,20 @@
                             class="demo-header-searchbox md-text">
                     </md-select-header>
                     <md-optgroup label="users">
-                    <md-option ng-value="user.userName" ng-repeat="user in vm.user.friends | filter:searchTerm">
+                    <md-option ng-value="{userName: user.userName, userId: user.userId}" ng-repeat="user in vm.user.friends | filter:searchTerm">
                         {{user.userName}}
                     </md-option>
                     </md-optgroup>
                 </md-select>
+                <div ng-messages="messageForm.message.userReceiver.$error">
+                    <div ng-message="required">This is required. Please pick at least one user</div>
+                    
+                </div>
             </md-input-container>
             <br><br>
-            <!-- <md-input-container class="" ng-if="ngDialogData.groups || ngDialogData.group">
-                <label>Groups:</label>
-                <md-select ng-model="group"
+            <md-input-container class="" ng-if="!ngDialogData.groups || !ngDialogData.group">
+                <label>Pick Groups: </label>
+                <md-select ng-model="message.sendToGroups"
                             md-on-close="clearSearchTerm()"
                             data-md-container-class="selectdemoSelectHeader"
                             multiple
@@ -50,22 +51,22 @@
                             class="demo-header-searchbox md-text">
                     </md-select-header>
                     <md-optgroup label="groups">
-                    <md-option ng-value="group.groupName" ng-repeat="group in groups | filter:searchTerm">
+                    <md-option ng-value="group" ng-repeat="group in vm.groups | filter:searchTerm">
                         {{group.groupName}}
                     </md-option>
                     </md-optgroup>
                 </md-select>
-            </md-input-container> -->
+            </md-input-container>
             
-            <select name="groups" id="" ng-model="group" ng-change="pickGroup(group)" ng-if="ngDialogData.groups || ngDialogData.group">
-                <option value="">---Please add group---</option> 
-                <option ng-repeat="group in groups" value="{{group}}">{{group.groupName}}</option>
-                
-            </select>
+            
             <div class="contanier">
-                <md-input-container class="md-block" flex-gt-sm>
+                <md-input-container  class="md-block" flex-gt-sm>
                     <label>Subject</label>
                     <input md-maxlength="50" required name="messageSubject" ng-model="message.subject" />
+                    <div ng-messages="messageForm.message.subject.$error">
+                        <div ng-message="required">This is required.</div>
+                        <div ng-message="md-maxlength">The description must be less than 50 characters long.</div>
+                    </div>
                 </md-input-container>
                 <!-- <label for="messageSubject" class="col-md-5">Subject</label>
                 <div class="col-md-5">

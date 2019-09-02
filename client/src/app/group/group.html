@@ -36,7 +36,7 @@
 					ng-submit="vm.submitGroupForm(vm.group, vm.group._id)"
 					name="vm.groupForm"
 					role="form"
-					id="group"
+					id="groupForm"
 					novalidate
 				>
 				
@@ -73,11 +73,21 @@
 					</div>
 					<br>
 					<div class="row">
-						<label for="grouptype" class="col-xs-5">Group Manager: </label>
-						<div class="col-xs-7">
-							<a ui-sref="displayUser({ userId: vm.group.groupManager._id })">
-							{{vm.group.groupManager.userName}}
-							</a>
+						<div class="col-xs-6 ">
+							<div class="d-flex "> 
+								<label class="createGroupForm--label">Group Manager: </label> 
+								<span class="createGroupForm--value" ui-sref="displayUser({ userId: vm.group.groupManager.userId })">
+								{{vm.group.groupManager.userName}}
+								</span>
+							</div>
+						</div>
+						<div class="col-xs-6 ">
+							<div class="d-flex"> 
+								<label class="createGroupForm--label">Main Platform: </label> 
+								<span class="createGroupForm--value">
+								{{vm.group.mainPlatform}}
+								</span>
+							</div>
 						</div>
 						
 					</div>
@@ -111,11 +121,42 @@
 						</div>
 					</div>
 					<br>
+					<div class="row" ng-if="vm.actionType !== 'displayGroup'">
+						<label  class="col-xs-5">Main platform:</label>
+						<div class="col-xs-7">
+								<md-input-container>
+									<label>PLatforms</label>
+									<md-select ng-model="vm.group.mainPlatform"
+												md-on-close="vm.clearSearchTerm()"
+												data-md-container-class="selectdemoSelectHeader"
+												ng-disabled="vm.actionType !== 'editGroup'"
+												>
+										<md-select-header class="demo-select-header">
+										<input ng-model="vm.searchTerm"
+												type="search"
+												placeholder="Search for a platform.."
+												class="demo-header-searchbox md-text">
+										</md-select-header>
+										<md-optgroup label="platforms">
+										<md-option ng-value="platform.name" ng-repeat="platform in vm.platforms |
+											filter:searchTerm"
+											>{{platform.name}}
+										</md-option>
+										</md-optgroup>
+									</md-select>
+								</md-input-container>
+								<!-- <select ng-options="user as user.userName for user in vm.group.members" 
+									ng-model="user" ng-change="vm.selectManager(user)" >
+								</select> -->
+						</div>
+						<br>
+					</div>
 					<div class="row">
-						<label class="col-xs-5">Members</label>
-						<div class="col-xs-7 createGroupForm__members" >
+						<label class="col-xs-4">Members</label>
+						<div class="col-xs-8 createGroupForm__members" >
 							<div class="row" ng-repeat="member in vm.group.members">
 								<div class="col-xs-9">
+									<img class="createGroupForm__members--profileImg" src="https://randomuser.me/api/portraits/men/{{$index}}.jpg" alt="">
 									<a ui-sref="displayUser({ userId: member.userId })">
 										{{member.userName}}
 									</a>

@@ -30,7 +30,7 @@
 					</div>
 				
 					<div class="row" ng-repeat="message in vm.userMessages  | orderBy : message.sentdAt : true" 
-									ng-if="message.receiver.userId == vm.user._id && message.messageType == 'groupMessage'">
+									ng-if="message.receiver.userId == vm.user._id">
 						<message-row-directive></message-row-directive>
 					</div>
 				</div>
@@ -120,44 +120,8 @@
 							date
 						</div>
 					</div>
-					<div class="messageRow" ng-repeat="message in vm.userMessages" ng-if="message.sender.userId == vm.user._id">
-						<div class="row messageRow__main">
-							<div class="col-xs-2">
-								<a ui-sref="displayUser({ userId: message.receiver.userId })">
-									<div class="messageRow__main--userName">
-										{{message.receiver.userName}}
-									</div>
-	
-								</a>
-							</div>
-							<div class="col-xs-7" ng-if="message.messageType=='groupInvite'">
-								<a ui-sref="displayGroup({ groupId: message.links[0].linkId })">
-									<div class="messageSubject">
-										{{message.subject}}
-									</div>
-	
-								</a>
-							</div>
-							<div class="col-xs-7" ng-if="message.messageType=='friendRequest' || message.messageType=='chatMessage'">
-								<a ui-sref="displayUser({ userId: message.sender.userId })">
-									<div class="messageSubject">
-										{{message.subject}}
-									</div>
-	
-								</a>
-							</div>
-							<div class="col-xs-4">
-								{{message.sentdAt | date:'dd-MM-yy H:mm'}}
-							</div>
-						</div>
-						<div class="row">
-							
-							<div class="col-xs-12">
-								<div class="messageContent">
-									{{message.content}}
-								</div>
-							</div>
-						</div>
+					<div class="messageRow" ng-repeat="message in vm.userMessages" ng-if="message.status == 'draft'">
+							<message-form-directive></message-form-directive>
 					</div>
 				</div>
 			</md-tab-body>

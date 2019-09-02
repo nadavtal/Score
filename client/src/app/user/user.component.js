@@ -122,21 +122,21 @@
             usersService.getFilesByUserId(userId)
               .then(files => {
                 vm.files = files.data.data;
-                console.log(vm.files)
+                // console.log(vm.files)
               });
             messagesService.getMessagesByUserID(userId)
               .then((messages)=>{
-                console.log(messages);
-                vm.userMessages = messages.data.data
-                $rootScope.sumUnreadMessages = messagesService.sumUnreadMessages(vm.userMessages);
-                console.log(  $rootScope)
-                vm.sumUnreadMessages =  $rootScope.sumUnreadMessages
-                console.log('sumUnreadMessages', vm.sumUnreadMessages);
+                // console.log(messages);
+                vm.userMessages = messages.data.data;
+                vm.sumUnreadMessages = messagesService.sumUnreadMessages(vm.userMessages, userId);
+                
+                
+                // console.log('sumUnreadMessages', vm.sumUnreadMessages);
                 // for(var i=0; i<messages.data.data.length; i++){
                 //   vm.userMessages.push(messages.data.data[i]);
       
                 // }
-                console.log(vm.userMessages)
+                // console.log(vm.userMessages)
               })
               .catch(function(err) {
                 $log.debug(err);
@@ -284,7 +284,7 @@
      */
     function createUser(user) {
       if (!user) return;
-
+      
       usersService.createUser(user)
         .then(function(newUser) {
           vm.newUser = newUser.data.data;

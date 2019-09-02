@@ -74,6 +74,7 @@
       type: String,
       default: ''
     },
+    profileImageLink: String,
     accounts: [Account.schema],
     messages: [Message.schema],
     createdAt: {

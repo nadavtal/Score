@@ -30,7 +30,8 @@
       this.checkIfGroupExists = checkIfGroupExists; 
       this.getAllGroupsFromDataBase = getAllGroupsFromDataBase;
       this.getGroupsByUserID = getGroupsByUserID  ;
-      this.getGroupsByPlatform = getGroupsByPlatform 
+      this.getGroupsByPlatform = getGroupsByPlatform;
+      this.getGroupFromListByGroupId = getGroupFromListByGroupId;
       
   
       /// definitions
@@ -89,6 +90,19 @@
         })
         
         return promise  
+      }
+
+      function getGroupFromListByGroupId(groupList, groupId){
+        console.log(groupList, groupId)
+        
+        var group = groupList.filter(function(group){
+          if(group._id = groupId)
+          return group;
+      
+        });
+        // console.log(group)
+
+        return group
       }
   
       

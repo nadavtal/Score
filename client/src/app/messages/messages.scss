@@ -20,10 +20,19 @@ md-tab-content {
     &__main{
         border-bottom: 1px solid lightgrey;
         padding: 0.2rem 0.5rem;
+        min-height: 3rem;
+        height: auto;
+        
+
+        &--small{
+            font-size: .7rem;
+        }
     }
 
-    &__date{
-        // font-size: .7rem;
+    &--coloumn{
+        border-right: 1px solid black;
+        min-height: 3rem;
+        height: auto;
     }
 
     &__content{

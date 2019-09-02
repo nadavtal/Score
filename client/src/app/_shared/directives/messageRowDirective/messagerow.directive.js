@@ -42,8 +42,11 @@
                     if(scope.message.links.tournamentId){
                         linkToTournament(scope.message.links.tournamentId);
                     } else if(scope.message.links.groupId){
-                        console.log('aksjdhkajhsdk')
+                        
                         linkToGroup(scope.message.links.groupId);
+                    } else if(scope.message.links.gameId){
+                       
+                        linkToGame(scope.message.links.gameId);
                     }
                     
                 }
@@ -52,6 +55,9 @@
                 }
                 function linkToGroup(groupId){
                     $state.go('displayGroup', {groupId: groupId});
+                }
+                function linkToGame(gameId){
+                    $state.go('displayGame', {gameId: gameId});
                 }
                
                 

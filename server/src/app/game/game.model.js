@@ -43,11 +43,14 @@
       required: true,
      
     },
+
+    buyIn: Number,
     players: [{
       userName: String,
       userId: ObjectId
       
     }],
+    PlayersPerGroup: Number,
     optionalPlayers: [{
       userName: String,
       userId: ObjectId
@@ -60,16 +63,20 @@
     },
     time: {
       type: Date,
-      
-      
     },
 
-    timeoptions: [timeOptionSchema],
+    timeOptions: [timeOptionSchema],
 
     host: {
       type: String,
       required: true,
     },
+    
+    gameGroups: [{
+      groupNumber: Number,
+      groupMembers: [{
+        userName: String}],
+    }],  
     group: ObjectId,
     createdAt: {
       type: Date,

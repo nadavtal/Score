@@ -149,6 +149,11 @@ $battleHeight: calc((#{$tournamentHeight} / #{$battlesPerRouns }) );
         max-height: 7rem;
         overflow: auto;
         margin-bottom: 1rem;
+        
+        &--profileImg{
+            height: 2rem;
+            
+        }
     }
 
     &--text{

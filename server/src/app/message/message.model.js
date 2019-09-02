@@ -43,8 +43,8 @@
     status: {
       type: String,
       enum: {
-        values: ['read', 'unread'],
-        message: 'Only "read", "unread" messages are allowed.',
+        values: ['read', 'unread', 'draft'],
+        message: 'Only "read", "unread" "draft" messages are allowed.',
         
       },
       default: 'unread'

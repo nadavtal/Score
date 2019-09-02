@@ -1,0 +1,26 @@
+<div class="gameBlock">
+    <div class="row">
+        <a ui-sref="displayGame({ gameId: game._id, groupId: game.group })">
+            <div class="col-xs-2">
+                <img class="gameBlock--image" src="../../assets/img/platforms/{{game.platformType}}.png" alt="">
+            </div>
+            <div class="col-xs-5 gameBlock__details">
+                <h4>{{game.name}}</h4>
+                <div class="gameBlock__details--numMembers">
+                    {{game.players.length}} players
+                </div>
+
+            </div>
+            <div class="col-xs-3">
+                {{game.time | date:'dd-MM-yy H:mm'}}
+            </div>
+        </a>
+        <div class="col-xs-2 d-flex">
+            <md-icon md-svg-src="assets/img/icons/edit.svg" class="groupActionButton" ui-sref="editGame({ gameId: game._id })" 
+                ng-if="vm.isUser"></md-icon>
+            <md-icon md-svg-src="assets/img/icons/remove.svg" class="groupActionButton red" nng-click="vm.removeGame($index, game._id)" 
+                ng-if="vm.isUser"></md-icon>
+            
+        </div>
+    </div>
+</div>

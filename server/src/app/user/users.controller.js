@@ -112,7 +112,8 @@
       password: params.password,
       email: params.email,
       role: params.role,
-      profileImageFileName: params.filename
+      profileImageFileName: params.filename,
+      profileImageLink: params.profileImageLink
     });
     console.log(user)
     // req params validation for required fields
@@ -213,7 +214,8 @@
           'gamesplayed' : bodyParams.gamesplayed,
           'accounts': bodyParams.account,
           'friends' : bodyParams.friends,
-          'profileImageFileName': bodyParams.profileImageFileName
+          'profileImageFileName': bodyParams.profileImageFileName,
+          'profileImageLink': bodyParams.profileImageLink
           }
         },
         { upsert: false, new: true, fields: { password: 0 }, runValidators: true, setDefaultsOnInsert: true })

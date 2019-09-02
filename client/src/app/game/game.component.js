@@ -14,13 +14,13 @@
     });
 
   GameCtrl.$inject = ['$log', '$state', '$stateParams', 'QueryService', 'localStorage', 'usersService', 'gamesService', 'groupsService', 
-    'ngDialog', '$rootScope', '$scope', 'gameTypesService', 'platformService'];
+    'ngDialog', '$rootScope', '$scope', 'gameTypesService', 'platformService', 'messagesService'];
 
     // angular
     // .module('boilerplate').controller('GameCtrl' , function($log, $state, $stateParams, QueryService, localStorage, usersService, gamesService, groupsService,
     //   ngDialog, $rootScope, $scope, gameTypesService, platformService) {
     function GameCtrl($log, $state, $stateParams, QueryService, localStorage, usersService, gamesService, groupsService,
-      ngDialog, $rootScope, $scope, gameTypesService, platformService){
+      ngDialog, $rootScope, $scope, gameTypesService, platformService, messagesService){
 
     console.log('initializing GameCtrl', $scope)
     var vm = this;
@@ -30,6 +30,9 @@
     vm.editGame = editGame;
     vm.submitGameForm = submitGameForm;
     vm.registerToGame = registerToGame;
+    vm.addPlayer = addPlayer;
+    vm.removePlayer = removePlayer;
+    vm.invitePlayer = invitePlayer;
     vm.unRegisterToGame = unRegisterToGame;
     vm.addOptionalTime = addOptionalTime;
     vm.addToOptionalPLayers = addToOptionalPLayers;
@@ -38,38 +41,54 @@
     vm.selectGameType = selectGameType
     vm.selectPlatformType = selectPlatformType
     vm.removePlayerfromTimeOption = removePlayerfromTimeOption;
+    vm.sendInvitationsToPlayers = sendInvitationsToPlayers;
+    vm.addGroupsToGame = addGroupsToGame;
+    vm.takeThisPlace = takeThisPlace
+    vm.removeFromThisPlace = removeFromThisPlace
+
     vm.clearSearchTerm = clearSearchTerm;
     vm.searchTerm = '';
     vm.showBottomToolBar = false;
     var gameId = $stateParams.gameId;
     var groupId = $stateParams.groupId;
     vm.user = localStorage.get('user');
-    // console.log(vm.user)
+    vm.backToMain = backToMain;
+    vm.showBottomMenu = true;
+    vm.changeActiveTab = changeActiveTab;
     vm.registerd = false;
-    vm.users = []
     
-    if(!$rootScope.users){
-      
-      usersService.getAllUsers()
-        .then((data) => {
-          vm.users = data.data.data;
-          if(!groupId){
-            // vm.optionalPlayers = vm.users;
+    vm.invitePlayers = []
 
-          }
-          
-        })
+
+    if(!vm.activeTab) vm.activeTab = 'info';    
+    vm.currentUser = localStorage.get('user');
+    $scope.$on('user:login', function() {
+      vm.currentUser = localStorage.get('user');
       
-    } else{
-      vm.users = $rootScope.users;
-      console.log('vm.users in game', vm.users);
-    }
+      console.log('user from logging in', vm.user)
+      
+    });
+    
 
     if(groupId) {
       console.log('game component has groupId: ', groupId)
       groupsService.getGroup(groupId)
-        .then((data) => {
-          vm.optionalPlayers = data.data.data.members
+        .then((group) => {
+          vm.group = group.data.data;
+          // console.log(vm.group);
+          vm.optionalPlayers = vm.group.members;
+          vm.game = {};
+          vm.game.players = [{userName: vm.user.userName, userId: vm.user._id}];
+          vm.game.platformType = vm.group.mainPlatform
+          vm.game.optionalPlayers = [];
+          vm.game.host = vm.user.userName
+          vm.game.time = new Date(Date.now());
+          vm.game.timeoptions =[];
+          vm.today = new Date(Date.now())
+          vm.group = '';
+          vm.showBottomToolBar = true;
+          
+          
           
         })
     } 
@@ -101,6 +120,8 @@
               console.log(vm.optionalPlayers);
               // $scope.$apply();
             })
+        } else{
+          vm.optionalPlayers = vm.currentUser.friends
         }
       })
       .catch(function(err) {
@@ -151,7 +172,9 @@
     }
 
     
-      
+    function changeActiveTab(tab){
+      vm.activeTab = tab
+    } 
 
     function clearSearchTerm(){
       vm.searchTerm = ''
@@ -164,8 +187,51 @@
 
       vm.game.gameType = typeName
       console.log(vm.game);
-      // $scope.$apply()
-    }  
+      if(vm.game.gameType == "1V1"){
+        addGroupsToGame(1);
+        // vm.game.gameGroups[0].groupMembers[0].userName = vm.currentUser.userName
+        // addPlayerToGroup(0, vm.currentUser.userName);
+      }
+      if(vm.game.gameType == "2V2"){
+        addGroupsToGame(2);
+        // vm.game.gameGroups[0].groupMembers[0].userName = vm.currentUser.userName
+      }
+      if(vm.game.gameType == "1 Vs many"){
+        vm.game.gameGroups = [];
+        
+      }
+    } 
+    
+    function addGroupsToGame(PlayersPerGroup){
+      
+      vm.game.gameGroups = [];
+      var numGroups = 2;
+      for (var j=0; j<numGroups; j++){
+        var group = {
+          groupNumber : j+1,
+          groupMembers: []
+        }
+        for (var i=0; i<PlayersPerGroup; i++){
+          group.groupMembers.push({userName: ''})
+        
+        }
+        vm.game.gameGroups.push(group)
+      }
+      vm.game.gameGroups[0].groupMembers[0].userName = vm.currentUser.userName
+      console.log(vm.game)
+    }
+
+    function takeThisPlace(index, groupNum){
+      // console.log(index)
+      vm.game.gameGroups[groupNum].groupMembers[index].userName = vm.currentUser.userName
+      
+      editGame(vm.game, vm.game._id, 'Added to game, GOOD LUCK!')
+    }
+    function removeFromThisPlace(index, groupNum){
+      // console.log(index)
+      vm.game.gameGroups[groupNum].groupMembers[index].userName = ''
+      editGame(vm.game, vm.game._id, 'Removed from game, See you soon!')
+    }
 
     function selectPlatformType(typeName){
       // console.log(typeName);
@@ -177,7 +243,9 @@
     }    
       
     
-
+    function backToMain(){
+      $state.go('displayUser', {userId: vm.user._id} )
+    }
     
 
     function setActionType(state, gameId) {
@@ -206,18 +274,26 @@
           var newGame = newGame.data.data;
           $log.debug('newGame', newGame);
 
-          var dialog = ngDialog.open({
-            template: '\
-              <p>New game created</p>\
-              <div class="ngdialog-buttons">\
-                  <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click="closeThisDialog(\'ok\')">OK</button>\
-              </div>',
-            plain: true
+          Swal.fire({
+            position: 'center',
+            type: 'success',
+            title: newGame.name + ' created, GOOD LUCK!',
+            showConfirmButton: false,
+            timer: 1200
           });
+          $state.go('displayGame', { gameId: newGame._id });
+          // var dialog = ngDialog.open({
+          //   template: '\
+          //     <p>New game created</p>\
+          //     <div class="ngdialog-buttons">\
+          //         <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click="closeThisDialog(\'ok\')">OK</button>\
+          //     </div>',
+          //   plain: true
+          // });
 
-          dialog.closePromise.then(function(closedDialog) {
-            $state.go('displayGame', { gameId: newGame._id });
-          });
+          // dialog.closePromise.then(function(closedDialog) {
+          //   $state.go('displayGame', { gameId: newGame._id });
+          // });
 
         })
         .catch(function(err) {
@@ -225,11 +301,7 @@
         });
     }
 
-    /**
-     * Update game attributes
-     * @param  {object} editGame Game form
-     * @return {object}            Promise
-     */
+    
     
     vm.selectWinner = function(user){
       // console.log(user)
@@ -241,7 +313,10 @@
     }
 
     function editGame(game, gameId, responseMessage) {
-      console.log('editing game', vm.newWinner, game.winner)
+      console.log('editing game', vm.newWinner, game.winner);
+      if(!responseMessage) {
+        var responsMessage = vm.game.name + 'updated!'
+      }
       if (!game) return;
       if(vm.newWinner && game.winner){
         if(vm.newWinner.userId != game.winner.userId){
@@ -260,6 +335,13 @@
       QueryService
         .query('PUT', 'games/' + gameId, null, game)
         .then(function(updatedGame) {
+          Swal.fire({
+            position: 'center',
+            type: 'success',
+            title: responseMessage,
+            showConfirmButton: false,
+            timer: 1200
+          });
           checkIfRegistered()
 
 
@@ -269,15 +351,16 @@
           console.log(vm.game);
 
           $log.debug('updatedGame', vm.updatedGame);
-
-          ngDialog.open({
-            template: '\
-              <p>'+responseMessage+'</p>\
-              <div class=\"ngdialog-buttons\">\
-                  <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click=\"closeThisDialog()\">OK</button>\
-              </div>',
-            plain: true
-          });
+          
+          // $state.go('displayGame', { gameId: vm.game._id });
+          // ngDialog.open({
+          //   template: '\
+          //     <p>'+responseMessage+'</p>\
+          //     <div class=\"ngdialog-buttons\">\
+          //         <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click=\"closeThisDialog()\">OK</button>\
+          //     </div>',
+          //   plain: true
+          // });
 
           
 
@@ -289,24 +372,48 @@
          
     }
 
-    /**
-     * Get user
-     * @param  {object} userId User ID
-     * @return {object}      Promise
-     */
-    
-
-    vm.addPlayer = function(user){
+   
+    function addPlayer(user){
       console.log(user)
       vm.game.players.push({userName: user.userName, userId: user.userId})
     }
 
-    vm.removePlayer = function(index){
+    function removePlayer(index){
       
       vm.game.players.splice(index, 1);
       console.log(vm.game.players)
     }
 
+    function invitePlayer(user){
+      console.log(user)
+    }
+
+    function sendInvitationsToPlayers(){
+      // vm.invitePlayers.push(user.userId)
+      console.log(vm.invitePlayers);
+      var message = {
+        subject : 'New Game from ' + vm.currentUser.userName,
+        content: vm.currentUser.userName + ' has invited you to a game ! ',
+        messageType : 'gameInvite',
+        sender : {userName: vm.currentUser.userName,
+                  userId: vm.currentUser._id},
+        
+        links: {gameId: vm.game._id,
+                userId: vm.currentUser._id,
+                }
+      }
+      messagesService.createMessagePerUser(vm.invitePlayers, message)
+        .then(function(message){
+          console.log(message);
+          Swal.fire({
+            position: 'center',
+            type: 'success',
+            title: 'Invitations has been sent!',
+            showConfirmButton: false,
+            timer: 1200
+          });
+        });
+    }
     function registerToGame() {
       
       if (!vm.game) return;
@@ -323,14 +430,21 @@
       }
 
       if (vm.registerd) {
-        ngDialog.open({
-          template: '\
-            <p>You are allready registered to this game</p>\
-            <div class=\"ngdialog-buttons\">\
-                <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click=\"closeThisDialog()\">OK</button>\
-            </div>',
-          plain: true
+        Swal.fire({
+          position: 'error',
+          type: 'success',
+          title: 'You are allready registered to this game!',
+          showConfirmButton: false,
+          timer: 1200
         });
+        // ngDialog.open({
+        //   template: '\
+        //     <p>You are allready registered to this game</p>\
+        //     <div class=\"ngdialog-buttons\">\
+        //         <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click=\"closeThisDialog()\">OK</button>\
+        //     </div>',
+        //   plain: true
+        // });
       }
       else {
         vm.game.players.push({
@@ -348,14 +462,21 @@
       
       if (!vm.game) return;
       if(vm.game.host == vm.user.userName){
-        ngDialog.open({
-          template: '\
-            <p>A host cant leave game without changing to another host</p>\
-            <div class=\"ngdialog-buttons\">\
-                <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click=\"closeThisDialog()\">OK</button>\
-            </div>',
-          plain: true
+        Swal.fire({
+          position: 'center',
+          type: 'error',
+          title: 'A host cant leave game without changing to another host',
+          showConfirmButton: false,
+          timer: 1200
         });
+        // ngDialog.open({
+        //   template: '\
+        //     <p>A host cant leave game without changing to another host</p>\
+        //     <div class=\"ngdialog-buttons\">\
+        //         <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click=\"closeThisDialog()\">OK</button>\
+        //     </div>',
+        //   plain: true
+        // });
       }else{
       vm.game.players = vm.game.players.filter(function(value){
         
@@ -367,7 +488,6 @@
    
       
     }
-
 
 
     function addOptionalTime(){
@@ -484,7 +604,7 @@
         
         if(array[i].userName == userName){
           var foundUser = array[i]
-          console.log(foundUser)
+          // console.log(foundUser)
         }
       }
       return foundUser
@@ -514,11 +634,13 @@
     function checkIfRegistered(){
       console.log(vm.game.players, vm.user.userName)
       var registerd = checkIfUserInArrayByUsername(vm.game.players, vm.user.userName)
-      console.log(registerd)
+      // console.log(registerd)
       if (registerd) vm.registerd = true
       else vm.registerd = false
       
     }
+
+    
     
 
   }

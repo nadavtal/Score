@@ -187,7 +187,8 @@
           'groupImage': bodyParams.groupImage,
           'members': bodyParams.members,
           'wins' : bodyParams.wins,
-          'updatedAt': bodyParams.updatedAt
+          'updatedAt': bodyParams.updatedAt,
+          'mainPlatform': bodyParams.mainPlatform,
           
           }
         },

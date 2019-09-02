@@ -167,7 +167,7 @@
      var params = req.params;
       console.log('getting messages of groupId: ', params.groupId)
      Message
-        .find({$or:[{'receiver.userId':  params.groupId}, {'sender.userId' : params.groupId}]})
+        .find({$or:[{'receiver.userId':  params.groupId}, {'sender.userId' : params.groupId},  {'links.groupId' : params.groupId}]})
         
         .exec((err, messages) => {
           if (err) return next(err);

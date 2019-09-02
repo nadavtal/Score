@@ -43,10 +43,13 @@
       gameType: params.gameType,
       platformType : params.platformType,
       host: params.host,
+      buyIn: params.buyIn,
       time: params.time,
       group: params.group,
       players : params.players,
       optionalPlayers : params.optionalPlayers,
+      PlayersPerGroup : params.PlayersPerGroup,
+      gameGroups : params.gameGroups,
       
     });
     console.log('game before saving:', game)
@@ -248,29 +251,34 @@
    * PUT '/games/:userId'
    */
   function updateGame(req, res, next) {
-    // console.log(req.body)
+    console.log('updating game: ', req.body)
     var bodyParams = req.body;
     
-    console.log(bodyParams)
+    console.log('bodyParams', bodyParams)
 
     Game
       .findOneAndUpdate(
         { _id: ObjectId(bodyParams._id) },
         { '$set': {
-          'gametype': bodyParams.gametype,
+          'name': bodyParams.name,
+          'gameType': bodyParams.gameType,
           'host': bodyParams.host,
           'optionalPlayers': bodyParams.optionalPlayers,
           'players': bodyParams.players,
           'time': bodyParams.time,
-          'timeoptions': bodyParams.timeoptions,
-          'updatedat': bodyParams.updatedAt,
+          'timeOptions': bodyParams.timeOptions,
+          'updatedAt': bodyParams.updatedAt,
           'winner': bodyParams.winner,
+          'buyIn': bodyParams.buyIn,
+          'PlayersPerGroup': bodyParams.PlayersPerGroup,
+          'gameGroups': bodyParams.gameGroups
 
          
           }
         },
         { upsert: false, new: true, fields: { password: 0 }, runValidators: true, setDefaultsOnInsert: true })
       .exec((err, game) => {
+        console.log('updated game: ', game)
         if (err) return next({ err: err, status: 400 });
         if (!game) return next({
           message: 'Game not found.',

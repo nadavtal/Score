@@ -25,7 +25,11 @@
     
     var vm = this;
     vm.currentUser = localStorage.get('user');
-    console.log(vm.currentUser)
+    $scope.$on('messagesSent', function(event, messages) {
+      
+        addMessages(messages)
+      
+    });
     vm.data = {
       selectedIndex: 0,
       
@@ -39,6 +43,7 @@
     };
 
     vm.messageClicked = messageClicked;
+    vm.getGroupFromListByGroupId = getGroupFromListByGroupId
     
     vm.$onInit = function() {
       
@@ -49,13 +54,18 @@
           vm.user = user.data.data;
           vm.userMessages = [];
           // console.log(vm.user)
+        })
+        .catch(function(err) {
+          $log.debug(err);
         });
+
         messagesService.getMessagesByUserID(userId)
         .then((messages)=>{
-          console.log(messages);
+          // console.log(messages);
           vm.userMessages = messages.data.data
           vm.sumUnreadMessages = messagesService.sumUnreadMessages(vm.userMessages);
-          console.log('sumUnreadMessages', vm.sumUnreadMessages);
+          
+          // console.log('sumUnreadMessages', vm.sumUnreadMessages);
           // for(var i=0; i<messages.data.data.length; i++){
           //   vm.userMessages.push(messages.data.data[i]);
 
@@ -66,22 +76,18 @@
           $log.debug(err);
         });
 
-        // groupsService.getGroupsByUserID(userId)
-        //   .then((groups) => {
-        //     vm.groups = groups.data.data;
-        //     // console.log(vm.groups);
-        //     messagesService.getMessagesFromGroups(vm.groups)
-        //       .then(function(messages){
-        //         console.log(messages[0].length);
-        //         for(var i=0; i<messages[0].length; i++){
-        //           console.log(messages[0][i]);
-        //           vm.userMessages.push(messages[0][i]);
-      
-        //         }
-        //         console.log(vm.userMessages);
-        //         // $scope.$apply();
-        //       });
-        //   })
+        groupsService.getGroupsByUserID(userId)
+          .then((groups) => {
+            vm.groups = groups.data.data;
+            
+            console.log(vm.groups);
+            messagesService.getMessagesFromGroups(vm.groups)
+              .then(function(messages){
+                console.log('group messages:', messages);
+                
+                // $scope.$apply();
+              });
+          })
       
       
       } else {
@@ -109,6 +115,13 @@
       }
     };
 
+
+    function getGroupFromListByGroupId(groupId){
+      console.log(vm.groups);
+      groupsService.getGroupFromListByGroupId(vm.groups, groupId);
+
+    }
+
     function messageClicked(event,message, box){
       console.log(box);
       console.log(event.currentTarget.parentElement.children[1])
@@ -135,6 +148,16 @@
           })
       }
 
+    }
+
+    function addMessages(messages){
+      console.log(messages)
+      for(var i=0; i< messages.length; i++){
+        for(var j=0; j< messages[i].length; j++){
+          vm.userMessages.push(messages[i][j]);
+        }
+      }
+      console.log(vm.userMessages)
     }
 
     

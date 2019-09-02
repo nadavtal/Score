@@ -1,0 +1,26 @@
+
+    <md-fab-toolbar md-direction="left" class="userToolBar ">
+        <md-fab-trigger class="fabTrigger ">
+            <md-button aria-label="Add..." class="text-right"><md-icon md-svg-src="assets/img/icons/threeLines.svg" class="white"></md-icon></md-button>
+        </md-fab-trigger>
+        
+        <md-toolbar>
+            <md-fab-actions class="d-flex between bottomToolBar--toolbar">
+                <md-button aria-label="LOG OUT" class="d-flex ">
+                    <auth></auth>
+                    <!-- <md-icon md-svg-src="assets/img/icons/close.svg"></md-icon> -->
+                </md-button>
+            
+                <md-button aria-label="Back to homepage" ng-click="backToMain()">
+                    <md-icon md-svg-src="assets/img/icons/home.svg"></md-icon>
+                </md-button>
+                <md-button aria-label="Store" >
+                    <md-icon md-svg-src="assets/img/icons/store.svg"></md-icon>
+                </md-button>
+                <md-button aria-label="challenge for battle">
+                    <md-icon md-svg-src="assets/img/icons/shield.svg"></md-icon>
+                </md-button>
+            </md-fab-actions>
+        </md-toolbar>
+    </md-fab-toolbar>
+

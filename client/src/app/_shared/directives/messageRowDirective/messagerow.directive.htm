@@ -2,11 +2,13 @@
     <div class="row messageRow__main" 
         ng-class="message.status == 'unread' ? 'unread' : read"
         ng-click="vm.messageClicked($event, message, 'inbox')">
-        <div class="col-xs-3">
+        <div class="col-xs-3 messageRow--coloumn">
             <!-- <a ui-sref="displayUser({ userId: message.sender.userId })"> -->
-                <div class="messageUser">
+                <div class="">
                     {{message.sender.userName}}
                 </div>
+                <div class="messageRow__main--small" ng-if="message.links.groupName">({{message.links.groupName}})</div>
+
 
             <!-- </a> -->
         </div>
@@ -25,16 +27,21 @@
                 </div>
 
         </div> -->
-        <div class="col-xs-6">
+        <div class="col-xs-6 messageRow--coloumn">
             {{message.subject}}
         </div>
-        <div class="col-xs-3 messageRow__date">
+        <div class="col-xs-3 messageRow__main--small">
             {{message.sentdAt | date:'dd-MM-yy H:mm'}}
         </div>
     </div>
-    <div class="messageRow__content full-width hidden" ng-if="message.content" ng-click="linkTo()">
-
-        {{message.content}}
+    <div class="messageRow__content full-width hidden" ng-if="message.content">
+        <div class="messageRow__content--text">
+            {{message.content}}
+        </div>
+        <div class="messageRow__content--actions d-flex arround" ng-if="message.messageType =='gameInvite'"> 
+            <button class="customButton bg-green white" ng-click="linkTo()">View game</button>
+            <button class="customButton bg-red white">No thanks</button>
+        </div>
     </div>
 
 </div>

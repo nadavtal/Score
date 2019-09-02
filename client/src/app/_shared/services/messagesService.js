@@ -38,7 +38,8 @@
       this.getMessagesFromGroups = getMessagesFromGroups;
       this.sendMessageToGroup = sendMessageToGroup;
       this.createMessagePerUser = createMessagePerUser;
-      this.sumUnreadMessages = sumUnreadMessages
+      this.sumUnreadMessages = sumUnreadMessages;
+      this.sendMessageToGroups = sendMessageToGroups
       
   
       /// definitions
@@ -185,26 +186,53 @@
                 // console.log(message)
                 resolve(message.data.data)
             });
+          });
+          promiseArr.push(promise);
+        }
+        return Promise.all(promiseArr);
+      }
 
+      function sendMessageToGroups(groups, msg){
+        // console.log(users)
+        var promiseArr = [];
+        
+        for(var i = 0; i < groups.length; i++){
+          
+          // console.log(message);
+          var promise = new Promise(function(resolve, reject) {
+            msg.links = {
+              groupName: groups[i].groupName,
+              groupId: groups[i]._id
+            }
+            createMessagePerUser(groups[i].members, msg)
+              .then(function(messages){
+                resolve(messages)
+              });
             
             
-             
-              
           });
           promiseArr.push(promise);
         }
         return Promise.all(promiseArr);
       }
   
-      function sumUnreadMessages(messages){
+      function sumUnreadMessages(messages, userId){
+        // console.log(messages);
         var sum = 0
         for (var i = 0; i < messages.length; i++){
-          // console.log(messages[i].status)
-          if(messages[i].status == 'unread') sum++
+          if(messages[i].receiver && messages[i].receiver.userId == userId){
+            if(messages[i].status == 'unread'){
+              sum++
+            }
+          }
+          
+           
         }
-  
+        // console.log(sum)
         return sum
       }
+
+      
   
       
   

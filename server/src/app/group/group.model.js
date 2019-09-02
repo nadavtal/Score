@@ -31,7 +31,10 @@
       default: '',
       required: false,
     },
-
+    mainPlatform: {
+      platformName: String,
+      
+    },
     groupImage: String,
     
     wins: {

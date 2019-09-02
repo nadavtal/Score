@@ -14,10 +14,10 @@
     });
 
   GroupCtrl.$inject = ['$log', '$state', '$stateParams', 'QueryService', 'localStorage', 'groupsService', 'usersService',
-    'ngDialog', '$rootScope', '$scope', 'gamesService', '$element', 'tournamentsService'];
+    'ngDialog', '$rootScope', '$scope', 'gamesService', '$element', 'tournamentsService', 'platformService'];
 
   function GroupCtrl($log, $state, $stateParams, QueryService, localStorage, groupsService, usersService, 
-      ngDialog, $rootScope, $scope, gamesService, $element, tournamentsService) {
+      ngDialog, $rootScope, $scope, gamesService, $element, tournamentsService, platformService) {
     var vm = this;
 
     // methods
@@ -56,6 +56,17 @@
         vm.users = $rootScope.users;
         // console.log('vm.users in group', vm.users);
       }
+      if(!$rootScope.platforms) {
+        platformService.getAllPlatformsFromDataBase()
+        .then((platforms) => {
+          console.log(platforms)
+          $rootScope.platforms = platforms.data.data;
+          vm.platforms = $rootScope.platforms
+         
+        })
+      } else{
+        vm.platforms = $rootScope.platforms
+      };
 
       vm.actionType = setActionType(state, groupId);
       
@@ -232,10 +243,10 @@
           
           vm.group = updatedGroup;
           // $scope.$apply();
-          console.log(vm.group)
+          console.log(vm.group);
           $log.debug('updatedGroup', vm.group);
           if(!responseMessage)
-            var responseMessage = 'group Updated'
+            var responseMessage = 'group Updated';
           Swal.fire({
             position: 'center',
             type: 'success',

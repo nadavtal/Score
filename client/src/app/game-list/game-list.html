@@ -19,82 +19,13 @@
 						</md-button>
 						
 					</div>
-					<!-- <div ui-sref="createGame" class="create-game-link customButton bg-green white" ui-sref-opts="{reload: true, notify: true}">Create game</div>
-					<div ui-sref="createGroupGame" class="create-game-link customButton bg-green white" ui-sref-opts="{reload: true, notify: true}">Create Group game</div> -->
-					<!-- <button ng-click="vm.createGame()" class="create-game-link customButton bg-green white">Create New Game</button>
-					<button ng-click="vm.getGamesOfUserId()" class="customButton">find games by user</button> -->
+					
 				</div>
 				
-				<div class="gameBlock" ng-repeat="game in vm.games">
-					<div class="row">
-						<a ui-sref="displayGame({ gameId: game._id, groupId: game.group })">
-							<div class="col-xs-2">
-								<img class="gameBlock--image" src="../../assets/img/platforms/{{game.platformType}}.png" alt="">
-							</div>
-							<div class="col-xs-5 gameBlock__details">
-								<h4>{{game.name}}</h4>
-								<div class="gameBlock__details--numMembers">
-									{{game.players.length}} players
-								</div>
-			
-							</div>
-							<div class="col-xs-3">
-								{{game.time | date:'dd-MM-yy H:mm'}}
-							</div>
-						</a>
-						<div class="col-xs-2 d-flex">
-							<md-icon md-svg-src="assets/img/icons/edit.svg" class="groupActionButton" ui-sref="editGame({ gameId: game._id })" 
-								ng-if="isUser"></md-icon>
-							<md-icon md-svg-src="assets/img/icons/remove.svg" class="groupActionButton red" nng-click="vm.removeGame($index, game._id)" 
-								ng-if="isUser"></md-icon>
-							
-						</div>
-					</div>
+				<div class="" ng-repeat="game in vm.games">
+					<game-row-directive></game-row-directive>
 				</div>
-				<!-- header -->
-				<!-- <div class="row table-header">
-					<div class="col-xs-2">time</div>
-					<div class="col-xs-2">game type</div>
-					<div class="col-xs-2">host</div>
-					<div class="col-xs-2">players</div>
-					<div class="col-xs-2">Winner</div>
-					<div class="col-xs-2">actions</div>
-				</div> -->
-			
-				<!-- table body -->
-				<!-- <div class="table-body game-list">
-					<div
-						class="list-item row"
-						ng-repeat="game in vm.games track by game._id">
-			
-						<a ui-sref="displayGame({ gameId: game._id, groupId: game.group })" title="display game">
-							<div class="col-xs-2">{{ game.time | date:'dd-MM-yy H:mm' }}</div>
-							<div class="col-xs-2">{{ game.gametype }}</div>
-							<div class="col-xs-2">{{ game.host }}</div>
-							<div class="col-xs-2">
-								<a ui-sref="gamesByUserId({userId: player.userid})" ng-repeat="player in game.players">
-									{{player.userName}}, 
-								</a>
-								
-							</div>
-							<div class="col-xs-2">{{ game.winner.username }}</div>
-						</a>
-						<div class="col-xs-2">
-							<md-icon md-svg-src="assets/img/icons/edit.svg" 
-								class="groupActionButton" 
-								ui-sref="editGame({ gameId: game._id })"
-								ng-if="game.host == vm.currentUser.userName "></md-icon>
-						
-							<md-icon md-svg-src="assets/img/icons/remove.svg" 
-								class="groupActionButton red" 
-								ng-click="vm.removeGame($index, game._id)"
-								ng-if="game.host == vm.currentUser.userName "></md-icon></md-icon>
-							
-						</div>
-			
-						
-					</div>
-				</div> -->
+				
 			</div>
 		</md-tab-body>
 		</md-tab>
@@ -116,31 +47,8 @@
 					
 				</div>
 				
-				<div class="gameBlock" ng-repeat="tournament in vm.tournaments | orderBy: time">
-					<div class="row">
-						<a ui-sref="displayTournament({ tournamentId: tournament._id, groupId: tournament.group })">
-							<div class="col-xs-2">
-								<img class="gameBlock--image" src="../../assets/img/platforms/{{tournament.platformType}}.png" alt="">
-							</div>
-							<div class="col-xs-5 gameBlock__details">
-								<h4>{{tournament.name}}</h4>
-								<div class="gameBlock__details--numMembers">
-									{{tournament.registered.length}} players
-								</div>
-			
-							</div>
-							<div class="col-xs-3">
-								{{tournament.time | date:'dd-MM-yy H:mm'}}
-							</div>
-						</a>
-						<div class="col-xs-2 d-flex">
-							<md-icon md-svg-src="assets/img/icons/edit.svg" class="groupActionButton" ui-sref="editTournament({ tournamentId: tournament._id })" 
-								ng-if="tournament.manager == vm.currentUser.userName"></md-icon>
-							<md-icon md-svg-src="assets/img/icons/remove.svg" class="groupActionButton red" ng-click="vm.removeTournament($index, tournament._id)" 
-								ng-if="vm.isUser"></md-icon>
-							
-						</div>
-					</div>
+				<div  ng-repeat="tournament in vm.tournaments | orderBy: time">
+					<tournament-row-directive>
 				</div>
 			</div>
 		</md-tab-body>

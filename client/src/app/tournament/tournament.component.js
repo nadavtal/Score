@@ -37,6 +37,7 @@
     vm.initializeWinners = initializeWinners;
     vm.calculatePrize = calculatePrize;
     vm.calculatePrizePool = calculatePrizePool;
+    vm.backToMain = backToMain;
     // vm.addOptionalTime = addOptionalTime;
     // vm.addToOptionalPLayers = addToOptionalPLayers;
     // vm.removeFromOptionalPLayers = removeFromOptionalPLayers;
@@ -500,7 +501,9 @@
       });
   }
 
-    
+    function backToMain(){
+      $state.go('displayUser', {userId: vm.currentUser._id} )
+    }
 
     function editTournament(tournament, tournamentId, responseMessage) {
       console.log('editing tournament', vm.newWinner, tournament.winner, responseMessage)
