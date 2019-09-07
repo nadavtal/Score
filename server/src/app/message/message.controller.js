@@ -44,7 +44,9 @@
       messageType : params.messageType,
       sender : params.sender,
       receiver : params.receiver,
-      links: params.links
+      links: params.links,
+      replies: [],
+      parentMessageId: params.parentMessageId
 
       
     });
@@ -72,7 +74,7 @@
   }
 
   function updateMessage(req, res, next) {
-    console.log('ajhsgjahgsdjhasgd')
+    
     var bodyParams = req.body;
     
     console.log('message body params', bodyParams)
@@ -87,7 +89,9 @@
           'sender' : bodyParams.sender,
           'receiver' : bodyParams.receiver,
           'links': bodyParams.links,
-          'status': bodyParams.status
+          'status': bodyParams.status,
+          'replies': bodyParams.replies,
+          'parentMessageId': bodyParams.bodyParams 
  }
         },
         { upsert: false, new: true, fields: { password: 0 }, runValidators: true, setDefaultsOnInsert: true })

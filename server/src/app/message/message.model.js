@@ -24,8 +24,8 @@
     messageType: {
       type: String,
       enum: {
-        values: ['groupInvite', 'groupMessage', 'gameInvite', 'privateChatMessage', 'groupChatMessage', 'systemMessage', 'friendRequest', 'tournamentInvite'],
-        message: 'Only "groupInvite", "groupMessage", gameInvite", "privateChatMessage", "groupChatMessage", systemMessage" , "friendRequest", "tournamentInvitey", messages are allowed.'
+        values: ['replyMessage', 'groupInvite', 'groupMessage', 'gameInvite', 'privateChatMessage', 'groupChatMessage', 'systemMessage', 'friendRequest', 'tournamentInvite'],
+        message: 'Only "replyMessage", groupInvite", "groupMessage", gameInvite", "privateChatMessage", "groupChatMessage", systemMessage" , "friendRequest", "tournamentInvitey", messages are allowed.'
       }
     },
     sender: {
@@ -52,7 +52,9 @@
     links: {
       type: Object,
       default: {}
-    }
+    },
+    replies: [ObjectId],
+    parentMessageId: ObjectId
     
     
 

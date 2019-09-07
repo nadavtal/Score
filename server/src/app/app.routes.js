@@ -124,10 +124,11 @@
   router.get('/uploads/:userId', uploadsCtrl.getUploadsByUserId); // get uploads by userId
   
   // router.get('/clashusers/:clantag/:usertag', clashUserCtrl.getClashPlayer); // get clash clan
-  router.get('/clashusers/:userId/battles', clashUserCtrl.getClashPlayerBattles); // get clash user battles
-  router.get('/clashusers/:userId', clashUserCtrl.getClashPlayer); // get clash clan
+  router.get('/clashusers/:usertag/battles', clashUserCtrl.getUserBattlesFromClashApi); // get clash user battles
+  router.get('/clashusers/:usertag', clashUserCtrl.getClashPlayer); // get clash clan
+  router.put('/clashusers/:usertag', clashUserCtrl.updateClashUser); // create clash user
   router.get('/clashusers', clashUserCtrl.getClashUsersFromDatabase); // get clash users
-  router.post('/clashusers', clashUserCtrl.createUser); // get clash users
+  router.post('/clashusers', clashUserCtrl.createUser); // create clash user
   /**
    * ClashClans
    */
@@ -174,6 +175,10 @@
   router.post('/tournaments/:tournamentId', tournamentsCtrl.removeTournament); // remove game
   router.get('/tournaments/user/:userId', tournamentsCtrl.getTournamentsByUserId); // get tournaments by user
   router.get('/tournaments/group/:groupId', tournamentsCtrl.getTournamentsByGroupId); // get tournaments by group
+  router.get('/tournaments/platforms/:platformName', tournamentsCtrl.getTournamentsByplatformName); // get tournaments by group
+  router.get('/tournaments/buyin/:min/:max', tournamentsCtrl.getTournamentsByBuyin); // get tournaments by group
+  router.get('/tournaments/maxplayers/:min/:max', tournamentsCtrl.getTournamentsByNumPlayers); // get tournaments by group
+  router.get('/tournaments/prizepool/:min/:max', tournamentsCtrl.getTournamentsByPrizePool); // get tournaments by group
 
   /**
    * Groups

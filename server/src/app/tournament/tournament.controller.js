@@ -21,7 +21,11 @@
     updateTournament,
     removeTournament,
     getTournamentsByUserId,
-    getTournamentsByGroupId
+    getTournamentsByGroupId,
+    getTournamentsByplatformName,
+    getTournamentsByBuyin,
+    getTournamentsByNumPlayers,
+    getTournamentsByPrizePool
   };
 
   /// definitions
@@ -37,7 +41,7 @@
     var tournament = new Tournament({
       name: params.name,
       manager: params.manager,
-      platformType : params.platformType,
+      platform : params.platform,
       maxPlayers: params.maxPlayers,
       playerPerBattle: params.playerPerBattle,
       rounds: params.rounds,
@@ -52,13 +56,14 @@
       time: params.time,
       timeoptions: params.timeoptions,
       group: params.group,
-      tree: params.tree
+      tree: params.tree,
+      privacy: params.privacy
             
     });
     console.log('tournament before saving:', tournament)
     // req params validation for required fields
     
-    req.checkBody('platformType', 'platformType must be defined').notEmpty();
+    req.checkBody('platform', 'platform must be defined').notEmpty();
     req.checkBody('manager', 'manager must be defined').notEmpty();
 
     // validate user input
@@ -95,7 +100,7 @@
         { '$set': {
           'name': bodyParams.name,
           'manager': bodyParams.manager,
-          'platformType' : bodyParams.platformType,
+          'platform' : bodyParams.platform,
           'maxPlayers': bodyParams.maxPlayers,
           'playerPerBattle': bodyParams.playerPerBattle,
           'rounds': bodyParams.rounds,
@@ -111,6 +116,7 @@
           'timeoptions': bodyParams.timeoptions,
           'group': bodyParams.group,
           'tree': bodyParams.tree,
+          'privacy': bodyParams.privacy
  }
         },
         { upsert: false, new: true, fields: { password: 0 }, runValidators: true, setDefaultsOnInsert: true })
@@ -130,8 +136,9 @@
    * GET '/tournaments/'
    */
   function getAllTournaments(req, res, next) {
+    console.log(req.query)
     var page = req.query.page || 1;
-    var limit = req.query.limit || 10;
+    var limit = req.query.limit || 3;
 
 
     // Tournament.find({}, function (err, tournaments) {
@@ -139,8 +146,8 @@
     // });
 
     var options = {
-        page: 1,
-        limit: 50,
+        page: page,
+        limit: limit,
         lean: true
     };
 
@@ -281,8 +288,97 @@
     
   }
 
-  
+  function getTournamentsByplatformName(req,res,next){
+    console.log('getting tournaments by platformName:', req.params.platformName);
+    
+    var params = req.params;
+    
+    Tournament.find({ 'platform': params.platformName })
+    .exec((err, data) => {
+      // console.log(data)
+      if (err) return next(err);
+      if (!data) return next({
+        message: 'tounaments not found.',
+        status: 404
+      });
+      utils.sendJSONresponse(res, 200, data);
+      var tournamentsIds = []
+      // for (var i = 0; i < data.length; i++){
+      //   // console.log(data[i]);
+      //   tournamentsIds.push(data[i]._id);
+        
+      // }
+      // console.log('IDS', tournamentsIds);
+      
+      
+    })
+    // .then((tournamentsIds)=> {
+    //   Tournament.find({'_id': { $in: tournamentsIds }})
+    //   .exec((err, data) => {
+    //     if (err) return next(err);
+    //     if (!data) return next({
+    //       message: 'tournaments not found.',
+    //       status: 404
+    //     });
+    //     utils.sendJSONresponse(res, 200, data);
+      
+    //   });
+    // })
+  }
+  function getTournamentsByBuyin(req,res,next){
+    
+    var params = req.params;
+    console.log('getting tournaments by buyin:', params);
+    var min = parseInt(params.min)-1;
+    var max = parseInt(params.max)+1;
+    // console.log(min, max)
+    Tournament.find({ buyIn : { $gt :  min, $lt : max}})
+    .exec((err, data) => {
+      // console.log(data)
+      if (err) return next(err);
+      if (!data) return next({
+        message: 'tounaments not found.',
+        status: 404
+      });
+      utils.sendJSONresponse(res, 200, data);
+      
+      
+    })
+    
+  }
+  function getTournamentsByNumPlayers(req,res,next){
+    var params = req.params;
+    console.log('getting tournaments by maxPlayers:', params);
+    var min = parseInt(params.min)-1;
+    var max = parseInt(params.max)+1;
+    Tournament.find({ maxPlayers : { $gt :  min, $lt : max}})
+    .exec((err, data) => {
+      // console.log(data)
+      if (err) return next(err);
+      if (!data) return next({
+        message: 'tounaments not found.',
+        status: 404
+      });
+      utils.sendJSONresponse(res, 200, data);
+    })
+   }
 
+  function getTournamentsByPrizePool(req,res,next){
+    var params = req.params;
+    console.log('getting tournaments by prizePool:', params);
+    var min = parseInt(params.min)-1;
+    var max = parseInt(params.max)+1;
+    Tournament.find({ prizePool : { $gt :  min, $lt : max}})
+    .exec((err, data) => {
+      // console.log(data)
+      if (err) return next(err);
+      if (!data) return next({
+        message: 'tounaments not found.',
+        status: 404
+      });
+      utils.sendJSONresponse(res, 200, data);
+    })
+   }
   
 
   /**

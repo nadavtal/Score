@@ -31,7 +31,7 @@
       type: String,
       required: true,
     },
-    platformType: {
+    platform: {
       type: String,
       required: true,
      
@@ -74,7 +74,14 @@
     updatedAt: {
       type: Date
     },
-    tree: String
+    tree: String,
+    privacy: {
+      type: String,
+      enum: {
+        values: ['public', 'friends', 'group', 'private'],
+        message: 'Only "public", friends", "group", private",  messages are allowed.'
+      }
+    },
   });
 
   /**

@@ -21,7 +21,7 @@
       required: true,
       unique: true
     },
-    battles: [Battle.schema]
+    battles: [{}]
   });
 
   /**
