@@ -26,8 +26,10 @@
     var vm = this;
     vm.currentUser = localStorage.get('user');
     $scope.$on('messagesSent', function(event, messages) {
-      
-        addMessages(messages)
+        console.log(event, messages);
+        addMessagesToBox(messages)
+        console.log(vm.outboxMessages)
+        // $scope.$apply();
       
     });
     vm.data = {
@@ -42,7 +44,7 @@
       vm.data.selectedIndex = Math.max(vm.data.selectedIndex - 1, 0);
     };
 
-    vm.messageClicked = messageClicked;
+    
     vm.getGroupFromListByGroupId = getGroupFromListByGroupId
     
     vm.$onInit = function() {
@@ -62,15 +64,21 @@
         messagesService.getMessagesByUserID(userId)
         .then((messages)=>{
           // console.log(messages);
-          vm.userMessages = messages.data.data
+          vm.userMessages = messages.data.data;
+          vm.inboxMessages = inboxMessages(vm.userMessages);
+          vm.outboxMessages = outboxMessages(vm.userMessages);
+          vm.replyMessages = replyMessages(vm.userMessages);
+          vm.unreadReplies = checkForUnreadReplies(vm.userMessages);
+          // addMessagesToArray(vm.unreadReplies, vm.inboxMessages);
           vm.sumUnreadMessages = messagesService.sumUnreadMessages(vm.userMessages);
-          
           // console.log('sumUnreadMessages', vm.sumUnreadMessages);
           // for(var i=0; i<messages.data.data.length; i++){
           //   vm.userMessages.push(messages.data.data[i]);
 
           // }
-          console.log(vm.userMessages)
+          console.log('inbox messages', vm.inboxMessages);
+          console.log('outbox messages', vm.outboxMessages);
+          console.log('reply messages', vm.replyMessages);
         })
         .catch(function(err) {
           $log.debug(err);
@@ -80,7 +88,7 @@
           .then((groups) => {
             vm.groups = groups.data.data;
             
-            console.log(vm.groups);
+            // console.log(vm.groups);
             messagesService.getMessagesFromGroups(vm.groups)
               .then(function(messages){
                 console.log('group messages:', messages);
@@ -122,43 +130,95 @@
 
     }
 
-    function messageClicked(event,message, box){
-      console.log(box);
-      console.log(event.currentTarget.parentElement.children[1])
-      var content = angular.element(event.currentTarget.parentElement.children[1]);
-      console.log(content);
-      content.toggleClass('hidden');
-      if(box == 'inbox'){
-        changeMessageStatus(message, 'read')
+    function checkForUnreadReplies(messages){
+      var unreadReplies = [];
+      for( var j=0; j< messages.length; j++){
+        for(var i=0; i<messages[j].replies.length; i++){
+          console.log(messages[j].replies[i].status);
+          if(messages[j].replies[i].status == 'unread'){
+            unreadReplies.push(messages[j]);
+            break
+            console.log(messages[j]);
+          }
+        }
+        
+      }
+      // console.log(unreadReplies)
+      return unreadReplies
+    }
 
+    function inboxMessages(messages){
+      var inboxMessages = [];
+      for(var i=0; i< messages.length; i++){
+        if(messages[i].receiver.userId == vm.user._id){
+          inboxMessages.push(messages[i])
+        }
+      }
+      return inboxMessages
+    }
+
+    function addMessagesToBox(messages){
+      for(var i=0; i< messages.length; i++){
+        if(messages[i].sender.userId == vm.user._id){
+          vm.outboxMessages.push(messages[i])
+        } else if(messages[i].receiver.userId == vm.user._id){
+          vm.inboxMessages.push(messages[i])
+        }
+      }
+      
+    }
+    function outboxMessages(messages){
+      var outboxMessages = [];
+      for(var i=0; i< messages.length; i++){
+        if(messages[i].sender.userId == vm.user._id){
+          outboxMessages.push(messages[i])
+        }
+      }
+      return outboxMessages
+    }
+
+    function replyMessages(messages){
+      var replyMessages = [];
+      for(var i=0; i< messages.length; i++){
+        console.log(messages[i])
+        if(messages[i].messageType == 'replyMessage'){
+          replyMessages.push(messages[i]);
+          console.log(replyMessages)
+        }
+      }
+      return replyMessages
+    }
+
+    
+
+    function addMessages(messages, targetArray){
+      console.log(messages)
+      for(var i=0; i< messages.length; i++){
+        for(var j=0; j< messages[i].length; j++){
+          targetArray.push(messages[i][j]);
+        }
       }
       
     }
 
-    function changeMessageStatus(message, newStatus){
-      if (message.status == 'unread'){
-        message.status = newStatus;
-        
-        messagesService.updateMessage(message)
-          .then(function(message){
-            $rootScope.sumUnreadMessages -= 1;
-            // console.log($scope.$parent.$parent.$parent.vm.sumUnreadMessages);
-            $scope.$parent.$parent.$parent.vm.sumUnreadMessages -= 1;
-            
-          })
-      }
-
-    }
-
-    function addMessages(messages){
-      console.log(messages)
+    function addMessagesToArray(messages, targetArray){
+      console.log(messages);
       for(var i=0; i< messages.length; i++){
-        for(var j=0; j< messages[i].length; j++){
-          vm.userMessages.push(messages[i][j]);
+        let inArray = false;
+        for(var j=0; j< targetArray.length; j++){
+          if(messages[i]._id == targetArray[j]._id){
+            inArray = true;
+            console.log('message allready in array')
+          } 
+
         }
+        if(!inArray) targetArray.push(messages[i]);
+        
       }
-      console.log(vm.userMessages)
+      
     }
+
+    
 
     
     

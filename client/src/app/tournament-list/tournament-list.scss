@@ -1,13 +1,54 @@
-.gameBlock{
+.searchForm {
+    transition: .3s all;
+    -webkit-box-shadow: 0px 9px 17px -4px rgba(0,0,0,0.7);
+        -moz-box-shadow: 0px 9px 17px -4px rgba(0,0,0,0.7);
+        box-shadow: 0px 9px 17px -4px rgba(0,0,0,0.7);
+    height: 13.5rem;
     
-    &--image{
-        width: 3.5rem;
-        height: 3.5rem;
+    padding-bottom: 1rem;
+    div{
+        height: 3rem;
+        font-size: .8rem;
+        color: black;
+    }
+
+    md-select{
+        // -webkit-box-shadow: 0px 9px 17px -4px rgba(0,0,0,0.7);
+        // -moz-box-shadow: 0px 9px 17px -4px rgba(0,0,0,0.7);
+        // box-shadow: 0px 9px 17px -4px rgba(0,0,0,0.7);
+    }
+
+    input{
+        transition: .3s all;
+    // -webkit-box-shadow: 0px 9px 17px -4px rgba(0,0,0,0.7);
+    // -moz-box-shadow: 0px 9px 17px -4px rgba(0,0,0,0.7);
+    // box-shadow: 0px 9px 17px -4px rgba(0,0,0,0.7);
+        height: 2.5rem;
+        color: black;
+    }
+
+    label{
+        
     }
 }
 
-.gamesTabs md-tabs.md-accent>md-tabs-wrapper {
-    background-color: $black;
+.filterButton{
+    transition: .3s all;
+    padding: 1rem;
+    clear: both;
+    border: none;
+    border-radius: 50%;
+    background-color: transparent;
+
+}
+
+.results{
+    margin-top: .5rem;
+    // border-top: 1px solid black;
+}
+
+.rotate{
+    transform: rotate(180deg)
 }
 
 

@@ -12,8 +12,8 @@
 			<md-tab id="tab1">
 			<md-tab-label>Inbox</md-tab-label>
 			<md-tab-body>
-				<div class="container">
-					<div class="row table-header">
+				<!-- <div class="container"> -->
+					<!-- <div class="row table-header">
 						<div class="col-xs-3">
 							<div class="messageUser">
 								From
@@ -27,77 +27,20 @@
 						<div class="col-xs-2">
 							date
 						</div>
-					</div>
+					</div> -->
 				
-					<div class="row" ng-repeat="message in vm.userMessages  | orderBy : message.sentdAt : true" 
-									ng-if="message.receiver.userId == vm.user._id">
-						<message-row-directive></message-row-directive>
+					<div class="" ng-repeat="message in vm.inboxMessages  | orderBy : message.sentdAt : true">
+						<message-row-directive message="{{message}}" box="inbox"></message-row-directive>
 					</div>
-				</div>
+				<!-- </div> -->
 				
 			</md-tab-body>
 			</md-tab>
 			<md-tab id="tab2" ng-disabled="data.secondLocked">
 			<md-tab-label>Oubox</md-tab-label>
 			<md-tab-body>
-				<div class="container">
-					<div class="row table-header">
-						<div class="col-xs-3">
-							<div class="messageUser">
-								To
-							</div>
-						</div>
-						<div class="col-xs-6">
-							<div class="messageSubject">
-								Subject
-							</div>
-						</div>
-						<div class="col-xs-3">
-							date
-						</div>
-					</div>
-					<div class="row " ng-repeat="message in vm.userMessages | orderBy : message.sentdAt : true" ng-if="message.sender.userId == vm.user._id">
-						<div class="messageRow">
-							<div class="row messageRow__main" 
-								ng-class="message.status == 'unread' ? 'unread' : read"
-								ng-click="vm.messageClicked($event, message, 'outbox')">
-								<div class="col-xs-3">
-									<!-- <a ui-sref="displayUser({ userId: message.receiver.userId })"> -->
-										<div class="messageUser">
-											{{message.receiver.userName}}
-										</div>
-		
-									<!-- </a> -->
-								</div>
-								<!-- <div class="col-xs-6" >
-									<a ui-sref="displayGroup({ groupId: message.links[0].linkId })" ng-if="message.messageType=='groupInvite'">
-										<div class="messageSubject">
-											{{message.subject}}
-										</div>
-		
-									</a>
-								</div> -->
-								<!-- <div class="col-xs-6" ng-if="message.messageType=='friendRequest' || message.messageType=='privateChatMessage'">
-									
-										<div class="messageSubject">
-											{{message.subject}}
-										</div>
-		
-									
-								</div> -->
-								<div class="col-xs-6">
-									{{message.subject}}
-								</div>
-								<div class="col-xs-3 messageRow__date">
-									{{message.sentdAt | date:'dd-MM-yy H:mm'}}
-								</div>
-							</div>
-							<div class="messageRow__content full-width hidden" ng-if="message.content">
-								{{message.content}}
-							</div>
-
-						</div>
-					</div>
+				<div class="" ng-repeat="message in vm.outboxMessages  | orderBy : message.sentdAt : true">
+					<message-row-directive message="{{message}}" box="outbox"></message-row-directive>
 				</div>
 			</md-tab-body>
 			</md-tab>

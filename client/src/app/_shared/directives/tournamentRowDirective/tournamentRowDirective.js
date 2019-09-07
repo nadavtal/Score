@@ -21,7 +21,7 @@
         return {
             templateUrl: 'app/_shared/directives/tournamentRowDirective/tournamentRowDirective.htm',
             link: function (scope, element, attributes) {
-                console.log(scope)
+                // console.log(scope)
                
                
             }

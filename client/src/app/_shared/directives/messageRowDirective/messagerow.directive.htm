@@ -1,46 +1,115 @@
 <div class="messageRow">
-    <div class="row messageRow__main" 
-        ng-class="message.status == 'unread' ? 'unread' : read"
-        ng-click="vm.messageClicked($event, message, 'inbox')">
-        <div class="col-xs-3 messageRow--coloumn">
-            <!-- <a ui-sref="displayUser({ userId: message.sender.userId })"> -->
-                <div class="">
-                    {{message.sender.userName}}
-                </div>
-                <div class="messageRow__main--small" ng-if="message.links.groupName">({{message.links.groupName}})</div>
-
-
-            <!-- </a> -->
-        </div>
-        <!-- <div class="col-xs-6" >
-            <a ui-sref="displayGroup({ groupId: message.links[0].linkId })" ng-if="message.messageType=='groupInvite'">
-                <div class="messageSubject">
-                    {{message.subject}}
-                </div>
-
-            </a>
-        </div> -->
-        <!-- <div class="col-xs-6" ng-if="message.messageType=='friendRequest' || message.messageType=='privateChatMessage'">
         
-                <div class="messageSubject">
-                    {{message.subject}}
-                </div>
-
-        </div> -->
-        <div class="col-xs-6 messageRow--coloumn">
+    <div layout="row" layout-wrap="" class="messageRow__main" 
+        ng-class="message.status == 'unread' ? 'unread' : read">
+        
+        <div flex="25" class="messageRow--coloumn" ng-click="messageClicked($event, message, 'inbox')">
+            <div class="" ng-if="box == 'inbox'">
+                {{message.sender.userName}}
+            </div>
+            <div class="" ng-if="box == 'outbox'">
+                {{message.receiver.userName}}
+            </div>
+            <div class="messageRow__main--small" ng-if="message.links.groupName">({{message.links.groupName}})</div>
+        </div>
+        <div flex="50" class="messageRow--coloumn" ng-click="messageClicked($event, message, 'inbox')">
             {{message.subject}}
+            <span ng-if="message.messageType == 'replyMessage'">(reply)</span>
         </div>
-        <div class="col-xs-3 messageRow__main--small">
-            {{message.sentdAt | date:'dd-MM-yy H:mm'}}
+        <div flex="25" class="">
+            <div class="messageRow__main--date">
+                {{message.sentdAt | date:'dd-MM-yy H:mm'}}
+            </div>
+            <div class="messageRow--actions d-flex between">
+                <md-icon md-svg-src="assets/img/icons/reply.svg" class="black" ng-click="openReplyFormFromMain($event)"></md-icon>
+                <md-icon md-svg-src="assets/img/icons/threeLines.svg" class="black"></md-icon>
+            </div>
         </div>
+        
     </div>
-    <div class="messageRow__content full-width hidden" ng-if="message.content">
-        <div class="messageRow__content--text">
-            {{message.content}}
+    <!-- <div class="row messageRow__main" 
+        ng-class="message.status == 'unread' ? 'unread' : read"
+        >
+        <div ng-click="messageClicked($event, message, 'inbox')">
+                <div class="col-xs-3 messageRow--coloumn">
+                        
+                    <div class="" ng-if="box == 'inbox'">
+                        {{message.sender.userName}}
+                    </div>
+                    <div class="" ng-if="box == 'outbox'">
+                        {{message.receiver.userName}}
+                    </div>
+                    <div class="messageRow__main--small" ng-if="message.links.groupName">({{message.links.groupName}})</div>
+            
+            
+                      
+                </div>
+                <div class="col-xs-6 messageRow--coloumn">
+                    {{message.subject}}
+                    <span ng-if="message.messageType == 'replyMessage'">(reply)</span>
+                </div>
         </div>
-        <div class="messageRow__content--actions d-flex arround" ng-if="message.messageType =='gameInvite'"> 
-            <button class="customButton bg-green white" ng-click="linkTo()">View game</button>
-            <button class="customButton bg-red white">No thanks</button>
+        
+        
+        <div class="col-xs-3 d-flex between">
+            <div class="messageRow__main--date">
+                {{message.sentdAt | date:'dd-MM-yy H:mm'}}
+            </div>
+            <div class="messageRow--actions d-flex between messageRow__main--date">
+                <md-icon md-svg-src="assets/img/icons/reply.svg" class="black" ng-click="openReplyFormFromMain($event)"></md-icon>
+                <md-icon md-svg-src="assets/img/icons/threeLines.svg" class="black"></md-icon>
+            </div>
+        </div>
+    </div> -->
+    <div class="messageRow__content full-width contentHidden d-flex between" >
+        
+        <div class="messageRow__content__main">
+            <div class="messageRow__content__main--text">
+                {{message.content}}
+            </div>
+            <div class="messageRow__content__main--actions d-flex arround" ng-if="message.messageType =='gameInvite'"> 
+                <button class="customButton bg-green white" ng-click="linkTo()">View game</button>
+                <button class="customButton bg-red white">No thanks</button>
+            </div>
+
+        </div>
+
+        
+        <div class="messageRow--actions">
+            <md-icon md-svg-src="assets/img/icons/reply.svg" class="black" ng-click="openReplyFormFromContent($event)"></md-icon>
+            <md-icon md-svg-src="assets/img/icons/threeLines.svg" class="black"></md-icon>
+        </div>
+        
+    </div>
+    <div class="messageRow__replies contentHidden">
+            <div class="messageRow__replies__reply" ng-repeat="reply in message.replies" ng-if="reply.parentMessageId == message._id">
+                <div class="messageRow__replies__reply--userName">
+                    To: {{reply.receiver.userName}}
+                    
+                </div>
+                <div class="messageRow__replies__reply--content">
+                    
+                    {{reply.content}}
+                </div>
+            </div>
+        </div>
+    <div class="messageRow__replyForm hidden">
+        <md-input-container class="md-block">
+            <label>Content</label>
+            <textarea ng-model="message.reply"  md-select-on-focus></textarea>
+        </md-input-container>
+        <div class="buttons">
+            <button class="textIconButton" type="submit"
+                    ng-disabled="messageForm.$invalid">
+                    
+                    <md-icon md-svg-src="assets/img/icons/save.svg" class="backToHomePageButton orange"></md-icon>
+            </button>
+            <button class="textIconButton " >
+                
+                <md-icon md-svg-src="assets/img/icons/send.svg" class="backToHomePageButton green" 
+                    ng-click="reply(message, message.reply)"></md-icon>
+            </button>
+
         </div>
     </div>
 

@@ -19,114 +19,114 @@
       controller: tournamentListCtrl
     });
 
-    tournamentListCtrl.$inject = ['$scope', '$log', 'QueryService', 'tournamentsService', 'localStorage', '$stateParams', 'ngDialog', '$state', 'usersService'];
+    tournamentListCtrl.$inject = ['$scope', '$log', '$timeout', 'tournamentsService', 'localStorage', 'platformTypesService', '$state', 'gameTypesService', 'platformService'];
 
-  function tournamentListCtrl($scope,$log, QueryService, tournamentsService, localStorage, $stateParams, ngDialog, $state, usersService) {
+  function tournamentListCtrl($scope,$log, $timeout, tournamentsService, localStorage, platformTypesService, $state, gameTypesService, platformService) {
     var vm = this;
-    vm.createTournament = createNewTournament;
-    vm.createNewTournament = createNewTournament;
+    vm.searchByPlatform = searchByPlatform
+    vm.searchByPlatformType = searchByPlatformType
+    vm.searchByBuyIn = searchByBuyIn
+    vm.searchByPrizePool = searchByPrizePool
+    vm.searchByNumPlayers = searchByNumPlayers
+    vm.toggleSearchForm = toggleSearchForm; 
     
-    
-    vm.removeTournament = function(index, tournamentId){
-      QueryService
-        .query('POST', 'tournaments/'+ tournamentId, null, null)
-        .then(function(deletedtournament) {
-          console.log('deletedtournament', deletedtournament)
-          vm.tournaments.splice(index,1)
-        })
-      
-    }
     
     vm.$onInit = function() {
       console.log('getting tournaments');
       vm.currentUser = localStorage.get('user');
-      var userId = vm.userId || $stateParams.userId;
-      var groupId = vm.groupId || $stateParams.groupId
-      // tournamentsService.getAllTournamentsFromDataBase()
-      //   .then((data) => {
-      //     console.log(data)
-      //   });
-      if(userId){
-        
-        console.log('getting tournaments of user:' , userId)
-        usersService.getUser(userId)
-          .then((user) => {
-            vm.user = user.data.data
-            if(vm.currentUser._id == vm.user._id){
-              vm.isUser = true
-            };
-            tournamentsService.getTournamentsByUserID(userId)
-              .then((tournaments) => {
-                vm.tournaments = tournaments.data.data;
-                console.log(vm.tournaments)
-              })
-          })
-
-      } 
-      if (groupId){
+      tournamentsService.getAllTournaments()
+        .then(function(tournaments){
+          vm.tournaments = tournaments.data.data  
+          console.log(vm.tournaments);
+        })
+      platformService.getAllPlatformsFromDataBase()
+        .then(function(platforms) {
+          vm.platforms = platforms.data.data;
+          console.log('platforms:', vm.platforms)
           
-        vm.createTournament = createNewGroupTournament;
-        vm.createTournament = createNewGroupTournament;
-        console.log('groupid ', vm)
-      }      
-      else{
-        console.log('no userId or groupId')
-        
-        vm.createTournament = createNewTournament;
-        vm.createTournament = createNewTournament;
-      }
-      
+        });
+      gameTypesService.getAllGameTypes()
+        .then((gameTypes) => {
+         vm.gameTypes = gameTypes.data.data;
+         console.log('gameTypes:', vm.gameTypes)
+         
+        });
+ 
+      platformTypesService.getAllPlatformTypes()
+        .then((platformTypes) => {
+         vm.platformTypes = platformTypes.data.data;
+         console.log('platformTypes:', vm.platformTypes)
+         
+        });
 
       
       
       
     };
 
+    var timeoutPromise;
     
-    function createNewTournament(){
-      // console.log('creating new tournament');
-      $state.go('createTournament');
-      
-    }
+    function toggleSearchForm(event){
+      console.log(event);
+      var searchFormElement = angular.element(event.currentTarget.nextElementSibling);
+      searchFormElement.toggleClass('contentHidden');
+      var filterElement = angular.element(event.currentTarget);
+      filterElement.toggleClass('rotate');
 
-    function createNewTournament(){
-      console.log('creating new tournament');
-      $state.go('createTournament');
-      
-    }
+  }
 
-    function createNewGroupTournament(){
-      $state.go('createGroupTournament', {'groupId': $stateParams.groupId});
-    }
-    function createNewGroupTournament(){
-      console.log('group tournament')
-      $state.go('createGroupTournament', {'groupId': $stateParams.groupId});
-    }
-    
-
-    /// definitions
-
-    /**
-     * Get users
-     */
-    
-
-    
-    function getTournamentsOfGroupId(groupId) {
-      
-      QueryService
-        .query('GET', 'groups/'+ groupId+'/tournaments/', null, null)
-        
-        .then(function(data) {
-          
-          vm.tournaments = data.data.data;
-          console.log(vm.tournaments)
-          $scope.$apply();
+    function searchByPlatform(platformName){
+      console.log(platformName);
+      tournamentsService.getTournamentsByPlatform(platformName)
+        .then(function(tournaments){
+          console.log(tournaments);
+          vm.tournaments = tournaments.data.data  
         })
-        .catch(function(err) {
-          $log.debug(err);
-        });
     }
+    function searchByPlatformType(platformType){
+      console.log(platformType)
+    }
+    function searchByBuyIn(min, max){
+      $timeout.cancel(timeoutPromise);
+      timeoutPromise = $timeout(function() {
+        // console.log(min, max);
+        if(!min) min = 0;
+        if(!max) max = 1000000;
+        console.log(min, max);
+        tournamentsService.getTournamentsByBuyIn(min, max)
+        .then(function(tournaments){
+          console.log(tournaments);
+          vm.tournaments = tournaments.data.data  
+        })
+      }, 700);
+     
+    }
+    function searchByPrizePool(min, max){
+      $timeout.cancel(timeoutPromise);
+      timeoutPromise = $timeout(function() {
+        if(!min) min = 0;
+        if(!max) max = 1000000;
+        tournamentsService.getTournamentsByPrizePool(min, max)
+        .then(function(tournaments){
+          console.log(tournaments);
+          vm.tournaments = tournaments.data.data  
+        })
+      }, 700);
+    }
+    function searchByNumPlayers(min, max){
+      $timeout.cancel(timeoutPromise);
+      timeoutPromise = $timeout(function() {
+        if(!min) min = 0;
+        if(!max) max = 1000000;
+        console.log(min, max);
+        tournamentsService.getTournamentsByMaxPlayers(min, max)
+        .then(function(tournaments){
+          console.log(tournaments);
+          vm.tournaments = tournaments.data.data  
+        })
+      }, 700);
+    }
+    
   }
 
   

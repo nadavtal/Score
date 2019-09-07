@@ -18,9 +18,11 @@
       var vm = this;
       vm.login = login;
       vm.logout = logout;
+      vm.toggleForm = toggleForm;
       vm.user = localStorage.get('user');
 
       vm.$onInit = function() {
+        vm.showForm = false
         // just an socket.io message example
         socket.on('user:loggedIn', function(newUser) {
           $log.debug('incominng websocket message from ExpressJS server: some user just authenticated!');
@@ -63,6 +65,12 @@
                 plain: true
               });
           });
+      };
+
+      function toggleForm($event){
+        console.log($event.currentTarget.parentElement.children[2]);
+        var formElement = angular.element($event.currentTarget.parentElement.children[2]);
+        formElement.toggleClass('contentHidden');
       }
 
       function logout() {
@@ -85,30 +93,10 @@
               showConfirmButton: false,
               timer: 1200
             });
-            // Swal.fire(
-          
-            //   'loggedout!',
-            //   'Have a great day, see you soon',
-            //   'success'
-            // )
+           
           }
         })
-        // var dialog = ngDialog.open({
-        //   template: '\
-        //     <p>Do you really want to log out?</p>\
-        //     <div class="ngdialog-buttons">\
-        //         <button type="button" class="ngdialog-button ngdialog-button-secondary" ng-click="closeThisDialog()">No</button>\
-        //         <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click="closeThisDialog(\'logout\')">Yes</button>\
-        //     </div>',
-        //   plain: true
-        // });
-
-        // // log out user after confirmation
-        // dialog.closePromise.then(function(closedDialog) {
-        //   if (closedDialog.value == 'logout')
-        //     $rootScope.$broadcast('user:logout');
-        //     $rootScope.user = null;
-        // });
+       
       }
 
       $scope.$on('user:logout', function() {

@@ -1,4 +1,4 @@
-<div class="row tableBodyRow">
+<!-- <div class="row tableBodyRow">
     
     <div class="col-xs-3">{{battle.battleTime | date: 'dd/MM/yy HH:mm'}}</div>
     <div class="col-xs-2">{{battle.type}}</div>
@@ -19,4 +19,52 @@
     </br>
     </div>
     
+</div> -->
+<div class="battle">
+    
+        <div class="battle__info d-flex between">
+            <div class="">{{battle.battleTime | date: 'dd/MM/yy HH:mm'}}</div>
+            <div class="">{{battle.type}}</div>
+        </div>
+        
+    
+    <div layout="row">
+        <div flex="50" class="battle__participant" ng-class="isWinner? 'bg-green-faded' : 'bg-red-faded'">
+            <div ng-repeat="player in battle.team">
+                <div class="battle__participant--userName">
+                    <!-- <a ui-sref="clashUser({ usertag: player.tag })" class="create-user-link text-center" ui-sref-opts="{reload: true, notify: true}"> -->
+                    {{player.name}}
+                    <!-- </a>  -->
+                </div>
+                <div class="battle__participant__cards d-flex">
+                    <div class="battle__participant__cards--card" ng-repeat="card in player.cards">
+                        <img  src="{{card.iconUrls.medium}}" alt="">
+                    </div>
+                </div>
+                
+            </div>
+            <div class="battle__participant--score">
+                {{battle.team[0].crowns}}
+            </div>
+            
+        </div>
+        <div flex="50" class="battle__participant" ng-class="!isWinner? 'bg-green-faded' : 'bg-red-faded'">
+            <div ng-repeat="player in battle.opponent" class="battle__participant--userName">
+                <div class="battle__participant--userName">
+                    <!-- <a ui-sref="clashUser({ usertag: player.tag })" class="create-user-link text-center" ui-sref-opts="{reload: true, notify: true}"> -->
+                    {{player.name}}
+                    <!-- </a>  -->
+                </div>
+                <div class="battle__participant__cards d-flex">
+                    <div class="battle__participant__cards--card" ng-repeat="card in player.cards">
+                        <img  src="{{card.iconUrls.medium}}" alt="">
+                    </div>
+                </div>
+            </div>
+            <div class="battle__participant--score">
+                    {{battle.opponent[0].crowns}}
+            </div>
+        </div>
+
+    </div>
 </div>

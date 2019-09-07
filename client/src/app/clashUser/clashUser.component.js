@@ -19,8 +19,6 @@
   function clashUserCtrl($log, $state, $stateParams, QueryService, localStorage, clashUserService) {
     
     var vm = this;
-    console.log('clash user component')
-    
     
     // methods
     
@@ -31,6 +29,7 @@
       var clantag = $stateParams.clantag;
       var state = $state.current.name;
       vm.currentUser = localStorage.get('user');
+      console.log(vm.currentUser)
       vm.user = vm.user || {};
       vm.activeTab = 'info';
       vm.loading = true;
@@ -41,54 +40,32 @@
         vm.activeTab = tab
         console.log(vm.activeTab)
       }
-      $('.userContent').css('top', '5rem')
-      console.log($stateParams)
+      // $('.userContent').css('top', '5rem')
+      // console.log($stateParams)
       
 
       if (usertag)
         clashUserService.getClashUser(usertag)
           .then(function(user) {
-            console.log(vm.user)
-            vm.user = user.data;
-            vm.labels = ['All Games', 'Wins', 'losses', 'WinPercentage']
-
-            console.log('user', vm.user);
+            vm.loading = false;
+            vm.user = user.data.clashUser;
+            vm.userBattles = user.data.updatedUser.battles
             
-            $log.debug('user', vm.user);
+            console.log(vm.user);
+            
+   
           })
-          .catch(function(err) {
-            $log.debug(err);
-          });
-        getClashUserBattles(usertag)
-        // setInterval(function(){ getClashUserBattles(usertag); }, 60000);
+        // clashUserService.getClashUserBattles(usertag)
+        // .then(function(battles) {
+        //   console.log(battles)
+        // });
     };
 
-   function getClashUserBattles(usertag) {
-      console.log('getting clash user battles')
+    function getClashUserBattles(usertag) {
+      console.log('getting clash user battles: ', usertag)
       if (!usertag) return;
-      // else{
-      //   var reparedClanId = usertag.slice(0,2)+'32'+usertag.slice(2, usertag.length)
-      //   console.log('getting clash clan', reparedClanId)
-      // }
-      console.log(usertag)
-      
-      var reparedUserId = '%23'+ usertag.slice(1, usertag.length)
-      console.log(usertag, reparedUserId)
-      QueryService
-        .query('GET', 'clashusers/'+reparedUserId+'/battles', null, null)
-        .then(function(battles) {
-          
-          vm.userBattles = battles.data;
-          vm.loading = false;
-          
-          console.log('vm.userBattles', vm.userBattles);
-          
-          $log.debug('vm.userBattles', vm.userBattles);
-        })
-        .catch(function(err) {
-          $log.debug(err);
-        });
-    
+
+
     }
 
     

@@ -3,7 +3,15 @@
 	<!-- login -->
 	<div class="row" ng-if="!vm.user">
 		<div class="col-xs-12">
-			<form
+			<md-button aria-label="LOGIN" ng-click="vm.toggleForm($event)">
+				LOGIN
+				
+			</md-button>
+			<md-button aria-label="REGISTER" ui-sref="createUser" class="white">
+				REGISTER
+				
+			</md-button>
+			<form class="loginForm contentHidden"
 				ng-submit="vm.login(vm.username, vm.password)"
 				name="login"
 				id="login"
@@ -26,8 +34,8 @@
 					placeholder="Password"
 				>
 
-				<div>Don't have an account? Please <a ui-sref="createUser "><span class="white strong">Register </span></a></div>
-				<br>
+				<!-- <div>Don't have an account? Please <a ui-sref="createUser "><span class="white strong">Register </span></a></div>
+				<br> -->
 				<button class="customButton black" type="submit">
 					Log in
 				</button>

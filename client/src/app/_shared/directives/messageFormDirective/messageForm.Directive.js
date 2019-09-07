@@ -78,7 +78,7 @@
                         userId: scope.currentUser._id
                     }
                 }
-                console.log(scope.message);
+                
 
                 if(scope.message.messageType == 'groupInvite'){
                     scope.message.subject = 'Come join my group';
@@ -90,12 +90,12 @@
                 }
 
                 
-                console.log(scope.group);
+                console.log(scope.message);
 
                 scope.submitMessageForm = function(message){
                     console.log(message);
                                         
-                    if(scope.group && scope.message.messageType == 'groupMessage'){
+                    if(scope.group && message.messageType == 'groupMessage'){
                         console.log('sending message to group: ', scope.group)
                         messagesService.createMessagePerUser(scope.group.members, message)
                             .then(function(data){
@@ -115,15 +115,21 @@
                         
                     } 
 
+                    if(message.messageType == 'privateChatMessage' && message.receiver){
+                        message.userReceiver = [message.receiver];
+                    }
+
                     if(message.userReceiver){
                         message.messageType = 'privateChatMessage';
                         messagesService.createMessagePerUser(message.userReceiver, message)
                             .then(function(data){
+                                console.log(data);
+                                $rootScope.$broadcast('messagesSent', data);
                                 if(scope.isDialog){
 
                                     scope.closeThisDialog(0);
                                 }
-                                console.log(data);
+                                
                                 Swal.fire({
                                     position: 'center',
                                     type: 'success',
@@ -165,7 +171,7 @@
                         // });
                     }
                     
-                    if(scope.message.sendToGroups){
+                    if(message.sendToGroups){
                         console.log('sending message to groups: ', scope.message.sendToGroups)
                         message.messageType = 'groupMessage';
                         

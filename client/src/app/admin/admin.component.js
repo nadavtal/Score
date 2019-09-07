@@ -104,8 +104,10 @@
           .then(tournaments => {
             console.log('all tournaments: ', tournaments.data.data)
           })
-
-        
+        clashUserService.getAllClashUsers()
+          .then((clashUsers) => {
+            console.log('all clashUsers: ', clashUsers.data.data)
+          });
 
     
     

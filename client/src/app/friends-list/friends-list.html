@@ -1,31 +1,16 @@
-<div class="container-fluid user-list list">
+<div class="container-fluid">
 
-	<div class="buttons d-flex between">
+	<div class="d-flex between">
 		<div class="userContentTitle">
 			<h3 class="">{{vm.user.userName}}'s Friends</h3>
-			<md-button aria-label="Add..." ng-click="vm.removeAllFriends()"><md-icon md-svg-src="assets/img/icons/remove.svg"></md-icon></md-button>
+			<!-- <md-button aria-label="Add..." ng-click="vm.removeAllFriends()"><md-icon md-svg-src="assets/img/icons/remove.svg"></md-icon></md-button> -->
 		</div> 
-		<div class="">
-			<md-fab-toolbar md-direction="left" class="componentToolBox" ng-if="vm.isUser">
-				<md-fab-trigger>
-					<md-button aria-label="Add..."><md-icon md-svg-src="assets/img/icons/edit.svg"></md-icon></md-button>
-				</md-fab-trigger>
-				
-				<md-toolbar>
-					<md-fab-actions class="d-flex arround full-width">
-						<md-button aria-label="add group" div ui-sref="createGroup">
-							<md-icon md-svg-src="assets/img/icons/add.svg"></md-icon>
-						</md-button>
-					
-						<md-button aria-label="send message" <div ui-sref="changePassword">
-							<md-icon md-svg-src="assets/img/icons/email.svg"></md-icon>
-						</md-button>
-						
-					</md-fab-actions>
-				</md-toolbar>
-			</md-fab-toolbar>
-			
-		</div>
+		<md-icon md-svg-src="assets/img/icons/search.svg"></md-icon>
+		<md-input-container class="hidden">
+			<label for="testInput">Find friend</label>
+			<input type="text" id="testInput"
+					ng-model="data" md-autofocus>
+		</md-input-container>
 		<!-- <div ui-sref="createGroup" class="create-game-link customButton bg-green white" ui-sref-opts="{reload: true, notify: true}">Create group</div> -->
 		<!-- <button ng-click="vm.getGroupsOfUserId()" class="customButton">find groups by user</button> -->
 

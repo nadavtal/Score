@@ -35,15 +35,6 @@
 
     /// definitions
 
-    /**
-     * Make http request of any method with params
-     * @param  {string} method     HTTP method
-     * @param  {styring} url       URL
-     * @param  {object} getParams  GET params in case of GET request
-     * @param  {object} postParams POST/PUT params in case of POST/PUT requests
-     * @param  {object} headers    Headers
-     * @return {object}            Promise
-     */
     function getClan(clanId){
       var reparedUserId = '%23'+ clanId.slice(1, clanId.length)
       return QueryService.query('GET', 'clashclans/'+reparedUserId, null, null)

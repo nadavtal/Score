@@ -24,7 +24,7 @@
                 // console.log(scope)
                 scope.battle = JSON.parse(attributes.battle)
                 scope.winner = []
-                // console.log(scope.battle)
+                console.log(scope.battle)
                 // console.log(scope.battle.team)
                 getWinner(scope.battle.team[0], scope.battle.opponent[0]);
                 if(scope.battle.team[1] && scope.battle.opponent[1]){

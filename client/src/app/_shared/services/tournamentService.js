@@ -31,7 +31,10 @@
       this.getAllTournaments = getAllTournaments;
       this.getTournamentsByUserID = getTournamentsByUserID;
       this.getTournamentsByGroupId = getTournamentsByGroupId;
-      this.getTournamentsByPlatform = getTournamentsByPlatform 
+      this.getTournamentsByPlatform = getTournamentsByPlatform; 
+      this.getTournamentsByBuyIn = getTournamentsByBuyIn; 
+      this.getTournamentsByMaxPlayers = getTournamentsByMaxPlayers; 
+      this.getTournamentsByPrizePool = getTournamentsByPrizePool; 
       
   
       /// definitions
@@ -74,6 +77,15 @@
   
       function getTournamentsByPlatform(platformName){
         return QueryService.query('GET', 'tournaments/platforms/'+platformName, null, null)
+      }
+      function getTournamentsByBuyIn(min, max){
+        return QueryService.query('GET', 'tournaments/buyin/'+min+'/'+ max, null, null)
+      }
+      function getTournamentsByMaxPlayers(min, max){
+        return QueryService.query('GET', 'tournaments/maxplayers/'+min+'/'+ max, null, null)
+      }
+      function getTournamentsByPrizePool(min, max){
+        return QueryService.query('GET', 'tournaments/prizepool/'+min+'/'+ max, null, null)
       }
 
       function getTournamentsByUserID(userId){

@@ -58,7 +58,7 @@
         console.log('state: ', state);
       vm.actionType = setActionType(state, tournamentId);
       console.log('actionType: ', vm.actionType) 
-
+      vm.privacyOptions = ['public', 'friends', 'group', 'private']
       platformService.getAllPlatformsFromDataBase()
         .then((platforms) => {
           vm.platforms = platforms.data.data;
@@ -77,7 +77,7 @@
             vm.tournament = {};
             vm.tournament.name
             vm.tournament.manager = vm.currentUser.userName;
-            vm.tournament.platformType = ''
+            vm.tournament.platform = ''
             vm.tournament.maxPlayers = 32;
             vm.tournament.playerPerBattle = 2;
             vm.tournament.rounds = calcNumRounds(vm.tournament.maxPlayers, vm.tournament.playerPerBattle);
@@ -146,7 +146,7 @@
         vm.tournament = {};
         vm.tournament.name
         vm.tournament.manager = vm.currentUser.userName;
-        vm.tournament.platformType = ''
+        vm.tournament.platform = ''
         vm.tournament.maxPlayers = 32;
         vm.tournament.playerPerBattle = 2;
         vm.tournament.rounds = calcNumRounds(vm.tournament.maxPlayers, vm.tournament.playerPerBattle);
@@ -412,7 +412,7 @@
     // console.log(typeName);
     // console.log(vm.tournament)
 
-    vm.tournament.platformType = typeName
+    vm.tournament.platform = typeName
     console.log(vm.tournament);
     // $scope.$apply()
   }    
@@ -597,7 +597,7 @@
 
     function removePlayer(index){
       
-      vm.tournament.players.splice(index, 1);
+      vm.tournament.registered.splice(index, 1);
       console.log(vm.tournament.players)
     }
 

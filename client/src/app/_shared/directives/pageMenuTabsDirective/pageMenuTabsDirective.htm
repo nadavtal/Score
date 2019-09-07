@@ -1,27 +1,27 @@
 <div class="pageNav bg-black d-flex between">
 	
-        <div class="navBackButton white" ui-sref="displayUser({ userId: vm.currentUser._id })">
-                <back-to-main-button-directive></back-to-main-button-directive>	
-        </div>
-        <div class="pageNav__item white center" ng-class="vm.activeTab == 'info'? 'active' : ''">
-            
-            <div ng-click="vm.changeActiveTab('info')"  class="">
-                <md-icon md-svg-src="assets/img/icons/info.svg" class="tournamentActionButton white"></md-icon>
-                Info
-            </div>
-        </div>
-        <div class="pageNav__item white center" ng-class="vm.activeTab == 'structure'? 'active' : ''">
-            <div ng-click="vm.changeActiveTab('structure')" class="">
-                <md-icon md-svg-src="assets/img/icons/games.svg" class="tournamentActionButton white"></md-icon>
-                Structure
-            </div>
-        </div>
-        <div class="pageNav__item white center" ng-class="vm.activeTab == 'prizes'? 'active' : ''">
-            <div ng-click="vm.changeActiveTab('prizes')" class="">
-                <md-icon md-svg-src="assets/img/icons/timeline.svg" class="tournamentActionButton white"></md-icon>
-                Prizes
-            </div>
-        </div>
-        
-        
+    <div class="navBackButton white" ui-sref="displayUser({ userId: vm.currentUser._id })">
+            <back-to-main-button-directive></back-to-main-button-directive>	
     </div>
+    <div class="pageNav__item white center" ng-class="vm.activeTab == 'info'? 'active' : ''">
+        
+        <div ng-click="vm.changeActiveTab('info')"  class="">
+            <md-icon md-svg-src="assets/img/icons/info.svg" class="tournamentActionButton white"></md-icon>
+            Info
+        </div>
+    </div>
+    <div class="pageNav__item white center" ng-class="vm.activeTab == 'structure'? 'active' : ''">
+        <div ng-click="vm.changeActiveTab('structure')" class="">
+            <md-icon md-svg-src="assets/img/icons/games.svg" class="tournamentActionButton white"></md-icon>
+            Structure
+        </div>
+    </div>
+    <div class="pageNav__item white center" ng-class="vm.activeTab == 'prizes'? 'active' : ''">
+        <div ng-click="vm.changeActiveTab('prizes')" class="">
+            <md-icon md-svg-src="assets/img/icons/timeline.svg" class="tournamentActionButton white"></md-icon>
+            Prizes
+        </div>
+    </div>
+    
+    
+</div>

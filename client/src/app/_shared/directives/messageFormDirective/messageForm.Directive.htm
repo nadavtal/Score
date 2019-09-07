@@ -15,7 +15,7 @@
                 <md-select ng-model="message.userReceiver"
                             md-on-close="clearSearchTerm()"
                             data-md-container-class="selectdemoSelectHeader"
-                            ng-if="!receiver"
+                            ng-if="!message.receiver"
                             
                             multiple
                             >
@@ -37,7 +37,7 @@
                 </div>
             </md-input-container>
             <br><br>
-            <md-input-container class="" ng-if="!ngDialogData.groups || !ngDialogData.group">
+            <md-input-container class="" ng-if="message.messageType == 'groupMessage' && !message.receiver" >
                 <label>Pick Groups: </label>
                 <md-select ng-model="message.sendToGroups"
                             md-on-close="clearSearchTerm()"
