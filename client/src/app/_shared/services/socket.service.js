@@ -28,7 +28,7 @@
     function connect() {
       // console.log(io)
       if (!socket)
-        socket = io.connect('http://localhost:5000/');
+        socket = io.connect('http://score.netdesign.media/');
         if(socket !== undefined){
               console.log('Connected to socket...', socket);
         }

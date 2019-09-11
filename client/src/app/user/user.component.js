@@ -257,7 +257,7 @@
       console.log(file)
       Upload.upload({
         
-          url: 'http://localhost:5000/api/v1/uploads',
+          url: 'http://score.netdesign.media/api/v1/uploads',
           data: {file: file, 'userId': vm.currentUser._id}
       }).then(function (resp) {
         vm.profileImage = resp.data.data

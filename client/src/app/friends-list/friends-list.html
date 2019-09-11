@@ -36,7 +36,7 @@
 			<a ui-sref="displayUser({ userId: user._id })" title="display user">
 				
 				<div class="col-xs-2">
-					<img class="list-item--profileImg" src="http://localhost:5000/api/v1/image/{{user.profileImageFileName}}" alt="" ng-if="user.profileImageFileName">
+					<img class="list-item--profileImg" src="http://score.netdesign.media/api/v1/image/{{user.profileImageFileName}}" alt="" ng-if="user.profileImageFileName">
 					<img class="list-item--profileImg" src="{{user.profileImageLink}}" alt="" ng-if="!user.profileImageFileName">
 					<!-- <md-icon md-svg-src="assets/img/icons/profile.svg" class="groupLogo" ng-if="!user.profileImageFileName"></md-icon> -->
 				</div>
