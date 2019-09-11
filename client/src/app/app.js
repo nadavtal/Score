@@ -47,6 +47,11 @@
   run.$inject = ['$transitions', '$location', '$state', '$rootScope', 'localStorage'];
 
   function run($transitions, $location, $state, $rootScope, localStorage) {
+    var titanic = new Titanic({
+      hover: true, // auto animated on hover (default true)
+      click: true  // auto animated on click/tap (default false)
+    });
+  console.log(titanic)
     // this runs on every route change
     $transitions.onStart({}, function(trans) {
       trans.promise.then(function(state) {

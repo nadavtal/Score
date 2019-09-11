@@ -7,7 +7,9 @@
     <div class="" ng-if="!mnCtrl.user">
         <auth></auth>
     </div>
-    
+    <div ui-sref="displayUser({ userId: vm.currentUser._id })">
+        My profile
+    </div>
 
     <div class=" text-center">
         <svg viewBox="0 0 400 300">
@@ -60,6 +62,8 @@
 
     <h4 ui-sref="tournaments">Tournaments</h4>
     <h4>games</h4>
+
+    <share-button-directive></share-button-directive>
         
 </div>   
     

@@ -25,7 +25,8 @@
       
     
       this.getGame = getGame;
-      this.createGame = createGame
+      this.createGame = createGame;
+      this.removeGame = removeGame;
       this.checkIfGameExists = checkIfGameExists; 
       this.getAllGamesFromDataBase = getAllGamesFromDataBase;
       this.getGamesByUserID = getGamesByUserID;
@@ -57,6 +58,13 @@
   
         return QueryService
           .query('POST', 'games/', null, game)
+      }
+      function removeGame(gameId) {
+        console.log(gameId)
+        if (!gameId) return 'no gameId';
+  
+        return QueryService
+        .query('POST', 'games/'+ gameId, null, null)
       }
 
             

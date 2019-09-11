@@ -51,12 +51,12 @@
     vm.showBottomToolBar = false;
     var gameId = $stateParams.gameId;
     var groupId = $stateParams.groupId;
-    vm.user = localStorage.get('user');
+    vm.currentUser = localStorage.get('user');
     vm.backToMain = backToMain;
     vm.showBottomMenu = true;
     vm.changeActiveTab = changeActiveTab;
-    vm.registerd = false;
-    
+    vm.registered = false;
+    vm.showButtonModal = false;
     vm.invitePlayers = []
 
 
@@ -65,7 +65,7 @@
     $scope.$on('user:login', function() {
       vm.currentUser = localStorage.get('user');
       
-      console.log('user from logging in', vm.user)
+      console.log('user from logging in', vm.currentUser)
       
     });
     
@@ -78,16 +78,16 @@
           // console.log(vm.group);
           vm.optionalPlayers = vm.group.members;
           vm.game = {};
-          vm.game.players = [{userName: vm.user.userName, userId: vm.user._id}];
+          vm.game.players = [{userName: vm.currentUser.userName, userId: vm.currentUser._id}];
           vm.game.platformType = vm.group.mainPlatform
           vm.game.optionalPlayers = [];
-          vm.game.host = vm.user.userName
+          vm.game.host = vm.currentUser.userName
           vm.game.time = new Date(Date.now());
           vm.game.timeoptions =[];
           vm.today = new Date(Date.now())
           vm.group = '';
           vm.showBottomToolBar = true;
-          
+          vm.showButtonModal = true;
           
           
         })
@@ -108,7 +108,7 @@
         checkIfRegistered();
         checkIfInOptionalPlayer();
         
-        console.log(vm.registerd)
+        console.log(vm.registered)
         $log.debug('game', vm.game);
         
         // $scope.$apply();
@@ -129,16 +129,16 @@
       });
     } else {
       vm.game = {};
-      vm.game.players = [{userName: vm.user.userName, userId: vm.user._id}];
+      vm.game.players = [{userName: vm.currentUser.userName, userId: vm.currentUser._id}];
       vm.game.optionalPlayers = [];
-      vm.game.host = vm.user.userName
+      vm.game.host = vm.currentUser.userName
       vm.game.time = new Date(Date.now());
       vm.game.timeoptions =[];
       vm.today = new Date(Date.now())
       vm.group = '';
       vm.showBottomToolBar = true;
-      vm.optionalPlayers = vm.user.friends
-   
+      vm.optionalPlayers = vm.currentUser.friends
+      vm.showButtonModal = true;
     }
 
     var state = $state.current.name;
@@ -182,11 +182,9 @@
       
       
     function selectGameType(typeName){
-      // console.log(typeName);
-      // console.log(vm.game)
-
+      
       vm.game.gameType = typeName
-      console.log(vm.game);
+      
       if(vm.game.gameType == "1V1"){
         addGroupsToGame(1);
         // vm.game.gameGroups[0].groupMembers[0].userName = vm.currentUser.userName
@@ -203,7 +201,7 @@
     } 
     
     function addGroupsToGame(PlayersPerGroup){
-      
+      vm.game.PlayersPerGroup = PlayersPerGroup
       vm.game.gameGroups = [];
       var numGroups = 2;
       for (var j=0; j<numGroups; j++){
@@ -244,7 +242,7 @@
       
     
     function backToMain(){
-      $state.go('displayUser', {userId: vm.user._id} )
+      $state.go('displayUser', {userId: vm.currentUser._id} )
     }
     
 
@@ -423,13 +421,13 @@
       if(vm.inOptionalPlayers){
         vm.game.optionalPlayers = vm.game.optionalPlayers.filter(function(value){
           console.log(value)
-          return value.userName != vm.user.userName;
+          return value.userName != vm.currentUser.userName;
       
         });
         
       }
 
-      if (vm.registerd) {
+      if (vm.registered) {
         Swal.fire({
           position: 'error',
           type: 'success',
@@ -448,8 +446,8 @@
       }
       else {
         vm.game.players.push({
-          userName: vm.user.userName,
-          userId: vm.user._id
+          userName: vm.currentUser.userName,
+          userId: vm.currentUser._id
         })
         console.log(vm.game);
         editGame(vm.game, vm.game._id, 'registered to '+ vm.game.name + ' at ' + vm.game.host);
@@ -461,7 +459,7 @@
     function unRegisterToGame() {
       
       if (!vm.game) return;
-      if(vm.game.host == vm.user.userName){
+      if(vm.game.host == vm.currentUser.userName){
         Swal.fire({
           position: 'center',
           type: 'error',
@@ -480,10 +478,10 @@
       }else{
       vm.game.players = vm.game.players.filter(function(value){
         
-        return value.userName != vm.user.userName;
+        return value.userName != vm.currentUser.userName;
     
       });
-      editGame(vm.game, vm.game._id, 'Unregistered '+ vm.user.userName +' from '+ vm.game.gametype + ' at ' + vm.game.host)
+      editGame(vm.game, vm.game._id, 'Unregistered '+ vm.currentUser.userName +' from '+ vm.game.gametype + ' at ' + vm.game.host)
     }
    
       
@@ -495,8 +493,8 @@
       vm.game.timeoptions.push({
         date: vm.timeOption,
         players: [{
-          userName: vm.user.userName,
-          userid: vm.user._id
+          userName: vm.currentUser.userName,
+          userid: vm.currentUser._id
         }]
       })
 
@@ -506,7 +504,7 @@
 
     function addPlayerToTimeOption(time){
       console.log(time);
-      var inArray = checkIfUserInArrayByUsername(time.players, vm.user.userName)
+      var inArray = checkIfUserInArrayByUsername(time.players, vm.currentUser.userName)
       
       if (inArray) {
         ngDialog.open({
@@ -520,10 +518,10 @@
       }
       else {
         time.players.push({
-          userName: vm.user.userName,
-          userid: vm.user._id
+          userName: vm.currentUser.userName,
+          userid: vm.currentUser._id
         })
-        editGame(vm.game, vm.game._id, vm.user.userName + 'Added to optional time: '+ time.date +' for ' + vm.game.gametype + ' at '+ vm.game.host)
+        editGame(vm.game, vm.game._id, vm.currentUser.userName + 'Added to optional time: '+ time.date +' for ' + vm.game.gametype + ' at '+ vm.game.host)
       }
       
     }
@@ -532,15 +530,15 @@
       console.log(time)
       time.players = time.players.filter(function(value){
         console.log(value)
-        return value.userName != vm.user.userName;
+        return value.userName != vm.currentUser.userName;
     
       });
       
-      editGame(vm.game, vm.game._id, vm.user.userName + ' removed from optional time: '+ time.date +' for ' + vm.game.gametype + ' at '+ vm.game.host)
+      editGame(vm.game, vm.game._id, vm.currentUser.userName + ' removed from optional time: '+ time.date +' for ' + vm.game.gametype + ' at '+ vm.game.host)
     }
 
     function addToOptionalPLayers(responsMessage){
-      var inArray = checkIfUserInArrayByUsername(vm.game.optionalPlayers, vm.user.userName)
+      var inArray = checkIfUserInArrayByUsername(vm.game.optionalPlayers, vm.currentUser.userName)
 
       if(inArray){
         ngDialog.open({
@@ -553,8 +551,8 @@
         });
       }else{
         vm.game.optionalPlayers.push({
-          userName: vm.user.userName, 
-          userid: vm.user._id
+          userName: vm.currentUser.userName, 
+          userid: vm.currentUser._id
         });
         
         if(responsMessage) {
@@ -572,15 +570,15 @@
     }
 
     function removeFromOptionalPLayers(){
-      var inArray = checkIfUserInArrayByUsername(vm.game.optionalPlayers, vm.user.userName)
+      var inArray = checkIfUserInArrayByUsername(vm.game.optionalPlayers, vm.currentUser.userName)
       
       if (inArray) {
         vm.game.optionalPlayers = vm.game.optionalPlayers.filter(function(value){
           console.log(value)
-          return value.userName != vm.user.userName;
+          return value.userName != vm.currentUser.userName;
       
         });
-        editGame(vm.game, vm.game._id, vm.user.userName +' removed from optional players for ' + vm.game.gametype + ' at '+ vm.game.host)
+        editGame(vm.game, vm.game._id, vm.currentUser.userName +' removed from optional players for ' + vm.game.gametype + ' at '+ vm.game.host)
         checkIfInOptionalPlayer()
       }
       else {
@@ -624,7 +622,7 @@
 
     function checkIfInOptionalPlayer(){
       
-      var isOptional = checkIfUserInArrayByUsername(vm.game.optionalPlayers, vm.user.userName)
+      var isOptional = checkIfUserInArrayByUsername(vm.game.optionalPlayers, vm.currentUser.userName)
       // console.log(isOptional)
       if (isOptional) vm.isOptional = true
       else vm.isOptional = false
@@ -632,12 +630,12 @@
     }
 
     function checkIfRegistered(){
-      console.log(vm.game.players, vm.user.userName)
-      var registerd = checkIfUserInArrayByUsername(vm.game.players, vm.user.userName)
+      // console.log(vm.game.players, vm.currentUser.userName)
+      var registerd = checkIfUserInArrayByUsername(vm.game.players, vm.currentUser.userName)
       // console.log(registerd)
-      if (registerd) vm.registerd = true
-      else vm.registerd = false
-      
+      if (registerd) vm.registered = true
+      else vm.registered = false
+      vm.showButtonModal = true;
     }
 
     

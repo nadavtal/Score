@@ -174,11 +174,13 @@
   router.put('/tournaments/:tournamentId', tournamentsCtrl.updateTournament); // update game
   router.post('/tournaments/:tournamentId', tournamentsCtrl.removeTournament); // remove game
   router.get('/tournaments/user/:userId', tournamentsCtrl.getTournamentsByUserId); // get tournaments by user
+  router.get('/tournaments/user/managed/:userName', tournamentsCtrl.getTournamentsManagedByUserName); // get tournaments by user
   router.get('/tournaments/group/:groupId', tournamentsCtrl.getTournamentsByGroupId); // get tournaments by group
   router.get('/tournaments/platforms/:platformName', tournamentsCtrl.getTournamentsByplatformName); // get tournaments by group
   router.get('/tournaments/buyin/:min/:max', tournamentsCtrl.getTournamentsByBuyin); // get tournaments by group
   router.get('/tournaments/maxplayers/:min/:max', tournamentsCtrl.getTournamentsByNumPlayers); // get tournaments by group
   router.get('/tournaments/prizepool/:min/:max', tournamentsCtrl.getTournamentsByPrizePool); // get tournaments by group
+  router.get('/tournaments/time/:date/:operator', tournamentsCtrl.getTournamentsBytime); // get tournaments by group
 
   /**
    * Groups

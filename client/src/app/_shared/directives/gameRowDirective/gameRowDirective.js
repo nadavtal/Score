@@ -21,9 +21,9 @@
         return {
             templateUrl: 'app/_shared/directives/gameRowDirective/gameRowDirective.htm',
             link: function (scope, element, attributes) {
-                console.log(scope)
+                // console.log(scope)
                 // scope.battle = JSON.parse(attributes.battle)
-                scope.winner = []
+                // scope.winner = []
                 // console.log(scope.battle)
                 // console.log(scope.battle.team)
                 // getWinner(scope.battle.team[0], scope.battle.opponent[0]);
@@ -34,7 +34,7 @@
                 // scope.isWinner = checkIfIAmWinner();
                 // console.log(scope.isWinner)
                 
-
+                
 
                 function getWinner(player1, player2){
                     // console.log(player1)

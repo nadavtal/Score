@@ -3,6 +3,7 @@
 	<div class="d-flex between">
 		<div class=" userContentTitle">
 			<h3 class="">{{vm.user.userName}}'s Groups</h3>
+			<switch-check-box-directive></switch-check-box-directive>
 		</div> 
 		<div class="">
 			<md-button aria-label="add group" div ui-sref="createGroup">
@@ -14,6 +15,7 @@
 		<!-- <button ng-click="vm.getGroupsOfUserId()" class="customButton">find groups by user</button> -->
 
 	</div>
+	<br>
 	<!-- header -->
 
 	
@@ -31,7 +33,7 @@
 	<!-- table body -->
 	<div class="game-list">
 		<div
-			class=" row"
+			class="blockWrapper row"
 			ng-repeat="group in vm.groups">
 			<div class="groupBlock list-item">
 				<div class="row">
@@ -48,9 +50,9 @@
 						</div>
 					</a>
 					<div class="col-xs-3 d-flex">
-						<md-icon md-svg-src="assets/img/icons/edit.svg" class="groupActionButton" ui-sref="editGroup({ groupId: group._id })"></md-icon>
-						<md-icon md-svg-src="assets/img/icons/email.svg" class="groupActionButton blue" ng-click="vm.sendMessageToGroup(group)"></md-icon>
-						<md-icon md-svg-src="assets/img/icons/remove.svg" class="groupActionButton red" ng-click="vm.removeGame($index, group._id)"></md-icon>
+						<md-icon md-svg-src="assets/img/icons/edit.svg" class="actionButton" ui-sref="editGroup({ groupId: group._id })"></md-icon>
+						<md-icon md-svg-src="assets/img/icons/email.svg" class="actionButton blue" ng-click="vm.sendMessageToGroup(group)"></md-icon>
+						<md-icon md-svg-src="assets/img/icons/remove.svg" class="actionButton red" ng-click="vm.removeGame($index, group._id)"></md-icon>
 						
 					</div>
 				</div>
@@ -69,8 +71,8 @@
 				
 			</a>
 			<div class="col-xs-2 d-flex">
-				<md-icon md-svg-src="assets/img/icons/edit.svg" class="groupActionButton" ui-sref="editGroup({ groupId: group._id })"></md-icon>
-				<md-icon md-svg-src="assets/img/icons/remove.svg" class="groupActionButton red" ng-click="vm.removeGame($index, group._id)"></md-icon>
+				<md-icon md-svg-src="assets/img/icons/edit.svg" class="actionButton" ui-sref="editGroup({ groupId: group._id })"></md-icon>
+				<md-icon md-svg-src="assets/img/icons/remove.svg" class="actionButton red" ng-click="vm.removeGame($index, group._id)"></md-icon>
 				
 			</div> -->
 

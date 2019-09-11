@@ -2,14 +2,7 @@
     background-color: $pink;
 }
 
-md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {
-    min-height: 248px;
-    height: 90vh;
-}
 
-md-tab-content {
-    margin-top: .5rem;
-}
 
 .messageRow{
     transition: .3 all;
@@ -98,6 +91,7 @@ md-tab-content {
     opacity: 0;
     height: 0 !important;
     padding: 0;
+    visibility: hidden;
 }
 
 // .contentHidden div{

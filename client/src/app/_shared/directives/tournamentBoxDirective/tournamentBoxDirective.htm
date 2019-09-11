@@ -1,0 +1,67 @@
+<!-- <div class="" ng-if="show"> -->
+    
+        <div class="tournamentBlock text-center" 
+            ng-class="registered? 'registered' : ''">
+            <div layout="row" >
+                <div class='titanic titanic-checkbox'></div>
+                <div class="" flex="20">
+                    <a ui-sref="displayTournament({ tournamentId: tournament._id, groupId: tournament.group })">
+                        <img class="tournamentBlock--image" src="../../assets/img/platforms/{{tournament.platform}}.png" alt="">
+
+                    </a>
+                </div>
+                <div flex="20" class="tournamentBlock__details">
+                    <a ui-sref="displayTournament({ tournamentId: tournament._id, groupId: tournament.group })">
+                        <div class="tournamentBlock--name">{{tournament.name}}</div>
+                    </a>
+                    
+                    
+                </div>
+                <div flex="20" class="">
+                    <a ui-sref="displayTournament({ tournamentId: tournament._id, groupId: tournament.group })">
+                        <div class="tournamentBlock--prizePool">
+                            {{tournament.prizePool}}
+                        </div>
+                    </a>
+                </div>
+                <div flex="20" class="">
+                    <a ui-sref="displayTournament({ tournamentId: tournament._id, groupId: tournament.group })">
+                        <div class="tournamentBlock--numMembers">
+                            {{tournament.registered.length}}/ {{tournament.maxPlayers}}
+                        </div>
+                    </a>
+                </div>
+                <div flex="20">
+                    <div class="tournamentBlock--date">
+                        {{tournament.time | date:'dd-MM-yy H:mm'}}
+
+                    </div>
+                    <div class="tournamentBlock__buttons">
+                        <div class="tournamentBlock__buttons--button">
+                                <flipping-button-directive 
+                                condition="{{flipButtonCondition}}"
+                                showIcon="false"
+                                function-one="registerToTournament(tournament)" 
+                                function-two="unRegisterToTournament(tournament)"
+                                action-one-name="Join"
+                                action-two-name="Leave"
+                                ></flipping-button-directive>
+
+                        </div>
+                        
+                    </div>
+                </div>
+               
+            </div>
+            <!-- <md-progress-linear class="md-warn" md-mode="buffer" value="{{determinateValue}}"
+                      md-buffer-value="{{determinateValue2}}"
+                    ng-disabled="!showList[0]">
+            </md-progress-linear> -->
+            <div class="meterContainer">
+                <md-progress-linear md-mode="indeterminate" ng-if="loading"></md-progress-linear>
+
+            </div>
+        </div>
+    
+
+<!-- </div> -->

@@ -1,0 +1,8 @@
+<div class="btn" data-direction="{{dataDirection}}">
+    <div class="btn-back">
+      <p>{{message}}</p>
+      <span class="yes" ng-click="mainFunction()">Yes</span>
+      <span class="no" ng-click="cancelFunction()">No</span>
+    </div>
+    <div class="btn-front" ng-click="frontClick($event)">{{actionName}}</div>
+</div>

@@ -4,146 +4,159 @@
     <div class="navBackButton white" ui-sref="displayUser({ userId: vm.currentUser._id })">
             <back-to-main-button-directive></back-to-main-button-directive>	
     </div>
-    <div class="pageNav__item white center" ng-class="vm.activeTab == 'info'? 'active' : ''">
-        
-        <div ng-click="vm.changeActiveTab('info')"  class="">
-            <md-icon md-svg-src="assets/img/icons/info.svg" class="tournamentActionButton white"></md-icon>
-            Info
+    
+    <div class="pageNav__item white active center" ng-class="vm.activeTab == 'structure'? 'active' : ''">
+        <div class="mainAppSlogen shineText text-center">
+            <!-- <md-icon md-svg-src="assets/img/icons/games.svg" class="tournamentActionButton white"></md-icon> -->
+            Tournaments
         </div>
     </div>
-    <div class="pageNav__item white center" ng-class="vm.activeTab == 'structure'? 'active' : ''">
-        <div ng-click="vm.changeActiveTab('structure')" class="">
-            <md-icon md-svg-src="assets/img/icons/games.svg" class="tournamentActionButton white"></md-icon>
-            Structure
-        </div>
-    </div>
-    <div class="pageNav__item white center" ng-class="vm.activeTab == 'prizes'? 'active' : ''">
-        <div ng-click="vm.changeActiveTab('prizes')" class="">
-            <md-icon md-svg-src="assets/img/icons/timeline.svg" class="tournamentActionButton white"></md-icon>
-            Prizes
-        </div>
-    </div>
+    
     
     
 </div>
-<button class="filterButton text-right"  ng-click="vm.toggleSearchForm($event)">
-    <md-icon md-svg-src="assets/img/icons/filter.svg" class="tournamentActionButton black pull-right"
-       >
+<div class="">
+    <md-icon md-svg-src="assets/img/icons/filter.svg" aria-label="Filter" ng-click="vm.toggleSearchForm($event)" class="tournamentActionButton black">
+    </md-icon>
+    <md-icon md-svg-src="assets/img/icons/add.svg" ui-sref="createTournament" aria-label="Create Tournament" class="tournamentActionButton black">
     </md-icon>
     
-</button>
-
-<div class="searchForm contentHidden">
-   <div layout="row">
-        <div flex="50">
-            <md-input-container class="full-width mt-1" ng-if="vm.actionType !== 'displayTournament'">
-                            
-                <label>Platfroms</label>
-                <md-select ng-model="vm.platformType"
-                        md-on-close="vm.clearSearchTerm()"
-                        data-md-container-class="selectdemoSelectHeader"
-                        
-                        >
-                    <md-select-header class="demo-select-header">
-                    <input ng-model="vm.searchTerm"
-                            type="search"
-                            placeholder="Search for a platform type.."
-                            class="demo-header-searchbox md-text">
-                    </md-select-header>
-                    <md-optgroup label="platform types">
-                    <md-option ng-value="platform.name" ng-repeat="platform in vm.platforms | filter:searchTerm"
-                        ng-click="vm.searchByPlatform(platform.name)">{{platform.name}}
-                    </md-option>
-                    </md-optgroup>
-                </md-select>
-            </md-input-container>
-        </div>    
-        <div flex="50">
-            <md-input-container class="full-width mt-1" ng-if="vm.actionType !== 'displayTournament'">
-                            
-                <label>Platfrom types</label>
-                <md-select ng-model="vm.platformType"
-                        md-on-close="vm.clearSearchTerm()"
-                        data-md-container-class="selectdemoSelectHeader"
-                        
-                        >
-                    <md-select-header class="demo-select-header">
-                    <input ng-model="vm.searchTerm"
-                            type="search"
-                            placeholder="Search for a platform type.."
-                            class="demo-header-searchbox md-text">
-                    </md-select-header>
-                    <md-optgroup label="platform types">
-                    <md-option ng-value="type.name" ng-repeat="type in vm.platformTypes | filter:searchTerm"
-                        ng-click="vm.searchByPlatformType(type.name)">{{type.name}}
-                    </md-option>
-                    </md-optgroup>
-                </md-select>
-            </md-input-container>
-        </div>    
-    </div> 
-    <div layout="row">
-        <div flex="50">
-            <md-input-container>
-                <label>Min players</label>
-                <input type="text" 
-                    ng-model="vm.minPlayers" 
-                    ng-change="vm.searchByNumPlayers(vm.minPlayers, vm.maxPlayers)">
-            </md-input-container> 
-        </div>
-        <div flex="50">
-            <md-input-container>
-                <label>Max players</label>
-                <input type="text" 
-                    ng-model="vm.maxPlayers" 
-                    ng-change="vm.searchByNumPlayers(vm.minPlayers, vm.maxPlayers)">
-            </md-input-container> 
-        </div>
-    </div>        
-     
-    <div layout="row">
-        <div flex="50">
-            <md-input-container>
-                <label>Min Entree Fee</label>
-                <input type="number" 
-                        ng-model="vm.minBuyIn" 
-                        ng-change="vm.searchByBuyIn(vm.minBuyIn, vm.maxBuyIn)">
-            </md-input-container> 
-        </div>
-        <div flex="50">
-            <md-input-container>
-                <label>Max Entree Fee</label>
-                <input type="number" 
-                        ng-model="vm.maxBuyIn" 
-                        ng-change="vm.searchByBuyIn(vm.minBuyIn, vm.maxBuyIn)">
-            </md-input-container>  
-        </div>
-        
-    </div>
-    <div layout="row">
-        <div flex="50">
-            <md-input-container>
-                <label>Min Prize Pool</label>
-                <input type="number" 
-                        ng-model="vm.MinPrizePool" 
-                        ng-change="vm.searchByPrizePool(vm.MinPrizePool, vm.maxPrizePool)">
-            </md-input-container> 
-        </div>
-        <div flex="50">
-            <md-input-container>
-                <label>Max Prize Pool</label>
-                <input type="number" 
-                        ng-model="vm.maxPrizePool" 
-                        ng-change="vm.searchByPrizePool(vm.MinPrizePool, vm.maxPrizePool)">
-            </md-input-container> 
-        </div>
-    </div>
-    
 </div>
 
-<div class="results">
-    <div  ng-repeat="tournament in vm.tournaments | orderBy: time">
-        <tournament-row-directive>
+<div class="searchForm contentHidden">
+    <div class="container">
+        <div layout="row">
+                <div flex="50">
+                    <md-input-container class="full-width mt-1" ng-if="vm.actionType !== 'displayTournament'">
+                                    
+                        <label>Platfroms</label>
+                        <md-select ng-model="vm.platformType"
+                                md-on-close="vm.clearSearchTerm()"
+                                data-md-container-class="selectdemoSelectHeader"
+                                
+                                >
+                            <md-select-header class="demo-select-header">
+                            <input ng-model="vm.searchTerm"
+                                    type="search"
+                                    placeholder="Search for a platform type.."
+                                    class="demo-header-searchbox md-text">
+                            </md-select-header>
+                            <md-optgroup label="platform types">
+                            <md-option ng-value="platform.name" ng-repeat="platform in vm.platforms | filter:searchTerm"
+                                ng-click="vm.searchByPlatform(platform.name)">{{platform.name}}
+                            </md-option>
+                            </md-optgroup>
+                        </md-select>
+                    </md-input-container>
+                </div>    
+                <div flex="50">
+                    <md-input-container class="full-width mt-1" ng-if="vm.actionType !== 'displayTournament'">
+                                    
+                        <label>Platfrom types</label>
+                        <md-select ng-model="vm.platformType"
+                                md-on-close="vm.clearSearchTerm()"
+                                data-md-container-class="selectdemoSelectHeader"
+                                
+                                >
+                            <md-select-header class="demo-select-header">
+                            <input ng-model="vm.searchTerm"
+                                    type="search"
+                                    placeholder="Search for a platform type.."
+                                    class="demo-header-searchbox md-text">
+                            </md-select-header>
+                            <md-optgroup label="platform types">
+                            <md-option ng-value="type.name" ng-repeat="type in vm.platformTypes | filter:searchTerm"
+                                ng-click="vm.searchByPlatformType(type.name)">{{type.name}}
+                            </md-option>
+                            </md-optgroup>
+                        </md-select>
+                    </md-input-container>
+                </div>    
+        </div> 
+        <div layout="row">
+            <div flex="50">
+                <md-input-container>
+                    <label>Min players</label>
+                    <input type="text" 
+                        ng-model="vm.minPlayers" 
+                        ng-change="vm.searchByNumPlayers(vm.minPlayers, vm.maxPlayers)">
+                </md-input-container> 
+            </div>
+            <div flex="50">
+                <md-input-container>
+                    <label>Max players</label>
+                    <input type="text" 
+                        ng-model="vm.maxPlayers" 
+                        ng-change="vm.searchByNumPlayers(vm.minPlayers, vm.maxPlayers)">
+                </md-input-container> 
+            </div>
+        </div>        
+            
+        <div layout="row">
+            <div flex="50">
+                <md-input-container>
+                    <label>Min Entree Fee</label>
+                    <input type="number" 
+                            ng-model="vm.minBuyIn" 
+                            ng-change="vm.searchByBuyIn(vm.minBuyIn, vm.maxBuyIn)">
+                </md-input-container> 
+            </div>
+            <div flex="50">
+                <md-input-container>
+                    <label>Max Entree Fee</label>
+                    <input type="number" 
+                            ng-model="vm.maxBuyIn" 
+                            ng-change="vm.searchByBuyIn(vm.minBuyIn, vm.maxBuyIn)">
+                </md-input-container>  
+            </div>
+            
+        </div>
+        <div layout="row">
+            <div flex="50">
+                <md-input-container>
+                    <label>Min Prize Pool</label>
+                    <input type="number" 
+                            ng-model="vm.MinPrizePool" 
+                            ng-change="vm.searchByPrizePool(vm.MinPrizePool, vm.maxPrizePool)">
+                </md-input-container> 
+            </div>
+            <div flex="50">
+                <md-input-container>
+                    <label>Max Prize Pool</label>
+                    <input type="number" 
+                            ng-model="vm.maxPrizePool" 
+                            ng-change="vm.searchByPrizePool(vm.MinPrizePool, vm.maxPrizePool)">
+                </md-input-container> 
+            </div>
+        </div>
+    </div>
+   
+    
+</div>
+<div class="tableHeaders text-center" layout="row">
+    <div flex="20" class="d-flex" ng-click="vm.orderBy($event, 'platform')">
+        Platform
+        <md-icon md-svg-src="assets/img/icons/down.svg" aria-label="Change Order" class="tableHeaders--filterButton black pull-right">
+        </md-icon>
+    </div>
+    <div flex="20">Name</div>
+    <div flex="20" ng-click="vm.orderBy($event, 'prizePool')">
+        Prizes
+        <md-icon md-svg-src="assets/img/icons/down.svg" aria-label="Change Order" class="tableHeaders--filterButton black pull-right">
+        </md-icon></div>
+    <div flex="20" ng-click="vm.orderBy($event, 'maxPlayers')">
+        Players
+        <md-icon md-svg-src="assets/img/icons/down.svg" aria-label="Change Order" class="tableHeaders--filterButton black pull-right">
+        </md-icon></div>
+    <div flex="20" ng-click="vm.orderBy($event, 'time')">
+        Date
+        <md-icon md-svg-src="assets/img/icons/down.svg" aria-label="Change Order" class="tableHeaders--filterButton black pull-right">
+        </md-icon>
+    </div>
+</div>
+<div class="results" >
+    <div class="blockWrapper" ng-if="vm.show" ng-repeat="tournament in vm.tournaments | orderBy: vm.prameter : vm.reverse">
+        <tournament-box-directive></tournament-box-directive>
     </div>
 </div>
 

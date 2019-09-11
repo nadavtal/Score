@@ -3,14 +3,19 @@
 		<md-tab id="tab1">
 		<md-tab-label class="white">Games</md-tab-label>
 		<md-tab-body>
-			<div class="container">
+			<div class="">
 
-				<div class="">
-					<div class="col-xs-6 userContentTitle">
-						<h3>Games</h3>
+				<div layout="row" class="">
+					<div flex="60" class="userContentTitle ml-0_5">
+						<div class="switchBoxWrapper">
+							<switch-check-box-directive></switch-check-box-directive>
+							<span class="switchBoxWrapper--text"> Managed games</span>
+						</div>
+						<!-- <div>Games</div> -->
+							
 					</div> 
-					<div class="col-xs-6 d-flex between">
-						<md-button ng-click="vm.createGame()" aria-label="edit">
+					<div flex="40" class="d-flex between">
+						<md-button class="actionButton" ng-click="vm.createGame()" aria-label="edit">
 							<md-icon md-svg-src="assets/img/icons/add.svg"></md-icon>
 						</md-button>
 					
@@ -22,7 +27,7 @@
 					
 				</div>
 				
-				<div class="" ng-repeat="game in vm.games">
+				<div class="blockWrapper" ng-repeat="game in vm.games">
 					<game-row-directive></game-row-directive>
 				</div>
 				
@@ -32,22 +37,28 @@
 		<md-tab id="tab2" ng-disabled="data.secondLocked">
 		<md-tab-label>Tournaments</md-tab-label>
 		<md-tab-body>
-			<div class="container">
-				<div class="col-xs-6 userContentTitle">
-					<h3>Tournaments</h3>
-				</div> 
-				<div class="col-xs-6 d-flex between">
-					<md-button ng-click="vm.createTournament()" aria-label="edit">
-						<md-icon md-svg-src="assets/img/icons/add.svg"></md-icon>
-					</md-button>
-				
-					<md-button aria-label="search tournaments">
-						<md-icon md-svg-src="assets/img/icons/search.svg"></md-icon>
-					</md-button>
+			<div class="">
+				<div layout="row">
+					<div flex="60" class="userContentTitle ml-0_5">
+						<switch-check-box-directive true-function="vm.showManagedTournaments()"
+													false-function="vm.showRegisteredTournaments()">
+												</switch-check-box-directive>
+						<span class="switchBoxWrapper--text">{{vm.listTitle}}</span>
+					</div> 
+					<div flex="40" class="d-flex between">
+						<md-button class="actionButton" ng-click="vm.createTournament()" aria-label="edit">
+							<md-icon md-svg-src="assets/img/icons/add.svg" ></md-icon>
+						</md-button>
 					
+						<md-button aria-label="search tournaments">
+							<md-icon md-svg-src="assets/img/icons/search.svg" class="actionButton"></md-icon>
+						</md-button>
+						
+					</div>	
 				</div>
 				
-				<div  ng-repeat="tournament in vm.tournaments | orderBy: time">
+				
+				<div class="blockWrapper" ng-repeat="tournament in vm.tournaments | orderBy: time">
 					<tournament-row-directive>
 				</div>
 			</div>

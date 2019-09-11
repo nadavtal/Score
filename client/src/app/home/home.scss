@@ -80,7 +80,7 @@
 		position: relative;
 		// top: 0;
 		width: 16.66%;
-		height: 5rem;
+		height: 4rem;
 		float: left;
 		z-index: 1000;
 		opacity: .3;
@@ -132,13 +132,24 @@
 	opacity: 1;
 }
 
+md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {
+    min-height: 248px;
+    height: 75vh;
+}
+
+md-tab-content {
+    margin-top: .5rem;
+}
+
 .userContent{
 	transition: .3s linear all;
 	position: absolute;
-	top: 5rem;
+	top: 4rem;
 	// left: -100vw;
 	width: 100%;
-	height: 86vh;
+	height: 84vh;
+	padding-bottom: 2rem;
+	overflow: auto;
 }
 
 .userContent.ng-enter{
@@ -209,6 +220,13 @@
 // 	// transform: translateX(100vw);
 // 	opacity: 0;
 // }
+.pageButtons{
+	transition: all .3s;
+	position: fixed;
+	bottom: 10vh;
+	right: 0;
+	width: 100vw;
+}
 
 .bottomToolBar{
 	transition: all .3s;
@@ -256,11 +274,13 @@
 }
 
 .groupLogo{
+	
     width: 2.5rem;
     height: 2.5rem
 }
 
-.groupActionButton{
+.actionButton{
+	min-width: 1rem;
 	width: 1.5rem;
     height: 1.5rem
 }
@@ -296,7 +316,7 @@
 }
 
 .pageNav{
-	height: 5rem;
+	height: 4rem;
 
 	&__item{
 		transition: .2s all;

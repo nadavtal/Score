@@ -21,11 +21,14 @@
     updateTournament,
     removeTournament,
     getTournamentsByUserId,
+    getTournamentsManagedByUserName,
     getTournamentsByGroupId,
     getTournamentsByplatformName,
     getTournamentsByBuyin,
     getTournamentsByNumPlayers,
-    getTournamentsByPrizePool
+    getTournamentsByPrizePool,
+    getAllTournamentsByPrivacy,
+    getTournamentsBytime
   };
 
   /// definitions
@@ -136,9 +139,70 @@
    * GET '/tournaments/'
    */
   function getAllTournaments(req, res, next) {
-    console.log(req.query)
+    console.log('getting all tournaments', req.query)
     var page = req.query.page || 1;
-    var limit = req.query.limit || 3;
+    var limit = req.query.limit || 100;
+
+
+    // Tournament.find({}, function (err, tournaments) {
+    //   res.send(tournaments);
+    // });
+
+    var options = {
+        page: page,
+        limit: limit,
+        lean: true
+    };
+
+    if(req.query.privacy){
+      Tournament.paginate({$and: [{'privacy' : req.query.privacy}, {'time' : { $gt :  req.query.time}}]}, options, (err, tournaments) => {
+        // console.log(tournaments)
+        if (err) return next(err);
+        if (!tournaments) return next({
+          message: 'No tournaments found.',
+          status: 404
+        });
+  
+        var pagination = {
+          pageNumber: tournaments.page,
+          itemsPerPage: tournaments.limit,
+          prev: res.locals.paginate.href(true),
+          next: res.locals.paginate.href(),
+        };
+  
+        utils.sendJSONresponse(res, 200, tournaments, false, pagination);
+      });
+    } 
+    else{
+      Tournament.paginate({}, options, (err, tournaments) => {
+        // console.log(tournaments)
+        if (err) return next(err);
+        if (!tournaments) return next({
+          message: 'No tournaments found.',
+          status: 404
+        });
+  
+        var pagination = {
+          pageNumber: tournaments.page,
+          itemsPerPage: tournaments.limit,
+          prev: res.locals.paginate.href(true),
+          next: res.locals.paginate.href(),
+        };
+  
+        utils.sendJSONresponse(res, 200, tournaments, false, pagination);
+      });
+    }
+
+    
+  }
+  /**
+   * Get tournaments by privacy settings (paginated)
+   * GET '/tournaments/'
+   */
+  function getAllTournamentsByPrivacy(req, res, next) {
+    console.log('getting all '+ req.query.privacy +'tournaments')
+    var page = req.query.page || 1;
+    var limit = req.query.limit || 100;
 
 
     // Tournament.find({}, function (err, tournaments) {
@@ -153,7 +217,7 @@
 
 
 
-    Tournament.paginate({}, options, (err, tournaments) => {
+    Tournament.paginate({'privacy' : req.query.privacy}, options, (err, tournaments) => {
       // console.log(tournaments)
       if (err) return next(err);
       if (!tournaments) return next({
@@ -179,40 +243,145 @@
  
 
   function getTournamentsByUserId(req,res,next){
-    console.log('getting tournaments by userId:', req.params.userId);
+    
     
     var params = req.params;
-    
-    Tournament.find({ 'registered.userId': params.userId }, { 'registered.$': 1 })
-    .exec((err, data) => {
-      // console.log(data)
-      if (err) return next(err);
-      if (!data) return next({
-        message: 'groups not found.',
-        status: 404
-      });
-      var tournamentsIds = []
-      for (var i = 0; i < data.length; i++){
-        // console.log(data[i]);
-        tournamentsIds.push(data[i]._id);
-        
-      }
-      // console.log('IDS', tournamentsIds);
-      
-      
-    })
-    .then((tournamentsIds)=> {
-      Tournament.find({'_id': { $in: tournamentsIds }})
+    if(req.query.time){
+      console.log('getting tournaments by userId and time:', req.query);
+      Tournament.find({$and : [{ 'registered.userId': params.userId }, {'time' : { $gt :  req.query.time}}]}, { 'registered.$': 1 })
       .exec((err, data) => {
+        // console.log(data)
         if (err) return next(err);
         if (!data) return next({
-          message: 'tournaments not found.',
+          message: 'groups not found.',
           status: 404
         });
-        utils.sendJSONresponse(res, 200, data);
-      
-      });
-    })
+        var tournamentsIds = []
+        for (var i = 0; i < data.length; i++){
+          // console.log(data[i]);
+          tournamentsIds.push(data[i]._id);
+          
+        }
+        // console.log('IDS', tournamentsIds);
+        
+        
+      })
+      .then((tournamentsIds)=> {
+        Tournament.find({'_id': { $in: tournamentsIds }})
+        .exec((err, data) => {
+          if (err) return next(err);
+          if (!data) return next({
+            message: 'tournaments not found.',
+            status: 404
+          });
+          utils.sendJSONresponse(res, 200, data);
+        
+        });
+      })
+    } else{
+      console.log('getting tournaments by userId :', req.query);
+      Tournament.find({ 'registered.userId': params.userId }, { 'registered.$': 1 })
+      .exec((err, data) => {
+        // console.log(data)
+        if (err) return next(err);
+        if (!data) return next({
+          message: 'groups not found.',
+          status: 404
+        });
+        var tournamentsIds = []
+        for (var i = 0; i < data.length; i++){
+          // console.log(data[i]);
+          tournamentsIds.push(data[i]._id);
+          
+        }
+        // console.log('IDS', tournamentsIds);
+        
+        
+      })
+      .then((tournamentsIds)=> {
+        Tournament.find({'_id': { $in: tournamentsIds }})
+        .exec((err, data) => {
+          if (err) return next(err);
+          if (!data) return next({
+            message: 'tournaments not found.',
+            status: 404
+          });
+          utils.sendJSONresponse(res, 200, data);
+        
+        });
+      })
+
+    }
+  }
+
+  function getTournamentsManagedByUserName(req,res,next){
+    console.log('getting tournaments managed by userName:', req.params.userName);
+    
+    var params = req.params;
+    if(req.query.time){
+      Tournament.find({$and : [{ 'manager': params.userName }, {'time' : { $gt :  req.query.time}}]})
+      .exec((err, data) => {
+        // console.log(data)
+        if (err) return next(err);
+        if (!data) return next({
+          message: 'groups not found.',
+          status: 404
+        });
+        var tournamentsIds = []
+        for (var i = 0; i < data.length; i++){
+          // console.log(data[i]);
+          tournamentsIds.push(data[i]._id);
+          
+        }
+        // console.log('IDS', tournamentsIds);
+        
+        
+      })
+      .then((tournamentsIds)=> {
+        Tournament.find({'_id': { $in: tournamentsIds }})
+        .exec((err, data) => {
+          if (err) return next(err);
+          if (!data) return next({
+            message: 'tournaments not found.',
+            status: 404
+          });
+          utils.sendJSONresponse(res, 200, data);
+        
+        });
+      })
+    } else {
+      Tournament.find({ 'manager': params.userName })
+      .exec((err, data) => {
+        // console.log(data)
+        if (err) return next(err);
+        if (!data) return next({
+          message: 'groups not found.',
+          status: 404
+        });
+        var tournamentsIds = []
+        for (var i = 0; i < data.length; i++){
+          // console.log(data[i]);
+          tournamentsIds.push(data[i]._id);
+          
+        }
+        // console.log('IDS', tournamentsIds);
+        
+        
+      })
+      .then((tournamentsIds)=> {
+        Tournament.find({'_id': { $in: tournamentsIds }})
+        .exec((err, data) => {
+          if (err) return next(err);
+          if (!data) return next({
+            message: 'tournaments not found.',
+            status: 404
+          });
+          utils.sendJSONresponse(res, 200, data);
+        
+        });
+      })
+
+    }
   }
 
   function getTournamentsByGroupId(req,res,next){
@@ -274,16 +443,16 @@
     var params = req.params;
     console.log('removing tournament',params.tournamentId)
     Tournament
-      .update({ _id: params.tournamentId }, { "$pull": { "tournamentId": params.tournamentId } }, { safe: true, multi:true }, function(err, obj) {
+      .deleteOne({ _id: params.tournamentId },  function(err, tournament) {
       //do something smart
-      console.log(obj)
+      console.log(tournament)
       if (err) return next(err);
-      if (!obj) return next({
-        message: 'obj not found.',
+      if (!tournament) return next({
+        message: 'tournament not found.',
         status: 404
       });
 
-      utils.sendJSONresponse(res, 200, obj);
+      utils.sendJSONresponse(res, 200, tournament);
   });
     
   }
@@ -396,6 +565,55 @@
         message: 'Forbidden access',
         name: 'forbiddenaccess'
       });
+  }
+
+  function getTournamentsBytime(req, res, next){
+    var params = req.params;
+    console.log('getting tournaments by time:', params);
+    if(params.operator == '$lt'){
+      Tournament.find({ 'time' : { $gt :  params.date}})
+      .exec((err, data) => {
+        // console.log(data)
+        if (err) return next(err);
+        if (!data) return next({
+          message: 'tounaments not found.',
+          status: 404
+        });
+        utils.sendJSONresponse(res, 200, data);
+        
+        
+      })
+    } else if (params.operator == '$gt'){
+      Tournament.find({ 'time' : { $gt :  params.date}})
+      .exec((err, data) => {
+        // console.log(data)
+        if (err) return next(err);
+        if (!data) return next({
+          message: 'tounaments not found.',
+          status: 404
+        });
+        utils.sendJSONresponse(res, 200, data);
+        
+        
+      })
+    } else{
+      Tournament.find({ 'time' : { $gt :  params.date}})
+      .exec((err, data) => {
+        // console.log(data)
+        if (err) return next(err);
+        if (!data) return next({
+          message: 'tounaments not found.',
+          status: 404
+        });
+        utils.sendJSONresponse(res, 200, data);
+        
+        
+      })
+    }
+    // var operator = JSON.parse(params.operator);
+    
+    
+    
   }
 
 })();

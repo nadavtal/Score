@@ -96,6 +96,11 @@ $battleHeight: calc((#{$tournamentHeight} / #{$battlesPerRouns }) );
     }
 }
 
+.tournamentPrizePool{
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
 .round0 .battleDirective{
     // border: 1px solid blue;
     height: #{$battleHeight};
@@ -144,7 +149,7 @@ $battleHeight: calc((#{$tournamentHeight} / #{$battlesPerRouns }) );
 }
 
 .tournamentForm{
-
+    padding-bottom: 6rem;
     &__registered{
         max-height: 7rem;
         overflow: auto;
@@ -182,7 +187,20 @@ $battleHeight: calc((#{$tournamentHeight} / #{$battlesPerRouns }) );
 }
 
 .tournamentForm md-input-container{
-    height: 2rem;
+    // margin-top: .5rem;
+    height: 2.5rem;
+    margin: 10px 0;
+}
+.tournamentForm md-select{
+    // margin-top: .5rem;
+    width: 9rem;
+}
+.tournamentForm .pageModalButton{
+    position: relative;
+    // margin-top: .5rem;
+    height: 2.5rem;
+    width: 20rem;
+    margin: 0 auto;
 }
 
 .positionRow{

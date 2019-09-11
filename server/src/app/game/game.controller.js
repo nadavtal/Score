@@ -232,16 +232,16 @@
     var params = req.params;
     console.log('removing game',params.gameId)
     Game
-      .update({ _id: params.gameId }, { "$pull": { "gameId": params.gameId } }, { safe: true, multi:true }, function(err, obj) {
+      .deleteOne({ _id: params.gameId }, function(err, game) {
       //do something smart
-      console.log(obj)
+      console.log(game)
       if (err) return next(err);
-      if (!obj) return next({
-        message: 'obj not found.',
+      if (!game) return next({
+        message: 'game not found.',
         status: 404
       });
 
-      utils.sendJSONresponse(res, 200, obj);
+      utils.sendJSONresponse(res, 200, game);
   });
     
   }

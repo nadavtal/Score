@@ -30,7 +30,7 @@
 	<!-- table body -->
 	<div class="table-body game-list">
 		<div
-			class="list-item row"
+			class="blockWrapper row"
 			ng-repeat="user in vm.friends">
 
 			<a ui-sref="displayUser({ userId: user._id })" title="display user">
@@ -48,9 +48,9 @@
 				<div ui-sref="displayGroup({ groupId: group._id })" title="display groups" ng-repeat="group in user.sharedGroups">{{group.groupName}}</div>
 			</div>
 			<div class="col-xs-3 d-flex">
-				<!-- <md-icon md-svg-src="assets/img/icons/edit.svg" class="groupActionButton" ui-sref="editGroup({ groupId: group._id })"></md-icon> -->
-				<md-icon md-svg-src="assets/img/icons/chat.svg" class="groupActionButton purple" ng-click="vm.sendMessageToUser(user)" ng-if="vm.isUser"></md-icon>
-				<md-icon md-svg-src="assets/img/icons/remove.svg" class="groupActionButton red" ng-click="vm.removeFriend($index, user)" ng-if="vm.isUser"></md-icon>
+				<!-- <md-icon md-svg-src="assets/img/icons/edit.svg" class="actionButton" ui-sref="editGroup({ groupId: group._id })"></md-icon> -->
+				<md-icon md-svg-src="assets/img/icons/chat.svg" class="actionButton purple" ng-click="vm.sendMessageToUser(user)" ng-if="vm.isUser"></md-icon>
+				<md-icon md-svg-src="assets/img/icons/remove.svg" class="actionButton red" ng-click="vm.removeFriend($index, user)" ng-if="vm.isUser"></md-icon>
 				<!-- <a class="editButton" ui-sref="editGroup({ groupId: group._id })" class="icon" title="edit group">
 					Edit 
 				</a> -->

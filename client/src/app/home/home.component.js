@@ -14,17 +14,27 @@
   HomeCtrl.$inject = ['$scope', 'QueryService', '$log', '$rootScope', 'localStorage', 'usersService', 'accountsService', '$timeout'];
 
   function HomeCtrl($scope, QueryService, $log, $rootScope, localStorage, usersService, accountsService, $timeout) {
-    $.ajax({
-      url: 'https://randomuser.me/api/?results=1000',
-      dataType: 'json',
-      success: function(data) {
-        console.log(data);
-      }
-    });
+    // $.ajax({
+    //   url: 'https://randomuser.me/api/?results=1000',
+    //   dataType: 'json',
+    //   success: function(data) {
+    //     console.log(data);
+    //   }
+    // });
+    var titanic = new Titanic('https://rawgit.com/icons8/titanic/master/src/icons/'); // initialization
+    // API
+    // titanic.isInitialized()
+    // -- just true/false flag
+    // titanic.items
+    // -- list of titanic items
+    // titanic.items[index].on(), titanic.items[index].off(), titanic.items[index].play()
+    // -- play animations of the titanic item by index
+    // titanic.on(token), titanic.off(token), titanic.play(token)
+    // -- play animations of the titanic item by token (name)
     console.log('rootscope', $rootScope);
     var vm = this
     vm.loaded = true;
-    vm.user = localStorage.get('user');
+    vm.currentUser = localStorage.get('user');
     var users = [
       {userName: 'Nadi', firstName: 'Nadav', surname: 'Almagor', password: 'asd', email: 'nadavtalalmagor@gmail.com', role: 'admin'},
       {userName: 'Gads', firstName: 'Gadi', surname: 'Grosz', password: 'asd', email: 'gadi1@gmail.com', role: 'user'},

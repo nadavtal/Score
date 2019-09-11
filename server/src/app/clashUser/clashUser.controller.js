@@ -248,7 +248,7 @@
       utils.sendJSONresponse(res, 200, users, false, pagination);
     });
   }
-  // updateAllClashUsers();
+  updateAllClashUsers();
   function updateAllClashUsers(){
     ClashUser
       .find()
@@ -287,7 +287,7 @@
             if(battlesLeangth !== user.battles.length){
               updateClashUser(user)
                 .then(function(updatedUser){
-                  console.log(updatedUser)
+                  // console.log('updatedUser', updatedUser)
                 });  
             } else{
               console.log('no new battles')

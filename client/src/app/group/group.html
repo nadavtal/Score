@@ -5,19 +5,19 @@
 	<div class="pageNav__item white center" ng-class="vm.activeTab == 'info'? 'active' : ''">
 		
 		<div ng-click="vm.changeActiveTab('info')"  class="">
-			<md-icon md-svg-src="assets/img/icons/info.svg" class="groupActionButton white"></md-icon>
+			<md-icon md-svg-src="assets/img/icons/info.svg" class="actionButton white"></md-icon>
 			Info
 		</div>
 	</div>
 	<div class="pageNav__item white center" ng-class="vm.activeTab == 'games'? 'active' : ''">
 		<div ng-click="vm.changeActiveTab('games')" class="">
-			<md-icon md-svg-src="assets/img/icons/games.svg" class="groupActionButton white"></md-icon>
+			<md-icon md-svg-src="assets/img/icons/games.svg" class="actionButton white"></md-icon>
 			Games
 		</div>
 	</div>
 	<div class="pageNav__item white center" ng-class="vm.activeTab == 'stats'? 'active' : ''">
 		<div ng-click="vm.changeActiveTab('stats')" class="">
-			<md-icon md-svg-src="assets/img/icons/timeline.svg" class="groupActionButton white"></md-icon>
+			<md-icon md-svg-src="assets/img/icons/timeline.svg" class="actionButton white"></md-icon>
 			Stats
 		</div>
 	</div>
@@ -152,7 +152,7 @@
 						<br>
 					</div>
 					<div class="row">
-						<label class="col-xs-4">Members</label>
+						<label class="col-xs-4">Members ({{vm.group.members.length}})</label>
 						<div class="col-xs-8 createGroupForm__members" >
 							<div class="row" ng-repeat="member in vm.group.members">
 								<div class="col-xs-9">
@@ -164,7 +164,7 @@
 								</div>
 								<div class="col-xs-2">
 									<md-icon md-svg-src="assets/img/icons/remove.svg" 
-										class="groupActionButton" 
+										class="actionButton" 
 										ng-click="vm.removePlayer($index)"
 										ng-if="vm.actionType == 'editGroup'"
 										aria-label="remove from group">

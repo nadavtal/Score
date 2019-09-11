@@ -37,6 +37,7 @@
      * @return {object}            Promise
      */
     function query(method, url, getParams, postParams, headers) {
+      // console.log(getParams)
       return $http({
         method: method,
         url: CONSTANTS.API.dev.API_URL + url,

@@ -1,13 +1,36 @@
 .gameBlock{
-    
+    margin-top: .5rem;
+    padding: .5rem;
+    -webkit-box-shadow: 2px 9px 6px -4px rgba(0,0,0,0.75);
+    -moz-box-shadow: 2px 9px 6px -4px rgba(0,0,0,0.75);
+    box-shadow: 2px 9px 6px -4px rgba(0,0,0,0.75);
     &--image{
-        width: 3.5rem;
-        height: 3.5rem;
+        width: 3rem;
+        height: 3rem;
+    }
+
+    &--date{
+        font-size: .9rem;
+    }
+    &__details{
+        font-size: .9rem;
     }
 }
 
 .gamesTabs md-tabs.md-accent>md-tabs-wrapper {
     background-color: $black;
+}
+.gamesTabs md-tabs-content-wrapper {
+    // bottom: 6rem;
+}
+
+.switchBoxWrapper {
+
+  &--text{
+    transition: .3s all;
+      font-size: .8rem;
+  }
+ 
 }
 
 

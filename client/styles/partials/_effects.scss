@@ -445,9 +445,9 @@ animation-delay: 2s;
     to { background-color:rgba(189, 40, 189, 0.801); -webkit-box-shadow: 0 0 9px #333; }
   }
   @-webkit-keyframes orangePulse {
-    from { background-color: rgba(255, 166, 0, 0.781); -webkit-box-shadow: 0 0 9px #333; }
-    50% { background-color: orange; -webkit-box-shadow: 0 0 0 $black; }
-    to { background-color:rgba(255, 166, 0, 0.781); -webkit-box-shadow: 0 0 9px #333; }
+    from { background-color: $orange-faded; -webkit-box-shadow: 0 0 9px #333; }
+    50% { background-color:  $orange; -webkit-box-shadow: 0 0 0 $black; }
+    to { background-color:$orange-faded; -webkit-box-shadow: 0 0 9px #333; }
   }
   @-webkit-keyframes blackPulse {
     from { background-color: rgba(0, 0, 0, 0.9); -webkit-box-shadow: 0 0 9px #333; }

@@ -1,11 +1,11 @@
 
 <page-menu-tabs-directive ></page-menu-tabs-directive>
 	
-<div class="userContentArea">
+<div class="userContent">
 	<div ng-class="vm.activeTab == 'info'? 'block' : 'hidden' " >
 		<div class="container-fluid user form">
 
-			<!-- <div class="row" ng-if="vm.user.role == 'admin' && vm.actionType != 'editGame'">
+			<!-- <div class="row" ng-if="vm.currentUser.role == 'admin' && vm.actionType != 'editGame'">
 				<div class="col-md-12">
 					<button class="customButton bg-green white" ui-sref="editGame({ gameId: vm.game._id })" title="edit game">
 						Edit game
@@ -16,11 +16,11 @@
 			<!-- game form -->
 			<div>
 		
-				<form class="fullPageForm"
+				<form class="gameForm"
 					ng-submit="vm.submitGameForm(vm.game, vm.game._id)"
 					name="vm.gameForm"
 					role="form"
-					id="game"
+					id="gameForm"
 					novalidate
 				>
 		
@@ -190,7 +190,7 @@
 										
 								</div>
 								<div class="col-xs-2 " >
-									<md-icon md-svg-src="assets/img/icons/remove.svg" class="groupActionButton" ng-click="vm.removePlayer($index)"></md-icon>
+									<md-icon md-svg-src="assets/img/icons/remove.svg" class="actionButton" ng-click="vm.removePlayer($index)"></md-icon>
 									<!-- <button ng-if="vm.actionType == 'editGame'" ng-click="vm.removePlayer($index)">X</button> -->
 								</div>
 							</div>
@@ -206,8 +206,8 @@
 									<a ui-sref="displayUser({ userId: player.userid })">
 										{{player.userName}}
 									</a>
-									<md-icon md-svg-src="assets/img/icons/remove.svg" class="groupActionButton" ng-click="vm.removeFromOptionalPLayers()"></md-icon>
-									<!-- <button ng-if="player.userName == vm.user.userName" ng-click="vm.removeFromOptionalPLayers()">X</button>	 -->
+									<md-icon md-svg-src="assets/img/icons/remove.svg" class="actionButton" ng-click="vm.removeFromOptionalPLayers()"></md-icon>
+									<!-- <button ng-if="player.userName == vm.currentUser.userName" ng-click="vm.removeFromOptionalPLayers()">X</button>	 -->
 								</div>
 								
 							</div>
@@ -231,8 +231,8 @@
 								<div class="col-xs-7">
 									<div ng-repeat="player in time.players" class="d-flex between">
 										<span>{{player.userName}}</span>
-										<md-icon md-svg-src="assets/img/icons/remove.svg" class="groupActionButton" ng-click="vm.removePlayerfromTimeOption(time)"></md-icon>
-										<!-- <button ng-if="player.userName == vm.user.userName" ng-click="vm.removePlayerfromTimeOption(time)">X</button> -->
+										<md-icon md-svg-src="assets/img/icons/remove.svg" class="actionButton" ng-click="vm.removePlayerfromTimeOption(time)"></md-icon>
+										<!-- <button ng-if="player.userName == vm.currentUser.userName" ng-click="vm.removePlayerfromTimeOption(time)">X</button> -->
 									</div>
 								
 								</div>
@@ -309,13 +309,13 @@
 					</div>
 					<br>
 		
-					<div class="row" ng-if="!vm.registerd">
+					<div class="row" ng-if="!vm.registered">
 						<div class="col-xs-6">
 							<button	class="customButton" type="button"
 								
 								ng-click="vm.addOptionalTime()">
 								Add optional time
-								<!-- <md-icon md-svg-src="assets/img/icons/add.svg" class="groupActionButton"></md-icon> -->
+								<!-- <md-icon md-svg-src="assets/img/icons/add.svg" class="actionButton"></md-icon> -->
 							</button>
 						</div>
 						<div class="col-xs-6 optionalTime">
@@ -359,7 +359,7 @@
 					</div>
 		
 					
-					<div class="row">
+					<div class=" pageButtons row">
 						<div class="col-md-5 col-md-offset-5">
 							<button
 								class="customButton bg-green white"
@@ -371,7 +371,7 @@
 							</button>
 		
 							<button
-								class="customButton"
+								class="customButton bg-green white pull-right mr-0_5"
 								type="submit"
 								ng-disabled="vm.gameForm.$invalid"
 								ng-if="vm.actionType == 'editGame'"
@@ -379,21 +379,30 @@
 								Save
 							</button>
 							
-							
+							<button-to-modal-directive 
+								ng-if="vm.showButtonModal && vm.actionType == 'displayGame'"
+								if-true-action-name="Leave" 
+								if-false-action-name="Join" 
+								if-true-action-message="Leaving so soon?" 
+								if-false-action-message="You sure you're up to the challenge?" 
+								if-true-function="vm.unRegisterToGame()" 
+								if-false-function="vm.registerToGame()()"
+								condition="{{vm.registered}}">
+							</button-to-modal-directive>
 						</div>
 					</div>
 				</form>
-				<div class="buttons d-flex arround" ng-if="vm.actionType == 'loadGame' || vm.actionType == 'displayGame'">
-					<div ng-if="!vm.registerd">
+				<!-- <div class="buttons d-flex arround" ng-if="vm.actionType == 'loadGame' || vm.actionType == 'displayGame'">
+					<div ng-if="!vm.registered">
 							<button	class="customButton bg-green white" ng-click="vm.registerToGame()">Register</button>
 					</div>
 					<div ng-if="!vm.isOptional">
-						<button class="customButton bg-blue white" ng-click="vm.addToOptionalPLayers()" ng-if="!vm.registerd">Tentative</button>
+						<button class="customButton bg-blue white" ng-click="vm.addToOptionalPLayers()" ng-if="!vm.registered">Standby</button>
 					</div>
-					<div ng-if="vm.registerd">
+					<div ng-if="vm.registered">
 						<button class="customButton bg-black white" ng-click="vm.unRegisterToGame()">Unregister</button>
 					</div>
-				</div>
+				</div> -->
 				
 				
 					

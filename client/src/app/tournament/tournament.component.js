@@ -14,11 +14,11 @@
     });
 
   TournamentCtrl.$inject = ['$log', '$state', '$stateParams', 'QueryService', 'localStorage', 'usersService', 'tournamentsService', 'groupsService', 
-    'ngDialog', '$rootScope', '$scope', 'platformService', 'messagesService'];
+    'ngDialog', 'utils', '$scope', 'platformService', 'messagesService'];
 
     
     function TournamentCtrl($log, $state, $stateParams, QueryService, localStorage, usersService, tournamentsService, groupsService,
-      ngDialog, $rootScope, $scope, platformService, messagesService){
+      ngDialog, utils, $scope, platformService, messagesService){
 
     console.log('initializing TournamentCtrl', $scope)
     var vm = this;
@@ -38,6 +38,7 @@
     vm.calculatePrize = calculatePrize;
     vm.calculatePrizePool = calculatePrizePool;
     vm.backToMain = backToMain;
+    vm.showButtonModal = false;
     // vm.addOptionalTime = addOptionalTime;
     // vm.addToOptionalPLayers = addToOptionalPLayers;
     // vm.removeFromOptionalPLayers = removeFromOptionalPLayers;
@@ -117,8 +118,16 @@
               .then((data) => {
                 vm.group = data.data.data;
                 vm.optionalPlayers = vm.group.members;
-                // console.log('vm.optionalPlayers:', vm.optionalPlayers);
+                for(var i = 0; i<vm.group.members.length; i++){
+                  let isRegistered = tournamentsService.checkIfRegistered(vm.tournament, vm.group.members[i]);
+                  if(isRegistered){
+                    vm.optionalPlayers = utils.removeUserFronArrayByUserName(vm.optionalPlayers, vm.group.members[i].userName)
+                  }
+                }
+                console.log('vm.optionalPlayers:', vm.optionalPlayers);
               })
+          } else{
+            vm.optionalPlayers = vm.currentUser.friends
           }
           if(!vm.tournament.tree){
             
@@ -127,10 +136,12 @@
             vm.tournamentStructureObj = JSON.parse(vm.tournament.tree);
           };
 
-          
-          checkIfRegistered(vm.tournamentStructureObj);
+          vm.registered = tournamentsService.checkIfRegistered(vm.tournament, vm.currentUser);
+          vm.showButtonModal = true; 
+            
+        
           // checkIfInOptionalPlayer();
-          console.log('registered: ', vm.registerd);
+          console.log('registered: ', vm.registered);
           console.log('tournamentStructureObj: ', vm.tournamentStructureObj);
           getWinners(vm.tournamentStructureObj);
           getLosers(vm.tournamentStructureObj);
@@ -161,7 +172,7 @@
         vm.tournament.time = new Date(Date.now());
         vm.tournament.timeoptions =[];
         vm.today = new Date(Date.now());
-        vm.tournament.group = 'no group';
+        
         vm.showBottomToolBar = true;
   
         console.log(vm.tournament);
@@ -523,20 +534,26 @@
       }
       // console.log(tournament);
       tournamentsService.editTournament(tournament)
-      .then(tournament => {
+      .then(function(tournament){
         // console.log(tournament.data.data);
         vm.tournament = tournament.data.data;
-        // console.log(vm.tournament);
-        // checkIfRegistered()
+        console.log(vm.tournament);
+        vm.registered = tournamentsService.checkIfRegistered(vm.tournament, vm.currentUser);
         
         vm.tournament.time = new Date(vm.tournament.time)
         
         // console.log(vm.tournament);
-
+        
         $log.debug('updatedTournament', vm.tournament);
 
         if(!responseMessage) responseMessage = vm.tournament.name + ' updated!'
-        
+        Swal.fire({
+          position: 'center',
+          type: 'success',
+          title: responseMessage,
+          showConfirmButton: false,
+          timer: 1200
+        });
         // ngDialog.open({
         //   template: '\
         //     <p>'+responseMessage+'</p>\
@@ -550,55 +567,36 @@
       .catch(function(err) {
         $log.debug(err);
       });
-      QueryService
-        .query('PUT', 'tournaments/' + tournamentId, null, tournament)
-        .then(function(updatedTournament) {
-          checkIfRegistered()
-          console.log(updatedTournament)
-
-          var updatedTournament = updatedTournament.data.data;
-          updatedTournament.time = new Date(updatedTournament.time)
-          vm.tournament = updatedTournament;
-          console.log(vm.tournament);
-          // console.log('aksjdhakjshdkasjhd');
-          Swal.fire({
-            position: 'center',
-            type: 'success',
-            title: responseMessage,
-            showConfirmButton: false,
-            timer: 1500
-          });
-          $log.debug('updatedTournament', vm.updatedTournament);
-          
-          // ngDialog.open({
-          //   template: '\
-          //     <p>'+responseMessage+'</p>\
-          //     <div class=\"ngdialog-buttons\">\
-          //         <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click=\"closeThisDialog()\">OK</button>\
-          //     </div>',
-          //   plain: true
-          // });
-
-          
-
-        })
-        .catch(function(err) {
-          $log.debug(err);
-        });
+      
 
          
     }
 
     function addPlayer(user){
       // console.log(user)
-      vm.tournament.registered.push({userName: user.userName, userId: user.userId});
-      calculatePrizePool();
+      var registered = tournamentsService.checkIfRegistered(vm.tournament, user);
+      if(registered){
+        Swal.fire({
+          position: 'error',
+          type: 'success',
+          title: user.userName + ' is allready registered!',
+          showConfirmButton: false,
+          timer: 1200
+        });
+      } else{
+        vm.tournament.registered.push({userName: user.userName, userId: user.userId});
+        vm.optionalPlayers = utils.removeUserFronArrayByUserName(vm.optionalPlayers, user.userName);
+        vm.tournament.optionalPlayers = utils.removeUserFronArrayByUserName(vm.tournament.optionalPlayers, user.userName);
+        calculatePrizePool();
+
+      }
     }
 
-    function removePlayer(index){
+    function removePlayer(index, user){
       
       vm.tournament.registered.splice(index, 1);
-      console.log(vm.tournament.players)
+      vm.optionalPlayers.push(user);
+      
     }
 
     function addAll(){
@@ -610,29 +608,28 @@
     }
     
     function registerToTournament() {
-      
+      console.log('registering')
+      console.log(vm.registered)
       if (!vm.tournament) return;
-      console.log(vm.tournament)
+      // console.log(vm.tournament)
       
       
-      if(vm.inOptionalPlayers){
-        vm.tournament.optionalPlayers = vm.tournament.optionalPlayers.filter(function(value){
-          console.log(value)
-          return value.userName != vm.user.userName;
       
+      vm.optionalPlayers = utils.removeUserFronArrayByUserName(vm.optionalPlayers, vm.currentUser.userName);
+      vm.tournament.optionalPlayers = utils.removeUserFronArrayByUserName(vm.tournament.optionalPlayers, vm.currentUser.userName);
+       
+      
+       
+
+      if (vm.registered) {
+        Swal.fire({
+          position: 'center',
+          type: 'error',
+          title: 'You are allready registered to this tournament!',
+          showConfirmButton: false,
+          timer: 1200
         });
         
-      }
-
-      if (vm.registerd) {
-        ngDialog.open({
-          template: '\
-            <p>You are allready registered to this tournament</p>\
-            <div class=\"ngdialog-buttons\">\
-                <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click=\"closeThisDialog()\">OK</button>\
-            </div>',
-          plain: true
-        });
       }
       else {
         vm.tournament.registered.push({
@@ -647,7 +644,7 @@
     }
 
     function unRegisterToTournament() {
-      
+      console.log('unregistering')
       if (!vm.tournament) return;
       
       vm.tournament.registered = vm.tournament.registered.filter(function(value){
@@ -679,7 +676,7 @@
 
     function addPlayerToTimeOption(time){
       console.log(time);
-      var inArray = checkIfUserInArrayByUsername(time.players, vm.user.userName)
+      var inArray = utils.findUserInArrayByUserName(time.players, vm.user.userName)
       
       if (inArray) {
         ngDialog.open({
@@ -713,7 +710,7 @@
     }
 
     function addToOptionalPLayers(responsMessage){
-      var inArray = checkIfUserInArrayByUsername(vm.tournament.optionalPlayers, vm.user.userName)
+      var inArray = utils.findUserInArrayByUserName(vm.tournament.optionalPlayers, vm.user.userName)
 
       if(inArray){
         ngDialog.open({
@@ -745,7 +742,7 @@
     }
 
     function removeFromOptionalPLayers(){
-      var inArray = checkIfUserInArrayByUsername(vm.tournament.optionalPlayers, vm.user.userName)
+      var inArray = utils.findUserInArrayByUserName(vm.tournament.optionalPlayers, vm.user.userName)
       
       if (inArray) {
         vm.tournament.optionalPlayers = vm.tournament.optionalPlayers.filter(function(value){
@@ -770,18 +767,7 @@
       
     }
 
-    function checkIfUserInArrayByUsername(array, userName){
-       
-      
-      for (var i=0; i < array.length; i++) {
-        
-        if(array[i].userName == userName){
-          var foundUser = array[i]
-          // console.log(foundUser)
-        }
-      }
-      return foundUser
-    }
+    
 
     function checkIfUserInArrayById(array, id){
        
@@ -797,22 +783,14 @@
 
     function checkIfInOptionalPlayer(){
       
-      var isOptional = checkIfUserInArrayByUsername(vm.tournament.optionalPlayers, vm.user.userName)
+      var isOptional = utils.findUserInArrayByUserName(vm.tournament.optionalPlayers, vm.user.userName)
       // console.log(isOptional)
       if (isOptional) vm.isOptional = true
       else vm.isOptional = false
       
     }
 
-    function checkIfRegistered(){ 
-      
-      // console.log(vm.tournament.registered, vm.currentUser.userName)
-      var registerd = checkIfUserInArrayByUsername(vm.tournament.registered, vm.currentUser.userName)
-      // console.log(registerd)
-      if (registerd) vm.registerd = true
-      else vm.registerd = false
-       
-    }
+    
     
 
   }

@@ -28,6 +28,7 @@ input[type="tel"],
 input[type="color"],
 select,
 textarea,
+
 .field {
   background-color: $white;
   border-radius: 3px;
@@ -36,16 +37,16 @@ textarea,
   color: $text-color;
   display: block;
   font-family: $font;
-  font-size: 1em;
-  height: 40px;
-  line-height: 40px;
-  margin-bottom: 14px;
+  font-size: .9rem;
+  height: 2rem;
+  line-height: 2rem;
+  // margin-bottom: 14px;
   // max-width: 400px;
   padding: 0 12px;
   vertical-align: middle;
   width: 100%;
   @include transition(background-color 0.24s ease-in-out);
-
+  
   // a focused input (or hovered on)
   &:focus,
   &:active {

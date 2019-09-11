@@ -1,23 +1,27 @@
-<div class="gameBlock row">
-    <a ui-sref="displayTournament({ tournamentId: tournament._id, groupId: tournament.group })">
-        <div class="col-xs-2">
-            <img class="gameBlock--image" src="../../assets/img/platforms/{{tournament.platformType}}.png" alt="">
-        </div>
-        <div class="col-xs-5 gameBlock__details">
+<div class="gameBlock" layout="row">
+    <div flex="15">
+        <a ui-sref="displayTournament({ tournamentId: tournament._id, groupId: tournament.group })">
+            <img class="gameBlock--image" src="../../assets/img/platforms/{{tournament.platform}}.png" alt="">
+        </a>
+    </div>
+    <div flex="45" class="gameBlock__details">
+        <a ui-sref="displayTournament({ tournamentId: tournament._id, groupId: tournament.group })">
             <h4>{{tournament.name}}</h4>
             <div class="gameBlock__details--numMembers">
-                {{tournament.registered.length}} players
+                {{tournament.registered.length}}/{{tournament.maxPlayers}} players
             </div>
-
-        </div>
-        <div class="col-xs-3">
-            {{tournament.time | date:'dd-MM-yy H:mm'}}
-        </div>
+        </a>
+    </div>
+    <div flex="20" class="gameBlock--date">
+        <a ui-sref="displayTournament({ tournamentId: tournament._id, groupId: tournament.group })">
+           {{tournament.time | date:'dd-MM-yy H:mm'}}
+        </a>
+    </div>
     </a>
-    <div class="col-xs-2 d-flex">
-        <md-icon md-svg-src="assets/img/icons/edit.svg" class="groupActionButton" ui-sref="editTournament({ tournamentId: tournament._id })" 
+    <div flex="20" class="d-flex">
+        <md-icon md-svg-src="assets/img/icons/edit.svg" class="actionButton" ui-sref="editTournament({ tournamentId: tournament._id })" 
             ng-if="tournament.manager == vm.currentUser.userName"></md-icon>
-        <md-icon md-svg-src="assets/img/icons/remove.svg" class="groupActionButton red" ng-click="vm.removeTournament($index, tournament._id)" 
+        <md-icon md-svg-src="assets/img/icons/remove.svg" class="actionButton red" ng-click="vm.removeTournament($index, tournament._id)" 
             ng-if="vm.isUser"></md-icon>
         
     </div>

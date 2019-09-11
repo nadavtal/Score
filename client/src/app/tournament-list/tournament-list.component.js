@@ -19,9 +19,9 @@
       controller: tournamentListCtrl
     });
 
-    tournamentListCtrl.$inject = ['$scope', '$log', '$timeout', 'tournamentsService', 'localStorage', 'platformTypesService', '$state', 'gameTypesService', 'platformService'];
+    tournamentListCtrl.$inject = ['$scope', '$log', '$timeout', 'tournamentsService', 'localStorage', 'platformTypesService', 'utils', 'gameTypesService', 'platformService'];
 
-  function tournamentListCtrl($scope,$log, $timeout, tournamentsService, localStorage, platformTypesService, $state, gameTypesService, platformService) {
+  function tournamentListCtrl($scope,$log, $timeout, tournamentsService, localStorage, platformTypesService, utils, gameTypesService, platformService) {
     var vm = this;
     vm.searchByPlatform = searchByPlatform
     vm.searchByPlatformType = searchByPlatformType
@@ -30,13 +30,27 @@
     vm.searchByNumPlayers = searchByNumPlayers
     vm.toggleSearchForm = toggleSearchForm; 
     
+    vm.orderBy = orderBy;
+    
     
     vm.$onInit = function() {
       console.log('getting tournaments');
       vm.currentUser = localStorage.get('user');
-      tournamentsService.getAllTournaments()
+      console.log('vm.currentUser', vm.currentUser);
+      vm.prameter = 'time'
+      vm.reverse = true
+      vm.show = false;
+      var today = new Date(Date.now());
+      console.log(today)
+      utils.getItems('tournaments', 'time',today , '$lt')
+            .then(function(tournaments){
+              console.log('tournaments before today' , tournaments.data.data)
+          })
+
+      tournamentsService.getAllTournaments({privacy: 'public', time: today})
         .then(function(tournaments){
           vm.tournaments = tournaments.data.data  
+          vm.show = true;
           console.log(vm.tournaments);
         })
       platformService.getAllPlatformsFromDataBase()
@@ -68,7 +82,7 @@
     
     function toggleSearchForm(event){
       console.log(event);
-      var searchFormElement = angular.element(event.currentTarget.nextElementSibling);
+      var searchFormElement = angular.element(event.currentTarget.parentElement.nextElementSibling);
       searchFormElement.toggleClass('contentHidden');
       var filterElement = angular.element(event.currentTarget);
       filterElement.toggleClass('rotate');
@@ -126,6 +140,29 @@
         })
       }, 700);
     }
+
+    function orderBy($event, prameter){
+      vm.show = false;
+      vm.prameter = prameter;
+      // console.log($event.currentTarget.children[0]);
+
+      var filterElement = angular.element($event.currentTarget.children[0]);
+      if (filterElement.hasClass('rotate')){
+        vm.reverse = true;
+      } else{
+        vm.reverse = false;
+      }
+      console.log(vm.reverse)
+      filterElement.toggleClass('rotate');
+      setTimeout(function(){
+        vm.show = true;
+        console.log(vm.show);
+        $scope.$apply();
+      }, 200)
+      // vm.show = true;
+    }
+
+    
     
   }
 
