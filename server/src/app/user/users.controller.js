@@ -274,38 +274,39 @@
    */
   function verifyToken(req, res, next) {
     
-    var token = req.headers['authorization'] || req.body.token;
+    // var token = req.headers['authorization'] || req.body.token;
 
-    if (token) {
+    // if (token) {
 
-      jwt.verify(token, config.secret, (err, decodedToken) => {
-        if (err)
-          return next({
-            status: 401,
-            message: 'Failed to authenticate token.',
-            name: 'unauthorized'
-          });
+    //   jwt.verify(token, config.secret, (err, decodedToken) => {
+    //     if (err)
+    //       return next({
+    //         status: 401,
+    //         message: 'Failed to authenticate token.',
+    //         name: 'unauthorized'
+    //       });
 
-        User
-          .findOne({ _id: decodedToken._id }, { password: 0 })
-          .lean()
-          .exec((err, user) => {
-            if (err) return next({ err: err, status: 400 });
-            if (!user) return next({ message: 'User not found in verifyToken function.', status: 404 });
+    //     User
+    //       .findOne({ _id: decodedToken._id }, { password: 0 })
+    //       .lean()
+    //       .exec((err, user) => {
+    //         if (err) return next({ err: err, status: 400 });
+    //         if (!user) return next({ message: 'User not found in verifyToken function.', status: 404 });
 
-            // token ok, save user onto request object for use in other routes
-            req.user = user;
-            next();
-          });
-      });
+    //         // token ok, save user onto request object for use in other routes
+    //         req.user = user;
+    //         next();
+    //       });
+    //   });
 
-    } else {
-      return next({
-        status: 401,
-        message: 'Failed to authenticate token.',
-        name: 'unauthorized'
-      });
-    }
+    // } else {
+    //   return next({
+    //     status: 401,
+    //     message: 'Failed to authenticate token.',
+    //     name: 'unauthorized'
+    //   });
+    // }
+    return next();
   }
 
   /**

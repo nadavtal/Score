@@ -39,7 +39,7 @@
               scope.cancelFunction = cancelFunction;
 
               var button = angular.element(elm[0]);
-              
+              console.log(button)
               function frontClick(event){
                 // console.log(event);
                 // console.log(button);

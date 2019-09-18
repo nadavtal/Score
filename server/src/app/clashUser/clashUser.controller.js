@@ -248,7 +248,7 @@
       utils.sendJSONresponse(res, 200, users, false, pagination);
     });
   }
-  updateAllClashUsers();
+  // updateAllClashUsers();
   function updateAllClashUsers(){
     ClashUser
       .find()
@@ -269,7 +269,7 @@
               
           request(options, function (error, response, body) {
             if (error) throw new Error(error);
-            // console.log(body)
+            console.log(body)
               
             
             var battles = JSON.parse(body);
