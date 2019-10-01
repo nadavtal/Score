@@ -38,7 +38,7 @@
       
   
       function query(method, url) {
-        
+        console.log('HEREEEEEEEE')
         var getUrl = 'https://api.clashroyale.com/v1/' + url;
         console.log(getUrl)
         return $http({

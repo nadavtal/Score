@@ -153,6 +153,8 @@
   router.get('/users/:userId', usersCtrl.verifyToken, usersCtrl.getUser); // get user
   
   router.get('/users/:userId/groups', usersCtrl.verifyToken, groupsCtrl.getGroupsByUserId); // get groups by user
+  router.get('/users/:userId/groups/managed', groupsCtrl.getGroupsManagedByUserId); // update group
+
   router.put('/users/:userId', usersCtrl.verifyToken, usersCtrl.updateUser); // update user
   /**
    * Games
@@ -189,6 +191,7 @@
   router.get('/groups/', groupsCtrl.getAllGroups); // get all games
   router.get('/groups/:groupId', groupsCtrl.getGroup); // get group
   router.put('/groups/:groupId', groupsCtrl.updateGroup); // update group
+  // router.put('/groups/user/managed/:userId', groupsCtrl.getGroupsManagedByUserId); // update group
 
   /**
    * Platforms

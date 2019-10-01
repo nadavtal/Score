@@ -25,7 +25,7 @@
     getGroup,
     // getUser,
     updateGroup,
-    // changePassword,
+    getGroupsManagedByUserId,
     
     // isAdmin,
   };
@@ -238,6 +238,44 @@
       });
     })
   }
+
+  function getGroupsManagedByUserId(req,res,next){
+    console.log('getting groups managed by userId:', req.params.userId);
+    console.log('QUERYYYYYY', req.query)
+    var params = req.params;
+    
+      Group.find({ 'groupManager.userId': params.userId })
+      .exec((err, data) => {
+        // console.log(data)
+        if (err) return next(err);
+        if (!data) return next({
+          message: 'groups not found.',
+          status: 404
+        });
+        var groupIds = []
+        for (var i = 0; i < data.length; i++){
+          // console.log(data[i]);
+          groupIds.push(data[i]._id);
+          
+        }
+      })
+      .then((groupIds)=> {
+        Group.find({'_id': { $in: groupIds }})
+        .exec((err, data) => {
+          if (err) return next(err);
+          if (!data) return next({
+            message: 'tournaments not found.',
+            status: 404
+          });
+          utils.sendJSONresponse(res, 200, data);
+        
+        });
+      })
+    
+
+    }
+  
+
 
   
   /**

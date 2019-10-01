@@ -41,22 +41,27 @@
     var game = new Game({
       name: params.name,
       gameType: params.gameType,
-      platformType : params.platformType,
-      host: params.host,
+      platform : params.platform,
       buyIn: params.buyIn,
-      time: params.time,
-      group: params.group,
       players : params.players,
-      optionalPlayers : params.optionalPlayers,
       PlayersPerGroup : params.PlayersPerGroup,
+      optionalPlayers : params.optionalPlayers,
+      winner: params.winner,
+      time: params.time,
+      timeOptions: params.timeOptions,
+      host: params.host,
+      privacy: params.privacy,
+      maxPlayers: params.maxPlayers,
+      gameGroups: params.gameGroups,
+      group: params.group,
       gameGroups : params.gameGroups,
       
     });
     console.log('game before saving:', game)
     // req params validation for required fields
-    req.checkBody('gameType', 'gameType must be defined').notEmpty();
-    req.checkBody('platformType', 'platformType must be defined').notEmpty();
-    req.checkBody('host', 'host must be defined').notEmpty();
+    // req.checkBody('gameType', 'gameType must be defined').notEmpty();
+    req.checkBody('platform', 'platform must be defined').notEmpty();
+    // req.checkBody('host', 'host must be defined').notEmpty();
 
     // validate user input
     var errors = req.validationErrors();

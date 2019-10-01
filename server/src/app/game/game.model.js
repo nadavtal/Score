@@ -30,54 +30,90 @@
   var gameSchema = new Schema({
     name: {
       type: String,
-      
+      default: 'Game'
       
     },
     gameType: {
       type: String,
-      required: true,
-     
+      // required: true,
+      default: '1V1'
     },
-    platformType: {
+    platform: {
       type: String,
       required: true,
      
     },
 
-    buyIn: Number,
-    players: [{
-      userName: String,
-      userId: ObjectId
-      
-    }],
-    PlayersPerGroup: Number,
-    optionalPlayers: [{
-      userName: String,
-      userId: ObjectId
-      
-    }],
+    buyIn: {
+      type: Number,
+      default: 0,
+     
+    },
+    players: {
+      type: [{
+        userName: String,
+        userId: ObjectId
+        
+      }],
+      default: [],
+     
+    },
+    PlayersPerGroup: {
+      type: Number,
+      default: 1,
+     
+    },
+    optionalPlayers: {
+      type: [{
+        userName: String,
+        userId: ObjectId
+        
+      }],
+      default: [],
+     
+    },
     winner: {
-      userName: String,
-      userId: ObjectId
-      
+      type: {
+        userName: String,
+        userId: ObjectId
+        
+      },
+      default: {},
+     
     },
     time: {
       type: Date,
+      default: Date.now()
     },
 
-    timeOptions: [timeOptionSchema],
-
+    timeOptions: {
+      type: [timeOptionSchema],
+      default: {}
+    },
     host: {
       type: String,
-      required: true,
+      // required: true,
     },
-    
-    gameGroups: [{
+    privacy: {
+      type: String,
+      default: 'public'
+    },
+    maxPlayers: {
+      type: Number,
+      default: 2
+    },
+    gameGroups: {
+      type: [{
       groupNumber: Number,
       groupMembers: [{
         userName: String}],
-    }],  
-    group: ObjectId,
+      }],  
+      default: []
+    },
+    group: {
+      type: ObjectId,
+      default: null
+    },
     createdAt: {
       type: Date,
       default: Date.now

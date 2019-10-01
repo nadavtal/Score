@@ -51,7 +51,7 @@
 
         });
     }
-    // removeCollection('platforms');
+    // removeCollection('games');
     // removeCollection('uploads');
     // removeCollection('uploads.files');
   });

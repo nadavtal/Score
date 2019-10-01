@@ -30,7 +30,7 @@
      * intercept every request call
      */
     function request(config) {
-
+      // console.log('HEREEEEEEEEEE')
       config.headers = config.headers || {};
 
       var storage = $injector.get('localStorage');

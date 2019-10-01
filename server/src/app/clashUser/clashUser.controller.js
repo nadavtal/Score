@@ -145,7 +145,7 @@
               
             
             var battles = JSON.parse(body);
-            // console.log(battles);
+            console.log(battles);
             var battlesLeangth = user.battles.length;
             for(let battle of battles){
               var exists = checkIfBattleExists(user, battle.battleTime);

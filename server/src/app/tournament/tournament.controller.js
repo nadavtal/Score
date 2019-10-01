@@ -150,7 +150,7 @@
 
     var options = {
         page: page,
-        limit: limit,
+        limit: 50,
         lean: true
     };
 
@@ -316,7 +316,7 @@
 
   function getTournamentsManagedByUserName(req,res,next){
     console.log('getting tournaments managed by userName:', req.params.userName);
-    
+    console.log('QUERYYYYYY', req.query)
     var params = req.params;
     if(req.query.time){
       Tournament.find({$and : [{ 'manager': params.userName }, {'time' : { $gt :  req.query.time}}]})
