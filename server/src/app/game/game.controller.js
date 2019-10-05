@@ -44,7 +44,7 @@
       platform : params.platform,
       buyIn: params.buyIn,
       players : params.players,
-      PlayersPerGroup : params.PlayersPerGroup,
+      playersPerGroup : params.PlayersPerGroup,
       optionalPlayers : params.optionalPlayers,
       winner: params.winner,
       time: params.time,
@@ -275,7 +275,7 @@
           'updatedAt': bodyParams.updatedAt,
           'winner': bodyParams.winner,
           'buyIn': bodyParams.buyIn,
-          'PlayersPerGroup': bodyParams.PlayersPerGroup,
+          'playersPerGroup': bodyParams.playersPerGroup,
           'gameGroups': bodyParams.gameGroups
 
          

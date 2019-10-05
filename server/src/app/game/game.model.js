@@ -58,7 +58,7 @@
       default: [],
      
     },
-    PlayersPerGroup: {
+    playersPerGroup: {
       type: Number,
       default: 1,
      

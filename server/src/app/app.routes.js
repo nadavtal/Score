@@ -190,6 +190,7 @@
   router.post('/groups', groupsCtrl.createGroup); // create new Group
   router.get('/groups/', groupsCtrl.getAllGroups); // get all games
   router.get('/groups/:groupId', groupsCtrl.getGroup); // get group
+  router.post('/groups/:groupId', groupsCtrl.removeGroup); // get group
   router.put('/groups/:groupId', groupsCtrl.updateGroup); // update group
   // router.put('/groups/user/managed/:userId', groupsCtrl.getGroupsManagedByUserId); // update group
 

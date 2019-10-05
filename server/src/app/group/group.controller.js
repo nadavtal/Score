@@ -23,7 +23,7 @@
     getAllGroups,
     getGroupsByUserId,
     getGroup,
-    // getUser,
+    removeGroup,
     updateGroup,
     getGroupsManagedByUserId,
     
@@ -80,8 +80,8 @@
   }
 
   /**
-   * Create new user
-   * POST '/users'
+   * Create new group
+   * POST '/groups'
    */
   function createGroup(req, res, next) {
     var params = req.body;
@@ -89,10 +89,11 @@
     var group = new Group({
       groupName: params.groupName,
       groupManager: params.groupManager,
-      members: params.members
+      members: params.members,
+      mainPlatform: params.platform,
       
     });
-    console.log(group)
+    console.log('GROUPPPPPP', group)
     // req params validation for required fields
     req.checkBody('groupName', 'groupname must be defined').notEmpty();
     req.checkBody('groupManager', 'groupmanager must be defined').notEmpty();
@@ -111,6 +112,28 @@
 
       utils.sendJSONresponse(res, 201, newGroup);
     });
+  }
+  /**
+   * Create new user
+   * POST '/users'
+   */
+  function removeGroup(req, res, next){
+    // console.log('removing game')
+    var params = req.params;
+    console.log('removing group',params.groupId)
+    Group
+      .deleteOne({ _id: params.groupId }, function(err, group) {
+      //do something smart
+      console.log(group)
+      if (err) return next(err);
+      if (!group) return next({
+        message: 'group not found.',
+        status: 404
+      });
+
+      utils.sendJSONresponse(res, 200, group);
+  });
+    
   }
 
   /**
