@@ -1,0 +1,16 @@
+.actionIconWrapper{
+    transition: .3s all;
+    width: 2rem;
+    height: 1rem;
+    position: relative;
+    font-size: 1.5rem;
+    transform: rotate(0)
+}
+
+.actionIcon{
+    transition: .3s all;
+}
+
+.rotate{
+    transform: rotate(180deg)
+}

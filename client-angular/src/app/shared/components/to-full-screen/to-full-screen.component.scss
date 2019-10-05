@@ -1,0 +1,66 @@
+
+@import '../../../../assets/sass/partials/variables';
+@import '../../../../assets/sass/partials/colors';
+.wrapper{
+    transition: all .3s;
+    transform-origin: bottom;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10000;
+}
+
+.wrapperClosed{
+    right: 0.3rem;
+    bottom: 4rem;
+    left: auto;
+    top: auto;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+}
+
+.wrapperClosedCorner{
+    bottom: 3.3rem
+}
+
+.messageForm{
+    position: fixed;
+    bottom: 1rem;
+    width: 95%;
+    
+}
+
+.wrapperToggelButton{
+    position: relative;
+    // left: 0.5rem;
+    // top: 0.6rem;
+    z-index: 10001;
+    background-color: transparent;
+    border: none;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+}
+
+.actionIconWrapper{
+    position: relative;
+    border: none;   
+    background-color: transparent;
+    
+}
+
+.wrapperButtonRight{
+    position: absolute;
+    right: 0.5rem;
+    top: 0.6rem;
+    z-index: 10001;
+    background-color: transparent;
+    border: none;
+}
+
+.content{
+    padding-top: 3rem;
+}

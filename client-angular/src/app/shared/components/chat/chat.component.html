@@ -1,0 +1,61 @@
+
+<div class="row">
+    <div class="col-4 white">
+        <div class="chatSection">
+            <h4>
+                <fa class="white icon-download" name="user" animation=""></fa>
+                Friends
+            </h4>
+            <div *ngFor="let friend of currentUser.friends" 
+                [ngClass]="selectedUser && selectedUser.userName == friend.userName? 'active' : ''"
+                (click)="chatWith(friend)">
+                {{friend.userName}}
+            </div>
+        </div>
+        
+        <br>
+        <div class="chatSection">
+            <h4>
+                <fa class="white icon-download" name="group" animation=""></fa>                    
+                Groups</h4>
+            <div *ngFor="let grp of groups" [ngClass]="selectedGroup && selectedGroup.groupName == grp.groupName? 'active' : ''" 
+                    (click)="chatWithGroup(grp)">{{grp.groupName}}
+            </div>
+        </div>
+        
+    </div>
+    <div class="col-8">
+        <!-- <div class="black">{{user.userName}}</div> -->
+        
+        
+            
+            
+        <div class="messagesWrapper bg-white">
+            <div *ngFor="let message of messages">
+                <div class="chatLineWrapper" ng-if="showLines">
+                    <div class="chatLine"  (ngClass)="message.sender.userId != currentUser._id ? 'text-right' : ''">
+                        <div class="chatLine--userName" (ngClass)="message.sender.userId != currentUser._id ? 'blue' : 'green'">
+                            {{message.sender.userName}}
+                        </div>
+                        <div class="chatLine--content bg-black-faded white">{{message.content}}</div>
+                    </div> 
+                </div>
+                
+            </div>
+        </div>
+        
+        <br>
+            
+        
+    </div>
+</div>
+<div class="{{statusColor}}">{{status}}</div>
+<div class="messageForm d-flex white">
+    
+    <input (change)="sendTypingStatus()" class="chatInput black" ng-model="message" placeholder="Enter message..."/>
+    <fa class="white icon-download" class="chatSend" name="send" animation="" (click)="sendMessage(message)"></fa>    
+    
+    <!-- <div  class="customButton">Send</div> -->
+
+</div>
+

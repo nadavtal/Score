@@ -1,0 +1,99 @@
+<div class="messageRow">
+        
+    <div class="row messageRow__main" 
+         ngClass="message.status == 'unread' ? 'unread' : read">
+         
+        <div class="col-3 messageRow--coloumn" (click)="messageClicked($event, message, 'inbox')">
+            <div class="pl-1" *ngIf="box === 'inbox'">
+                {{message.sender.userName}}
+            </div>
+            <div class="" *ngIf="box == 'outbox'">
+                {{message.receiver.userName}}
+            </div>
+            <div class="messageRow__main--small" *ngIf="message.links && message.links.groupName">({{message.links.groupName}})</div>
+        </div>
+        <div class="col-6 messageRow--coloumn" (click)="messageClicked($event, message, 'inbox')">
+            {{message.subject}}
+            <span *ngIf="message.messageType == 'replyMessage'">(reply)</span>
+        </div>
+        <div  class="col-3">
+            <div class="messageRow__main--date">
+                {{message.sentdAt | date:'dd-MM-yy H:mm'}}
+            </div>
+            <div class="messageRow--actions d-flex between">
+                <fa class="pull-right" name="reply" animation="" (click)="openReplyForm($event)"></fa>
+                <fa class="pull-right" name="forward" animation=""></fa>
+               
+            </div>
+        </div>
+        
+    </div>
+    
+    <div class="messageRow__content full-width d-flex between" *ngIf="showMessageContent">
+        
+        <div class="messageRow__content__main">
+            <div class="messageRow__content__main--text">
+                {{message.content}}
+            </div>
+            <div class="messageRow__content__main--actions d-flex arround" *ngIf="message.messageType =='gameInvite'"> 
+                <button class="customButton bg-green white" (click)="linkTo()">View game</button>
+                <button class="customButton bg-red white">No thanks</button>
+            </div>
+
+        </div>
+
+        
+        <div class="messageRow--actions">
+            <fa class="pull-right" name="reply" animation="" (click)="openReplyForm($event)"></fa>
+            <fa class="pull-right" name="menu" animation=""></fa>
+           
+        </div>
+        
+    </div>
+    <div class="messageRow__replies" *ngIf="showMessageContent">
+            <div class="messageRow__replies__reply" *ngFor="let reply of message.replies" >
+                <div *ngIf="reply.parentMessageId == message._id">
+                    <div class="messageRow__replies__reply--userName" >
+                            To: {{reply.receiver.userName}}
+                            
+                    </div>
+                    <div class="messageRow__replies__reply--content">
+                        
+                        {{reply.content}}
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    <form #replyForm class="messageRow__replyForm d-flex" *ngIf="showReplyForm">
+        <mat-form-field class="example-full-width">
+            <input matInput 
+            placeholder="Content" 
+            type="textarea"
+            id="messageReply"
+            [(ngModel)]="message.reply"
+            name="messageReply"
+            
+            required
+            #messageReply="ngModel">
+            <mat-error *ngIf="messageReply.errors && (!messageReply.valid && messageReply.touched)">
+                <span class="" *ngIf="messageReply.errors['required']">tournament groupName is required</span>
+               
+            </mat-error>
+        </mat-form-field>
+       
+        <div class="buttons">
+            <button class="textIconButton" type="submit"
+                ng-disabled="messageForm.$invalid">
+                <fa class="backToHomePageButton green pull-right" name="save" animation=""></fa>
+                   
+            </button>
+            <button class="textIconButton " >
+                <fa class="backToHomePageButton green pull-right" name="send" animation=""  (click)="reply(message, message.reply)"></fa>
+                
+            </button>
+
+        </div>
+    </form>
+
+</div>

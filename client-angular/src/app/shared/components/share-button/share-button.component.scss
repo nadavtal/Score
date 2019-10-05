@@ -1,0 +1,509 @@
+.share-wrapper, 
+.share-action {
+  width: 32px;
+  height: 32px;
+}
+
+.share-wrapper {
+  font: 14px, 'FontAwesome';
+  position: relative;
+  text-align: center; 
+}
+
+
+.share-container {
+  margin-left: 0px;
+  margin-top:  0px;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(.05,.93,.61,1.6);
+  box-shadow: 0px 0px 20px -5px rgba(0, 0, 0, 0.5);
+  width: 0px;
+  height: 0px;
+  background: #fff;
+}
+
+
+.share-action:hover ~ .share-container,
+.share-container:hover {
+  width: 100px;
+  height: 100px;
+
+  overflow: visible;
+}
+
+
+
+.share-container:after,
+.share-container:before {
+  position: absolute;
+  background:  linear-gradient(rgba(136, 221, 255, 0.5) 0%, rgba(34, 153, 221, 0.5) 50%, rgba(136, 221, 255, 0.5) 100%);
+  z-index:4;
+  margin: 0;
+  transition: all 0.5s ease-in-out;
+  content: '';
+}
+
+.share-container:before {
+  background:  linear-gradient(to left, rgba(136, 221, 255, 0.5) 0%, rgba(34, 153, 221, 0.5) 50%, rgba(136, 221, 255, 0.5) 100%);
+  height: 1px;
+  margin: 50% 50%;
+  width: 0%;
+}
+
+.share-action:hover ~ .share-container:before,
+.share-container:hover:before {
+  width: 85%;
+  left: 0px;
+  margin: 50% 7%;
+}
+
+
+.share-container:after {
+  left: -1px;
+  height: 0%;
+  width: 1px;
+  margin: 50% 50%;
+}
+
+.share-action:hover ~ .share-container:after,
+.share-container:hover:after {
+  height: 85%;
+  margin: 7% 50%;
+}
+
+.share-action {
+  display: inline-block;
+  vertical-align: middle;
+  z-index: 5;
+  position: relative;
+  background: linear-gradient(#8df 0%, #29d 100%);
+  box-shadow: 0 1px 5px rgba(255, 255, 255, 0.5) inset, 0 0 0px 1px rgba(33, 112, 178, 0.5);
+  line-height: 33px;
+  color: #fff;
+}
+
+.share-btn {
+  display:inline-block;
+  width: 49%;
+  height: 49%;
+  position: absolute;
+  z-indez:1;
+  border-color: #92888f;
+  border-style: solid;
+  border-width: 0;
+  font-size: 0px;
+  color: #777777;
+  overflow: hidden;
+}
+
+.share-action:hover ~ .share-container .share-btn ,
+.share-container:hover .share-btn  {
+  overflow: visible;
+  font-size: 25px;
+}
+
+.share-btn:hover {
+  background:linear-gradient(#8df 0%, #29d 100%);
+  color: #ffffff;
+  text-shadow: 0 -1px #4298e0;
+}
+
+.share-btn.tl {
+  right: 50%;
+  bottom: 50%;
+  
+}
+.share-btn.tr {
+  left: 50%;
+  bottom: 50%;
+  
+}
+.share-btn.br {
+  left: 50%;
+  top: 50%;
+  
+}
+.share-btn.bl {
+  right: 50%;
+  top: 50%;
+  
+}
+
+.share-btn {
+  line-height: 50px;
+}
+
+.rc50 {
+  border-radius: 50%;
+}
+.rc50 .share-btn.tl {
+  border-top-left-radius: 100%;
+}
+.rc50 .share-btn.tr {
+  border-top-right-radius: 100%;
+}
+.rc50 .share-btn.br {
+  border-bottom-right-radius: 100%;
+}
+.rc50 .share-btn.bl {
+  border-bottom-left-radius: 100%;
+}
+
+.rc50.share-container .share-btn.tl {
+  text-indent: 5px;
+  line-height: 55px;
+}
+.rc50.share-container .share-btn.tr {
+  line-height: 50px;
+}
+.rc50.share-container .share-btn.br {
+  line-height: 46px;
+  text-indent: -2px;
+}
+.rc50.share-container .share-btn.bl {
+  text-indent: 2px;
+  line-height: 47px;
+}
+
+
+.rc10 {
+  border-radius: 10%;
+}
+.below .share-btn.tl,
+.rc10 .share-btn.tl {
+  line-height: 50px;
+}
+.below .share-btn.tr,
+.rc10 .share-btn.tr {
+  line-height: 45px;
+  text-indent: 3px;
+}
+
+.below .share-btn.br,
+.rc10 .share-btn.br {
+  line-height: 50px;
+}
+
+.below .share-btn.bl,
+.rc10 .share-btn.bl {
+  text-indent: -2px;
+  line-height: 55px;
+}
+.rc10 .share-btn.tl {
+  border-top-left-radius: 20%;
+}
+.rc10 .share-btn.tr {
+  border-top-right-radius: 20%;
+}
+
+.rc10 .share-btn.br {
+  border-bottom-right-radius: 20%;
+}
+
+.rc10 .share-btn.bl {
+  border-bottom-left-radius: 20%;
+}
+
+/** positions **/
+
+.below.share-wrapper {
+  margin: 50% auto;
+  top: -16px;
+}
+.bottom.share-wrapper {
+  margin: 25% auto 0;
+}
+.top.share-wrapper {
+  margin: 65% auto 0;
+}
+.left.share-wrapper {
+  margin: 50% 0 0 65%;
+  top: -16px;
+}
+.right.share-wrapper {
+  margin: 50% 0 0 25%;
+  top: -16px;
+}
+
+.below .share-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+
+.bottom .share-container,
+.top .share-container {
+  position: absolute;
+  top: 0%;
+  left: 0%;
+}
+
+.left .share-container,
+.right .share-container {
+  position: absolute;
+  top: 0%;
+  right: 50%;
+}
+
+.bottom .share-action:hover ~ .share-container .share-btn:nth-child(1):after,
+.bottom .share-container:hover .share-btn:nth-child(1):after {
+  content: '';
+  border: 11px solid transparent;
+  border-bottom-color: #fff;
+  border-top: none;
+  width: 0;
+  height: 0;
+  position: absolute;
+  left: 100%;
+  margin-left: -11px;
+  margin-top: -11px;
+}
+
+.top .share-action:hover ~ .share-container .share-btn:nth-child(4):after,
+.top .share-container:hover .share-btn:nth-child(4):after {
+  content: '';
+  border: 11px solid transparent;
+  border-top-color: #fff;
+  border-bottom: none;
+  width: 0;
+  height: 0;
+  position: absolute;
+  left: 100%;
+  top: 100%;
+  margin-left: -11px;
+}
+
+.left .share-action:hover ~ .share-container .share-btn:nth-child(2):after,
+.left .share-container:hover .share-btn:nth-child(2):after {
+  content: '';
+  border: 11px solid transparent;
+  border-left-color: #fff;
+  border-right: none;
+  width: 0;
+  height: 0;
+  position: absolute;
+  left: 100%;
+  top: 100%;
+  margin-top: -11px;
+}
+
+.right .share-action:hover ~ .share-container .share-btn:nth-child(1):after,
+.right .share-container:hover .share-btn:nth-child(1):after {
+  content: '';
+  border: 11px solid transparent;
+  border-right-color: #fff;
+  border-left: none;
+  width: 0;
+  height: 0;
+  position: absolute;
+  right: 100%;
+  top: 100%;
+  margin-top: -11px;
+}
+
+.left .share-action:hover:after,
+.right .share-action:hover:after, 
+.bottom .share-action:hover:after,
+.top .share-action:hover:after {
+  position: absolute;
+  content: '';
+  z-index: 1;  
+}
+
+.bottom .share-action:hover:after,
+.top .share-action:hover:after {
+  width: 200%;
+  height: 20px;
+  left: -50%; 
+  top: 100%;
+}
+
+.top .share-action:hover:after {
+  top: auto;
+  bottom: 100%;
+  left: -50%;    
+}
+
+.left .share-action:hover:after {
+  left: auto;
+  width: 20px;
+  height: 200%;  
+  top: -50%; 
+  right: 100%;
+}
+.right .share-action:hover:after {
+  top: -50%; 
+  left: 100%;
+  width: 20px;
+  height: 200%;  
+}
+
+.below .share-container,
+.top .share-container,
+.right .share-container,
+.bottom .share-container {
+  top : 0%;
+  left: 50%;
+}
+.left .share-container {
+  top : 0%;
+  right: 50%;
+}
+
+.below .share-action:hover ~ .share-container,
+.below .share-container:hover {
+  top: -100%;
+  left: -100%;
+}
+
+.bottom .share-action:hover ~ .share-container,
+.bottom .share-container:hover {
+  margin-left: 0px;
+  left: -100%;
+  top: 50px;
+}
+.top .share-action:hover ~ .share-container,
+.top .share-container:hover {
+  margin-left: 0px;
+  left: -100%;
+  top: -120px;
+}
+.left .share-action:hover ~ .share-container,
+.left .share-container:hover {
+  margin-right: 20px;
+  right: 100%;
+  top: -100%;
+}
+
+.right .share-action:hover ~ .share-container,
+.right .share-container:hover {
+  margin-left: 20px;
+  left: 100%;
+  top: -100%;
+}
+
+.bottom .rc10 .share-btn {
+  text-indent: 0;
+  line-height: 50px;   
+}
+.bottom .share-container .share-btn.tl {
+  line-height: 55px;   
+}
+
+
+/*  Font Awesome
+    the iconic font designed for use with Twitter Bootstrap
+    -------------------------------------------------------
+    The full suite of pictographic icons, examples, and documentation
+    can be found at: https://fortawesome.github.com/Font-Awesome/
+
+    License
+    -------------------------------------------------------
+    The Font Awesome webfont, CSS, and LESS files are licensed bottom CC BY 3.0:
+    http://creativecommons.org/licenses/by/3.0/ A mention of
+    'Font Awesome - https://fortawesome.github.com/Font-Awesome' in human-readable
+    source code is considered acceptable attribution (most common on the web).
+    If human readable source code is not available to the end user, a mention in
+    an 'About' or 'Credits' screen is considered acceptable (most common in desktop
+    or mobile software).
+
+    Contact
+    -------------------------------------------------------
+    Email: dave@davegandy.com
+    Twitter: https://twitter.com/fortaweso_me
+    Work: http://lemonwi.se co-fobottom
+
+    */
+@font-face{
+    font-family:FontAwesome;
+    src:url(https://netdna.bootstrapcdn.com/font-awesome/2.0/font//fontawesome-webfont.eot?#iefix) format('eot'),
+    url(https://netdna.bootstrapcdn.com/font-awesome/2.0/font//fontawesome-webfont.woff) format('woff'),
+    url(https://netdna.bootstrapcdn.com/font-awesome/2.0/font//fontawesome-webfont.ttf) format('truetype'),
+    url(https://netdna.bootstrapcdn.com/font-awesome/2.0/font//fontawesome-webfont.svg#FontAwesome) format('svg');
+    font-weight:400;font-style:normal;}
+
+
+/*  Font Awesome styles
+    ------------------------------------------------------- */
+[class^="icon-"]:before, [class*=" icon-"]:before {
+  font-family: FontAwesome;
+  font-weight: normal;
+  font-style: normal;
+  display: inline-block;
+  text-decoration: inherit;
+}
+a [class^="icon-"], a [class*=" icon-"] {
+  display: inline-block;
+  text-decoration: inherit;
+}
+/* makes the font 33% larger relative to the icon container */
+.icon-large:before {
+  vertical-align: top;
+  font-size: 1.3333333333333333em;
+}
+.btn [class^="icon-"], .btn [class*=" icon-"] {
+  /* keeps button heights with and without icons the same */
+
+  line-height: .9em;
+}
+li [class^="icon-"], li [class*=" icon-"] {
+  display: inline-block;
+  width: 1.25em;
+  text-align: center;
+}
+li .icon-large[class^="icon-"], li .icon-large[class*=" icon-"] {
+  /* 1.5 increased font size for icon-large * 1.25 width */
+
+  width: 1.875em;
+}
+li[class^="icon-"], li[class*=" icon-"] {
+  margin-left: 0;
+  list-style-type: none;
+}
+li[class^="icon-"]:before, li[class*=" icon-"]:before {
+  text-indent: -2em;
+  text-align: center;
+}
+li[class^="icon-"].icon-large:before, li[class*=" icon-"].icon-large:before {
+  text-indent: -1.3333333333333333em;
+}
+/*  Font Awesome uses the Unicode Private Use Area (PUA) to ensure screen
+    readers do not read off random characters that represent icons */
+// .icon-facebook:before             { content: "\f09a"; }
+// .icon-twitter:before              { content: "\f099"; }
+// .icon-pinterest:before            { content: "\f0d2"; }
+// .icon-google-plus:before          { content: "\f0d5"; }
+// .icon-whatsapp:before             { content: "\f232"; }
+
+.icon-share:before                { content: "\f045"; }
+
+/* global */
+
+
+
+// h1 {
+//   text-align: center;
+//   color: #56a6e4;
+//   font-size: 2em;
+//   font-weight: bold;
+//   padding: 5px;
+//   text-transform: uppercase;
+// }
+// a {
+//   text-decoration: none;
+// }
+
+
+
+.cell {
+  float: left;
+  width: 200px;
+  height: 200px;
+  position: relative;
+}
+
+
+.debug .share-container {
+  width: 100px;
+  height: 100px;
+}

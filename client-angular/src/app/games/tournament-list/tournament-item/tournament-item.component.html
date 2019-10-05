@@ -1,0 +1,54 @@
+<div class="tournamentBlock text-center" 
+    [ngClass]="registered? 'registered' : ''">
+    
+        
+        <div class="" 
+            [routerLink]="['/', 'tournaments', tournament._id]">
+            <img class="tournamentBlock--image" src="../../assets/img/platforms/{{tournament.platform}}.png" alt="">
+
+        </div>
+        <div  class="tournamentBlock__details"
+          [routerLink]="['/', 'tournaments', tournament._id]">
+            <div class="tournamentBlock--name">{{tournament.name}}</div>
+        </div>
+        <div  class=""
+            [routerLink]="['/', 'tournaments', tournament._id]">
+            <div class="tournamentBlock--prizePool">
+                    {{tournament.prizePool}}
+                </div>
+        </div>
+        <div  class=""
+            [routerLink]="['/', 'tournaments', tournament._id]">
+            <div class="tournamentBlock--numMembers">
+                {{tournament.registered.length}}/{{tournament.maxPlayers}}
+            </div>
+        </div>
+        <div >
+            <div class="tournamentBlock--date">
+                {{tournament.time | date:'dd-MM-yy H:mm'}}
+
+            </div>
+            <div class="tournamentBlock__buttons">
+                <div class="tournamentBlock__buttons--button">
+                    <app-flipping-button
+                    [condition]="!tournament.isRegistered"
+                    [actionOneName]="'Join'"
+                    [actionTwoName]="'Leave'"
+                    (action)="fllipingButtonClicked($event)"   
+                    ></app-flipping-button>
+
+                </div>
+                
+            </div>
+        </div>
+        
+    
+    <!-- <md-progress-linear class="md-warn" md-mode="buffer" value="{{determinateValue}}"
+                md-buffer-value="{{determinateValue2}}"
+            ng-disabled="!showList[0]">
+    </md-progress-linear>
+    <div class="meterContainer">
+        <md-progress-linear md-mode="indeterminate" ng-if="loading"></md-progress-linear>
+
+    </div> -->
+</div>

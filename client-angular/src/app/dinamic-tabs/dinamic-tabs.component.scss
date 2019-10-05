@@ -1,0 +1,177 @@
+@import '../../assets/sass/partials/variables';
+@import '../../assets/sass/partials/colors';
+@import '../../assets/sass/partials/helpers';
+
+
+.mainCubeMenu{
+	transition: .3s all;
+	width: 100vw;
+	position: fixed;
+	top: 0;
+	z-index: 50;
+	z-index: 50;
+    background-color: white;
+
+}
+
+.homepageCubes{
+	top: 34vh;
+}
+
+.cubeMenuTabs{
+	transition: .3s all;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 10000
+}
+.cubeMenuItem{
+	
+	
+	// border: 1px solid black;
+	transition: all .3s;
+
+	&--bg{
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%
+	}
+
+	&--cube{
+		position: relative !important;
+		float: left !important;
+		width: 50vw !important;
+		height: 33vh !important;
+		box-sizing: border-box;
+
+	}
+
+	&--active{
+		float: none;
+		width: 100vw;
+		height: 100vh;
+		z-index: 100;
+	}
+
+	&--tab{
+		position: relative;
+		// top: 0;
+		transition: .3s all;
+		height: 4rem;
+		float: left;
+		z-index: 1000;
+		opacity: .3;
+	}
+
+	&--messagesNumber{
+		position: absolute;
+		top: 5%;
+		right: 5%;
+	}
+	
+	
+	
+
+	
+
+	&--icon{
+		width: 5rem;
+		height: 5rem;
+		color: white
+	}
+
+	&--iconSmall{
+		width: 3rem;
+		height: 3rem;
+		color: white
+	}
+
+
+}
+.lineBreak{
+	transition: .1s linear all;
+	// transform-origin: center;
+    position: absolute;
+    height: .2rem;
+    top: 4rem;
+	visibility: hidden;
+	
+	
+	
+}
+
+.lineOpen{
+	width: 200vw !important;
+	left: -100vw !important;
+}
+
+.visible{
+	visibility: visible
+}
+
+.width2{
+	width: 50%
+}
+.width3{
+	width: 33.33%
+}
+.width4{
+	width: 25%
+}
+.width6{
+	width: 16.6%
+}
+
+.left0_6{
+	left:0
+}
+.left1_6{
+	left:16.66vw;
+}
+.left2_6{
+	left:33.32vw;
+}
+.left3_6{
+	left:49.98vw;
+}
+.left4_6{
+	left:66.64vw;
+}
+.left5_6{
+	left:83.3vw;
+}
+
+.left0_4{
+	left:0
+}
+.left1_4{
+	left:25vw;
+}
+.left2_4{
+	left:50vw;
+}
+.left3_4{
+	left:75vw;
+}
+
+.left0_3{
+	left:0
+}
+.left1_3{
+	left:33.33vw;
+}
+.left2_3{
+	left:66.66vw;
+}
+.left0_2{
+	left:0;
+}
+.left1_2{
+	left:50vw;
+}
+
+.active div{
+	opacity: 1;
+}

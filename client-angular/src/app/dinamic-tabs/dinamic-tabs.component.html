@@ -1,0 +1,80 @@
+<div class="mainCubeMenu"
+    [class.homepageCubes]="path == 'home' && !showMenuTab">
+    <div *ngIf="routeMode"  @tabsAnimation>
+        <div
+            *ngFor="let tab of tabs; let i = index"
+            (click)="changeActiveTab(tab.name, tab.color, i)"
+            routerLink= "./{{tab.name}}"
+            routerLinkActive="active"
+            [ngClass]="activeTab == tab.name? 'pulse active' : ''" 
+            class="cubeMenuItemWrapper">
+            <div class="cubeMenuItem bg-{{tab.color}} white holder {{widthClass}}"
+                [ngClass]="!showMenuTab ? 'cubeMenuItem--cube pulse' : 'cubeMenuItem--tab'">
+                <div class="cubeMenuItem--title absCenter">
+                    <div class="absCenter">
+                        <div class="center" >
+                                <mat-icon aria-hidden="false" aria-label="Example home icon">{{tab.icon}}</mat-icon>
+                                <!-- <img class="white" src="../../assets/img/icons/{{tab.icon}}.svg" alt=""> -->
+                            <!-- <md-icon md-svg-src="assets/img/icons/profile.svg" [ngClass]="showMenuTab? 'cubeMenuItem--iconSmall' : 'cubeMenuItem--icon'"></md-icon> -->
+    
+                        </div>
+                        <div *ngIf="!showMenuTab" class="text-center">
+                            <!-- {{vm.user.userName | uppercase}} -->
+                                {{tab.name}}
+    
+                        </div>
+                    </div>
+                    
+                </div>
+                <!--<div class="lineBreak" #lineBreak 
+                [ngClass]="activeTab == tab.name? 'pulse lineOpen border-' + tab.color: ''">
+                </div> -->
+            </div>
+            
+        </div>
+    </div>
+    <div *ngIf="!routeMode">
+        <div 
+            *ngFor="let tab of tabs; let i = index"
+            (click)="changeActiveTab(tab.name, tab.color, i)"
+         
+            routerLinkActive="active"
+            [ngClass]="activeTab == tab.name? 'pulse active' : ''" 
+            class="cubeMenuItemWrapper">
+            <div class="cubeMenuItem bg-{{tab.color}} white holder {{widthClass}}"
+                [ngClass]="!showMenuTab ? 'cubeMenuItem--cube pulse' : 'cubeMenuItem--tab'">
+                <div class="cubeMenuItem--title absCenter">
+                    <div class="absCenter">
+                        <div class="center" >
+                                <mat-icon aria-hidden="false" aria-label="Example home icon">{{tab.icon}}</mat-icon>
+                                <!-- <img class="white" src="../../assets/img/icons/{{tab.icon}}.svg" alt=""> -->
+                            <!-- <md-icon md-svg-src="assets/img/icons/profile.svg" [ngClass]="showMenuTab? 'cubeMenuItem--iconSmall' : 'cubeMenuItem--icon'"></md-icon> -->
+    
+                        </div>
+                        <div *ngIf="!showMenuTab" class="text-center">
+                            <!-- {{vm.user.userName | uppercase}} -->
+                                {{tab.name}}
+    
+                        </div>
+                    </div>
+                    
+                </div>
+                <!--<div class="lineBreak" #lineBreak 
+                [ngClass]="activeTab == tab.name? 'pulse lineOpen border-' + tab.color: ''">
+                </div> -->
+            </div>
+            
+        </div>
+    </div>
+   
+    <div class="lineBreak {{widthClass}} {{lineClasses}}" #lineBreak 
+        [ngClass]="showMenuTab?  'visible' : ''">
+    </div>   
+</div>
+<app-tool-bar
+    [positionClass]="'stickyBottom'"
+    [triggerIconName]="'bars'"
+    [actions]="actions"
+    [toolBarColor] = "toolBarColor"
+    [color]="'white'">
+</app-tool-bar>

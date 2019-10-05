@@ -1,0 +1,40 @@
+#userForm{
+    position: absolute;
+    top: 0;
+}
+
+mat-form-field{
+    width: 100%;
+}
+
+.mat-grid-list {
+    display: block;
+    position: relative;
+    // height: 50rem;
+}
+
+.mat-grid-tile {
+    display: block;
+    position: absolute;
+    height: 100%;
+    overflow: hidden;
+}
+
+input.ng-invalid.ng-touched, select.ng-invalid.ng-touched{
+    border: 1px solid red;
+}
+
+.pageButtons{
+	transition: all .3s;
+	position: fixed;
+	bottom: 10vh;
+	right: 0;
+	width: 100vw;
+}
+
+.threeDButtonWrapper{
+    height: 1.5rem;
+    width: 6rem;
+    margin-top: .2rem;
+
+}

@@ -1,0 +1,141 @@
+@import './variables';
+.green{
+    color: $green !important;
+}
+
+.bg-green {
+    background-color: $green !important;
+
+    &-faded{
+        background-color: $green-faded
+    }
+}
+
+.border-green{
+    border: 2px solid $green
+}
+.purple{
+    color: $purple !important;
+}
+
+.bg-purple {
+    background-color: $purple !important;
+
+    &-faded{
+        background-color: $purple-faded
+    }
+}
+
+.border-purple{
+    border: 2px solid $purple
+}
+
+.white{
+    color: $white !important;
+}
+
+.bg-white {
+    background-color: $white !important;
+
+    
+}
+
+.border-white{
+    border: 2px solid $white
+}
+
+.blue{
+    color: $alert-blue !important;
+}
+
+.bg-blue {
+    background-color: $alert-blue !important;
+
+    &-faded{
+        background-color: $alert-blue-faded
+    }
+}
+
+.border-blue{
+    border: 2px solid $alert-blue
+}
+
+.black{
+    color: $black !important;
+}
+
+.bg-black {
+    background-color: $black !important;
+
+    &-faded{
+        background-color: $black-faded
+    }
+}
+
+.border-black{
+    border: 2px solid $black
+}
+.red{
+    color: $red !important;
+}
+
+.bg-red {
+    background-color: $red !important;
+
+    &-faded{
+        background-color: $red-faded;
+    }
+}
+
+.border-red{
+    border: 2px solid $red
+}
+
+.orange{
+    color: $orange !important;
+}
+
+.bg-orange {
+    background-color: $orange !important;
+
+    &-faded{
+        background-color: $orange-faded
+    }
+}
+
+.border-orange{
+    border: 2px solid $orange
+}
+
+.pink{
+    color: $pink !important;
+}
+
+.bg-pink {
+    background-color: $pink !important;
+
+    &-faded{
+        background-color: $pink-faded
+    }
+}
+
+.border-pink{
+    border: 2px solid $pink
+}
+
+.yellow{
+    color: $yellow !important;
+}
+
+.bg-yellow {
+    background-color: $yellow !important;
+
+    &-faded{
+        background-color: $yellow-faded
+    }
+}
+
+.border-yellow{
+    border: 2px solid $yellow
+}
+

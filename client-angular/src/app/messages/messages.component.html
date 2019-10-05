@@ -1,0 +1,35 @@
+<mat-tab-group mat-align-tabs="center" *ngIf="loaded">
+    <mat-tab label="Inbox" >
+        <div *ngFor="let message of inboxMessages">
+            <app-message
+                [box]="'inbox'"
+                [message]="message">
+            </app-message>
+        </div>
+        
+    </mat-tab>
+    <mat-tab label="Outbox">
+        <div *ngFor="let message of outboxMessages">
+            <app-message
+                [box]="'outbox'"
+                [message]="message">
+            </app-message>
+        </div>
+    </mat-tab>
+    <mat-tab label="Draft">
+       
+    </mat-tab>
+    <mat-tab>
+        <ng-template mat-tab-label>
+            <div class="tabsActions">
+                <app-icon-actions
+                    [actions]="actions"> 
+                
+                </app-icon-actions>
+
+            </div>
+        </ng-template>
+        
+    </mat-tab>
+</mat-tab-group>
+

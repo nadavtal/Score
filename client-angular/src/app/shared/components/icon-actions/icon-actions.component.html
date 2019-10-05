@@ -1,0 +1,6 @@
+<div class="iconActions" *ngIf="actions">
+    <div class="action actionIconWrapper pull-right" *ngFor="let action of actions"
+        (click)="actionClicked($event, action.name)">
+        <fa class="actionIcon {{action.color}} pull-right" name="{{action.icon}}" animation=""></fa>
+    </div>
+</div>

@@ -1,0 +1,71 @@
+.groupMembers{
+
+    display: block !important;
+    margin-top: 1rem;
+    
+    overflow: hidden;
+    width: 100%;
+    
+}
+
+.member{
+    display: flex;
+    justify-content: space-between;
+    margin-top: .3rem;
+    &--profileImg{
+        width: 2rem;
+    }
+}
+
+.members{
+    max-height: 48vh;
+    overflow: auto;
+}
+
+#groupForm{
+    // position: absolute;
+    // top: 0;
+}
+
+.mat-grid-list {
+    display: block;
+    position: relative;
+    
+}
+
+.mat-grid-tile {
+    display: block;
+    position: absolute;
+    height: 100%;
+    overflow: hidden;
+}
+
+input.ng-invalid.ng-touched, select.ng-invalid.ng-touched{
+    // border: 1px solid red;
+}
+
+.pageButtons{
+	transition: all .3s;
+	position: fixed;
+	bottom: 10vh;
+	right: 0;
+	width: 100vw;
+}
+
+
+
+mat-form-field{
+    width: 90%;
+}
+
+.threeDButtonWrapper{
+    height: 2rem;
+    width: 5rem;
+}
+
+.modalButton{
+    position: relative;
+    height: 2rem;
+    width: 3rem;
+}
+

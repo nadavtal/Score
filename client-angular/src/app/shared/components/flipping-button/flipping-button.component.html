@@ -1,0 +1,30 @@
+<div class="button-wrap">
+    <div class="trueSide" 
+        [class.is-active]="condition">
+        <div  class="button-wrap-download text-center" (click)=" ifTrue($event)">
+            <div class="button-wrap-download--text white">
+                {{actionOneName}}
+        
+            </div>
+            <span class="button-wrap__icon-wrap" *ngIf="showIcon == 'true'">
+                <!-- <div class='titanic titanic-checkbox'></div> -->
+                <i class="icon-download"></i>
+                <!-- <md-icon md-svg-src="assets/img/icons/addGroup.svg"></md-icon> -->
+            </span>
+        </div>
+    </div>
+    <div class="falseSide"
+        [class.is-active]="!condition">
+        <div  class="button-wrap-download text-center" (click)=" ifFalse($event)">
+            <div  class="button-wrap-download--text white">
+                {{actionTwoName}}
+            
+            </div>
+            <span class="button-wrap__icon-wrap" *ngIf="showIcon == 'true'">
+                <!-- <div class='titanic titanic-checkbox'></div> -->
+                <i class="icon-download"></i>
+                <!-- <md-icon md-svg-src="assets/img/icons/addGroup.svg"></md-icon> -->
+            </span>
+        </div>
+    </div>
+</div>

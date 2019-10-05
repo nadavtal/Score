@@ -1,0 +1,282 @@
+@import '../../../../assets/sass/partials/variables';
+@import '../../../../assets/sass/partials/colors';
+$battlesPerRouns: 8;
+$tournamentRoundHeader: 1.5rem;
+$fontSize: 1rem;
+
+$tournamentHeight: calc(100Vh - 7rem - #{$tournamentRoundHeader - $fontSize});
+$battleHeight: calc((#{$tournamentHeight} / #{$battlesPerRouns }) );
+.tournamentWrapper{
+    width: 100%;
+    // margin-top: 2rem;
+    // padding: 1rem;
+    // padding-top: 1rem;
+    // padding-bottom: 1rem;
+    // height: $tournamentHeight;
+    // overflow: hidden;
+    // max-height: $tournamentHeight;
+    // background-color: red;
+}
+.battleDirective{
+    // margin-top: 2rem;
+    position: relative;
+    // background-color: rgb(250, 245, 239);
+    // padding: .5rem;
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
+    border-top: 1px solid black;
+    // box-shadow: -10px 0px 13px -7px #000000, 10px 0px 13px -7px #000000, 5px 5px 3px 0px rgba(0,0,0,0);
+
+    &__user{
+        transition: all .3s;
+        width: 100%;
+        // height: $fontSize;
+        padding-left: .2rem;
+        // background-color: rgb(210, 232, 240);
+        // -webkit-box-shadow: -5px 0px 5px -7px #000000, 10px 0px 13px -7px #000000, 5px 5px 3px 0px rgba(0,0,0,0); 
+
+        &--name{
+            transition: all .3s;
+            font-size: 0.8rem;
+            
+        }
+
+        &--score{
+            font-size: 1rem;
+        }
+
+        
+    }
+
+    // &::before{
+    //     content: '';
+    //     position: absolute;
+    //     top: $fontSize/2;
+    //     // top: 0;
+    //     left: 0;
+    //     bottom: $fontSize/2;
+    //     bottom: 0;
+    //     right: 0;
+    //     border-right: 1px solid black;
+    //     border-bottom: 1px solid black;
+        // border-top: 1px solid black;
+    // }
+
+    
+}
+
+.battleDirective .winner{
+    background-color: $green-faded;
+}
+
+.battleDirective .loser{
+    background-color: $red-faded;
+}
+
+.user1{
+    position: absolute;
+    // top: calc(-#{$fontSize /2 });
+    
+    top: 0;
+}
+.user2{
+    position: absolute;
+    // bottom: calc(-#{$fontSize /2 });
+    bottom: -$fontSize/2;
+    bottom: 0;
+}
+
+
+.tournamentColoumn{
+    width: 20%;
+    float: left;
+
+    &--title{
+        // height: $tournamentRoundHeader;
+        font-size: .6rem;
+        text-align: center;
+    }
+}
+
+.tournamentPrizePool{
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.round0 .battleDirective{
+    // border: 1px solid blue;
+    height: #{$battleHeight};
+}
+
+.round1 .user1, .round2 .user1, .round3 .user1{
+    // top: -$fontSize/2;
+}
+.round1 .user2, .round2 .user2, .round3 .user2{
+    // bottom: -$fontSize/2;
+}
+
+.round1 .battleDirective{
+    // border: 1px solid red;
+    height: calc(#{$battleHeight});
+    margin-top: calc(#{$battleHeight}/2);
+    margin-bottom: #{$battleHeight};
+}
+
+.round2 .battleDirective{
+    // border: 1px solid orangered;
+    height: calc(#{$battleHeight} *2);
+    margin-top: calc(#{$battleHeight});
+    margin-bottom: calc(#{$battleHeight} *2);
+}
+
+.round3 .battleDirective{
+    // border: 1px solid rgb(61, 243, 167);
+    height: calc(#{$battleHeight} *4);
+    margin-top: calc(#{$battleHeight} * 2);
+    margin-bottom: calc(#{$battleHeight} *4);
+}
+
+.round4 .battleDirective{
+    // border: 1px solid rgb(61, 243, 167);
+    height: calc(#{$battleHeight} *8);
+    margin-top: calc(#{$battleHeight} * 4);
+    margin-bottom: calc(#{$battleHeight} *8);
+}
+
+.round5 .battleDirective{
+    // border: 1px solid rgb(61, 243, 167);
+    height: calc(#{$battleHeight} *4);
+    margin-top: calc(#{$battleHeight} * 2);
+    margin-bottom: calc(#{$battleHeight} *4);
+}
+
+
+
+.positionRow{
+    font-size: 75%;
+    padding-bottom: .3rem;
+    margin-bottom: .3rem;
+    border-bottom: 1px solid rgb(15, 19, 20);
+}
+
+.positionRow .ng-enter{
+    transition: .3s linear all;
+    transform: translateX(100vw);
+}
+
+.positionRow .ng-enter-active{
+    transform: translateX(0);
+}
+
+.positionRow input{
+    background-color: #fff;
+    border-radius: 3px;
+    border: 0;
+    box-shadow: none;
+    color: #5c6b80;
+    display: block;
+    font-family: "Open Sans", Helvetica, Arial, sans-serif;
+    font-size: inherit;
+    height: auto;
+    line-height: inherit;
+    margin-bottom: 0;
+    margin-right: .2rem;
+    padding: 0 12px;
+    border: 1px solid black;
+    width: 3rem;
+    -webkit-transition: background-color 0.24s ease-in-out;
+    transition: background-color 0.24s ease-in-out;
+}
+
+
+
+
+.object-to-animate {
+    -webkit-animation: move-the-object .5s 1;
+    -moz-animation:    move-the-object .5s 1;
+    -o-animation:      move-the-object .5s 1;
+    animation:         move-the-object .5s 1;
+  }
+
+  @-webkit-keyframes move-the-object {
+    0%   { left: 0; }
+    100% { left: 20vw; }
+  }
+  @-moz-keyframes move-the-object {
+    0%   { left: 100px; }
+    100% { left: 200px; }
+  }
+  @-o-keyframes move-the-object {
+    0%   { left: 100px; }
+    100% { left: 200px; }
+  }
+  @keyframes move-the-object {
+    0%   { left: 0; }
+    100% { left: 20vw; }
+  }
+
+  @mixin animation($animate...) {
+    $max: length($animate);
+    $animations: '';
+
+    @for $i from 1 through $max {
+        $animations: #{$animations + nth($animate, $i)};
+
+        @if $i < $max {
+            $animations: #{$animations + ", "};
+        }
+    }
+    -webkit-animation: $animations;
+    -moz-animation:    $animations;
+    -o-animation:      $animations;
+    animation:         $animations;
+}
+
+@mixin keyframes($animationName) {
+    @-webkit-keyframes #{$animationName} {
+        @content;
+    }
+    @-moz-keyframes #{$animationName} {
+        @content;
+    }
+    @-o-keyframes #{$animationName} {
+        @content;
+    }
+    @keyframes #{$animationName} {
+        @content;
+    }
+}
+
+@include keyframes(move-the-object-right) {
+    0%   { left: 0;
+        border: 1px solid black;
+            opacity: 1; }
+    100% { 
+        left: 20vw;
+        border: 1px solid black;
+        opacity: 1
+    
+    }
+}
+
+@include keyframes(move-in-right) {
+    0%   { left: 0;
+            opacity: 1; }
+    100% { 
+        left: 20vw;
+        transform: translateX(20vw);
+        opacity: 1
+    
+    }
+}
+
+
+
+
+.moveRight{
+    @include animation('move-the-object-right .5s 1');
+}
+.moveInRight{
+    @include animation('move-in-right .5s 1');
+}
+

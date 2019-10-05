@@ -1,0 +1,40 @@
+mat-form-field{
+    width: 95%;
+}
+.pageHeader{
+    margin-bottom: 1rem;
+}
+
+.modalButton{
+    position: relative;
+}
+
+
+.pageHeader div{
+    // width: 33.33%;
+    // height: 2rem
+}
+
+
+.threeDButtonWrapper{
+    height: 2rem !important;
+    width: 6rem;
+}
+
+.gameGroup{
+    background-color: black;
+    padding: 1rem 0;
+
+    &__players{
+
+        &--player{
+            margin: .3rem .3rem;
+            position: relative;
+            text-align: center;
+            background-color: white;
+            color: black;
+            height: 2rem;
+            padding: .2rem;
+        }
+    }
+}

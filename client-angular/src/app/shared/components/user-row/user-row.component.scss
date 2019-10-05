@@ -1,0 +1,8 @@
+.userRow{
+    display: flex;
+    justify-content: space-between;
+
+    &--image{
+        width: 2.5rem
+    }
+}

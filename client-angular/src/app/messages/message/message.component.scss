@@ -1,0 +1,84 @@
+.messageRow{
+    transition: .3 all;
+    border-bottom: 1px solid black;
+    font-size: 0.9rem;
+    
+    // padding: 0;
+
+    &__main{
+        border-bottom: 1px solid lightgrey;
+        padding: 0.2rem 0.5rem;
+        // min-height: 3rem;
+        height: auto;
+        
+
+        &--small{
+            font-size: .7rem;
+        }
+        &--date{
+            font-size: .7rem;
+            // width: 50%;
+        }
+
+        &__actions{
+            width: 50%;
+        }
+    }
+    &--actions{
+        font-size: 1.2rem;
+    }
+
+    &--coloumn{
+        border-right: 1px solid black;
+        min-height: 3rem;
+        height: auto;
+    }
+
+    &__content{
+        margin: 0;
+        transition: .3s all;
+        padding: .5rem 1.5rem;
+        height: auto;
+        // border-bottom: 1px solid black;
+        background-color: #e9204f17;
+
+        &__main{
+            
+            &--text{
+
+            }
+
+            &--actions{
+                
+            }
+        }
+
+        &--actions{
+            
+        }
+    }
+
+    &__replies{
+        
+
+        &__reply{
+            border-bottom: 1px solid lightpink;
+            padding: .5rem 1.5rem;
+        }
+    }
+
+    &__replyForm{
+        margin: 0;
+        transition: .3s all;
+        padding: .5rem 1.5rem;
+        height: auto;
+    }
+}
+
+.messageRow div{
+    padding-left: .3rem;
+}
+
+.unread {
+    font-weight: bold;
+}

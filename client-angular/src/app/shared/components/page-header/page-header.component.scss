@@ -1,0 +1,33 @@
+@import '../../../../assets/sass/partials/helpers';
+
+.page-header{
+    // height: 3rem;
+    padding-top: .5rem;
+}
+.page-header-title{
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+
+
+.page-header-actions{
+    direction: rtl;
+    font-size: 1.2rem;
+    margin-top: -.4rem;
+}
+
+.threeDButtonWrapper{
+    
+    width: 50%;
+    height: 1.8rem;
+}
+.iconActions{
+    height: 1.5rem;
+}
+
+.modalButton{
+    position: relative;
+    width: 50%;
+    height: 1.8rem;
+}

@@ -1,0 +1,11 @@
+
+
+
+<div class="btn" #button data-direction="top">
+    <div class="btn-back">
+      <p>{{message}}</p>
+      <span class="yes" (click)="mainFunction()">Yes</span>
+      <span class="no" (click)="cancelFunction()">No</span>
+    </div>
+    <div class="btn-front" (click)="frontClick($event)">{{actionName}}</div>
+</div>

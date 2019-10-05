@@ -1,0 +1,15 @@
+@import '../../../assets/sass/partials/variables';
+@import '../../../assets/sass/partials/colors';
+
+
+.friendRow{
+    height: 3rem;
+    position: relative;
+    margin-bottom: .5rem;
+}
+.rowActions{
+    width: 100%;
+    display: flex;
+    font-size: 1.5rem;
+    justify-content: space-around;
+}

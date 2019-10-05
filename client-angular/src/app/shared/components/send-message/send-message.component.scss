@@ -1,0 +1,48 @@
+.sendMessageWrapper{
+    transition: .3s all;
+    position: absolute;
+    top: 1.2rem;
+    right: 1rem;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+
+
+    
+}
+.icon{
+    transition: .3s all;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 2rem;
+    height: 2rem;
+    font-size: 1.5rem;
+    padding-top: .4rem;    
+}
+
+.open{
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 100vw;
+    border-radius: 0;
+}
+
+.input{
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding-left: .5rem;
+}
+
+.chatInput{
+    height: 80%;
+    width: 80%;
+    padding-left: .3rem;
+}
+
+.chatSend{
+    padding-left: 1rem;
+
+}

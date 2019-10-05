@@ -1,0 +1,38 @@
+.cardImage{
+    width: 5rem;
+    height: 5rem;
+    display: inline-block;
+}
+
+.cardImage img{
+    width: 100%;
+    height: 100%
+}
+
+.userTabs{
+    font-size: 132%;
+    font-weight: bold
+}
+
+.userTabs div {
+    width: 100%;
+    text-align: center;
+}
+
+.userTabs .active{
+    border-bottom: 1px solid black
+}
+
+.userContent{
+    // margin-top: 1rem;
+}
+
+.tableHeaderRow{
+    font-size: 110%;
+    font-weight: bold;
+    border-bottom: 1px solid lightsteelblue;
+}
+
+.tableBodyRow{
+    border-bottom: 1px solid lightslategray;
+}

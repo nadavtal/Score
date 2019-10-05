@@ -1,0 +1,39 @@
+<div class="row page-header">
+    <div class="col-6 page-header-title">
+        {{title}}
+    </div>
+    <div class="col-6 page-header-actions">
+        
+        
+        <div class="d-flex align-items-center mt-2">
+            <div class="threeDButtonWrapper" *ngIf="showThreeDButton">
+                    <app-three-d-button
+                        [condition]="!editMode"
+                        [actionTrueName]="'Edit'"
+                        [actionFalseName]="'Save'"
+                        [actionTrueIconName]="'edit'"
+                        [actionFalseIconName]="'save'"
+                        [trueColor]="'pink'"
+                        [falseColor]="'green'"
+                        [iconSizeClass]="'small'"
+                        (threeDActionEmmiter)="threeDButtonClicked($event)"
+                        >
+                    </app-three-d-button>
+            </div>
+            <div class="modalButton" *ngIf="showModalButton">
+                <app-sweet-alert 
+                [formName]="formName"
+                [actionName]="'Create'"
+                ></app-sweet-alert>
+            </div>
+        </div>
+        
+       
+       
+    </div>
+    <!--<mat-icon aria-hidden="false" 
+        *ngFor="let function of functions"
+        aria-label="Example home icon"
+        (click)="function.function(user)">{{function.iconName}}
+    </mat-icon>-->
+</div>

@@ -1,0 +1,286 @@
+<div class="" *ngIf="loaded">
+    <div class="pageHeader d-flex between">
+        <div class="pageHeaderTitle">
+            {{tournament.name}}
+        </div>
+        <div class="modalButton">
+            <app-sweet-alert 
+            [formName]="'createTournamentForm'"
+            [actionName]="'Create'"
+            ></app-sweet-alert>
+        </div>
+        <div class="threeDButtonWrapper">
+            <app-three-d-button
+                [condition]="!editMode"
+                [actionTrueName]="'Edit'"
+                [actionFalseName]="'Save'"
+                [actionTrueFunction]="editTournament.bind(this)"
+                [actionFalseFunction]="saveTournament.bind(this)"
+                [actionTrueIconName]="'edit'"
+                [actionFalseIconName]="'save'"
+                [trueColor]="'pink'"
+                [falseColor]="'green'"
+                [iconSizeClass]="'small'"
+                (threeDActionEmmiter)="threeDButtonClicked($event)"
+                >
+            </app-three-d-button>
+        </div>
+        
+        <div class="pageHeaderActions" >
+            <app-icon-actions
+            *ngIf="actions"
+                [actions]="actions">
+            </app-icon-actions>
+            
+            
+        </div>
+        
+    </div> 
+    <div class="pageContent container">
+        <form 
+            #tournamentForm="ngForm"
+            *ngIf="tournament"
+            (ngSubmit)="onSubmit(tournamentForm)"
+            name="tournamentForm"
+            [ngFormOptions]="{updateOn: 'blur'}"
+            >
+            <div class="row">
+                <div class="col-6">
+                     <mat-form-field class="example-full-width">
+                        <input matInput 
+                            placeholder="Tournament name" 
+                            [(ngModel)]="tournament.name"
+                            [disabled]="!editMode"
+                            id="name"
+                            name="name"
+                            required
+                            #name="ngModel"
+                            [class.is-invalid]="name.invalid && name.touched"
+                            
+                            >
+                            <mat-error *ngIf="name.errors && (!name.valid && name.touched)">
+                                <span class="" *ngIf="name.errors['required']">tournament name is required</span>
+                                <span class="" *ngIf="name.errors['forbidden']">This name is used</span>
+                            </mat-error>
+                            <!--<span class="help-block" *ngIf="name.errors && (!name.valid && name.touched)">
+                                <span class="" *ngIf="name.errors['required']">tournament name is required</span>
+                                <span class="" *ngIf="name.errors['forbidden']">This name is used</span>
+                            </span>-->
+                            
+                    </mat-form-field>
+                    <mat-form-field class="example-full-width">
+                        <input matInput 
+                        placeholder="Time" 
+                        value="time"
+                        [disabled]="!editMode"
+                        id="time"
+                        [(ngModel)]="tournament.time"
+                        name="time"
+                        >
+                    </mat-form-field>
+                    <mat-form-field class="example-full-width">
+                        <input matInput 
+                        placeholder="Manager" 
+                        [(ngModel)]="tournament.manager"
+                        id="manager"
+                        [disabled]="!editMode"
+                        required
+                        name="manager"
+                        
+                        >
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Choose manager</mat-label>
+                        <mat-select
+                            id="managerSelect"
+                            [(ngModel)]="tournament.manager"
+                            [disabled]="!editMode"
+                            name="managerSelect"
+                            required>
+                            <mat-option *ngFor="let player of tournament.registered" [value]="player.userName">
+                            {{player.userName}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="example-full-width">
+                        <input matInput 
+                        placeholder="Privacy" 
+                        [(ngModel)]="tournament.privacy"
+                        id="privacy"
+                        [disabled]="!editMode"
+                        name="privacy"
+                        >
+                    </mat-form-field>
+                    
+                    <mat-form-field class="example-full-width">
+                        <input matInput 
+                        placeholder="Platform" 
+                        [(ngModel)]="tournament.platform"
+                        id="platform"
+                        [disabled]="!editMode"
+                        name="platform"
+                        >
+                    </mat-form-field>
+                    
+                    <!--<button type="button" (click)="onPlacesPaid(tournament.placesPaid)">add places paid</button>-->
+                    <div class="prizePool pageHeaderTitle">
+                       Prize pool: {{tournament.prizePool}}
+                    </div>
+                    
+                        
+                        
+                        
+                        
+                </div>
+                <div class="col-6">
+                    <mat-form-field class="example-full-width">
+                        <input matInput 
+                        placeholder="Max players" 
+                        [(ngModel)]="tournament.maxPlayers"
+                        id="maxPlayers"
+                        [disabled]="!editMode"
+                        name="maxPlayers"
+                        >
+                    </mat-form-field>
+                    <mat-form-field class="example-full-width">
+                        <input matInput 
+                        placeholder="Player per battle" 
+                        [(ngModel)]="tournament.playerPerBattle"
+                        id="playerPerBattle"
+                        [disabled]="!editMode"
+                        name="playerPerBattle"
+                        >
+                    </mat-form-field>
+                    
+                    <mat-form-field class="example-full-width">
+                        <input matInput 
+                        placeholder="Entree fee" 
+                        [(ngModel)]="tournament.buyIn"
+                        (change)="calculatePrizePool(buyIn.value)"
+                        id="buyIn"
+                        [disabled]="!editMode"
+                        name="buyIn"
+                        #buyIn
+                        >
+                    </mat-form-field>
+                    
+                    <mat-form-field class="example-full-width">
+                        <input matInput 
+                        type="number"
+                        placeholder="Places paid" 
+                        [(ngModel)]="tournament.placesPaid"
+                        id="placesPaid"
+                        (change)="initializeWinners(placesPaid.value, i)"
+                        [disabled]="!editMode"
+                        #placesPaid
+                        name="placesPaid"
+                        >
+                    </mat-form-field>
+                    <div class="positionRow d-flex between" *ngFor="let position of tournament.winners; let i = index">
+                        <div class="">
+                            <strong>{{i+1}}</strong>
+                        </div>
+                        <div class="d-flex positionRow--percentage">
+                            
+                            <span class="">{{position.percentage}}</span>
+                            <span>%</span> 
+                        </div>
+                        <div class="positionRow--input">
+                            <input type="number" class=" " 
+                            *ngIf="editMode"
+                            [(ngModel)]="position.percentage"
+                            (change)="calculatePrize(ref.value, i)"
+                            name="position.percentage"
+                            #ref
+                            >
+                        </div>
+                        
+                        
+                        <div class="positionRow--prize">{{position.prize}}</div>
+                    </div>
+                    <!--<app-calculate-prize-pool
+                        [tournament]="tournament"
+                        [editMode]="editMode"
+                        [placesPaid]="this.tournament.placesPaid"
+                        >
+                    </app-calculate-prize-pool>-->
+                    
+                    
+                </div>
+            </div>
+            
+            <div class="pageButtons">
+                    <!--<app-three-d-button
+                        [condition]="!tournamentForm.valid"
+                        [actionTrueName] = "'Save'"
+                        [actionFalseName] = "'Oh oh...'"
+                        [actionTrueIconName] = "'plus'"
+                        [actionFalseIconName] = "'trash'">
+    
+                    </app-three-d-button>
+    
+                    <span class="" *ngIf="!tournamentForm.valid && tournamentForm.touched">Please enter required data</span>
+                <app-button-to-modal
+                        [condition]="false"
+                        [message] = "'heyyyy'"
+                        [actionName]="'save'"
+                        [dataDirection]="'top'"
+                        [ifTrueFunction]="onSubmit"
+                        [ifFalseFunction]="remove"
+                        (action)="flippingButtonClicked($event)">
+                    </app-button-to-modal>
+            
+                    <app-flipping-button
+                        [condition]="tournamentForm.valid"
+                        [actionOneName]="'Save'"
+                        [actionTwoName]="'Save(disabled)'"
+                        (action)="flippingButtonClicked($event)"
+                        >
+            
+                    </app-flipping-button>
+                    
+                    <button 
+                        class="customButton"
+                        type="submit"
+                        [disabled]="groupForm.valid"
+                        
+                    >
+                        Create
+                    </button>
+                    
+                    <button
+                        class="customButton green"
+                        [disabled] ="!tournamentForm.valid">
+                        Save
+                        <span class="button-wrap__icon-wrap">
+                        </span>
+                    </button> --> 
+                    
+                    
+            </div>
+            
+        </form>
+    
+        <div class="mainButtonWrapper">
+            <app-three-d-button
+                [condition]="registered"
+                [actionTrueName]="'Leave'"
+                [actionFalseName]="'Join'"
+                [actionTrueFunction]="leaveTournament.bind(this)"
+                [actionFalseFunction]="joinTournament.bind(this)"
+                [actionTrueIconName]="'arrow-up'"
+                [actionFalseIconName]="'arrow-down'"
+                [trueColor]="'pink'"
+                [falseColor]="'green'"
+                [iconSizeClass]="'med'"
+                (threeDActionEmmiter)="threeDButtonClicked($event)"
+                >
+            </app-three-d-button>
+        </div>
+
+    </div>
+</div>
+<swal
+  #saveSwal
+  >
+</swal>

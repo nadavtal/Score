@@ -1,0 +1,19 @@
+<div class="toolBarWrapper bg-{{toolBarColor}} {{positionClass}}"
+    [class.open]="open">
+    <div class="trigger {{color}}" 
+        (click)="toggleToolBar()"
+        [class.triggerOpen]="open">
+        <fa class="absCenter" name="{{triggerIconName}}" 
+            animation=""
+            ></fa>
+    </div>
+    <div class="toolBarBar d-flex arround"
+        *ngIf="open">
+        <div class="action actionIconWrapper" 
+            *ngFor="let action of actions"
+            (click)="action.function()"
+            >
+            <fa class="{{color}} absCenter" name="{{action.icon}}" animation=""></fa>
+        </div>
+    </div>
+</div>

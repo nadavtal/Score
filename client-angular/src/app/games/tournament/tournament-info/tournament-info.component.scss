@@ -1,0 +1,130 @@
+.tournamentForm{
+    padding-bottom: 6rem;
+    &__registered{
+        max-height: 7rem;
+        overflow: auto;
+        margin-bottom: 1rem;
+        
+        &--profileImg{
+            height: 2rem;
+            
+        }
+    }
+
+    &--text{
+        // background-color: #fff;
+        border-radius: 3px;
+        border: 0;
+        box-shadow: none;
+        color: #5c6b80;
+        display: block;
+        font-family: "Open Sans", Helvetica, Arial, sans-serif;
+        font-size: 1em;
+        height: 40px;
+        line-height: 40px;
+        margin-bottom: 14px;
+        padding: 0 12px;
+        vertical-align: middle;
+        // width: 100%;
+        -webkit-transition: background-color 0.24s ease-in-out;
+        transition: background-color 0.24s ease-in-out;
+    }
+
+    &--numberInput{
+        text-align: center;
+        width: 4rem !important;
+    }
+}
+
+
+.tournamentForm .pageModalButton{
+    position: relative;
+    // margin-top: .5rem;
+    height: 2.5rem;
+    width: 20rem;
+    margin: 0 auto;
+}
+
+.help-block{
+    position: absolute;
+    bottom: -2rem;
+    left: 0;
+    font-size: .7rem;
+}
+
+.mat-form-field {
+    display: inline-block;
+    position: relative;
+    text-align: left;
+    height: 4rem;
+}
+
+
+
+.customButton{
+    width: 100%; 
+    height: 100%;
+    transform-origin: center top;
+    transform: rotateX(0deg);
+    transition: 0.2s linear all;
+}
+
+.ng-valid .customButton{
+    background-color: green;
+}
+.ng-pristine  .customButton{
+    opacity: .5
+}
+
+.pageButtons{
+	transition: all .3s;
+	position: fixed;
+	bottom: 7vh;
+	right: 0;
+	width: 100vw;
+}
+
+.members{
+    max-height: 25rem;
+    overflow: auto;
+}
+
+.threeDButtonWrapper{
+    height: 2rem;
+    width: 6rem;
+}
+.modalButton{
+    position: relative;
+    height: 2rem
+}
+
+mat-form-field{
+    width: 90%;
+}
+
+.positionRow{
+    margin-top: .3rem;
+    width: 90%;
+
+    &--input{
+        width: 45%;
+        height: 1.5rem;
+        // margin: 0 1rem;
+
+        input{
+            width: 100%;
+            text-align: center
+        }
+    }
+
+    &--percentage{
+        width: 20%;
+    }
+    &--prize{
+        width: 20%;
+    }
+}
+
+.mat-input-element:disabled {
+    color: black;
+}

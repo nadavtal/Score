@@ -1,0 +1,195 @@
+@import '../../../../assets/sass/partials/variables';
+@import '../../../../assets/sass/partials/colors';
+  .button-wrap{
+    perspective: 80rem;
+    perspective-origin: 50% 50% 0;
+    width: 100%; 
+    height: 100%;
+    margin: 0 auto;
+    // min-height: 3rem;
+    position: relative;
+
+    &__icon-wrap{
+      position: absolute;
+      right: 0.5rem;
+      top: 0;
+      bottom: 0;
+      width: 25%;
+      padding-top: 5%;
+      background: rgba(0, 0, 0, 0.1);
+    }
+      
+  }
+
+  .button-wrap-download{
+    // position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 3rem;
+    font-size: inherit;
+    font-weight: 200;
+    // line-height: 4rem;
+    // padding: 0 2rem;
+    transform-origin: top center;
+
+    &--text{
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+  
+  // .download{
+  //   position: relative;
+  //   width: $btnW; 
+  //   height: $btnH;
+  //   transform-style: preserve-3d;
+  //   transform-origin: 50% 50% 0;
+  //   transform: rotateX(0deg);
+  //   transition: 0.2s linear all;
+    
+  //   &.is-active{
+  //     transform: rotateX(90deg) translateZ($btnH/2);
+      
+  //     .meter-progress{
+  //       right: 0%;
+  //     }
+  //   }
+  // }
+
+  .trueSide{
+    transition: 0.5s linear all;
+    background-color: $green;
+    // position: relative;
+    width: 100%; 
+    height: 100%;
+    transform-style: preserve-3d;
+    opacity: 1;
+    transform-origin: center top;
+    transform: rotateX(90deg);
+    
+    
+    &.is-active{
+      transform: rotateX(0deg);
+      opacity: 1;
+      
+      
+    }
+  }
+  .falseSide{
+    transition: 0.5s linear all;
+    background-color: $red;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%; 
+    height: 100%;
+    // transform-style: preserve-3d;
+    transform-origin: center bottom;
+    transform: rotateX(90deg);
+    transition: 0.2s linear all;
+    
+    &.is-active{
+      transform: rotateX(0deg) ;
+      // opacity: 0;
+      
+    }
+    
+    .icon-download {
+        &:before,
+        &:after{
+        content: '';
+        display: block;
+        position: absolute;
+        
+          
+        
+        }
+        
+        &:before{
+        left: 0.5rem; top: -0.5rem;
+        width: 0.5rem; height: 0.5rem;
+        background: $gray;
+        }
+        
+        &:after{
+        left: 0.25rem; 
+        top: -0.809rem;;
+        width: 0; height: 0;
+        border-left: solid 0.5rem transparent;
+        border-right: solid 0.5rem transparent;
+        border-top: solid 0.5rem $gray;
+        transform: rotate(180deg);
+        }
+    }
+  }
+  
+  
+  
+  // Download Icon
+  
+  .icon-wrap{
+    position: absolute;
+    right: 0.5rem; top: 0; bottom: 0;
+    width: 25%;
+    // padding-top: 1.66rem;
+    background: rgba(black, 0.1);
+  }
+  
+  .icon-right{
+    position: relative;
+    display: block;
+    width: 2.5rem; 
+    height: 1rem;
+    margin: auto;
+    border: solid 0.5rem $gray;
+    border-top: none;
+    
+    &:before,
+    &:after{
+      content: '';
+      display: block;
+      position: absolute;
+      
+    //   animation: icon-bounce .5s infinite alternate;
+      
+    }
+    
+    &:before{
+      left: 0.5rem; top: -0.5rem;
+      width: 0.5rem; height: 0.5rem;
+      background: $gray;
+    }
+    
+    &:after{
+      left: 0.25rem; top: -0.125rem;
+      width: 0; height: 0;
+      border-left: solid 0.5rem transparent;
+      border-right: solid 0.5rem transparent;
+      border-top: solid 0.5rem $gray;
+      
+    }
+  }
+  
+  // Animations
+  
+  @keyframes icon-bounce {
+    from {
+      transform: translateY(0px);
+    }
+    
+    to {
+      transform: translateY(-5px);
+    }
+  }
+  
+  @keyframes white-pulse {
+    from {
+      color: rgba(white, 0.2);
+    }
+    
+    to {
+      color: rgba(white, 0.5);
+    }
+  }

@@ -1,0 +1,62 @@
+
+<div class="container">
+    <div class="pageHeader d-flex between">
+        <div class="pageHeaderTitle">
+            Accounts
+        </div>
+        <div class="pageHeaderActions" >
+            <app-icon-actions
+            *ngIf="actions"
+                [actions]="actions">
+            </app-icon-actions>
+            
+            <div class="modalButton">
+                <app-sweet-alert 
+                [formName]="'createAccountForm'"
+                [actionName]="'Create'"
+                (confirmed)="createAccount($event.values)"></app-sweet-alert>
+            </div>
+        </div>
+        
+    </div>
+</div>
+<div class="pageContent">
+        <mat-grid-list cols="3" 
+        rowHeight="3rem">
+        <mat-grid-tile >
+            <mat-grid-tile-header>
+                Platform
+            </mat-grid-tile-header>
+            
+        </mat-grid-tile >
+        <mat-grid-tile>
+            <mat-grid-tile-header>
+                UserName
+            </mat-grid-tile-header>
+            
+        </mat-grid-tile >
+        <mat-grid-tile>
+            <mat-grid-tile-header>
+                AccountId
+            </mat-grid-tile-header>
+            
+        </mat-grid-tile>
+    
+    </mat-grid-list>
+    <div [@listAnimation]="accounts.length" *ngIf="loaded">
+        <div *ngFor="let account of accounts; let i = index" >
+            <app-account-item [account]="account">
+            </app-account-item>
+        </div>
+            
+    </div>
+  
+</div>
+
+
+
+
+
+        
+   
+

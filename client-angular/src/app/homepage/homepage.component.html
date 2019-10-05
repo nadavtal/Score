@@ -1,0 +1,82 @@
+<div class="homepage bg-black " 
+    *ngIf="!showMenuTabs">
+    <!--<app-auth></app-auth>-->
+    <div class="text-center mainAppTitleWrapper">
+        <svg viewBox="0 0 400 300">
+            <symbol id="s-text">
+                <text class="mainAppTitle" text-anchor="middle" 
+                    x="50%"
+                    y="35%"
+                    class="text--line white"
+                    >
+                    SCORE
+                </text>
+                <!-- <text text-anchor="middle"
+                    x="50%"
+                    y="68%"
+                    class="text--line2"
+                    >
+                Everything that keeps score
+                </text> -->
+                
+            </symbol>
+            
+            <g class="g-ants">
+                <use xlink:href="#s-text"
+                class="text-copy"></use>     
+                <use xlink:href="#s-text"
+                class="text-copy"></use>     
+                <use xlink:href="#s-text"
+                class="text-copy"></use>     
+                <use xlink:href="#s-text"
+                class="text-copy"></use>     
+                <use xlink:href="#s-text"
+                class="text-copy"></use>     
+            </g>
+                
+                
+        </svg>
+            <!-- <span class="green">S</span>
+            <span class="orange">C</span>
+            <span class="blue">O</span>
+            <span class="purple">R</span>
+            <span class="pink">E</span> -->
+            
+    </div>
+    <div class="mainAppSlogen">
+        <div class="shineText text-center">
+            keep score 
+        </div>
+        <div class="shineText2 text-center">
+            on everything
+        </div>
+
+    </div>
+</div>    
+    <app-dinamic-tabs
+        [routeMode]="true"
+        (tabSubject)="dinamicTabsClicked($event)">
+    </app-dinamic-tabs>
+    <router-outlet></router-outlet>
+    <!--<div class="mainCubeMenu" @listAnimation>
+        <div class="cubeMenuItem cubeMenuItem--cube bg-{{tab.color}} white holder "
+            *ngFor="let tab of tabs"
+            routerLink="{{tab.name}}">
+            <div class="cubeMenuItem--title absCenter">
+                <div class="absCenter">
+                    <div class="center" >
+                            <mat-icon aria-hidden="false" aria-label="Example home icon">{{tab.icon}}</mat-icon>
+                    </div>
+                    <div class="text-center">
+                       
+                            {{tab.name}}
+    
+                    </div>
+                </div>
+                
+            </div>
+           
+        </div>
+
+    </div>-->
+

@@ -1,0 +1,39 @@
+<div class="container">
+        <mat-grid-list cols="2" 
+        rowHeight="3rem">
+            <mat-grid-tile>
+                <app-page-header
+                    [title]="'Friends'"
+                    >
+                </app-page-header>  
+            </mat-grid-tile>
+            <mat-grid-tile>
+                
+                <mat-icon aria-hidden="false" 
+            
+                    aria-label="Example home icon"
+                    (click)="searchFriends()">search
+                </mat-icon>
+            </mat-grid-tile>
+        
+        </mat-grid-list>
+    
+    
+</div>
+<div *ngIf="loaded" >
+    <div [@listAnimation]="user.friends.length">
+        <div *ngFor="let friend of user.friends; let i = index" >
+            <app-friend 
+                [friend]="friend"
+                [index]="i"
+                [user]="user">
+            </app-friend>
+        </div>
+            
+    </div>
+   
+</div>
+
+    
+
+    

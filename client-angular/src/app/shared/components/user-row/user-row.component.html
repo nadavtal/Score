@@ -1,0 +1,17 @@
+<div class="userRow" >
+    <div class="userRow"
+        [routerLink] = "['/', 'users', user.userId]">
+        <img class="userRow--image" src="https://randomuser.me/api/portraits/men/{{index}}.jpg" alt="">
+    </div>
+    <div class="userRow--userName">    
+        {{user.userName}}
+        
+            
+    </div>
+    <div class="userRow--actions">
+        <fa class="red" name="trash" animation=""
+            (click)="remove(index, user)">
+        </fa>
+        
+    </div>
+</div>
