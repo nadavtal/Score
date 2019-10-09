@@ -20,14 +20,11 @@ export class UserComponent implements OnInit {
               private router: Router ) { }
 
   ngOnInit() {
-    // const id = this.route.snapshot.params['id'];
-    // console.log(this.route.params)
+   
     this.route.params
       .subscribe(
         (params: Params) => {
-          // this.path = this.route.snapshot.url[0].path;
-          // this.tab = this.route.snapshot.url[2].path;
-          // console.log(this.route)
+          
           this.id = params['userId'];
           this.usersService.getUserFromDb(this.id)
             .subscribe((user:any) => {

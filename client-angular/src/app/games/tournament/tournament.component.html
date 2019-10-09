@@ -1,7 +1,10 @@
 
 <app-dinamic-tabs
     [routeMode]="false"
-    (tabSubject)="changeActiveTab($event)"></app-dinamic-tabs>
+    (tabSubject)="changeActiveTab($event)"
+    [path]="'tournaments'">
+</app-dinamic-tabs>
+    
 <br><br><br>
 
 <app-tournament-info

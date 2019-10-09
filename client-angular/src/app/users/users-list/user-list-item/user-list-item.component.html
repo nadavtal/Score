@@ -1,16 +1,53 @@
-<a
-  [routerLink]= "[id]"
-  routerLinkActive="active"
-  class="list-group-item clearfix"  >
-  <div class="pull-left">
-    <h4 class="list-group-item-heading">{{ user.userName }}</h4>
+<div class="userRow ">
+    <mat-grid-list cols="12" 
+        rowHeight="3rem"
+        *ngIf="user">
+        <mat-grid-tile colspan="2"
+            [routerLink]= "['/', 'users', user._id]">
+            <img class="list-item--profileImg" 
+                src="http://localhost:5000/api/v1/image/{{user.profileImageFileName}}" 
+                alt="" 
+                *ngIf="user.profileImageFileName">
+            <img class="list-item--profileImg" 
+                src="{{user.profileImageLink}}" 
+                alt="" 
+                *ngIf="!user.profileImageFileName">
+        </mat-grid-tile >
+
+        <mat-grid-tile colspan="2" [routerLink]= "['/', 'users', user._id]">
+            {{user.userName}} 
+        </mat-grid-tile >
+
+        <mat-grid-tile colspan="5">
+            <div  *ngFor=" let group of user.sharedGroups">{{group.groupName}}</div>
+        </mat-grid-tile>
+
+        <!-- <mat-grid-tile colspan="2">
+            <div class="rowActions">
+                
+                <fa class="red" name="trash" animation=""
+                    (click)="removeFriend(index, user)">
+                </fa>
+                
+            </div>
+        </mat-grid-tile> -->
+        
     
-  </div>
-  <!-- <span class="pull-right">
-    <img
-      [src]="user.imagePath"
-      alt="{{ user.name }}"
-      class="img-responsive"
-      style="max-height: 50px;">
-  </span> -->
-</a>
+    </mat-grid-list>
+    <app-icon-to-row
+        [bgColor]="'red'"
+        [icon]="'trash'"
+        [question]="'Are you sure you want to remove this user?'"
+        [positionClass]="'right0_2'"
+        (action)="removeFriend(index, user)">
+    </app-icon-to-row>
+    <app-icon-to-row
+        [bgColor]="bgColor"
+        [icon]="'comments'"
+        [positionClass]="'right1_2'"
+        (action)="sendMessage($event)">
+    </app-icon-to-row>
+    
+</div>
+
+

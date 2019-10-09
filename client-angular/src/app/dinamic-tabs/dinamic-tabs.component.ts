@@ -39,9 +39,10 @@ export class dinamicTabsComponent implements OnInit {
   actions:any;
   toolBarColor:string;
   
-  path:any;
+ 
   tab:any;
 
+  @Input() path: string;
   @Input() routeMode: any;
   @Output() tabSubject = new Subject<any>()
   
@@ -55,7 +56,7 @@ export class dinamicTabsComponent implements OnInit {
                }
 
   ngOnInit() {
-    // console.log(this.routeMode)
+    
     this.router.events.subscribe( (event: Event) => {
     
       if (event instanceof NavigationStart) {
@@ -89,7 +90,7 @@ export class dinamicTabsComponent implements OnInit {
           console.log(event.error);
       }
     });
-
+    // console.log(this.route)
     this.tab = this.router.url.substring(this.router.url.lastIndexOf('/') + 1);
     
     // console.log(this.activeTab, this.tab)
@@ -98,13 +99,7 @@ export class dinamicTabsComponent implements OnInit {
     this.route.params
       .subscribe(
         (params: Params) => {
-          // console.log('tab list params:', params)
-         
-          this.path = this.route.snapshot.url[0].path;
-          // this.tab = this.route.snapshot.url[2].path;
-          
-          console.log(this.path, this.tab)
-          
+                   
           if(this.path == 'home'){
             
             this.tabs = [
@@ -117,7 +112,8 @@ export class dinamicTabsComponent implements OnInit {
             
             
           }
-          if(this.path == 'users'){
+          else if(this.path == 'users'){
+          
             this.id = params['userId'];
             this.tabs = [
               {name: 'Profile', color: 'green', icon: 'person', index: 0},

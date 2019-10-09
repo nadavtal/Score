@@ -8,9 +8,23 @@ import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../material/material.module';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { FormsModule } from '@angular/forms';
+import { ChatComponent } from '../shared/components/chat/chat.component';
 import { IconToRowComponent } from '../shared/components/icon-to-row/icon-to-row.component';
 import { dinamicTabsComponent } from '../dinamic-tabs/dinamic-tabs.component';
 import { ToolBarComponent } from '../shared/components/tool-bar/tool-bar.component';
+import { ThreeDButtonComponent } from '../shared/components/three-d-button/three-d-button.component';
+import { FriendComponent } from '../friends/friend/friend.component';
+import { ButtonToModalComponent } from '../shared/components/button-to-modal/button-to-modal.component';
+import { ShareButtonComponent } from '../shared/components/share-button/share-button.component';
+import { ToFullScreenComponent } from '../shared/components/to-full-screen/to-full-screen.component';
+import { PageHeaderComponent } from '../shared/components/page-header/page-header.component';
+import { FlippingButtonComponent } from '../shared/components/flipping-button/flipping-button.component';
+import { NameValidator } from '../shared/directives/name-validator.directive';
+import { UserRowComponent } from '../shared/components/user-row/user-row.component';
+import { SendMessageComponent } from '../shared/components/send-message/send-message.component';
+import { StatsComponent } from './components/stats/stats.component';
+import { GlowingSpinnerComponent } from './components/glowing-spinner/glowing-spinner.component';
+
 
 @NgModule({
     declarations: [
@@ -19,7 +33,21 @@ import { ToolBarComponent } from '../shared/components/tool-bar/tool-bar.compone
         IconActionsComponent,
         dinamicTabsComponent,
         IconToRowComponent,
-        ToolBarComponent
+        ToolBarComponent,
+        ChatComponent,
+        ThreeDButtonComponent,
+        FriendComponent,
+        ButtonToModalComponent,
+        ShareButtonComponent,
+        ToFullScreenComponent,
+        PageHeaderComponent,
+        FlippingButtonComponent,
+        NameValidator,
+        UserRowComponent,
+        SendMessageComponent,
+        StatsComponent, 
+        GlowingSpinnerComponent,
+
     ],
     imports: [
         RouterModule,
@@ -36,6 +64,20 @@ import { ToolBarComponent } from '../shared/components/tool-bar/tool-bar.compone
         dinamicTabsComponent,
         IconToRowComponent,
         ToolBarComponent,
+        ThreeDButtonComponent,
+        FriendComponent,
+        ButtonToModalComponent,
+        ShareButtonComponent,
+        ToFullScreenComponent,
+        PageHeaderComponent,
+        FlippingButtonComponent,
+        NameValidator,
+        UserRowComponent,
+        SendMessageComponent,
+        ChatComponent,
+        StatsComponent, 
+        GlowingSpinnerComponent,
+
         CommonModule,
         MaterialModule,
         AngularFontAwesomeModule,

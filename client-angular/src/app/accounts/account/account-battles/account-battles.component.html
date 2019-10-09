@@ -1,4 +1,4 @@
-<div class="battles">
+<div class="battles" *ngIf="battles">
     <div class="" *ngFor="let battle of battles">
         <app-clash-royale-battle 
             [battle]="battle">

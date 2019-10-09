@@ -1,6 +1,8 @@
 <app-dinamic-tabs
     [routeMode]="true"
-    (tabSubject)="changeActiveTab($event)"></app-dinamic-tabs>
+    (tabSubject)="changeActiveTab($event)"
+    [path]="'accounts'">
+</app-dinamic-tabs>
 <br><br><br>
 <app-account-info
     [class.hidden]="tab !== 'Info'"    

@@ -5,18 +5,15 @@ import { UsersComponent } from './users/users.component';
 import { GamesComponent } from './games/games.component';
 
 import { UserComponent } from './users/user/user.component';
-import { GroupComponent } from './groups/group/group.component';
+
 import { GroupsComponent } from './groups/groups.component';
 import { AccountsComponent } from './accounts/accounts.component';
 import { FriendsComponent } from './friends/friends.component';
 import { MessagesComponent } from './messages/messages.component'
 import { InfoComponent } from './users/user/info/info.component';
-// import { GroupInfoComponent } from './groups/group/group-info/group-info.component';
-// import { StatsComponent } from './shared/components/stats/stats.component';
+
 import { TournamentComponent } from './games/tournament/tournament.component';
-// import { TournamentInfoComponent } from './games/tournament/tournament-info/tournament-info.component';
-// import { TournamentStructureComponent } from './games/tournament/tournament-structure/tournament-structure.component';
-// import { TournamentPrizesComponent } from './games/tournament/tournament-prizes/tournament-prizes.component';
+
 import { HomepageComponent } from './homepage/homepage.component';
 import { GameComponent } from './games/game/game.component';
 import { AccountComponent } from './accounts/account/account.component';
@@ -35,14 +32,14 @@ const appRoutes: Routes = [
     // ]},
     // {path: 'users/:userId/:tabName', component: UserComponent},
     
-    {path: 'users/:userId', component: UserComponent, children:[
-        {path: 'Profile', component: InfoComponent},
-        {path: 'Accounts', component: AccountsComponent},
-        {path: 'Groups', component: GroupsComponent},
-        {path: 'Friends', component: FriendsComponent},
-        {path: 'Games', component: GamesComponent},
-        {path: 'Messages', component: MessagesComponent},
-    ]},
+    // {path: 'users/:userId', component: UserComponent, children:[
+    //     {path: 'Profile', component: InfoComponent},
+    //     {path: 'Accounts', component: AccountsComponent},
+    //     {path: 'Groups', component: GroupsComponent},
+    //     {path: 'Friends', component: FriendsComponent},
+    //     {path: 'Games', component: GamesComponent},
+    //     {path: 'Messages', component: MessagesComponent},
+    // ]},
     {path: 'users', component: UsersComponent},
     // {path: 'groups/:groupId', component: GroupComponent, children:[
     //     {path: 'Info', component: GroupInfoComponent},
@@ -50,9 +47,11 @@ const appRoutes: Routes = [
     //     {path: 'Games', component: GamesComponent},
     //     {path: 'Messages', component: MessagesComponent},
     // ]},
-    // {path: 'groups', component: GroupsComponent, children:[
+    {path: 'groups', component: GroupsComponent, children:[
         
-    // ]},
+    ]},
+    {path: 'users/:userId', loadChildren: './users/user/user.module#UserModule'},
+    {path: 'groups/:groupId', loadChildren: './groups/group/group.module#GroupModule'},
     {path: 'tournaments/:tournamentId', component: TournamentComponent},
     {path: 'Tournaments', component: TournamentListComponent},
     { path: 'games', component: GamesComponent},

@@ -55,7 +55,8 @@
 </div>    
 <app-dinamic-tabs
     [routeMode]="true"
-    (tabSubject)="dinamicTabsClicked($event)">
+    (tabSubject)="dinamicTabsClicked($event)"
+    [path]="'home'">
 </app-dinamic-tabs>
 <router-outlet></router-outlet>
     <!--<div class="mainCubeMenu" @listAnimation>

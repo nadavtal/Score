@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Params, ActivatedRoute } from '@angular/router';
 import { GroupsService } from './groups.service';
 import { Utils } from '../shared/services/utils.service';
-import { UsersComponent } from '../users/users.component';
+
 import { UsersService } from '../users/users.service';
-import { DinamicModalComponent } from '../shared/components/dinamic-modal/dinamic-modal.component';
+
 import { localStorageService } from '../shared/services/local-storage.service';
-import { Group } from './group.model';
+
 import { listAnimation, moveInUp, moveOutRight } from '../shared/animations'
 @Component({
   selector: 'app-groups',
@@ -30,7 +30,7 @@ export class GroupsComponent implements OnInit {
               private groupsService:GroupsService,
               private localStorage:localStorageService,
               private utilsService: Utils,
-              private dinamicModal: DinamicModalComponent
+             
               ) { }
 
   ngOnInit() {

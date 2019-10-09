@@ -107,7 +107,7 @@ export class TournamentListComponent implements OnInit {
                               // this.userLoaded = true;
                               this.group = group.data
                               
-                              this.loaded = true;
+                              
                               this.tournamentsService.getTournamentsByGroupID(this.id)
                               .subscribe((tournaments:any) => {
                                 this.tournaments = tournaments.data

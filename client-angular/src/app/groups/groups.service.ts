@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { group } from '@angular/animations';
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class GroupsService {
     newGroupCreated =  new Subject<any>()
     groupDeleted =  new Subject<any>()

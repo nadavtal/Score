@@ -19,7 +19,7 @@ export class MessageComponent implements OnInit {
               private messagesService: MessagesService) { }
 
   ngOnInit() {
-    console.log(this.messagesService);
+    
   }
   
   linkTo(){
