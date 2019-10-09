@@ -3,21 +3,19 @@ import { UsersService } from 'src/app/users/users.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { TournamentsService } from '../../tournaments.service';
 import { NgForm, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { Utils } from 'src/app/shared/services/utils.service';
 import { localStorageService } from 'src/app/shared/services/local-storage.service';
 
 // import { CustomValidators } from 'src/app/shared/services/validators.service';
-import * as _swal from 'sweetalert';
-import { SweetAlert } from 'sweetalert/typings/core';
+
 
 @Component({
   selector: 'app-tournament-info',
   templateUrl: './tournament-info.component.html',
   styleUrls: ['./tournament-info.component.scss']
 })
-export class TournamentInfoComponent implements OnInit
-{
+export class TournamentInfoComponent implements OnInit{
   id: string;
   tournament:any;
   actions:any;
@@ -26,7 +24,7 @@ export class TournamentInfoComponent implements OnInit
   registered:boolean;
   currentUser:any;
   tournamentFormSub;any;
-  swal: SweetAlert = _swal as any;
+  @ViewChild('tournamentSwal', {static: false}) private tournamentSwal: SwalComponent;
    
   
   @ViewChild('tournamentForm', {static: false}) tournamentForm: NgForm;
@@ -104,26 +102,14 @@ export class TournamentInfoComponent implements OnInit
           this.editMode = !this.editMode;
         }
 
-        if(!msg){
-          msg = 'Tournament saved'
-          this.swal({
-            title: msg,
-            
-            icon: "success",
-            timer: 1700,
-            buttons: ['ok']
-
-          })
-        } else{
-          this.swal({
-            title: msg,
-            text: text,
-            icon: "success",
-            timer: 1700,
-            buttons: ['ok']
-
-          })
-        }
+        
+        this.tournamentSwal.title = msg? msg : 'Tournament saved'
+        this.tournamentSwal.title="Tournament saved";
+        // this.tournamentSwal.text="You are registered to this game";
+        this.tournamentSwal.type="success";
+        this.tournamentSwal.timer = 1000;
+        this.tournamentSwal.fire()
+        
 
       })
   }

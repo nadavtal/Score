@@ -53,11 +53,11 @@
 
     </div>
 </div>    
-    <app-dinamic-tabs
-        [routeMode]="true"
-        (tabSubject)="dinamicTabsClicked($event)">
-    </app-dinamic-tabs>
-    <router-outlet></router-outlet>
+<app-dinamic-tabs
+    [routeMode]="true"
+    (tabSubject)="dinamicTabsClicked($event)">
+</app-dinamic-tabs>
+<router-outlet></router-outlet>
     <!--<div class="mainCubeMenu" @listAnimation>
         <div class="cubeMenuItem cubeMenuItem--cube bg-{{tab.color}} white holder "
             *ngFor="let tab of tabs"

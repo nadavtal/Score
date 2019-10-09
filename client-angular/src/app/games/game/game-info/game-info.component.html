@@ -1,40 +1,40 @@
 <div class="" *ngIf="loaded">
-        <div class="pageHeaderNoTab d-flex between white bg-black">
-            <div class="pageHeaderTitle">
-                {{game.name}}
-            </div>
-            <div class="modalButton">
-                <app-sweet-alert 
-                [formName]="'createGameForm'"
-                [actionName]="'Create'"
-                ></app-sweet-alert>
-            </div>
-            <div class="threeDButtonWrapper">
-                <app-three-d-button
-                    [condition]="!editMode"
-                    [actionTrueName]="'Edit'"
-                    [actionFalseName]="'Save'"
-                    [actionTrueFunction]="editGame.bind(this)"
-                    [actionFalseFunction]="saveGame.bind(this)"
-                    [actionTrueIconName]="'edit'"
-                    [actionFalseIconName]="'save'"
-                    [trueColor]="'pink'"
-                    [falseColor]="'green'"
-                    [iconSizeClass]="'small'"
-                    (threeDActionEmmiter)="threeDButtonClicked($event)"
-                    >
-                </app-three-d-button>
-    
-            </div> 
-            <div class="pageHeaderActions" >
-                <app-icon-actions
-                *ngIf="actions"
-                    [actions]="actions">
-                </app-icon-actions>
-                
-                
-            </div>
-        </div>  
+    <div class="pageHeaderNoTab d-flex between white bg-black">
+        <div class="pageHeaderTitle">
+            {{game.name}}
+        </div>
+        <div class="modalButton">
+            <app-sweet-alert 
+            [formName]="'createGameForm'"
+            [actionName]="'Create'"
+            ></app-sweet-alert>
+        </div>
+        <div class="threeDButtonWrapper">
+            <app-three-d-button
+                [condition]="!editMode"
+                [actionTrueName]="'Edit'"
+                [actionFalseName]="'Save'"
+                [actionTrueFunction]="editGame.bind(this)"
+                [actionFalseFunction]="saveGame.bind(this)"
+                [actionTrueIconName]="'edit'"
+                [actionFalseIconName]="'save'"
+                [trueColor]="'pink'"
+                [falseColor]="'green'"
+                [iconSizeClass]="'small'"
+                (threeDActionEmmiter)="threeDButtonClicked($event)"
+                >
+            </app-three-d-button>
+
+        </div> 
+        <div class="pageHeaderActions" >
+            <app-icon-actions
+            *ngIf="actions"
+                [actions]="actions">
+            </app-icon-actions>
+            
+            
+        </div>
+    </div>  
         
         
     <div class="container pageContentNoTabs">
@@ -292,7 +292,17 @@
             >
         </app-three-d-button>
     </div>
-
+    <swal
+        #gameSwal
+        title=""
+        text=""
+        type=""
+        timer=""
+        [showConfirmButton]="false"
+        [showCancelButton]="false"
+        [focusCancel]="true"
+        >
+    </swal>
     <app-tool-bar
         [positionClass]="'stickyBottom'"
         [triggerIconName]="'bars'"

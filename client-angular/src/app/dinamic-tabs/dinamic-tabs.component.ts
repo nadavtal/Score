@@ -17,8 +17,8 @@ import { trigger, state, style, transition, animate, keyframes, query, stagger }
     trigger('tabsAnimation',[
       transition('*=>*', [
         query('.cubeMenuItem', style({opacity: 0, transform: 'translateX(100vw)'})),
-        query('.cubeMenuItem',stagger('200ms', [
-          animate('200ms ease-out', style({opacity: 1, transform: 'translateX(0)'}))
+        query('.cubeMenuItem',stagger('150ms', [
+          animate('150ms ease-out', style({opacity: 1, transform: 'translateX(0)'}))
         ]))
       ])
     ])
@@ -30,7 +30,7 @@ export class dinamicTabsComponent implements OnInit {
   tabs: any;
   activeTab:string;
   widthClass:string;
-  showMenuTab:Boolean;
+  showMenuTab:Boolean = false;
   id:string;
   component: string;
   user: User;
@@ -57,7 +57,7 @@ export class dinamicTabsComponent implements OnInit {
   ngOnInit() {
     // console.log(this.routeMode)
     this.router.events.subscribe( (event: Event) => {
-
+    
       if (event instanceof NavigationStart) {
         //  console.log('NavigationStart', event) // Show loading indicator
       }
@@ -70,9 +70,14 @@ export class dinamicTabsComponent implements OnInit {
           console.log(this.tab)
           for(let i =0; i<this.tabs.length; i++){
             if(this.tabs[i].name == this.tab){
-              this.showMenuTab = true
-            } 
+              this.showMenuTab = true;
+              break
+            } else{
+              this.showMenuTab = false;
+            }
           }
+
+          console.log(this.showMenuTab)
 
           
       }
@@ -98,7 +103,7 @@ export class dinamicTabsComponent implements OnInit {
           this.path = this.route.snapshot.url[0].path;
           // this.tab = this.route.snapshot.url[2].path;
           
-          // console.log(this.path, this.tab)
+          console.log(this.path, this.tab)
           
           if(this.path == 'home'){
             
@@ -208,9 +213,9 @@ export class dinamicTabsComponent implements OnInit {
     
 
     this.actions= [
-    {name: 'Log out', color: 'green', icon: 'home', },
+    {name: 'Log out', color: 'green', icon: 'sign-out'},
     {name: 'Home', color: 'green', icon: 'home'},
-    {name: 'My profile', color: 'orange', icon: 'user', function: this.goToMyProfile.bind(this)},
+    {name: 'My profile', color: 'orange', icon: 'user'},
     {name: 'Store', color: 'black', icon: 'shopping-cart'},
     
     ];
@@ -245,8 +250,30 @@ export class dinamicTabsComponent implements OnInit {
     // this.router.navigateByUrl('/tournaments/'+this.id+'/' +this.activeTab);
   }
 
+  toolBarActionClicked(event){
+    console.log(event);
+    switch(event) { 
+      case 'My profile': { 
+         this.goToMyProfile() 
+         break; 
+      } 
+      case 'Home': { 
+         this.goToHomepage()
+         break; 
+      } 
+      default: { 
+         //statements; 
+         break; 
+      } 
+   } 
+  }
+
   goToMyProfile(){
     this.router.navigateByUrl('/users/'+this.currentUser._id);
+
+  }
+  goToHomepage(){
+    this.router.navigateByUrl('/');
 
   }
 

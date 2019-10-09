@@ -226,7 +226,8 @@
   router.post('/accounts', accountsCtrl.createAccount); // create new Account
   router.get('/accounts', accountsCtrl.getAllAccounts); // get all accounts
   router.get('/accounts/users/:userId', accountsCtrl.getAccountsByUserId); // get accounts by userid
-  router.get('/accounts/:accountId', accountsCtrl.getAccount); // get accounts by userid
+  router.get('/accounts/:accountId', accountsCtrl.getAccount); // get accounts by id
+  router.put('/accounts/:accountId', accountsCtrl.updateAccount); // update account
   router.get('/accounts/platforms/:name', accountsCtrl.getAccountsByPlatformName); // get accounts by userid
 
   module.exports = router;

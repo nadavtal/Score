@@ -1,17 +1,34 @@
-<div class="accoutRow"
-    [routerLink] = "['/accounts',account.platform, account.accountId]">
-    <mat-grid-list cols="3" 
-        rowHeight="4rem">
-        <mat-grid-tile >
+<div class="accountRow"
+    [class.inActive]="account.active == false">
+    <div class="row">
+        <div class="col-2"
+            [routerLink] = "['/accounts',account.platform, account.accountId]">
             <img class="accountImage" src="../../../assets/img/platforms/{{account.platform}}.png" alt="">
-        </mat-grid-tile >
-        <mat-grid-tile>
+        </div>
+        <div class="col-4"
+           [routerLink] = "['/accounts',account.platform, account.accountId]">
             {{account.userName}}
-        </mat-grid-tile >
-        <mat-grid-tile>
-                {{account.accountId}}
-        </mat-grid-tile>
+        </div>
+        <div class="col-4"
+            [routerLink] = "['/accounts',account.platform, account.accountId]">
+            {{account.accountId}}
+        </div>
+    </div>
+    <app-icon-to-row
+        *ngIf="account.active"
+        [bgColor]="'red'"
+        [icon]="'trash'"
+        [question]="'Are you sure you want to disactivate this account?'"
+        [positionClass]="'right0_2'"
+        (action)="turnToInactive()">
+    </app-icon-to-row>
+    <app-icon-to-row
+        *ngIf="!account.active"
+        [bgColor]="'green'"
+        [icon]="'trash'"
+        [question]="'Are you sure you want to activate this account?'"
+        [positionClass]="'right0_2'"
+        (action)="turnToActive()">
+    </app-icon-to-row>
     
-    </mat-grid-list>
-
 </div>

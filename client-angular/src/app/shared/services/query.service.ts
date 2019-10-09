@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Subject } from 'rxjs';
-
+import { environment } from '../../../environments/environment'
 
 @Injectable({providedIn: 'root'})
 export class QueryService{
-    rootUrl: string = 'http://localhost:5000/api/v1/';
-    rootClashUrl: string = 'https://api.clashroyale.com/v1/';
+    rootUrl: string = environment.rootUrl;
+    rootClashUrl: string = environment.rootClashUrl;
     error = new Subject<string>();
     constructor(private http: HttpClient,
                 ){};
@@ -18,20 +18,17 @@ export class QueryService{
             let params =  new HttpParams();
             // params = params.append(getParams);
         }
-        return this.http
-            .get(this.rootUrl+endPoint)
+        return this.http.get(this.rootUrl+endPoint)
             
     };
     post(endPoint:string, data: {}){
         
-        return this.http
-            .post(this.rootUrl+endPoint,data)
+        return this.http.post(this.rootUrl+endPoint,data)
             
     }
     put(endPoint:string, data: {}){
         
-        return this.http
-            .put(this.rootUrl+endPoint,data)
+        return this.http.put(this.rootUrl+endPoint,data)
             
     }
 
@@ -47,8 +44,7 @@ export class QueryService{
         }
         
 
-        return this.http
-                .get(url, headers)
+        return this.http.get(url, headers)
     }
 
 }

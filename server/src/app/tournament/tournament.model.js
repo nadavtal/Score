@@ -82,6 +82,12 @@
         message: 'Only "public", friends", "group", private",  messages are allowed.'
       }
     },
+    active: {
+      type: Boolean,
+      default: true
+    },
+    inActiveReason: String,
+    lastActiveDate: Date
   });
 
   /**

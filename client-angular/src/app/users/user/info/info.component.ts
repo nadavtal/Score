@@ -92,7 +92,8 @@ export class InfoComponent implements OnInit {
   }
 
   onSubmit(form:NgForm){
-    console.log(form.value);
+    console.log(this.user)
+    // console.log(form.value);
     
     
   }
@@ -113,7 +114,11 @@ export class InfoComponent implements OnInit {
   }
   saveProfile(){
     this.editMode = !this.editMode;
-    this.onSubmit(this.userForm)
+    console.log(this)
+    this.usersService.updateUser(this.user)
+      .subscribe((upadtedUser:any)=>{
+        this.user = upadtedUser.data
+      })
   }
 
 }

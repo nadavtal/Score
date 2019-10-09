@@ -1,31 +1,45 @@
-<div class="container">
-        <mat-grid-list cols="2" 
-        rowHeight="3rem">
-            <mat-grid-tile>
-                <app-page-header
-                    [title]="'Friends'"
-                    >
-                </app-page-header>  
-            </mat-grid-tile>
-            <mat-grid-tile>
-                
-                <mat-icon aria-hidden="false" 
-            
-                    aria-label="Example home icon"
-                    (click)="searchFriends()">search
-                </mat-icon>
-            </mat-grid-tile>
+<div class="pageHeader"  [@moveInUp]>
+    <div class="d-flex between">
+        <div class="pageHeaderTitle">
+                Friends
+        </div>
         
-        </mat-grid-list>
+        <div class="switchButton">
+            <app-switch-check-box 
+            *ngIf="showSwitchButton"
+            [ifCheckedFunction]="showOnlineFriends.bind(this)"
+            [ifUnCheckedFunction]="showAllFriends.bind(this)">
+            </app-switch-check-box>
+
+        </div>
+        <div class="swichButtonText" *ngIf="showSwitchButton">{{showFriends}}</div>
+        
+        <div class="pageHeaderActions" >
+            <app-icon-to-row
+                [bgColor]="'purple'"
+                [icon]="'search'"
+                [positionClass]="'right0_2'"
+                (action)="searchFriends()">
+            </app-icon-to-row>
+            <app-icon-to-row
+                [bgColor]="'purple'"
+                [icon]="'comments'"
+                [positionClass]="'right1_2'"
+                (action)="sendMessageToFriends()">
+            </app-icon-to-row>
+            
+        </div>
+    </div>
     
     
 </div>
-<div *ngIf="loaded" >
+<div *ngIf="loaded" class="pageContent">
     <div [@listAnimation]="user.friends.length">
         <div *ngFor="let friend of user.friends; let i = index" >
             <app-friend 
                 [friend]="friend"
                 [index]="i"
+                [bgColor]="'purple'"
                 [user]="user">
             </app-friend>
         </div>

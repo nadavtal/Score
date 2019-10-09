@@ -30,6 +30,10 @@ export class UsersService {
        return this.user ;
     }
 
+    updateUser(user:any){
+        return this.query.put('users/'+user._id, user);
+    }
+
     getUserFromDb(id:string){
         
         return this.query.get('users/'+id);

@@ -10,8 +10,9 @@ import { GroupsService } from 'src/app/groups/groups.service';
 })
 export class FriendComponent implements OnInit {
   @Input()friend: any;
-  @Input()index:any
-  @Input()user:User
+  @Input()index:any;
+  @Input()user:User;
+  @Input()bgColor:string;
   constructor(private groupsService: GroupsService,
               private userService: UsersService) { }
 
@@ -36,7 +37,12 @@ export class FriendComponent implements OnInit {
   }
 
   removeFriend(index, user){
-    console.log(index, user)
+    console.log(index, user);
+    user.friends.splice(index, 1);
+    this.userService.updateUser(user)
+      .subscribe((updatedUser:any)=> {
+        console.log(updatedUser.data)
+      })
   }
 
   findSharedGroupsWithUser(groupsArray:any, user:any){

@@ -76,5 +76,6 @@
     [triggerIconName]="'bars'"
     [actions]="actions"
     [toolBarColor] = "toolBarColor"
-    [color]="'white'">
+    [color]="'white'"
+    (action)="toolBarActionClicked($event)">
 </app-tool-bar>

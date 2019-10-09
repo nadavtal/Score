@@ -1,4 +1,5 @@
-import { Component, OnInit, Input, HostListener, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, HostListener, ElementRef, Output } from '@angular/core';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-tool-bar',
@@ -12,6 +13,7 @@ export class ToolBarComponent implements OnInit {
   @Input() toolBarColor:string;
   @Input() color:string;
   open:boolean;
+  @Output() action = new Subject<any>()
   @HostListener('document:click', ['$event'])
   clickout(event) {
     if(!this.eRef.nativeElement.contains(event.target) && this.open) {
@@ -29,6 +31,11 @@ export class ToolBarComponent implements OnInit {
   toggleToolBar(){
     
     this.open = !this.open
+  }
+
+  toolBarActionClicked(event){
+    this.open = false
+    this.action.next(event)
   }
 
   

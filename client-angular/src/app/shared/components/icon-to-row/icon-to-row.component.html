@@ -18,7 +18,7 @@
         </div>
         <div *ngIf="icon == 'trash'">
             <div class="question">
-                Are you sure you want to delete this group?
+                {{question}}
                 <fa class="white icon-download" class="chatSend" name="trash" animation=""
                     (click)="yesFunction()">
                 </fa>    
@@ -26,6 +26,15 @@
                     (click)="toggleForm()">
                 </fa>
             </div>
+        </div>
+        <div class="input" *ngIf="icon =='search'">
+            <input class="chatInput black" [(ngModel)]="search" placeholder="Search..."/>
+            <fa class="white icon-download" class="chatSend" name="search" animation=""
+                (click)="yesFunction(search)">
+            </fa>    
+            <fa class="white icon-download" class="chatSend" name="minus" animation=""
+                (click)="toggleForm()">
+            </fa>    
         </div>
     </div>
     

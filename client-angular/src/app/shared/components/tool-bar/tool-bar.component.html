@@ -11,7 +11,7 @@
         *ngIf="open">
         <div class="action actionIconWrapper" 
             *ngFor="let action of actions"
-            (click)="action.function()"
+            (click)="toolBarActionClicked(action.name)"
             >
             <fa class="{{color}} absCenter" name="{{action.icon}}" animation=""></fa>
         </div>

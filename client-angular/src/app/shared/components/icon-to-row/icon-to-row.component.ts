@@ -12,6 +12,7 @@ export class IconToRowComponent implements OnInit {
   @Input() bgColor:string;
   @Input() icon:string;
   @Input() positionClass:string;
+  @Input() question:string;
   @Output() action =  new Subject<any>();
   constructor(private groupsService: GroupsService) { }
 

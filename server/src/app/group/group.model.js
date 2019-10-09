@@ -54,6 +54,12 @@
     updatedAt: {
       type: Date
     },
+    active: {
+      type: Boolean,
+      default: true
+    },
+    inActiveReason: String,
+    lastActiveDate: Date
   });
 
   /**

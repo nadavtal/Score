@@ -223,6 +223,8 @@
         { '$set': {
           'platform': bodyParams.platform,
           'accountId': bodyParams.accountId,
+          'active': bodyParams.active,
+          'inActiveReason': bodyParams.inActiveReason,
           
           }
         },

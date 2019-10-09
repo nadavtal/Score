@@ -13,13 +13,16 @@ import { listAnimation, moveInUp } from '../shared/animations'
   selector: 'app-friends',
   templateUrl: './friends.component.html',
   styleUrls: ['./friends.component.scss'],
-  animations:[listAnimation]
+  animations:[listAnimation, moveInUp]
 })
 export class FriendsComponent implements OnInit {
   user:User;
   id:string;
   dataLoaded:boolean;
   loaded:boolean = false;
+  actions:any;
+  showSwitchButton: boolean = true;
+  showFriends:string = 'All friends'
 
   constructor(
     private usersService: UsersService,
@@ -29,7 +32,10 @@ export class FriendsComponent implements OnInit {
     }
 
   ngOnInit() {
-
+    // this.actions= [
+    //   {name: 'Filter', color: 'purple', icon: 'filter', },
+    //   {name: 'Search', color: 'purple', icon: 'search', },
+    // ];
     this.usersService.userSelected
     .subscribe((user:any)=>{
       this.user = user;
@@ -62,40 +68,18 @@ export class FriendsComponent implements OnInit {
     
     
   }
-
-  getUser(){
-    return new Promise<User>((resolve, reject) => { 
-      console.log(this.usersService.getUser())
-      if(this.usersService.getUser()){
-        const user = this.usersService.getUser();
-        console.log('user in FriendsComponent from getUser', this.user);
-        resolve(user)
-        
-      }else{
-        this.route.parent.params
-        .subscribe(
-          (params: Params) => {
-            // console.log(params)
-            this.id = params['id'];
-            this.usersService.getUserFromDb(this.id)
-              .subscribe((user:any) => {
-                // console.log(user.data)
-                this.user = user.data
-                console.log('user in FriendsComponent from server', this.user);
-                resolve(this.user)
-  
-              })
-          }
-        );
-      };
-
-    })
+  showOnlineFriends(){
+    this.showFriends = 'Online friends'
+    
   }
-
+  showAllFriends(){
+    this.showFriends = 'All friends'
+  }
   
 
   searchFriends(){
-    console.log(this.user)
+    console.log(this.user);
+    
     // console.log('friends', this.user.friends)
   }
 

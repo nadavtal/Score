@@ -8,6 +8,7 @@ import { QueryService } from '../shared/services/query.service';
 @Injectable({providedIn: 'root'})
 export class AccountsService {
     
+    accountDeleted = new Subject<any>()
     constructor(private query: QueryService){}
 
     // getAccounts(){
@@ -24,6 +25,9 @@ export class AccountsService {
     
     createAccount(account:any){
       return this.query.post('accounts/', account)
+    }
+    updateAccount(account:any){
+      return this.query.put('accounts/'+account._id, account)
     }
 
     

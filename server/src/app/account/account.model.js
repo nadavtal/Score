@@ -29,7 +29,13 @@
       type: String,
       
     },
-    userId: ObjectId
+    userId: ObjectId,
+    active: {
+      type: Boolean,
+      default: true
+    },
+    inActiveReason: String,
+    lastActiveDate: Date
   })
 
   /**

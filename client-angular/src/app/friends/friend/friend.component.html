@@ -1,4 +1,4 @@
-<div class="friendRow">
+<div class="friendRow ">
     <mat-grid-list cols="12" 
         rowHeight="3rem"
         *ngIf="friend">
@@ -22,7 +22,7 @@
             <div  *ngFor=" let group of friend.sharedGroups">{{group.groupName}}</div>
         </mat-grid-tile>
 
-        <mat-grid-tile colspan="2">
+        <!-- <mat-grid-tile colspan="2">
             <div class="rowActions">
                 
                 <fa class="red" name="trash" animation=""
@@ -30,12 +30,23 @@
                 </fa>
                 
             </div>
-        </mat-grid-tile>
+        </mat-grid-tile> -->
         
     
     </mat-grid-list>
-    <app-send-message
-        [bgColor]="'purple'">
-    </app-send-message>
+    <app-icon-to-row
+        [bgColor]="'red'"
+        [icon]="'trash'"
+        [question]="'Are you sure you want to remove this friend?'"
+        [positionClass]="'right0_2'"
+        (action)="removeFriend(index, user)">
+    </app-icon-to-row>
+    <app-icon-to-row
+        [bgColor]="bgColor"
+        [icon]="'comments'"
+        [positionClass]="'right1_2'"
+        (action)="sendMessage($event)">
+    </app-icon-to-row>
+    
 </div>
 

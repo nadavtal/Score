@@ -11,7 +11,7 @@ import { localStorageService } from '../shared/services/local-storage.service';
   selector: 'app-accounts',
   templateUrl: './accounts.component.html',
   styleUrls: ['./accounts.component.scss'],
-  animations: [listAnimation]
+  animations: [listAnimation, moveInUp]
 })
 export class AccountsComponent implements OnInit {
   user: User;
@@ -20,14 +20,12 @@ export class AccountsComponent implements OnInit {
   actions:any;
   loaded:boolean = false;
   currentUser: any;
-
+  showSwitchButton: boolean = true;
+  showAccounts: string = 'All accounts'
   constructor(private accountsService: AccountsService,
               private usersService: UsersService,
               private localStorage: localStorageService,
-              private route: ActivatedRoute) {
-
-    
-   }
+              private route: ActivatedRoute) {}
 
   ngOnInit() {
     // this.actions= [
@@ -37,6 +35,10 @@ export class AccountsComponent implements OnInit {
     //   {name: 'Message', color: 'black', icon: 'shopping-cart'},
       
     // ];
+    this.accountsService.accountDeleted
+      .subscribe(deletedAccount=>{
+        this.removeAccount(deletedAccount._id)
+      })
     this.currentUser = this.localStorage.get('currentUser')
     this.usersService.userSelected
     .subscribe((user:any)=>{
@@ -76,6 +78,23 @@ export class AccountsComponent implements OnInit {
     
 
    
+  }
+
+  removeAccount(accountId){
+    this.accounts = this.accounts.filter((account:any) => {
+      console.log(account._id, accountId)
+      return account._id !== accountId
+    })
+    
+    console.log(this.accounts)
+  }
+
+  showActiveAccounts(){
+    this.showAccounts = 'Active accounts'
+  }
+
+  showAllAccounts(){
+    this.showAccounts = 'All accounts'
   }
  
 

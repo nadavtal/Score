@@ -5,9 +5,8 @@ import { NgForm } from '@angular/forms';
 import { localStorageService } from 'src/app/shared/services/local-storage.service';
 import { Utils } from 'src/app/shared/services/utils.service';
 import { listAnimation, moveInUp } from '../../../shared/animations'
-import Swal from 'sweetalert2';
-import * as _swal from 'sweetalert';
-import { SweetAlert } from 'sweetalert/typings/core';
+import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
+// import { SweetAlert } from 'sweetalert/typings/core';
 
 @Component({
   selector: 'app-game-info',
@@ -17,6 +16,7 @@ import { SweetAlert } from 'sweetalert/typings/core';
 })
 export class GameInfoComponent implements OnInit {
   @ViewChild('gameForm', {static: false}) private gameForm: NgForm;
+  @ViewChild('gameSwal', {static: false}) private gameSwal: SwalComponent;
   id: string;
   game:any;
   loaded:boolean =  false;
@@ -27,7 +27,7 @@ export class GameInfoComponent implements OnInit {
   currentUser:any;
   gameTypes: any;
   groupsNum: number;
-  swal: SweetAlert = _swal as any;
+  
   constructor(
       private route: ActivatedRoute,
       private router: Router,
@@ -36,6 +36,7 @@ export class GameInfoComponent implements OnInit {
       private gamesService: GamesService) { }
 
   ngOnInit() {
+    
     this.currentUser = this.localStorage.get('currentUser')
     this.actions= [
       {name: 'Edit', color: 'green', icon: 'envelope-open'},
@@ -78,6 +79,7 @@ export class GameInfoComponent implements OnInit {
 
   editGame(){
     this.editMode = !this.editMode;
+    
   }
   saveGame(){
     if(this.editMode == true){
@@ -99,9 +101,23 @@ export class GameInfoComponent implements OnInit {
 
   joinGame(){
     console.log('joining game')
-    this.game.players.push({userName: this.currentUser.userName,
-                            userId: this.currentUser._id});
-    this.saveGame();
+    this.game.players.push({
+      userName: this.currentUser.userName,
+      userId: this.currentUser._id
+    });
+    this.gamesService.editGame(this.game)
+      .subscribe((upadtedGame:any)=> {
+        this.game = upadtedGame.data;
+        this.gameSwal.title="GOOD LUCK";
+        this.gameSwal.text="You are registered to this game";
+        this.gameSwal.type="success";
+        this.gameSwal.timer = 1000;
+
+        // console.log(this.gameSwal)
+        this.gameSwal.fire()
+        this.registered = this.utilsService.checkIfUserInArrayByUsername(this.game.players, this.currentUser.userName);
+        console.log(this.registered);
+      })
   }
   leaveGame(){
     console.log('leaving game')
@@ -152,14 +168,21 @@ export class GameInfoComponent implements OnInit {
   takeThisPlace(playerIndex:number, groupNum:number){
     console.log(this.registered)
     if(this.registered){
-      this.swal({
-        title: 'You are allready registered to this tournament',
-        
-        icon: "error",
-        timer: 1700,
-        buttons: ['ok']
+      
+      this.gameSwal.title="Oopsy!!";
+      this.gameSwal.text="You are allready registered to this tournament";
+      this.gameSwal.type="error";
+      this.gameSwal.timer = 1000;
 
-      }) 
+      this.gameSwal.fire()
+      // this.swal({
+      //   title: 'You are allready registered to this tournament',
+        
+      //   icon: "error",
+      //   timer: 1700,
+      //   buttons: ['ok']
+
+      // }) 
       return
     } else{
       this.game.gameGroups[groupNum].groupMembers[playerIndex].userName = this.currentUser.userName

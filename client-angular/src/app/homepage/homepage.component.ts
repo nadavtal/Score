@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { listAnimation} from '../shared/animations'
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router, Event, NavigationStart, NavigationEnd, NavigationError } from '@angular/router';
 
 @Component({
   selector: 'app-homepage',
@@ -25,10 +25,47 @@ export class HomepageComponent implements OnInit {
      
     ];
     this.tab = this.router.url.substring(this.router.url.lastIndexOf('/') + 1);
-    console.log(this.tab);
+   
     if(this.tab !== 'home'){
       this.showMenuTabs = true
     }
+    this.router.events.subscribe( (event: Event) => {
+    
+      if (event instanceof NavigationStart) {
+        //  console.log('NavigationStart', event) // Show loading indicator
+      }
+
+      if (event instanceof NavigationEnd) {
+          // Hide loading indicator
+          console.log('NavigationEnd', event);
+          this.tab = this.router.url.substring(this.router.url.lastIndexOf('/') + 1);
+          
+          console.log(this.tab)
+          for(let i =0; i<this.tabs.length; i++){
+            if(this.tabs[i].name == this.tab){
+              this.showMenuTabs = true;
+              break
+            } else{
+              this.showMenuTabs = false;
+            }
+          }
+
+          console.log(this.showMenuTabs)
+
+          
+      }
+
+      if (event instanceof NavigationError) {
+          // Hide loading indicator
+
+          // Present error to user
+          console.log(event.error);
+      }
+    });
+    this.route.params
+      .subscribe((params:Params) =>{
+        console.log(params)
+      })
   }
 
   dinamicTabsClicked(event){
