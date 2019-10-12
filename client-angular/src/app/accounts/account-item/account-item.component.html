@@ -2,15 +2,15 @@
     [class.inActive]="account.active == false">
     <div class="row">
         <div class="col-2"
-            [routerLink] = "['/accounts',account.platform, account.accountId]">
+            [routerLink] = "['/accounts',account.platform, account.accountType, account.accountId]">
             <img class="accountImage" src="../../../assets/img/platforms/{{account.platform}}.png" alt="">
         </div>
         <div class="col-4"
-           [routerLink] = "['/accounts',account.platform, account.accountId]">
+           [routerLink] = "['/accounts',account.platform, account.accountType, account.accountId]">
             {{account.userName}}
         </div>
         <div class="col-4"
-            [routerLink] = "['/accounts',account.platform, account.accountId]">
+            [routerLink] = "['/accounts',account.platform, account.accountType, account.accountId]">
             {{account.accountId}}
         </div>
     </div>

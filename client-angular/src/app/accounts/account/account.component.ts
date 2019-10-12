@@ -12,8 +12,9 @@ export class AccountComponent implements OnInit {
   tab:any;
   account:any;
   accountId:any;
-  
-  constructor(private clashService: ClashRoyaleService,
+  accountType:any;
+  platform:any;
+  constructor(private clashRoyaleService: ClashRoyaleService,
               private route: ActivatedRoute) { }
 
   ngOnInit() {
@@ -21,17 +22,39 @@ export class AccountComponent implements OnInit {
     this.route.params
     .subscribe(
       (params: Params) => {
-        // this.path = this.route.snapshot.url[0].path;
-        // this.tab = this.route.snapshot.url[2].path;
-        console.log(this.clashService)
+        console.log(params)
+        this.accountType = params['accountType'];
         this.accountId = params['accountId'];
-        this.clashService.getClashUser(this.accountId)
-          .subscribe((account:any) => {
-            this.account = account;
-            console.log('account in accounComponent', this.account);
-            this.clashService.clashUser.next(this.account)
+        this.platform = params['platform'];
+        
+        switch(this.platform) { 
+          case 'Clash Royale': { 
+            switch(this.accountType){
+              case('user'): {
+                this.clashRoyaleService.getClashUser(this.accountId)
+                .subscribe((account:any) => {
+                  this.account = account;
+                  console.log('account in accounComponent', this.account);
+                  this.clashRoyaleService.clashUser.next(this.account)
+                  
+                })
+              }
+              case('clan'): {
+                this.clashRoyaleService.getClan(this.accountId)
+                .subscribe((account:any) => {
+                  this.account = account;
+                  console.log('account in accounComponent', this.account);
+                  this.clashRoyaleService.clashClan.next(this.account)
+                  
+                })
+              }
+            }
             
-          })
+             break; 
+          } 
+          
+       }
+        
       }
     );
     

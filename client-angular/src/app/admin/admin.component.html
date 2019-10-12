@@ -1,0 +1,297 @@
+<h1>ADMIN</h1>
+
+<div *ngIf="loaded">
+    <div *ngIf="currentUser.role == 'admin'">
+        <div class="bg-green white">Add User</div>
+        <form
+            onsubmit="submitUserForm(user, user._id)"
+            name="userForm"
+            role="form"
+            id="addUser"
+            novalidate
+        >
+    
+            <div class="row">
+                
+                <div class="col-5">
+                    
+                    <input
+                        type="text"
+                        (ngModel)="user.userName"
+                        
+                        name="userName"
+                        id="userName"
+                        autocomplete="off"
+                        placeholder="Username"
+                        required
+                    >
+                </div>
+            </div>
+    
+            <div class="row" >
+                <!-- <label for="password" class="col-5">Password</label> -->
+                <div class="col-5">
+                    <input
+                        type="password"
+                        (ngModel)="user.password"
+                        
+                        name="password"
+                        id="password"
+                        autocomplete="off"
+                        placeholder="Password"
+                        required
+                    >
+                </div>
+            </div>
+    
+            <div class="row">
+                <!-- <label for="firstName" class="col-5">First name</label> -->
+                <div class="col-5">
+                    <input
+                        type="text"
+                        (ngModel)="user.firstName"
+                        
+                        name="firstName"
+                        id="firstName"
+                        autocomplete="off"
+                        placeholder="First name"
+                    >
+                </div>
+            </div>
+    
+            <div class="row">
+                <!-- <label for="surname" class="col-5">Surname</label> -->
+                <div class="col-5">
+                    <input
+                        type="text"
+                        (ngModel)="user.surname"
+                        
+                        name="surname"
+                        id="surname"
+                        autocomplete="off"
+                        placeholder="Surname"
+                    >
+                </div>
+            </div>
+    
+            <div class="row">
+                <!-- <label for="email" class="col-5">Email</label> -->
+                <div class="col-5">
+                    <input
+                        type="email"
+                        (ngModel)="user.email"
+                        
+                        name="email"
+                        id="email"
+                        autocomplete="off"
+                        placeholder="Email"
+                    >
+                </div>
+            </div>
+    
+            <div class="row">
+                <label for="role" class="col-5">Role</label>
+                <div class="col-5">
+                    <input
+                        type="text"
+                        (ngModel)="user.role"
+                        
+                        name="role"
+                        id="role"
+                        autocomplete="off"
+                        placeholder="Role"
+                        *ngIf="actionType == 'loadUser'"
+                    >
+                    <select
+                        type="text"
+                        (ngModel)="user.role"
+                        
+                        name="role"
+                        id="role"
+                        autocomplete="off"
+                        placeholder="Role"
+                        *ngIf="actionType != 'loadUser'"
+                        required
+                    >
+                        <option value="user">user</option>
+                        <option value="admin">admin</option>
+                        <option value="group-manager">group-manager</option>
+                    </select>
+                </div>
+            </div>
+    
+            <div class="row">
+                <label for="wins" class="col-5">wins</label>
+                <div class="col-5">
+                    <input
+                        type="text"
+                        (ngModel)="user.wins"
+                        
+                        name="wins"
+                        id="wins"
+                        autocomplete="off"
+                        placeholder="wins"
+                        
+                    >
+                    
+                </div>
+            </div>
+    
+            <div class="row">
+                <div class="col-5 col-offset-5">
+                    <button class="customButton"
+                        type="submit"
+                        
+                        
+                    >
+                        Create
+                    </button>
+    
+                    
+                </div>
+            </div>
+        </form> 
+    </div>
+    <div *ngIf="currentUser.role == 'admin'">
+        <div class="bg-green white">Add Platform</div>
+        <form
+            ng-submit="submitAddPlatform(platform)"
+            name="addPlatform"
+            role="form"
+            id="AddPlatformForm"
+            novalidate
+        >
+    
+            <div class="row">
+                <label for="platform" class="col-xs-5">Platform</label>
+                <div class="col-xs-7">
+                    <input
+                        type="text"
+                        (ngModel)="platform.name"
+                    
+                        name="platform"
+                        id="platform"
+                        autocomplete="off"
+                        placeholder="Platform name"
+                    >
+                </div>
+                <label for="platformType" class="col-xs-5">type</label>
+                <div class="col-xs-7">
+                    <select
+                        type="text"
+                        (ngModel)="platform.type"
+                        
+                        name="platformType"
+                        id="platformType"
+                        autocomplete="off"
+                        placeholder="Role"
+                        *ngIf="actionType != 'loadUser'"
+                        required>
+                        <option ng-repeat="platformType in platformTypes" value="{{platformType.name}}">{{platformType.name}}</option>
+                        
+                    </select>
+                    <!-- <input
+                        type="text"
+                        (ngModel)="platform.type"
+                        
+                        name="platformType"
+                        id="platformType"
+                        autocomplete="off"
+                        placeholder="platformType"
+                    > -->
+                </div>
+                
+            </div>
+    
+            
+            <button class="customButton"
+                type="submit"
+                ng-disabled="addPlatform.$invalid"
+                
+            >
+                Save
+            </button>
+            
+        </form>
+    </div>
+    <br>
+    <div *ngIf="currentUser.role == 'admin'">
+            <div class="bg-green white">Add Platform type</div>
+            <form
+                ng-submit="submitAddPlatformType(platformType)"
+                name="addPlatformType"
+                role="form"
+                id="user"
+                novalidate
+            >
+    
+                <div class="row">
+                    <label for="platformType" class="col-xs-5">PlatformType</label>
+                    <div class="col-xs-7">
+                        <input
+                            type="text"
+                            (ngModel)="platformType"
+                        
+                            name="platformType"
+                            id="platformTypeName"
+                            autocomplete="off"
+                            placeholder="Platform type "
+                        >
+                    </div>
+                    
+                    
+                </div>
+    
+                
+                <button class="customButton"
+                    type="submit"
+                    ng-disabled="addPlatformType.$invalid"
+                    
+                >
+                    Save
+                </button>
+                
+                
+            </form>
+    </div>
+    <br>
+    <div *ngIf="currentUser.role == 'admin'">
+            <div class="bg-green white">Add game type</div>
+            <form
+            ng-submit="submitAddGameType(gameType)"
+            name="addGameType"
+            role="form"
+            id="userAdmin"
+            novalidate
+        >
+    
+            <div class="row">
+                <label for="gameType" class="col-xs-5">GameType</label>
+                <div class="col-xs-7">
+                    <input
+                        type="text"
+                        (ngModel)="gameType"
+                    
+                        name="gameType"
+                        id="gameType"
+                        autocomplete="off"
+                        placeholder="GameType"
+                    >
+                </div>
+                
+                
+            </div>
+    
+            
+            <button class="customButton"
+                type="submit"
+                ng-disabled="addGameType.$invalid"
+                
+            >
+                Save
+            </button>
+            
+        </form>
+    </div>
+
+</div>

@@ -33,6 +33,11 @@ export class SweetAlertComponent implements OnInit {
     
   }
 
+  platformChosen(platform){
+    console.log(platform);
+    console.log(this.form);
+  }
+
   modalConfirmedClicked(){
     console.log(this.formName)
     console.log(this.form.value);

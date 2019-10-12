@@ -9,16 +9,16 @@
   var mongoose = require('mongoose');
   var ObjectId = mongoose.Types.ObjectId;
   var Clan = require('./clan.model.js');
-
+  // var ClashUser = require('../clashuser/clashuser.model.js');
   var utils = require('../utils/utils.js');
   var request = require("request");
   var Battle = require('../battle/battle.model');
-  // public
+  
   module.exports = {
     createClan,
     getClansFromDatabase,
     getClashClan,
-    getAllClanBattles, 
+    getAllBattlesByClan,
     createFriendlyBattle, 
     getAllFriendlyBattles, 
     getBattle
@@ -30,6 +30,7 @@
   function createClan(req, res, next) {
     var params = req.body;
     console.log('creating clan', params)
+
     var clan = new Clan({
       Name: params.clanTag,
       
@@ -104,7 +105,7 @@
     
       request(options, function (error, response, body) {
         if (error) throw new Error(error);
-        console.log(body)
+        // console.log(body)
           
         
         res.send(body)
@@ -112,15 +113,14 @@
       })
   }
 
-  function getAllClanBattles(clanTag){
-
-  }
+ 
 
   function createFriendlyBattle(req, res, next){
     
     var params = req.body;
     console.log(params.team.length)
     if(params.team.length == 1){
+     
       console.log('creating friendly battle')
       var battle = new Battle({
         type: params.type,
@@ -141,7 +141,7 @@
                   
         
       });
-      console.log(battle)
+      // console.log(battle)
       // req params validation for required fields
       // req.checkBody('clanTag', 'clanTag must be defined').notEmpty();
       
@@ -154,7 +154,7 @@
       }
   
       battle.save((err, newBattle) => {
-        console.log('saving Clan', newBattle)
+        console.log('saving Battle', newBattle)
         if (err) return next({ err: err, status: 400 });
         if (!newBattle) return next({ message: 'Battle not created.', status: 400 });
   
@@ -208,6 +208,236 @@
         res.send(battle)
       })
   }
+
+  function getAllBattlesByClan(clan){
+    var clan = JSON.parse(clan)
+    // console.log('CLAN', clan)
+    var promiseArr = [];
+        for (var i = 0; i < clan.memberList.length; i++) {
+            var promise = new Promise(function(resolve, reject) {
+              // console.log(clan.memberList[i].tag)
+              var reparedUserTag = userTagToFriendlyUrl(clan.memberList[i].tag);
+              // console.log(reparedUserTag);
+              var url = 'https://api.clashroyale.com/v1/players/'+ reparedUserTag +'/battlelog'
+              // console.log('getting clash user battles url', url)
+              var options = { method: 'GET',
+                url: url,
+                headers: 
+                { 
+                  Authorization: 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6IjdiODAyNDE4LWQxN2EtNGQ3Ni1iZGQyLTNhMzUzMWJhZTdjYiIsImlhdCI6MTU2MzUzMTM2Nywic3ViIjoiZGV2ZWxvcGVyLzJjOTg4MjcxLTMwYzktZmQ1ZS03YWQyLTQ1Yzg3YTYxZWIwNiIsInNjb3BlcyI6WyJyb3lhbGUiXSwibGltaXRzIjpbeyJ0aWVyIjoiZGV2ZWxvcGVyL3NpbHZlciIsInR5cGUiOiJ0aHJvdHRsaW5nIn0seyJjaWRycyI6WyIyMTMuNTcuMjQ2LjQ0Il0sInR5cGUiOiJjbGllbnQifV19.eBzA0OArr0ag9xGuDZVkhId5X7m44gIPI67gL5xDRjF4O86lWwn2IPWpLqH54nAvIxeKq4hvC6u29TFyeKpi-A' },
+                  'Cache-Control': 'no-cache' 
+                };
+                  
+              request(options, function (error, response, body) {
+                if (error) throw new Error(error);
+                // console.log('got battles from clash API')
+                  
+                
+                var battles = JSON.parse(body);
+                resolve(battles)
+                // console.log(battles);
+                // var battlesLeangth = user.battles.length;
+                // for(let battle of battles){
+                //   var exists = checkIfBattleExists(user, battle.battleTime);
+                //   // console.log(exists);
+                //   if(!exists){
+                //     user.battles.push(battle);
+                //   }
+                  
+                // };
+                // console.log(battlesLeangth, user.battles.length)
+                // if(battlesLeangth !== user.battles.length){
+                //   updateClashUser(user)
+                //     .then(function(updatedUser){
+                //       // console.log('updatedUser', updatedUser);
+                //       resolve(updatedUser)
+                //     });  
+                // } else{
+                //   console.log('no new battles')
+                //   resolve(user)
+                // }
+                })
+                
+              })
+                
+            
+            promiseArr.push(promise);
+        }
+        // console.log(promiseArr)
+        return Promise.all(promiseArr);
+  }
+
+  function getClanBattles(clanId) {
+    var promise = new Promise(function(resolve, reject){
+      var reparedClanId = '%23'+ clanId.slice(1, clanId.length);
+      var url = 'https://api.clashroyale.com/v1/clans/'+ reparedClanId
+      console.log('getting clash clan', reparedClanId, url)
+      var options = { method: 'GET',
+        url: url,
+        headers: 
+        { 
+          Authorization: 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6IjdiODAyNDE4LWQxN2EtNGQ3Ni1iZGQyLTNhMzUzMWJhZTdjYiIsImlhdCI6MTU2MzUzMTM2Nywic3ViIjoiZGV2ZWxvcGVyLzJjOTg4MjcxLTMwYzktZmQ1ZS03YWQyLTQ1Yzg3YTYxZWIwNiIsInNjb3BlcyI6WyJyb3lhbGUiXSwibGltaXRzIjpbeyJ0aWVyIjoiZGV2ZWxvcGVyL3NpbHZlciIsInR5cGUiOiJ0aHJvdHRsaW5nIn0seyJjaWRycyI6WyIyMTMuNTcuMjQ2LjQ0Il0sInR5cGUiOiJjbGllbnQifV19.eBzA0OArr0ag9xGuDZVkhId5X7m44gIPI67gL5xDRjF4O86lWwn2IPWpLqH54nAvIxeKq4hvC6u29TFyeKpi-A' } };
+      
+        request(options, function (error, response, clan) {
+          if (error){
+            reject(error)
+            throw new Error(error);
+          } else{
+            getAllBattlesByClan(clan)
+            .then(function(battles) {
+                  // console.log(values);
+                  resolve(battles)
+              });
+          }
+          // console.log(clan)
+          
+            
+        })
+      
+    });
+    return promise
+      
+  };
+
+  function findFriendlyBattles(battlesArray){
+    var promise = new Promise((resolve, reject)=> {
+      var friendlyBattles = []
+      if(battlesArray.length == 0){
+        reject('No battles in battlesArray')
+      }
+      for (var j = 0; j < battlesArray.length; j++) {
+        // console.log(battlesArray[j].type)                 
+        if(battlesArray[j].type == 'friendly'){
+          // console.log('foundfriendlyBattle', battlesArray[j]);
+          friendlyBattles.push(battlesArray[j])
+          
+          
+        }
+      }
+      resolve(friendlyBattles)
+      
+      
+    })
+    return promise
+    
+  }
+
+  function getFriendlyBattlesByClan(clanId){
+    var promise = new Promise((resolve, reject) =>{
+      var friendlyBattles = []
+      getClanBattles(clanId)
+      .then(function(battles){
+        console.log('BATTLES', battles.length);
+        
+        for(var i = 0; i<battles.length; i++){
+          findFriendlyBattles(battles[i])
+          .then((battles)=>{
+            for(var j = 0; j<battles.length; j++){
+              friendlyBattles.push(battles[j])
+            }
+            resolve(friendlyBattles)
+          })
+        }
+        
+      });
+    })
+    return promise
+  }
+
+  function checkIfBattleExists(battle){
+    var promise = new Promise((resolve, reject)=> {
+      var battletoUpaload = battle
+      getFriendlyBattleByTime(battle.battleTime)
+      .then((battle)=> {
+        // console.log(battle)
+        if(battle){
+          // console.log('inDB')
+          resolve(false)
+        } else{
+          resolve(battletoUpaload)
+        }
+      })
+    })
+    
+    return promise  
+  }
+
+  function userTagToFriendlyUrl(userTag){
+    var reparedUserTag = '%23'+ userTag.slice(1, userTag.length)
+    return reparedUserTag
+  }
+
+  function getFriendlyBattleByTime(time){
+    return Battle
+      .findOne({
+        battleTime: time
+        
+      })
+      .exec(function(err, battle){
+        
+      })
+  }
+
+
+
+  function updateNewFriendlyBattlesFromAllClans(){
+    Clan.find()
+    .then(function(data){
+      // console.log(data)
+      var clans = data;
+      // console.log('ALL CLANS IN DATABASE', clans)
+      for(var i = 0; i<clans.length; i++){
+        // console.log(clans[i].Name)
+        getFriendlyBattlesByClan(clans[i].Name)
+        .then((friendlyBattles) => {
+          // console.log('friendlyBattles', friendlyBattles.length)
+          for(var i = 0; i<friendlyBattles.length; i++){
+            checkIfBattleExists(friendlyBattles[i])
+              .then((battle)=>{
+                console.log('New Battle', battle)
+                if(battle == true){
+                  
+                  var battle = new Battle({
+                    type: battle.type,
+                    battleTime: battle.battleTime,
+                    gameMode: battle.gameMode.name,
+                    clan: battle.team[0].clan.tag,
+                    team: [{
+                          tag: battle.team[0].tag,
+                          name: battle.team[0].name,
+                          crowns: battle.team[0].crowns,
+                          }], 
+                          
+                    opponent: [{
+                          tag: battle.team[0].tag,
+                          name: battle.team[0].name,
+                          crowns: battle.team[0].crowns,
+                          }], 
+                              
+                    
+                  });
+                  battle.save((err, newBattle) => {
+                    console.log('saving Battle', newBattle)
+                    if (err) return next({ err: err});
+                    if (!newBattle) return next({ message: 'Battle not created.', status: 400 });
+                    console.log('Battle added to DB')
+                   
+                  });
+                  
+                } else{
+                  console.log('battle exists in DB')
+                }
+              })
+            
+          }
+        })
+      }
+    })
+  } 
+  updateNewFriendlyBattlesFromAllClans()
+
+  setInterval(updateNewFriendlyBattlesFromAllClans, 1800000);
+
 
   
 

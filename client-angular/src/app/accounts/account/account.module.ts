@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { AccountComponent } from './account.component';
-import { AccountInfoComponent } from './account-info/account-info.component';
-import { AccountBattlesComponent } from './account-battles/account-battles.component';
+import { ClashUserInfoComponent } from './clash-royale-user-account/clash-user-info/clash-user-info.component';
+import { ClashRoyaleBattles } from './clash-royale-user-account/clash-royale-battles/clash-royale-battles.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { RouterModule } from '@angular/router';
-import { ClashRoyaleBattleComponent } from './account-battles/clash-royale-battle/clash-royale-battle.component';
+import { ClashRoyaleBattleComponent } from './clash-royale-user-account/clash-royale-battles/clash-royale-battle/clash-royale-battle.component';
 
 @NgModule({
     declarations:[
         AccountComponent,
-        AccountInfoComponent,
-        AccountBattlesComponent, 
+        ClashUserInfoComponent,
+        ClashRoyaleBattles, 
         ClashRoyaleBattleComponent
     ],
     imports: [
@@ -19,8 +19,8 @@ import { ClashRoyaleBattleComponent } from './account-battles/clash-royale-battl
     ],
     exports:[
         AccountComponent,
-        AccountInfoComponent,
-        AccountBattlesComponent, 
+        ClashUserInfoComponent,
+        ClashRoyaleBattles, 
         ClashRoyaleBattleComponent,
     ]
 })

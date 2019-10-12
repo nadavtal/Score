@@ -20,6 +20,11 @@
       type: String,
       required: true
     },
+    accountType: {
+      type: String,
+      required: true,
+      default: 'user'
+    },
     userName: {
       type: String,
       required: true

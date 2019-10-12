@@ -261,17 +261,6 @@ animation=""
                         
                 </mat-form-field>
 
-               <!-- <mat-form-field class="example-full-width">
-                    <input matInput [matDatepicker]="picker" placeholder="Choose a date">
-                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-datepicker #picker></mat-datepicker>
-                </mat-form-field>
-                <input type="date"
-                    placeholder="time" 
-                    ngModel
-                    id="time"
-                    #time="ngModel"
-                    name="time">-->
                 <mat-form-field class="example-full-width">
                     <input matInput 
                     placeholder="Account Id" 
@@ -288,10 +277,27 @@ animation=""
                     id="platform"
                     ngModel
                     name="platform"
-                    #platform="ngModel">
+                    #platform="ngModel"
+                    (change)="platformChosen(platform)">
                     <option value="">Choose platform</option>
                     <option *ngFor="let platform of platforms" [value]="platform.name">
                             {{platform.name}}
+                    </option>
+                    
+                </select>
+                <br>
+                <select
+                    *ngIf="platform.value == 'Clash Royale'"
+                    id="accountType"
+                    ngModel
+                    name="accountType"
+                    #accountType="ngModel">
+                    <option value="">Choose account type</option>
+                    <option value="user">
+                            user
+                    </option>
+                    <option value="clan">
+                            clan
                     </option>
                     
                 </select>

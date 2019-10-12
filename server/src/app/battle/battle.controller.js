@@ -24,6 +24,7 @@
     getBattle,
     updateBattle,
     removeBattle,
+    getBattlesByClanTag,
     getBattlesByUserId
   };
 
@@ -80,7 +81,7 @@
 
     var options = {
         page: page,
-        limit: limit,
+        limit: 1000,
         lean: true
     };
 
@@ -103,6 +104,27 @@
 
       utils.sendJSONresponse(res, 200, battles, false, pagination);
     });
+  }
+
+   /**
+   * Get battles from DB by clan (paginated)
+   * GET '/battles/'
+   */
+  function getBattlesByClanTag(){
+    var params = req.params;
+      console.log(params.clanTag)
+     Battle
+        .find({'clan': params.clanTag})
+        
+        .exec((err, battles) => {
+          if (err) return next(err);
+          if (!battles) return next({
+            message: 'battle not found.',
+            status: 404
+          });
+  
+          utils.sendJSONresponse(res, 200, battles);
+        });
   }
 
   /**

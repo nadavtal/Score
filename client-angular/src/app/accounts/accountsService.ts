@@ -11,9 +11,9 @@ export class AccountsService {
     accountDeleted = new Subject<any>()
     constructor(private query: QueryService){}
 
-    // getAccounts(){
-    //     return this.accounts.slice();
-    // }
+    getAccounts(){
+      return this.query.get('accounts');
+    }
 
     // getAccount(id:number){
     //     return this.query.get();

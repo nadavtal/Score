@@ -36,11 +36,12 @@
    * POST '/games'
    */
   function createAccount(req, res, next) {
-    console.log('creating game')
+    console.log('creating account  ')
     var params = req.body;
     // console.log(params)
     var account = new Account({
       platform: params.platform,
+      accountType: params.accountType,
       userName: params.userName,
       accountId: params.accountId,
       userId: params.userId
@@ -222,6 +223,7 @@
         { _id: ObjectId(bodyParams._id) },
         { '$set': {
           'platform': bodyParams.platform,
+          'accountType': bodyParams.accountType,
           'accountId': bodyParams.accountId,
           'active': bodyParams.active,
           'inActiveReason': bodyParams.inActiveReason,

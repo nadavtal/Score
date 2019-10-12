@@ -23,6 +23,7 @@ import { MessagesModule } from './messages/messages.module';
 import { GroupModule } from './groups/group/group.module';
 import { GamesModule } from './games/games.module';
 import { UserModule } from './users/user/user.module';
+import { AdminComponent } from './admin/admin.component';
 
 
 
@@ -38,7 +39,7 @@ import { UserModule } from './users/user/user.module';
     HomepageComponent, 
     AuthComponent, 
     GroupFormComponent, 
-    CalculatePrizePoolComponent, 
+    CalculatePrizePoolComponent, AdminComponent, 
   ],
   imports: [
     BrowserModule,

@@ -61,31 +61,59 @@
    */
   function getClashPlayer(req, res){
     var userTag = req.params.usertag;
-    addBattlesToClashUser(userTag)
-      .then(function(updatedUser){
-        console.log('got updatedUser')
-        var url = 'https://api.clashroyale.com/v1/players/'+ reparedUserTag
-        // console.log('getting clash user', url)
-        var options = { method: 'GET',
-          url: url,
-          headers: 
-          { 
-            Authorization: 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6IjdiODAyNDE4LWQxN2EtNGQ3Ni1iZGQyLTNhMzUzMWJhZTdjYiIsImlhdCI6MTU2MzUzMTM2Nywic3ViIjoiZGV2ZWxvcGVyLzJjOTg4MjcxLTMwYzktZmQ1ZS03YWQyLTQ1Yzg3YTYxZWIwNiIsInNjb3BlcyI6WyJyb3lhbGUiXSwibGltaXRzIjpbeyJ0aWVyIjoiZGV2ZWxvcGVyL3NpbHZlciIsInR5cGUiOiJ0aHJvdHRsaW5nIn0seyJjaWRycyI6WyIyMTMuNTcuMjQ2LjQ0Il0sInR5cGUiOiJjbGllbnQifV19.eBzA0OArr0ag9xGuDZVkhId5X7m44gIPI67gL5xDRjF4O86lWwn2IPWpLqH54nAvIxeKq4hvC6u29TFyeKpi-A' },
-            'Cache-Control': 'no-cache' 
-          };
-            
-          request(options, function (error, response, body) {
-            if (error) throw new Error(error);
-            var user = JSON.parse(body);
-            console.log('body',user.tag)
-            // addBattlesToClashUser(user.tag)  
-            
-            res.send({updatedUser:updatedUser, clashUser: user})
-              
-          })
+    var reparedUserTag = userTagToFriendlyUrl(userTag);
+    ClashUser.findOne({ userTag:  userTag})
+      .then(function(clashUser){
+        console.log(clashUser);
+        if(clashUser){
+          addBattlesToClashUser(userTag)
+          .then(function(updatedUser){
+            console.log('got updatedUser')
+            var url = 'https://api.clashroyale.com/v1/players/'+ reparedUserTag
+            // console.log('getting clash user', url)
+            var options = { method: 'GET',
+              url: url,
+              headers: 
+              { 
+                Authorization: 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6IjdiODAyNDE4LWQxN2EtNGQ3Ni1iZGQyLTNhMzUzMWJhZTdjYiIsImlhdCI6MTU2MzUzMTM2Nywic3ViIjoiZGV2ZWxvcGVyLzJjOTg4MjcxLTMwYzktZmQ1ZS03YWQyLTQ1Yzg3YTYxZWIwNiIsInNjb3BlcyI6WyJyb3lhbGUiXSwibGltaXRzIjpbeyJ0aWVyIjoiZGV2ZWxvcGVyL3NpbHZlciIsInR5cGUiOiJ0aHJvdHRsaW5nIn0seyJjaWRycyI6WyIyMTMuNTcuMjQ2LjQ0Il0sInR5cGUiOiJjbGllbnQifV19.eBzA0OArr0ag9xGuDZVkhId5X7m44gIPI67gL5xDRjF4O86lWwn2IPWpLqH54nAvIxeKq4hvC6u29TFyeKpi-A' },
+                'Cache-Control': 'no-cache' 
+              };
+                
+              request(options, function (error, response, body) {
+                if (error) throw new Error(error);
+                var user = JSON.parse(body);
+                // console.log('body',user.tag)
+                // addBattlesToClashUser(user.tag)  
+                
+                res.send({updatedUser:updatedUser, clashUser: user})
+                  
+              })
+          });
+        } else{
+          var url = 'https://api.clashroyale.com/v1/players/'+ reparedUserTag
+            // console.log('getting clash user', url)
+            var options = { method: 'GET',
+              url: url,
+              headers: 
+              { 
+                Authorization: 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6IjdiODAyNDE4LWQxN2EtNGQ3Ni1iZGQyLTNhMzUzMWJhZTdjYiIsImlhdCI6MTU2MzUzMTM2Nywic3ViIjoiZGV2ZWxvcGVyLzJjOTg4MjcxLTMwYzktZmQ1ZS03YWQyLTQ1Yzg3YTYxZWIwNiIsInNjb3BlcyI6WyJyb3lhbGUiXSwibGltaXRzIjpbeyJ0aWVyIjoiZGV2ZWxvcGVyL3NpbHZlciIsInR5cGUiOiJ0aHJvdHRsaW5nIn0seyJjaWRycyI6WyIyMTMuNTcuMjQ2LjQ0Il0sInR5cGUiOiJjbGllbnQifV19.eBzA0OArr0ag9xGuDZVkhId5X7m44gIPI67gL5xDRjF4O86lWwn2IPWpLqH54nAvIxeKq4hvC6u29TFyeKpi-A' },
+                'Cache-Control': 'no-cache' 
+              };
+                
+              request(options, function (error, response, body) {
+                if (error) throw new Error(error);
+                var user = JSON.parse(body);
+                // console.log('body',user.tag)
+                // addBattlesToClashUser(user.tag)  
+                
+                res.send({updatedUser:'', clashUser: user})
+                  
+              })
+        }
       });
     
-    var reparedUserTag = userTagToFriendlyUrl(userTag);
+    
+    
     // var battlesUrl = 'https://api.clashroyale.com/v1/players/'+ reparedUserTag +'/battlelog'
     // console.log('getting clash user battles url', battlesUrl)
     // var options = { method: 'GET',
@@ -125,7 +153,7 @@
       ClashUser
         .findOne({ userTag:  userTag})
         .then(function(clashUser){
-          console.log('got clashUser: ');
+          console.log('got clashUser: ', clashUser);
           var user = clashUser;
           var reparedUserTag = userTagToFriendlyUrl(userTag);
           // console.log(reparedUserTag);
@@ -145,7 +173,7 @@
               
             
             var battles = JSON.parse(body);
-            console.log(battles);
+            // console.log(battles);
             var battlesLeangth = user.battles.length;
             for(let battle of battles){
               var exists = checkIfBattleExists(user, battle.battleTime);

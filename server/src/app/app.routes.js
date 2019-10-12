@@ -116,6 +116,7 @@
   var gameTypesCtrl = require('./gametype/gameType.controller.js');
   var platformTypesCtrl = require('./platformtype/platformType.controller.js');
   var uploadsCtrl = require('./updoads/updoads.controller.js');
+  var battlesCtrl = require('./battle/battle.controller');
 
   /**
    * uploads
@@ -166,6 +167,13 @@
   router.post('/games/:gameId', gamesCtrl.removeGame); // remove game
   router.get('/games/user/:userId', gamesCtrl.getGamesByUserId); // get games by user
   router.get('/games/group/:groupId', gamesCtrl.getGamesByGroupId); // get games by group
+
+   /**
+   * Battles
+   */
+  router.get('/battles', battlesCtrl.getAllBattles); // get all battles
+  router.get('/battles/:clanTag', battlesCtrl.getBattlesByClanTag); // get battles by clanTag 
+ 
 
     /**
    * Tournaments

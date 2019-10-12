@@ -19,6 +19,7 @@ import { GameComponent } from './games/game/game.component';
 import { AccountComponent } from './accounts/account/account.component';
 import { TournamentListComponent } from './games/tournament-list/tournament-list.component';
 import { GameListComponent } from './games/game-list/game-list.component';
+import { AdminComponent } from './admin/admin.component';
 
 
 const appRoutes: Routes = [
@@ -40,6 +41,7 @@ const appRoutes: Routes = [
     //     {path: 'Games', component: GamesComponent},
     //     {path: 'Messages', component: MessagesComponent},
     // ]},
+    {path: 'admin', component: AdminComponent},
     {path: 'users', component: UsersComponent},
     // {path: 'groups/:groupId', component: GroupComponent, children:[
     //     {path: 'Info', component: GroupInfoComponent},
@@ -56,7 +58,7 @@ const appRoutes: Routes = [
     {path: 'Tournaments', component: TournamentListComponent},
     { path: 'games', component: GamesComponent},
     { path: 'games/:gameId', component: GameComponent},
-    {path: 'accounts/:platform/:accountId', component: AccountComponent},
+    {path: 'accounts/:platform/:accountType/:accountId', component: AccountComponent},
     {path: 'home', component:HomepageComponent, children:[
         {path: 'Tournaments', component: TournamentListComponent},
         {path: 'Games', component: GameListComponent},

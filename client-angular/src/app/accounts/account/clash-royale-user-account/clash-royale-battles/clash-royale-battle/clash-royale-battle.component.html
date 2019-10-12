@@ -16,7 +16,7 @@
                 </div>
                 <div class="battle__participant__cards d-flex">
                     <div class="battle__participant__cards--card" *ngFor="let card of player.cards">
-                        <img  src="{{card.iconUrls.medium}}" alt="">
+                        <img *ngIf="card" src="{{card.iconUrls.medium}}" alt="">
                     </div>
                 </div>
                 
