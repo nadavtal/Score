@@ -133,16 +133,16 @@
   /**
    * ClashClans
    */
-  router.get('/clashclans', clanCtrl.getClansFromDatabase); // get clash users
-  router.post('/clashclans', clanCtrl.createClan); // get clash clan
-  router.get('/clashclans/:clanId', clanCtrl.getClashClan); // get clash clan
-  router.post('/clashclans/:clanId', clanCtrl.createFriendlyBattle); // create Friendly Battle
-  router.get('/clashclans/:clanId/:userId', clanCtrl.getClashClan); // get clash clan
+  router.get('/clashRoyalclans', clanCtrl.getClansFromDatabase); // get clash users
+  router.post('/clashRoyalclans', clanCtrl.createClan); // get clash clan
+  router.get('/clashRoyalclans/:clanId', clanCtrl.getClashRoyalClan); // get clash clan
+  router.post('/clashRoyalclans/:clanId', clanCtrl.updateClan); // update Clan
+  router.get('/clashRoyalclans/:clanId/:userId', clanCtrl.getClashRoyalClanFromClashApi); // get clash clan
   /**
    * FriendlyBattles
    */
   router.get('/friendlybattles/', clanCtrl.getAllFriendlyBattles); // get clash clan
-  router.get('/friendlybattles/:battleTime', clanCtrl.getBattle); // get clash clan
+  router.get('/friendlybattles/:battleTime/:clanTag', clanCtrl.getBattle); // get clash clan
   
   /**
    * Users
@@ -172,7 +172,9 @@
    * Battles
    */
   router.get('/battles', battlesCtrl.getAllBattles); // get all battles
+  // router.post('/battles/:platform', battlesCtrl.createBattle); // get all battles
   router.get('/battles/:clanTag', battlesCtrl.getBattlesByClanTag); // get battles by clanTag 
+  router.post('/battles/:clanTag', clanCtrl.createFriendlyBattle); // get battles by clanTag 
  
 
     /**

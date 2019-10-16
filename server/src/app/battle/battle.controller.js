@@ -71,6 +71,7 @@
    * GET '/battles/'
    */
   function getAllBattles(req, res, next) {
+    console.log('getting all battles')
     var page = req.query.page || 1;
     var limit = req.query.limit || 10;
 
@@ -108,11 +109,11 @@
 
    /**
    * Get battles from DB by clan (paginated)
-   * GET '/battles/'
+   * GET '/battles/:clanTag'
    */
-  function getBattlesByClanTag(){
+  function getBattlesByClanTag(req, res, next){
     var params = req.params;
-      console.log(params.clanTag)
+    console.log(params)
      Battle
         .find({'clan': params.clanTag})
         

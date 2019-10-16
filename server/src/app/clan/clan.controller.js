@@ -17,11 +17,14 @@
   module.exports = {
     createClan,
     getClansFromDatabase,
-    getClashClan,
+    getClashRoyalClanFromClashApi,
     getAllBattlesByClan,
     createFriendlyBattle, 
     getAllFriendlyBattles, 
-    getBattle
+    getBattle,
+    updateClan,
+    getClashRoyalClanFromDb,
+    getClashRoyalClan
     
   };
 
@@ -58,7 +61,79 @@
     });
   }
 
-  
+  function updateClan(clan){
+    console.log('clan before update', clan)
+    Clan
+      .findOneAndUpdate(
+        { _id: ObjectId(clan._id) },
+        { '$set': {
+          'Name': clan.Name,
+          'battles': clan.battles,
+          'active': clan.active,
+          'lastActiveDate': clan.lastActiveDate,
+          'inActiveReason': clan.inActiveReason,
+          
+          }
+        },
+        { upsert: false, new: true, fields: { password: 0 }, runValidators: true, setDefaultsOnInsert: true })
+      .exec((err, updatedlan) => {
+        if (err) return next({ err: err, status: 400 });
+        if (!updatedlan) return next({
+          message: 'Account not found.',
+          status: 404
+        });
+
+        console.log('Clan updated', updatedlan);
+      });
+  }  
+
+  function getClashRoyalClan(req, res, next){
+    var params = req.params;
+    var clanId = params.clanId
+    Clan
+      .findOne({ 'Name': clanId})
+      .then(clanFromDb => {
+        console.log(clanFromDb)
+        var reparedClanId = '%23'+ clanId.slice(1, clanId.length);
+        var url = 'https://api.clashroyale.com/v1/clans/'+ reparedClanId
+        console.log('getting clash clan', reparedClanId, url)
+        var options = { method: 'GET',
+          url: url,
+          headers: 
+          { 
+            Authorization: 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6IjdiODAyNDE4LWQxN2EtNGQ3Ni1iZGQyLTNhMzUzMWJhZTdjYiIsImlhdCI6MTU2MzUzMTM2Nywic3ViIjoiZGV2ZWxvcGVyLzJjOTg4MjcxLTMwYzktZmQ1ZS03YWQyLTQ1Yzg3YTYxZWIwNiIsInNjb3BlcyI6WyJyb3lhbGUiXSwibGltaXRzIjpbeyJ0aWVyIjoiZGV2ZWxvcGVyL3NpbHZlciIsInR5cGUiOiJ0aHJvdHRsaW5nIn0seyJjaWRycyI6WyIyMTMuNTcuMjQ2LjQ0Il0sInR5cGUiOiJjbGllbnQifV19.eBzA0OArr0ag9xGuDZVkhId5X7m44gIPI67gL5xDRjF4O86lWwn2IPWpLqH54nAvIxeKq4hvC6u29TFyeKpi-A' } };
+        
+          request(options, function (error, response, body) {
+            if (error) throw new Error(error);
+            console.log(body)
+              
+            utils.sendJSONresponse(res, 200, {clanFromDb: clanFromDb,
+                                              clanFromClashApi: JSON.parse(body)});
+           
+              
+          })
+      })
+
+   
+    
+    
+  }
+
+  function getClashRoyalClanFromDb(clanId) {
+    
+    Clan
+      .findOne({ 'Name': clanId})
+      .exec((err, clan) => {
+        if (err) return next(err);
+        if (!clan) return next({
+          message: 'clan not found.',
+          status: 404
+        });
+        console.log(clan)
+        return clan
+        // utils.sendJSONresponse(res, 200, clan);
+      });
+  }
 
   function getClansFromDatabase(req, res, next){
     console.log('getting clans from database')
@@ -92,8 +167,8 @@
     });
   }
 
-  function getClashClan(req, res){
-    var clanId = req.params.clanId
+  function getClashRoyalClanFromClashApi(clanId){
+    
     var reparedClanId = '%23'+ clanId.slice(1, clanId.length);
     var url = 'https://api.clashroyale.com/v1/clans/'+ reparedClanId
     console.log('getting clash clan', reparedClanId, url)
@@ -108,7 +183,7 @@
         // console.log(body)
           
         
-        res.send(body)
+        return body
           
       })
   }
@@ -134,9 +209,9 @@
               }], 
               
         opponent: [{
-              tag: params.team[0].tag,
-              name: params.team[0].name,
-              crowns: params.team[0].crowns,
+              tag: params.opponent[0].tag,
+              name: params.opponent[0].name,
+              crowns: params.opponent[0].crowns,
               }], 
                   
         
@@ -187,8 +262,8 @@
       });
 
       var pagination = {
-        pageNumber: battles.page,
-        itemsPerPage: battles.limit,
+        pageNumber: options.page,
+        itemsPerPage: options.limit,
         prev: res.locals.paginate.href(true),
         next: res.locals.paginate.href(),
       };
@@ -200,12 +275,76 @@
   function getBattle(req, res, next){
     var params = req.params
     Battle
-      .findOne({
-        battleTime: params.battleTime
+      .find({
+        battleTime: params.battleTime,
+        clan: params.clanTag
         
       })
       .exec(function(err, battle){
         res.send(battle)
+      })
+  }
+
+  
+
+  
+
+  function findFriendlyBattles(battlesArray){
+    var promise = new Promise((resolve, reject)=> {
+      var friendlyBattles = []
+      if(battlesArray.length == 0){
+        reject('No battles in battlesArray')
+      }
+      for (var j = 0; j < battlesArray.length; j++) {
+        // console.log(battlesArray[j])                 
+        if(battlesArray[j].type == 'clanMate'){
+          
+          // console.log('NEW CLAN BATTLE', battlesArray[j]) 
+          friendlyBattles.push(battlesArray[j])
+  
+        }
+      }
+      resolve(friendlyBattles)
+      
+      
+    })
+    return promise
+    
+  }
+
+ 
+
+  function checkIfBattleExists(battle){
+    var promise = new Promise((resolve, reject)=> {
+      var battletoUpaload = battle
+      getFriendlyBattleByTime(battle.battleTime)
+      .then((battle)=> {
+        // console.log(battle)
+        if(battle){
+          // console.log('inDB')
+          resolve(false)
+        } else{
+          resolve(battletoUpaload)
+        }
+      })
+    })
+    
+    return promise  
+  }
+
+  function userTagToFriendlyUrl(userTag){
+    var reparedUserTag = '%23'+ userTag.slice(1, userTag.length)
+    return reparedUserTag
+  }
+
+  function getFriendlyBattleByTime(time){
+    return Battle
+      .findOne({
+        battleTime: time
+        
+      })
+      .exec(function(err, battle){
+        
       })
   }
 
@@ -271,7 +410,7 @@
     var promise = new Promise(function(resolve, reject){
       var reparedClanId = '%23'+ clanId.slice(1, clanId.length);
       var url = 'https://api.clashroyale.com/v1/clans/'+ reparedClanId
-      console.log('getting clash clan', reparedClanId, url)
+      // console.log('getting clash clan', reparedClanId, url)
       var options = { method: 'GET',
         url: url,
         headers: 
@@ -299,35 +438,12 @@
       
   };
 
-  function findFriendlyBattles(battlesArray){
-    var promise = new Promise((resolve, reject)=> {
-      var friendlyBattles = []
-      if(battlesArray.length == 0){
-        reject('No battles in battlesArray')
-      }
-      for (var j = 0; j < battlesArray.length; j++) {
-        // console.log(battlesArray[j].type)                 
-        if(battlesArray[j].type == 'friendly'){
-          // console.log('foundfriendlyBattle', battlesArray[j]);
-          friendlyBattles.push(battlesArray[j])
-          
-          
-        }
-      }
-      resolve(friendlyBattles)
-      
-      
-    })
-    return promise
-    
-  }
-
   function getFriendlyBattlesByClan(clanId){
     var promise = new Promise((resolve, reject) =>{
       var friendlyBattles = []
       getClanBattles(clanId)
       .then(function(battles){
-        console.log('BATTLES', battles.length);
+        // console.log('BATTLES', battles.length);
         
         for(var i = 0; i<battles.length; i++){
           findFriendlyBattles(battles[i])
@@ -336,49 +452,99 @@
               friendlyBattles.push(battles[j])
             }
             resolve(friendlyBattles)
+          },
+          function(err) {
+            console.log(err)
           })
         }
         
+      },
+      function(err) {
+        console.log(err)
       });
     })
     return promise
   }
 
-  function checkIfBattleExists(battle){
-    var promise = new Promise((resolve, reject)=> {
-      var battletoUpaload = battle
-      getFriendlyBattleByTime(battle.battleTime)
-      .then((battle)=> {
-        // console.log(battle)
-        if(battle){
-          // console.log('inDB')
-          resolve(false)
-        } else{
-          resolve(battletoUpaload)
+  function getNewFriendlyBattlesByClan(clan){
+    var promise = new Promise((resolve, reject) => {
+      var newBattles = []
+      getFriendlyBattlesByClan(clan.Name)
+      .then((friendlyBattles) => {
+        var promiseArray = []
+        for(var i = 0; i<friendlyBattles.length; i++){
+          var promise = new Promise((resolve, reject) => {
+            checkIfBattleExists(friendlyBattles[i])
+            .then((battle)=>{
+              // console.log(battle)
+              if(battle){
+                newBattles.push(battle);
+                resolve(battle)
+                // console.log('New Battle')
+              } else{
+                resolve('battle exists in DB')
+                // console.log('battle exists in DB')
+              }
+            },
+            function(err) {
+              console.log(err)
+            })
+          })
+          promiseArray.push(promise)
         }
-      })
-    })
-    
-    return promise  
-  }
-
-  function userTagToFriendlyUrl(userTag){
-    var reparedUserTag = '%23'+ userTag.slice(1, userTag.length)
-    return reparedUserTag
-  }
-
-  function getFriendlyBattleByTime(time){
-    return Battle
-      .findOne({
-        battleTime: time
+        Promise.all(promiseArray)
+          .then(data => {
+            // console.log(data);
+            // console.log('NEW BATTLESSSSSSSSS', newBattles);
+            if(newBattles.length == 0){
+              resolve(false)
+            } else{
+              console.log('NEW BATTLES')
+              resolve(newBattles)
+            }
+          })
         
+      },
+      function(err) {
+        console.log(err)
       })
-      .exec(function(err, battle){
-        
-      })
+      
+    });
+    return promise
   }
 
-
+  function saveBattles(battles) {
+    console.log('BATTLES IN SAVE BATTLES()', battles)
+    for(var i = 0; i<battles.length; i++){
+      let battle = battles[i];
+      var newBattle = new Battle({
+        type: battle.type,
+        battleTime: battle.battleTime,
+        gameMode: battle.gameMode.name,
+        clan: battle.opponent[0].clan ? battle.opponent[0].clan.tag : battle.team[0].clan.tag,
+        team: [{
+              tag: battle.team[0].tag,
+              name: battle.team[0].name,
+              crowns: battle.team[0].crowns,
+              }], 
+              
+        opponent: [{
+              tag: battle.opponent[0].tag,
+              name: battle.opponent[0].name,
+              crowns: battle.opponent[0].crowns,
+              }], 
+                  
+        
+      });
+      newBattle.save((err, newBattle) => {
+        // console.log('saving Battle', newBattle)
+        if (err) return next({ err: err});
+        if (!newBattle) return next({ message: 'Battle not created.', status: 400 });
+        console.log('Battle added to DB')
+       
+      });
+  }
+  }
 
   function updateNewFriendlyBattlesFromAllClans(){
     Clan.find()
@@ -387,56 +553,32 @@
       var clans = data;
       // console.log('ALL CLANS IN DATABASE', clans)
       for(var i = 0; i<clans.length; i++){
-        // console.log(clans[i].Name)
-        getFriendlyBattlesByClan(clans[i].Name)
-        .then((friendlyBattles) => {
-          // console.log('friendlyBattles', friendlyBattles.length)
-          for(var i = 0; i<friendlyBattles.length; i++){
-            checkIfBattleExists(friendlyBattles[i])
-              .then((battle)=>{
-                console.log('New Battle', battle)
-                if(battle == true){
-                  
-                  var battle = new Battle({
-                    type: battle.type,
-                    battleTime: battle.battleTime,
-                    gameMode: battle.gameMode.name,
-                    clan: battle.team[0].clan.tag,
-                    team: [{
-                          tag: battle.team[0].tag,
-                          name: battle.team[0].name,
-                          crowns: battle.team[0].crowns,
-                          }], 
-                          
-                    opponent: [{
-                          tag: battle.team[0].tag,
-                          name: battle.team[0].name,
-                          crowns: battle.team[0].crowns,
-                          }], 
-                              
-                    
-                  });
-                  battle.save((err, newBattle) => {
-                    console.log('saving Battle', newBattle)
-                    if (err) return next({ err: err});
-                    if (!newBattle) return next({ message: 'Battle not created.', status: 400 });
-                    console.log('Battle added to DB')
-                   
-                  });
-                  
-                } else{
-                  console.log('battle exists in DB')
-                }
-              })
-            
-          }
-        })
+        getNewFriendlyBattlesByClan(clans[i])
+          .then((newBattles) => {
+            console.log('newBattles.length', newBattles.length);
+            if(newBattles){
+
+              saveBattles(newBattles)
+            } else{
+              console.log("NO NEW BATTLES")
+            }
+          },
+          function(err) {
+            console.log(err)
+          })
+        
+        
       }
+    },
+    function(err) {
+      console.log(err)
     })
   } 
+
+  
   updateNewFriendlyBattlesFromAllClans()
 
-  setInterval(updateNewFriendlyBattlesFromAllClans, 1800000);
+  setInterval(updateNewFriendlyBattlesFromAllClans, 300000);
 
 
   

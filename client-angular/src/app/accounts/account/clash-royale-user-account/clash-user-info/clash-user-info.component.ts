@@ -22,7 +22,13 @@ export class ClashUserInfoComponent implements OnInit {
     this.clashRoyaleService.clashClan
     .subscribe((clashClan:any) => {
       this.clan = clashClan
-      // console.log(this.clan);
+      console.log(this.clan);
+      // this.clashRoyaleService.getAllBattlesByClan(this.clan)
+      //   .then((clanBattles:any)=> {
+      //     console.log(clanBattles)
+      //   }, function(err){
+      //     console.log(err)
+      //   })
       this.loaded = true
       })
   }

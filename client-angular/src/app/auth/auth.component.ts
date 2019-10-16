@@ -13,7 +13,9 @@ export class AuthComponent implements OnInit {
   email:string;
   password:string ='asd';
   userName:string ="Nadi";
-  loginMode: boolean =true;
+  loginMode: boolean = true;
+  error:string;
+  
   constructor(private authService: AuthService,
               private query: QueryService, 
               private localStorage: localStorageService) { }
@@ -24,14 +26,17 @@ export class AuthComponent implements OnInit {
   signUp(){
     const userData = {
       userName: this.userName,
+      email: this.email,
       password: this.password
     }
     console.log(userData)
-    this.query.post('users/', userData)
+    this.authService.signUp(userData)
     .subscribe((data:any)=>{
       console.log(data)
     }, error => {
-      console.log(error)
+      console.log(error);
+      
+      this.error = error
     })
   }
   login(){
@@ -45,11 +50,12 @@ export class AuthComponent implements OnInit {
       console.log(user);
       this.localStorage.set('currentUser', user.data)
     }, error => {
-      console.log(error)
+      console.log(error);
+      this.error = error
     })
   }
   logout(){
-
+    this.localStorage.remove('currentUser')
   }
 
   onSubmit(loginForm: NgForm){

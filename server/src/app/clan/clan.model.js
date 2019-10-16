@@ -20,7 +20,13 @@
       required: true,
       unique: true
     },
-    battles: [Battle.schema]
+    battles: Array,
+    active: {
+      type: Boolean,
+      default: true
+    },
+    inActiveReason: String,
+    lastActiveDate: Date
   });
 
   /**

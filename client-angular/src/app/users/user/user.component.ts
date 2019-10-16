@@ -24,7 +24,7 @@ export class UserComponent implements OnInit {
     this.route.params
       .subscribe(
         (params: Params) => {
-          
+          console.log(params)
           this.id = params['userId'];
           this.usersService.getUserFromDb(this.id)
             .subscribe((user:any) => {

@@ -14,6 +14,8 @@ export class AccountComponent implements OnInit {
   accountId:any;
   accountType:any;
   platform:any;
+  clan:any;
+
   constructor(private clashRoyaleService: ClashRoyaleService,
               private route: ActivatedRoute) { }
 
@@ -40,13 +42,15 @@ export class AccountComponent implements OnInit {
                 })
               }
               case('clan'): {
-                this.clashRoyaleService.getClan(this.accountId)
-                .subscribe((account:any) => {
-                  this.account = account;
-                  console.log('account in accounComponent', this.account);
+                this.clashRoyaleService.getClashRoyalClan(this.accountId)
+                .subscribe((clan:any) => {
+                  this.account = clan.data.clanFromClashApi
+                  this.clan = clan.data.clanFromDb
+                  console.log('clan in accounComponent', this.clan);
                   this.clashRoyaleService.clashClan.next(this.account)
                   
                 })
+               
               }
             }
             

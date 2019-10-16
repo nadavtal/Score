@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { listAnimation} from '../shared/animations'
 import { ActivatedRoute, Params, Router, Event, NavigationStart, NavigationEnd, NavigationError } from '@angular/router';
+import { localStorageService } from '../shared/services/local-storage.service';
 
 @Component({
   selector: 'app-homepage',
@@ -13,10 +14,15 @@ export class HomepageComponent implements OnInit {
   tab:any;
   activeTab:string;
   showMenuTabs: boolean =false;
+  currentUser: any;
+
   constructor(private route: ActivatedRoute,
+            private localStorage: localStorageService,
             private router: Router) { }
 
   ngOnInit() {
+    this.currentUser = this.localStorage.get('currentUser');
+    console.log(this.currentUser)
     this.tabs = [
       {name: 'Tournaments', color: 'green', icon: 'person', index: 0},
       {name: 'Games', color: 'orange', icon: 'settings_cell', index: 1},

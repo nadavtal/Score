@@ -1,43 +1,53 @@
-<form
-    #loginForm="ngForm"
-    (ngSubmit)="onSubmit(loginForm)"
-    name="loginForm"
-    role="form"
-    id="loginForm">
-
-   
-    <mat-form-field class="example-full-width">
-        <input matInput 
-        placeholder="Email" 
-        value=""
-        id="email"
-        [(ngModel)]="email"
-        name="email"
+<div class="auth container">
+    <form
+        #loginForm="ngForm"
+        (ngSubmit)="onSubmit(loginForm)"
+        name="loginForm"
+        role="form"
+        id="loginForm">
+    
+       
+        <mat-form-field class="example-full-width">
+            <input matInput 
+            placeholder="Email" 
+            value=""
+            id="email"
+            [(ngModel)]="email"
+            name="email"
+            [required] = "!loginMode"
+            email>
+        </mat-form-field>
+        <br>
+        <mat-form-field class="example-full-width">
+            <input matInput 
+            placeholder="User Name" 
+            value=""
+            id="userName"
+            [(ngModel)]="userName"
+            name="userName"
+            required
+            >
+        </mat-form-field>
+        <br>
+        <mat-form-field class="example-full-width">
+            <input matInput 
+            placeholder="Password" 
+            value=""
+            id="password"
+            [(ngModel)]="password"
+            name="password"
+            required
+            minlength="3">
+        </mat-form-field>
+        <button
+            [disabled]="!loginForm.valid">
+            {{ loginMode? 'Login' : 'Sign Up' }}
+        </button>
         
-        email>
-    </mat-form-field>
-    <br>
-    <mat-form-field class="example-full-width">
-        <input matInput 
-        placeholder="User Name" 
-        value=""
-        id="userName"
-        [(ngModel)]="userName"
-        name="userName"
-        required
-        >
-    </mat-form-field>
-    <br>
-    <mat-form-field class="example-full-width">
-        <input matInput 
-        placeholder="Password" 
-        value=""
-        id="password"
-        [(ngModel)]="password"
-        name="password"
-        required>
-    </mat-form-field>
-    <button >Submit</button>
-</form>
+    </form>
+    <div class="errorMsg red" *ngIf="error">{{error}}</div>
+    <button (click)="logout()">Logout</button>
+
+</div>
 
 

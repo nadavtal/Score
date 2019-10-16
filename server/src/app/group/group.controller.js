@@ -32,52 +32,8 @@
 
   /// definitions
 
-  /**
-   * Authenticate user
-   * POST '/users/authenticate'
-   */
-  function authenticate(req, res, next) {
-    var params = req.body;
-    var pass = params.password;
-    var authErrMsg = {
-      message: 'Authentication failed. Wrong username or password.',
-      code: 'wrongCredentials',
-      status: 401
-    };
-
-    Group
-      .findOne({ username: params.username })
-      .exec((err, user) => {
-        if (err) return next({ err: err, status: 401 });
-        if (!user) return next(authErrMsg);
-
-        // test a matching password
-        user.comparePassword(pass, (err, isMatch) => {
-          if (err || !isMatch) return next(authErrMsg);
-
-          var userInfo = {
-            _id: user._id,
-            username: user.username,
-            createdAt: user.createdAt,
-            role: user.role,
-            email: user.email,
-            surname: user.surname,
-            firstName: user.firstName
-          };
-
-          var token = jwt.sign(userInfo, config.secret, {
-            expiresIn: '24h'
-          });
-
-          userInfo.token = token;
-
-          // just to prove sockets are working, there are better use cases for using websockets
-          req.io.emit('user:loggedIn');
-
-          utils.sendJSONresponse(res, 200, userInfo);
-        });
-      });
-  }
+  
+  
 
   /**
    * Create new group

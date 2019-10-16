@@ -1,19 +1,31 @@
-import { HttpInterceptor, HttpRequest, HttpHandler } from '@angular/common/http';
+import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthService } from './auth/auth.service';
+import { localStorageService } from './shared/services/local-storage.service';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class AuthInterceptorService implements HttpInterceptor {
 
-    constructor(private authService: AuthService){}
+    constructor(private authService: AuthService,
+                private localStorage: localStorageService){}
 
-    intercept(req: HttpRequest<any>, next: HttpHandler){
+    intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>>{
         // console.log('req on its way', req);
+        let currentUser = this.localStorage.get('currentUser');
         
+        if(currentUser){
+            req = req.clone({
+                setHeaders: {
+                  Authorization: `Bearer ${currentUser.token}`
+                }
+              });
+        } else{
+            console.log('there is no user in authentication intercepater')
+        }
+        // console.log(req);
         return next.handle(req)
     }
 
-    signUp(){
-
-    }
+    
 }

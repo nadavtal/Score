@@ -82,8 +82,15 @@
             gamesHistory: user.gamesHistory
 
           };
-
-          var token = jwt.sign(userInfo, config.secret, {
+          // console.log(user)
+          var token = jwt.sign({
+            _id: user._id,
+            userName: user.userName,
+            role: user.role,
+            email: user.email,
+            surname: user.surname,
+            firstName: user.firstName,
+          }, config.secret, {
             expiresIn: '24h'
           });
           // console.log('token', token)
@@ -96,6 +103,52 @@
           utils.sendJSONresponse(res, 200, userInfo);
         });
       });
+  }
+
+  function verifyToken(req, res, next) {
+    // console.log(req.headers)
+    
+    var token = req.headers['authorization'] || req.body.token;
+    if (token.startsWith('Bearer ')) {
+      // Remove Bearer from string
+      token = token.slice(7, token.length).trimLeft();
+    }
+    console.log(token)
+    if (token) {
+      
+      jwt.verify(token, config.secret, (err, decodedToken) => {
+        console.log(decodedToken)
+        if (err){
+          // console.log(err)
+          return next({
+            status: 401,
+            message: 'Failed to authenticate token.',
+            name: 'unauthorized'
+          });
+
+        }
+
+        User
+          .findOne({ _id: decodedToken._id }, { password: 0 })
+          .lean()
+          .exec((err, user) => {
+            if (err) return next({ err: err, status: 400 });
+            if (!user) return next({ message: 'User not found in verifyToken function.', status: 404 });
+
+            // token ok, save user onto request object for use in other routes
+            req.user = user;
+            next();
+          });
+      });
+
+    } else {
+      return next({
+        status: 401,
+        message: 'Failed to authenticate token.',
+        name: 'unauthorized'
+      });
+    }
+    
   }
 
   /**
@@ -119,6 +172,7 @@
     // req params validation for required fields
     req.checkBody('userName', 'Username must be defined').notEmpty();
     req.checkBody('password', 'Password must be defined').notEmpty();
+    req.checkBody('email', 'Email must be defined').notEmpty();
 
     // validate user input
     var errors = req.validationErrors();
@@ -272,42 +326,7 @@
   /**
    * Verify JWT token
    */
-  function verifyToken(req, res, next) {
-    
-    // var token = req.headers['authorization'] || req.body.token;
-
-    // if (token) {
-
-    //   jwt.verify(token, config.secret, (err, decodedToken) => {
-    //     if (err)
-    //       return next({
-    //         status: 401,
-    //         message: 'Failed to authenticate token.',
-    //         name: 'unauthorized'
-    //       });
-
-    //     User
-    //       .findOne({ _id: decodedToken._id }, { password: 0 })
-    //       .lean()
-    //       .exec((err, user) => {
-    //         if (err) return next({ err: err, status: 400 });
-    //         if (!user) return next({ message: 'User not found in verifyToken function.', status: 404 });
-
-    //         // token ok, save user onto request object for use in other routes
-    //         req.user = user;
-    //         next();
-    //       });
-    //   });
-
-    // } else {
-    //   return next({
-    //     status: 401,
-    //     message: 'Failed to authenticate token.',
-    //     name: 'unauthorized'
-    //   });
-    // }
-    return next();
-  }
+  
 
   /**
    * Middleware for checking if user is admin

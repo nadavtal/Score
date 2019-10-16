@@ -17,7 +17,7 @@ export class localStorageService implements OnInit{
     }
 
     set(name:string, val:any) {
-        console.log('storage', this.supported);
+        // console.log('storage', this.supported);
         // if (!this.supported)
         //   console.log('localStorage not supported, make sure you have the $cookies supported.');
   
@@ -31,18 +31,22 @@ export class localStorageService implements OnInit{
       };
 
     get(name:string) {
-        if (!this.supported)
-          console.log('localStorage not supported, make sure you have the $cookies supported.');
+        // if (!this.supported)
+        //   console.log('localStorage not supported, make sure you have the $cookies supported.');
           
         
         return window.localStorage && JSON.parse(window.localStorage.getItem(name));
       }
 
     update(name:string, val:any) {
-        if (!this.supported)
-          console.log('localStorage not supported, make sure you have the $cookies supported.');
+        // if (!this.supported)
+        //   console.log('localStorage not supported, make sure you have the $cookies supported.');
   
          window.localStorage && window.localStorage.setItem(name, JSON.stringify(val));
+      }
+    remove(name:string) {
+        
+      window.localStorage && window.localStorage.removeItem(name);
       }
 
     

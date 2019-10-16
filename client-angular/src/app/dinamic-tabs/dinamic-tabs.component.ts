@@ -153,7 +153,7 @@ export class dinamicTabsComponent implements OnInit {
           else if(this.path == 'accounts'){
             this.routeMode = false;
             this.id = params['accountId'];
-            
+            this.activeTab = 'Info'
             this.tabs = [
               {name: 'Info', color: 'black', icon: 'person'},
               {name: 'Battles', color: 'orange', icon: 'people_outline'},
@@ -170,6 +170,7 @@ export class dinamicTabsComponent implements OnInit {
             this.activeTab = this.route.firstChild.routeConfig.path;
             
           }
+          console.log(this.activeTab)
           if(this.activeTab){
             
             let color:string;

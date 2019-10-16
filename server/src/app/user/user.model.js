@@ -43,7 +43,8 @@
     },
     email: {
       type: String,
-      default: ''
+      default: '',
+      // unique: true
     },
     role: {
       type: String,
