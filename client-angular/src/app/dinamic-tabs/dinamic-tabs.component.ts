@@ -258,6 +258,10 @@ export class dinamicTabsComponent implements OnInit {
          this.goToHomepage()
          break; 
       } 
+      case 'Log out': { 
+         this.logout()
+         break; 
+      } 
       default: { 
          //statements; 
          break; 
@@ -265,12 +269,18 @@ export class dinamicTabsComponent implements OnInit {
    } 
   }
 
+  logout(){
+    this.localStorage.remove('currentUser');
+    this.goToHomepage()
+    
+  }
+
   goToMyProfile(){
     this.router.navigateByUrl('/users/'+this.currentUser._id);
 
   }
   goToHomepage(){
-    this.router.navigateByUrl('/');
+    this.router.navigateByUrl('/home');
 
   }
 

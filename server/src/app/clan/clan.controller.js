@@ -352,58 +352,64 @@
     var clan = JSON.parse(clan)
     // console.log('CLAN', clan)
     var promiseArr = [];
-        for (var i = 0; i < clan.memberList.length; i++) {
-            var promise = new Promise(function(resolve, reject) {
-              // console.log(clan.memberList[i].tag)
-              var reparedUserTag = userTagToFriendlyUrl(clan.memberList[i].tag);
-              // console.log(reparedUserTag);
-              var url = 'https://api.clashroyale.com/v1/players/'+ reparedUserTag +'/battlelog'
-              // console.log('getting clash user battles url', url)
-              var options = { method: 'GET',
-                url: url,
-                headers: 
-                { 
-                  Authorization: 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6IjdiODAyNDE4LWQxN2EtNGQ3Ni1iZGQyLTNhMzUzMWJhZTdjYiIsImlhdCI6MTU2MzUzMTM2Nywic3ViIjoiZGV2ZWxvcGVyLzJjOTg4MjcxLTMwYzktZmQ1ZS03YWQyLTQ1Yzg3YTYxZWIwNiIsInNjb3BlcyI6WyJyb3lhbGUiXSwibGltaXRzIjpbeyJ0aWVyIjoiZGV2ZWxvcGVyL3NpbHZlciIsInR5cGUiOiJ0aHJvdHRsaW5nIn0seyJjaWRycyI6WyIyMTMuNTcuMjQ2LjQ0Il0sInR5cGUiOiJjbGllbnQifV19.eBzA0OArr0ag9xGuDZVkhId5X7m44gIPI67gL5xDRjF4O86lWwn2IPWpLqH54nAvIxeKq4hvC6u29TFyeKpi-A' },
-                  'Cache-Control': 'no-cache' 
-                };
-                  
-              request(options, function (error, response, body) {
-                if (error) throw new Error(error);
-                // console.log('got battles from clash API')
-                  
+    if (clan && clan.memberList.length > 0){
+      
+      for (var i = 0; i < clan.memberList.length; i++) {
+          var promise = new Promise(function(resolve, reject) {
+            // console.log(clan.memberList[i].tag)
+            var reparedUserTag = userTagToFriendlyUrl(clan.memberList[i].tag);
+            // console.log(reparedUserTag);
+            var url = 'https://api.clashroyale.com/v1/players/'+ reparedUserTag +'/battlelog'
+            // console.log('getting clash user battles url', url)
+            var options = { method: 'GET',
+              url: url,
+              headers: 
+              { 
+                Authorization: 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6IjdiODAyNDE4LWQxN2EtNGQ3Ni1iZGQyLTNhMzUzMWJhZTdjYiIsImlhdCI6MTU2MzUzMTM2Nywic3ViIjoiZGV2ZWxvcGVyLzJjOTg4MjcxLTMwYzktZmQ1ZS03YWQyLTQ1Yzg3YTYxZWIwNiIsInNjb3BlcyI6WyJyb3lhbGUiXSwibGltaXRzIjpbeyJ0aWVyIjoiZGV2ZWxvcGVyL3NpbHZlciIsInR5cGUiOiJ0aHJvdHRsaW5nIn0seyJjaWRycyI6WyIyMTMuNTcuMjQ2LjQ0Il0sInR5cGUiOiJjbGllbnQifV19.eBzA0OArr0ag9xGuDZVkhId5X7m44gIPI67gL5xDRjF4O86lWwn2IPWpLqH54nAvIxeKq4hvC6u29TFyeKpi-A' },
+                'Cache-Control': 'no-cache' 
+              };
                 
-                var battles = JSON.parse(body);
-                resolve(battles)
-                // console.log(battles);
-                // var battlesLeangth = user.battles.length;
-                // for(let battle of battles){
-                //   var exists = checkIfBattleExists(user, battle.battleTime);
-                //   // console.log(exists);
-                //   if(!exists){
-                //     user.battles.push(battle);
-                //   }
-                  
-                // };
-                // console.log(battlesLeangth, user.battles.length)
-                // if(battlesLeangth !== user.battles.length){
-                //   updateClashUser(user)
-                //     .then(function(updatedUser){
-                //       // console.log('updatedUser', updatedUser);
-                //       resolve(updatedUser)
-                //     });  
-                // } else{
-                //   console.log('no new battles')
-                //   resolve(user)
-                // }
-                })
+            request(options, function (error, response, body) {
+              if (error) throw new Error(error);
+              // console.log('got battles from clash API')
                 
+              
+              var battles = JSON.parse(body);
+              resolve(battles)
+              // console.log(battles);
+              // var battlesLeangth = user.battles.length;
+              // for(let battle of battles){
+              //   var exists = checkIfBattleExists(user, battle.battleTime);
+              //   // console.log(exists);
+              //   if(!exists){
+              //     user.battles.push(battle);
+              //   }
+                
+              // };
+              // console.log(battlesLeangth, user.battles.length)
+              // if(battlesLeangth !== user.battles.length){
+              //   updateClashUser(user)
+              //     .then(function(updatedUser){
+              //       // console.log('updatedUser', updatedUser);
+              //       resolve(updatedUser)
+              //     });  
+              // } else{
+              //   console.log('no new battles')
+              //   resolve(user)
+              // }
               })
-                
-            
-            promiseArr.push(promise);
-        }
-        // console.log(promiseArr)
-        return Promise.all(promiseArr);
+              
+            })
+              
+          
+          promiseArr.push(promise);
+      }
+      
+      return Promise.all(promiseArr);
+
+    } else {
+      return
+    }
   }
 
   function getClanBattles(clanId) {

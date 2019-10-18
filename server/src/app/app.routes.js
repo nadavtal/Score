@@ -124,7 +124,7 @@
   router.get('/uploads', uploadsCtrl.getUploads); // get all uploads
   router.get('/uploads/:userId', uploadsCtrl.getUploadsByUserId); // get uploads by userId
   
-  // router.get('/clashusers/:clantag/:usertag', clashUserCtrl.getClashPlayer); // get clash clan
+  
   router.get('/clashusers/:usertag/battles', clashUserCtrl.getUserBattlesFromClashApi); // get clash user battles
   router.get('/clashusers/:usertag', clashUserCtrl.getClashPlayer); // get clash clan
   router.put('/clashusers/:usertag', clashUserCtrl.updateClashUser); // create clash user

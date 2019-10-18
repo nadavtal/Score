@@ -1,5 +1,5 @@
 <div class="battles" *ngIf="loaded">
-    <div class="" *ngFor="let battle of battles">
+    <div class="" *ngFor="let battle of battles | sort:'battleTime'">
         <app-clash-royale-battle 
             [battle]="battle">
         </app-clash-royale-battle>

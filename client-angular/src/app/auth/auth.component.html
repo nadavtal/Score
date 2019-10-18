@@ -1,10 +1,12 @@
-<div class="auth container">
+<div class="auth container"
+    [class.authOpen] ="formOpen">
     <form
         #loginForm="ngForm"
         (ngSubmit)="onSubmit(loginForm)"
         name="loginForm"
         role="form"
-        id="loginForm">
+        id="loginForm"
+        *ngIf="formOpen">
     
        
         <mat-form-field class="example-full-width">
@@ -46,7 +48,18 @@
         
     </form>
     <div class="errorMsg red" *ngIf="error">{{error}}</div>
-    <button (click)="logout()">Logout</button>
+    <button 
+        class="authButton white"
+        (click)="logout()" 
+        *ngIf="currentUser">
+        Logout
+    </button>
+    <button 
+        class="authButton white"
+        (click)="toggleForm()" 
+        *ngIf="!currentUser">
+        Login
+    </button>
 
 </div>
 

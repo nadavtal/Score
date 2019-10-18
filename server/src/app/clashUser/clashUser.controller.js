@@ -64,9 +64,9 @@
     var reparedUserTag = userTagToFriendlyUrl(userTag);
     ClashUser.findOne({ userTag:  userTag})
       .then(function(clashUser){
-        console.log(clashUser);
+        console.log('clashUser from DB', clashUser);
         if(clashUser){
-          addBattlesToClashUser(userTag)
+          addBattlesToClashUser(clashUser)
           .then(function(updatedUser){
             console.log('got updatedUser')
             var url = 'https://api.clashroyale.com/v1/players/'+ reparedUserTag
@@ -147,18 +147,13 @@
       
   }
 
-  function addBattlesToClashUser(userTag){
+  function addBattlesToClashUser(clashUser){
     var promise = new Promise(function(resolve, reject){
       
-      ClashUser
-        .findOne({ userTag:  userTag})
-        .then(function(clashUser){
-          console.log('got clashUser: ', clashUser);
-          var user = clashUser;
-          var reparedUserTag = userTagToFriendlyUrl(userTag);
+      var reparedUserTag = userTagToFriendlyUrl(clashUser.userTag);
           // console.log(reparedUserTag);
           var url = 'https://api.clashroyale.com/v1/players/'+ reparedUserTag +'/battlelog'
-          // console.log('getting clash user battles url', url)
+          // console.log('getting clash clashUser battles url', url)
           var options = { method: 'GET',
             url: url,
             headers: 
@@ -171,32 +166,35 @@
             if (error) throw new Error(error);
             console.log('got battles from clash API')
               
+            if(body){
+              var battles = JSON.parse(body);
+            }
             
-            var battles = JSON.parse(body);
             // console.log(battles);
-            var battlesLeangth = user.battles.length;
-            for(let battle of battles){
-              var exists = checkIfBattleExists(user, battle.battleTime);
-              // console.log(exists);
-              if(!exists){
-                user.battles.push(battle);
-              }
-              
-            };
-            console.log(battlesLeangth, user.battles.length)
-            if(battlesLeangth !== user.battles.length){
-              updateClashUser(user)
+            var battlesLeangth = clashUser.battles.length;
+            if(battles){
+
+              for(let battle of battles){
+                var exists = checkIfBattleExists(clashUser, battle.battleTime);
+                // console.log(exists);
+                if(!exists){
+                  clashUser.battles.push(battle);
+                }
+                
+              };
+            }
+            console.log(battlesLeangth, clashUser.battles.length)
+            if(battlesLeangth !== clashUser.battles.length){
+              updateClashUser(clashUser)
                 .then(function(updatedUser){
                   // console.log('updatedUser', updatedUser);
                   resolve(updatedUser)
                 });  
             } else{
               console.log('no new battles')
-              resolve(user)
+              resolve(clashUser)
             }
           })
-          
-        })
     })
     
     return(promise)
@@ -315,7 +313,7 @@
             if(battlesLeangth !== user.battles.length){
               updateClashUser(user)
                 .then(function(updatedUser){
-                  // console.log('updatedUser', updatedUser)
+                  console.log('updatedUser', updatedUser.userName)
                 });  
             } else{
               console.log('no new battles')

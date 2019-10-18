@@ -1,0 +1,15 @@
+.auth{
+    transition: all .3s;
+    height: 0;
+    position: absolute;
+    background-color: white;
+    z-index: 100;
+}
+.authButton{
+    background: none;
+    border: none
+}
+
+.authOpen{
+    height: 34%;
+}

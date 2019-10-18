@@ -3,6 +3,7 @@ import { AuthService } from './auth.service';
 import { NgForm } from '@angular/forms';
 import { QueryService } from '../shared/services/query.service';
 import { localStorageService } from '../shared/services/local-storage.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-auth',
@@ -15,12 +16,17 @@ export class AuthComponent implements OnInit {
   userName:string ="Nadi";
   loginMode: boolean = true;
   error:string;
+  currentUser:any;
+  formOpen:boolean = false
   
   constructor(private authService: AuthService,
-              private query: QueryService, 
+              private query: QueryService,
+              private router: Router, 
               private localStorage: localStorageService) { }
 
   ngOnInit() {
+    this.currentUser = this.localStorage.get('currentUser');
+    console.log(this.currentUser)
   }
 
   signUp(){
@@ -48,14 +54,24 @@ export class AuthComponent implements OnInit {
     this.authService.login(userData)
     .subscribe((user:any)=>{
       console.log(user);
-      this.localStorage.set('currentUser', user.data)
+      this.localStorage.set('currentUser', user.data);
+      this.currentUser = this.localStorage.get('currentUser');
+      this.toggleForm();
+      this.goToMyProfile()
     }, error => {
       console.log(error);
       this.error = error
     })
   }
   logout(){
-    this.localStorage.remove('currentUser')
+    this.localStorage.remove('currentUser');
+    this.currentUser = false;
+    // this.toggleForm()
+  }
+
+  toggleForm(){
+    this.formOpen = !this.formOpen;
+    // console.log(this.formOpen)
   }
 
   onSubmit(loginForm: NgForm){
@@ -67,6 +83,11 @@ export class AuthComponent implements OnInit {
     }
      
     
+  }
+
+  goToMyProfile(){
+    this.router.navigateByUrl('/users/'+this.currentUser._id);
+
   }
 
 }

@@ -24,6 +24,8 @@ import { UserRowComponent } from '../shared/components/user-row/user-row.compone
 import { SendMessageComponent } from '../shared/components/send-message/send-message.component';
 import { StatsComponent } from './components/stats/stats.component';
 import { GlowingSpinnerComponent } from './components/glowing-spinner/glowing-spinner.component';
+import { ArraySortPipe } from './pipes/sort.pipe';
+import { ProgressLoaderComponent } from './components/progress-loader/progress-loader.component';
 
 
 @NgModule({
@@ -47,6 +49,8 @@ import { GlowingSpinnerComponent } from './components/glowing-spinner/glowing-sp
         SendMessageComponent,
         StatsComponent, 
         GlowingSpinnerComponent,
+        ArraySortPipe,
+        ProgressLoaderComponent
 
     ],
     imports: [
@@ -56,6 +60,7 @@ import { GlowingSpinnerComponent } from './components/glowing-spinner/glowing-sp
         MaterialModule,
         AngularFontAwesomeModule,
         FormsModule,
+        
     ],
     exports: [
         SwitchCheckBoxComponent,
@@ -77,12 +82,13 @@ import { GlowingSpinnerComponent } from './components/glowing-spinner/glowing-sp
         ChatComponent,
         StatsComponent, 
         GlowingSpinnerComponent,
-
+        ArraySortPipe,
         CommonModule,
         MaterialModule,
         AngularFontAwesomeModule,
         FormsModule,
-        SweetAlert2Module
+        SweetAlert2Module,
+        ProgressLoaderComponent
     ]
 })
 export class  SharedModule{

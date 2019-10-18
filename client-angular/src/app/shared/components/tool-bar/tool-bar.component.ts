@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, HostListener, ElementRef, Output } from '@angular/core';
 import { Subject } from 'rxjs';
+import { localStorageService } from '../../services/local-storage.service';
 
 @Component({
   selector: 'app-tool-bar',
@@ -21,7 +22,8 @@ export class ToolBarComponent implements OnInit {
       this.toggleToolBar();
     } 
   }
-  constructor(private eRef: ElementRef) { }
+  constructor(private eRef: ElementRef,
+              private localStorage: localStorageService) { }
 
   ngOnInit() {
     this.open = false
@@ -37,6 +39,8 @@ export class ToolBarComponent implements OnInit {
     this.open = false
     this.action.next(event)
   }
+
+  
 
   
 
