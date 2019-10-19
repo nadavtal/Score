@@ -1,9 +1,16 @@
 
 
 
-<fa class="absCenter" name="plus" 
-animation=""
-(click)="sweetALert.fire()"></fa>
+<button mat-raised-button
+    class="nakedButton"
+    matTooltip="{{actionName}}"
+    [matTooltipPosition]="'below'"
+    aria-label="Button that displays a tooltip in various positions">
+    <fa class="absCenter" name="plus" 
+    animation=""
+    (click)="sweetALert.fire()"></fa>
+</button>
+
 
 
 <swal title="{{formTitle}}" 
@@ -319,7 +326,7 @@ animation=""
                         </mat-option>
                     </mat-select>
                 </mat-form-field>-->
-        </div>
+            </div>
             
         </form>
   

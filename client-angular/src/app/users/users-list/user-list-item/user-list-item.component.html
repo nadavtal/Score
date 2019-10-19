@@ -36,6 +36,7 @@
     </mat-grid-list>
     <app-icon-to-row
         [bgColor]="'red'"
+        [toolTipText]="'Remove'"
         [icon]="'trash'"
         [question]="'Are you sure you want to remove this user?'"
         [positionClass]="'right0_2'"
@@ -43,6 +44,7 @@
     </app-icon-to-row>
     <app-icon-to-row
         [bgColor]="bgColor"
+        [toolTipText]="'Send Message to user'"
         [icon]="'comments'"
         [positionClass]="'right1_2'"
         (action)="sendMessage($event)">

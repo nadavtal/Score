@@ -4,6 +4,7 @@ import { AccountItemComponent } from './account-item/account-item.component';
 import { SharedModule } from '../shared/shared.module';
 import { RouterModule } from '@angular/router';
 
+
 @NgModule({
     declarations:[
         AccountsComponent,
@@ -12,6 +13,7 @@ import { RouterModule } from '@angular/router';
     imports: [
         SharedModule,
         RouterModule,
+     
     ],
     exports:[
         AccountsComponent,

@@ -117,6 +117,7 @@
   var platformTypesCtrl = require('./platformtype/platformType.controller.js');
   var uploadsCtrl = require('./updoads/updoads.controller.js');
   var battlesCtrl = require('./battle/battle.controller');
+  var transactionsCtrl = require('./transaction/transaction.controller');
 
   /**
    * uploads
@@ -219,7 +220,14 @@
    */
   router.post('/gameTypes', gameTypesCtrl.createGameType); // create new GameType
   router.get('/gameTypes/', gameTypesCtrl.getAllGameTypes); // get all gamesTypes
-
+ /**
+   * Transactions
+   */
+  router.post('/transactions', transactionsCtrl.createTransaction); // create new Group
+  router.get('/transactions/', transactionsCtrl.getAllTransactions); // get all games
+  router.get('/transactions/transaction/:transactionId', transactionsCtrl.getTransaction); // get all games
+  router.get('/transactions/:userId', transactionsCtrl.getTransactionsByUserId); // get all games
+ /**
   /**
    * Messages
    */

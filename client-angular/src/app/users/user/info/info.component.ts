@@ -5,6 +5,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { User } from '../../user.model';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { localStorageService } from 'src/app/shared/services/local-storage.service';
+import { TransactionsService } from 'src/app/transactions/transaction.service';
 
 
 
@@ -22,11 +23,16 @@ export class InfoComponent implements OnInit {
   loaded:boolean = false;
   editMode:boolean = false;
   currentUser:any;
+  actions: any;
+  isUser: boolean;
+  showTransactions:boolean = false
+
   @ViewChild('deleteSwal', {static: false}) private deleteSwal: SwalComponent;
   @ViewChild('userForm', {static: false}) private userForm: NgForm;
   
   constructor(
             private usersService: UsersService,
+            private transactionsService: TransactionsService,
             private localStorage: localStorageService,
             private route: ActivatedRoute,
             
@@ -35,6 +41,10 @@ export class InfoComponent implements OnInit {
 
   ngOnInit() {
     this.currentUser = this.localStorage.get('currentUser');
+    this.actions = [
+      {name: 'Show/Hide transactions', color: 'green', icon: 'money'},
+      // {name: 'Show transactions', color: 'green', icon: 'dollar'},
+    ]
     this.usersService.userSelected
       .subscribe((user:any)=>{
         this.user = user;
@@ -44,7 +54,7 @@ export class InfoComponent implements OnInit {
     this.route.parent.params
         .subscribe(
           (params: Params) => {
-            console.log(params)
+            // console.log(params)
             this.id = params['userId'];
             this.usersService.getUserFromDb(this.id)
               .subscribe((user:any) => {
@@ -62,33 +72,20 @@ export class InfoComponent implements OnInit {
    
   }
 
-  getUser(){
-    return new Promise<User>((resolve, reject) => { 
-      
-      if(this.usersService.getUser()){
-        const user = this.usersService.getUser();
-        // console.log('user in FriendsComponent from getUser', this.user);
-        resolve(user)
-        
-      }else{
-        this.route.parent.params
-        .subscribe(
-          (params: Params) => {
-            // console.log(params)
-            this.id = params['id'];
-            this.usersService.getUserFromDb(this.id)
-              .subscribe((user:any) => {
-                // console.log(user.data)
-                this.user = user.data
-                // console.log('user in FriendsComponent from server', this.user);
-                resolve(this.user)
-  
-              })
-          }
-        );
-      };
+  iconActionClicked(event){
+    console.log(event)
+    if(event == 'Show/Hide transactions'){
+      this.toggleTransactions()
+    }
+  }
 
-    })
+  toggleTransactions(){
+    this.showTransactions = !this.showTransactions;
+    console.log(this.showTransactions)
+  }
+
+  sendMessageToUser(){
+    console.log('send message to: ', this.user.userName)
   }
 
   onSubmit(form:NgForm){
@@ -119,6 +116,35 @@ export class InfoComponent implements OnInit {
       .subscribe((upadtedUser:any)=>{
         this.user = upadtedUser.data
       })
+  }
+
+  createTransaction(transaction){
+    transaction.userId = this.currentUser._id;
+    
+    console.log(transaction)
+    this.transactionsService.createTransaction(transaction)
+      .subscribe((createdTransaction:any) => {
+        
+        this.updateUserBalance(createdTransaction.data)
+        this.usersService.updateUser(this.user)
+          .subscribe((updatedUser:any) => {
+            console.log(updatedUser)
+            // this.user = updatedUser.data
+          },
+          error => {
+            console.log(error)
+          })
+        
+      })
+  }
+
+  updateUserBalance(transaction){
+    if(transaction.transactionType == 'Deposit'){
+      this.user.balance += transaction.amount
+    }
+    else if (transaction.transactionType == 'Withdraw'){
+      this.user.balance -= transaction.amount
+    }
   }
 
 }

@@ -1,11 +1,124 @@
 
 
 
-<div class="btn" #button data-direction="top">
-    <div class="btn-back">
-      <p>{{message}}</p>
-      <span class="yes" (click)="mainFunction()">Yes</span>
-      <span class="no" (click)="cancelFunction()">No</span>
+<div class="btn " #button data-direction="top">
+    <div class="btn-back white"
+        >
+        
+        <form
+          
+          #form="ngForm"
+          name="form"
+          role="form"
+          id="form">
+          <div class="modalContent">
+              <div *ngIf="formName == 'transactionForm'">
+                  <p>{{message}}</p>
+                  <!-- <mat-form-field class="example-full-width"> -->
+                        <input  
+                        placeholder="Amount" 
+                        value=""
+                        id="amount"
+                        ngModel
+                        name="amount"
+                      
+                        required
+                        #amount="ngModel"/>
+                        <!-- <mat-error *ngIf="amount.errors && (!amount.valid && amount.touched)">
+                            <span class="" *ngIf="amount.errors['required']">Amount is required</span>
+                          
+                        </mat-error> -->
+                  <!-- </mat-form-field> -->
+                  
+                  <select
+                      required
+                      id="transactionType"
+                      ngModel
+                      name="transactionType"
+                      #transactionType="ngModel">
+                      <option value="">Choose transaction type</option>
+                      <option value="Deposit">Deposit</option>
+                      <option value="Withdraw">Withdraw</option>
+                      <option value="Transfer">Transfer</option>
+                      
+                      <!-- <option *ngFor="let type of transactionTypes" [value]="type">
+                              {{type}}
+                      </option> -->
+                      
+                  </select>
+                  <br>
+                  <select
+                      required
+                      id="transactionMethod"
+                      ngModel
+                      name="transactionMethod"
+                      #transactionMethod="ngModel">
+                      <option value="">Choose transaction method</option>
+                      <option value="Credit card">Credit card</option>
+                      <option value="Wire">Wire</option>
+                      <!-- <option value="Agent">Agent</option> -->
+                      
+                      <!-- <option *ngFor="let type of transactionMethods" [value]="type">
+                              {{type}}
+                      </option> -->
+                      
+                  </select>
+                  <br>
+                
+              </div>
+          </div>
+          <div class="modalButtons">
+            <button
+              
+              class="yes"
+              [class.disabled]="!form.valid" 
+              (click)="isflipped? closeConfirm() : openConfirm()"
+              [disabled]="!form.valid"
+              >Go</button>
+            <button type="button" 
+              class="no" 
+              
+              (click)="isflipped? mainFunction() : cancelFunction()">
+              Cancel</button>
+
+          </div>
+        </form>
     </div>
-    <div class="btn-front" (click)="frontClick($event)">{{actionName}}</div>
+    <div class="btn-front"
+      >
+      <span  
+        class="btn-front--button white" 
+        [class.hidden]="isOpen"
+        (click)="frontClick($event)">
+        {{actionName}}
+      </span>
+      <div *ngIf="isOpen"
+        [class.hidden] ="!isflipped">
+        <div class="modalContent">
+            <p> Please confirm... </p> 
+            <div>transaction type: {{form.value.transactionType}}</div>
+            <div>transaction method: {{form.value.transactionMethod}}</div>
+            <p>amount: {{form.value.amount}}</p>
+        </div>
+         
+         <div class="modalButtons">
+            <button
+                 (click)="mainFunction()"
+                 class="yes"
+                 
+                 >Confirm</button>
+               <button type="button" 
+                  (click)="closeConfirm()"
+                 class="no">
+                 Back</button>
+  
+        </div>
+        <!-- <button type="button" class="white yes" (click)="mainFunction()">Confirm</button>
+        <button type="button" class="white no" (click)="closeConfirm()">Back</button> -->
+        <!-- <button type="button" class="btn-front--button white" (click)="cancelFunction()">Cancel</button> -->
+      </div>
+      
+      
+    </div>
+    
 </div>

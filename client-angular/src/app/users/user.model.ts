@@ -9,6 +9,7 @@ export class User {
     public email: string;
     public role: string;
     public wins: number;
+    public balance: number;
     public gamesHistory: []
     public groups: [];
     public friends: [{
@@ -33,6 +34,7 @@ export class User {
                 email: string, 
                 role: string,
                 wins: number,
+                balance: number,
                 gamesHistory: [],
                 groups: [],
                 friends: [{
@@ -54,6 +56,7 @@ export class User {
       this.email = email;
       this.role = role;
       this.wins = wins;
+      this.balance = balance;
       this.gamesHistory = gamesHistory;
       this.friends = friends;
       this.profileImageFileName = profileImageFileName;

@@ -6,6 +6,7 @@ import {MatSelectModule} from '@angular/material';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatDialogModule} from '@angular/material/dialog';
 import { MatDatepickerModule, MatNativeDateModule } from '@angular/material';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 const materialComponents = [
   MatIconModule,
@@ -15,7 +16,8 @@ const materialComponents = [
   MatTabsModule,
   MatDialogModule,
   MatDatepickerModule,
-  MatNativeDateModule
+  MatNativeDateModule,
+  MatTooltipModule
   
 ]
 

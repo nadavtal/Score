@@ -1,8 +1,15 @@
 <div class="icon {{positionClass}}">
-    <fa class="{{bgColor}}" name="{{icon}}" animation=""
-        [class.open]="white"
-        (click)="toggleForm()">
-    </fa>
+    <button mat-raised-button
+        class="nakedButton"
+        matTooltip="{{toolTipText}}"
+        [matTooltipPosition]="'below'"
+        aria-label="Button that displays a tooltip in various positions">
+        <fa class="{{bgColor}}" name="{{icon}}" animation=""
+            [class.open]="white"
+            (click)="toggleForm()">
+        </fa>
+    </button>
+    
 </div>
 <div class="iconToRowWrapper {{positionClass}} bg-{{bgColor}}"
     [class.open]="open">

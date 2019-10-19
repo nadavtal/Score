@@ -112,7 +112,7 @@
      var params = req.params;
       console.log(params.userId)
      Platform
-        .find({'players': {userid : params.userId}})
+        .find({'players': {userId : params.userId}})
         
         .exec((err, games) => {
           if (err) return next(err);

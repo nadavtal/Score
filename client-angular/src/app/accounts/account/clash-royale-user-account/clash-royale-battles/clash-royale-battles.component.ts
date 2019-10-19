@@ -3,6 +3,7 @@ import { ClashRoyaleService } from '../../../accounts-services/clash-royale.serv
 import { BattlesService } from 'src/app/shared/services/battles.service';
 
 import { ProgressService } from 'src/app/shared/components/progress-loader/progressLoader.service';
+import { InfinitScrollService } from 'src/app/shared/components/infinite-scroll/infinite-scroll.service';
 
 @Component({
   selector: 'app-clash-royale-battles',
@@ -11,9 +12,11 @@ import { ProgressService } from 'src/app/shared/components/progress-loader/progr
 })
 export class ClashRoyaleBattles implements OnInit {
   loaded:boolean = false;
-  battles:any
+  battles:any;
+  pageOfItems: Array<any>
   constructor(private clashRoyaleService:ClashRoyaleService,
               private progressService: ProgressService,
+              private inifiniteScrollService: InfinitScrollService,
               private battlesService: BattlesService) { }
 
   ngOnInit() {
@@ -25,7 +28,9 @@ export class ClashRoyaleBattles implements OnInit {
         
         console.log(clashUser);
         if(clashUser.updatedUser){
-          this.battles = clashUser.updatedUser.battles
+          this.battles = clashUser.updatedUser.battles;
+          // console.log('GOTBATTLES', this.battles);
+          this.inifiniteScrollService.infiniteScrollData.next(this.battles)
           this.progressService.loading.next(false)
           this.loaded = true
         } else{
@@ -33,6 +38,7 @@ export class ClashRoyaleBattles implements OnInit {
           this.clashRoyaleService.getClashUserBattles(clashUser.clashUser.tag)
             .subscribe((battles:any)=> {
               this.battles = battles;
+              this.inifiniteScrollService.infiniteScrollData.next(this.battles)
               this.progressService.loading.next(false)
               this.loaded = true
             })
@@ -41,27 +47,31 @@ export class ClashRoyaleBattles implements OnInit {
       })
     this.clashRoyaleService.clashClan
       .subscribe((clan:any) => {
+        this.progressService.progressMsg.next('Getting Battles From Clash Royale')
+        this.clashRoyaleService.getBattlesByTypeAndClanFromClashApi(clan.tag, 'clanMate')
+          .then((foundBattles:any) => {
+            this.progressService.progressMsg.next('Checking if battles exist')
+            console.log('found clanMate Battles in Clash Royale', foundBattles);
+            this.checkIfBattlesExistsAndSave(foundBattles)
+              .then((data)=>{
+                
+                console.log(data);
+                this.progressService.progressMsg.next('Getting battles from data base')
+                this.battlesService.getBattlesByClanTag(clan.tag)
+                  .subscribe((battles:any) => {
+                    this.progressService.progressMsg.next('Battles updated')
+                    
+                    this.battles = battles.data;
+                    console.log(this.battles);
+                    this.inifiniteScrollService.infiniteScrollData.next(this.battles)
+                    this.progressService.loading.next(false)
+                    this.loaded = true
+                    
+                  })
+              })
+            
+          })
         
-        this.progressService.progressMsg.next('Getting battles from data base')
-        this.battlesService.getBattlesByClanTag(clan.tag)
-            .subscribe((battles:any) => {
-              this.progressService.progressMsg.next('Updating new battles')
-              this.battles = battles.data;
-              console.log(this.battles);
-              this.clashRoyaleService.getBattlesByTypeAndClanFromClashApi(clan.tag, 'clanMate')
-                .then((foundBattles:any) => {
-                  this.progressService.progressMsg.next('Checking if battles exist')
-                  console.log('foundBattles', foundBattles);
-                  this.checkIfBattlesExistsAndSave(foundBattles)
-                    .then((data)=>{
-                      this.progressService.progressMsg.next('Battles updated')
-                      console.log(data);
-                      this.progressService.loading.next(false)
-                      this.loaded = true
-                    })
-                  
-                })
-            })
         
         
       })
@@ -102,6 +112,15 @@ export class ClashRoyaleBattles implements OnInit {
   getAndSaveNewBattles(){
     const promiseArray = [];
 
+  }
+
+  onChangePage(pageOfItems: Array<any>) {
+    // update current page of items
+    this.pageOfItems = pageOfItems;
+  }
+
+  onScroll() {
+    console.log('scrolled!!');
   }
 
 }

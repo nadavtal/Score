@@ -4,35 +4,46 @@
         <div class="pageHeaderTitle">
             {{user.userName}}
         </div>
+        <div class="threeDButtonWrapper">
+            <app-three-d-button
+                [condition]="!editMode"
+                [actionTrueName]="'Edit'"
+                [actionFalseName]="'Save'"
+                [actionTrueFunction]="editProfile.bind(this)"
+                [actionFalseFunction]="saveProfile.bind(this)"
+                [actionTrueIconName]="'edit'"
+                [actionFalseIconName]="'save'"
+                [trueColor]="'pink'"
+                [falseColor]="'green'"
+                [iconSizeClass]="'small'"
+                (threeDActionEmmiter)="threeDButtonClicked($event)"
+                >
+            </app-three-d-button>
+        </div>
+        
         <div class="pageHeaderActions" >
             <app-icon-actions
-            *ngIf="actions"
+                *ngIf="actions"
+                (action)="iconActionClicked($event)"
                 [actions]="actions">
             </app-icon-actions>
-            <div class="threeDButtonWrapper">
-                <app-three-d-button
-                    [condition]="!editMode"
-                    [actionTrueName]="'Edit'"
-                    [actionFalseName]="'Save'"
-                    [actionTrueFunction]="editProfile.bind(this)"
-                    [actionFalseFunction]="saveProfile.bind(this)"
-                    [actionTrueIconName]="'edit'"
-                    [actionFalseIconName]="'save'"
-                    [trueColor]="'pink'"
-                    [falseColor]="'green'"
-                    [iconSizeClass]="'small'"
-                    (threeDActionEmmiter)="threeDButtonClicked($event)"
-                    >
-                </app-three-d-button>
-            </div>
-            
         </div>
+        <app-icon-to-row
+            [bgColor]="'green'"
+            [toolTipText]="'Send message to user'"
+            [icon]="'comments'"
+            [positionClass]="'right0_2'"
+            (action)="sendMessageToUser()">
+        </app-icon-to-row>
         
     </div> 
     <div class="pageContent container">
-        <div class="row">
+        <div class="transactions" *ngIf="showTransactions">
+            <app-transactions></app-transactions>
+        </div> 
+        <div class="row" *ngIf="!showTransactions">
             <div class="col-11">
-                    <form
+                <form
                     #userForm="ngForm"
                     (ngSubmit)="onSubmit(userForm)"
                     name="userForm"
@@ -53,6 +64,17 @@
                     </mat-form-field>
                     <mat-form-field class="example-full-width">
                         <input matInput 
+                        placeholder="Balance" 
+                        id="balance"
+                        [(ngModel)]="user.balance"
+                        name="balance"
+                        [disabled]="!editMode"
+                        required
+                        #balance="ngModel">
+                        <!-- <span class="help-block" *ngIf="!userName.valid && userName.touched">Please enter a user name</span> -->
+                    </mat-form-field>
+                    <mat-form-field class="example-full-width">
+                        <input matInput 
                         placeholder="Email" 
                         id="email"
                         [(ngModel)]="user.email"
@@ -61,12 +83,12 @@
                         required
                         email>
                     </mat-form-field>
-                    <mat-form-field class="example-full-width">
+                    <mat-form-field class="example-full-width"  *ngIf="editMode">
                         <input matInput 
                         placeholder="Password" 
                         id="password"
                         [(ngModel)]="user.password"
-                        [disabled]="!editMode"
+                       
                         name="password"
                         required>
                     </mat-form-field>
@@ -97,7 +119,7 @@
                         [disabled]="!editMode"
                         required>
                     </mat-form-field>
-                    <mat-form-field *ngIf="currentUser.role == 'admin'">
+                    <mat-form-field *ngIf="currentUser.role == 'admin' && editMode">
                         <mat-label>Change role</mat-label>
                         <mat-select
                             id="role"
@@ -141,9 +163,25 @@
                     
                         
                 </form> 
+                
             </div>
         </div>
+        <div class="pageButtons">
+            <div class="buttonToModalWrapper">
+                <app-button-to-modal
+                    [condition]="true"
+                    [message] = "'Deposit/Withdraw'"
+                    [formName] = "'transactionForm'"
+                    [actionName]="'Deposit/Withdraw'"
+                    [dataDirection]="'top'"
+                    [ifTrueFunction]="createTransaction.bind(this)"
+                    >
+                </app-button-to-modal>
+            </div>
+            
+        </div>
     </div>
+    
     
     
   

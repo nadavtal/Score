@@ -38,3 +38,12 @@ input.ng-invalid.ng-touched, select.ng-invalid.ng-touched{
     margin-top: .2rem;
 
 }
+
+.transactions{
+    max-height: 67vh;
+    overflow: auto;
+}
+
+.buttonToModalWrapper{
+    // transform: translateX(-2rem)
+}

@@ -17,14 +17,16 @@
     <app-icon-to-row
         *ngIf="account.active"
         [bgColor]="'red'"
+        [toolTipText]="'Diactivate account'"
         [icon]="'trash'"
-        [question]="'Are you sure you want to disactivate this account?'"
+        [question]="'Are you sure you want to diactivate this account?'"
         [positionClass]="'right0_2'"
         (action)="turnToInactive()">
     </app-icon-to-row>
     <app-icon-to-row
         *ngIf="!account.active"
         [bgColor]="'green'"
+        [toolTipText]="'Activate account'"
         [icon]="'trash'"
         [question]="'Are you sure you want to activate this account?'"
         [positionClass]="'right0_2'"

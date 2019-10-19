@@ -426,7 +426,7 @@
         request(options, function (error, response, clan) {
           if (error){
             reject(error)
-            throw new Error(error);
+            // throw new Error(error);
           } else{
             getAllBattlesByClan(clan)
             .then(function(battles) {

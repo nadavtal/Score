@@ -51,7 +51,7 @@
       default: 'user',
       enum: {
         values: ['user', 'admin', 'group-manager'],
-        message: 'Only "user","admin" or group-mmanager roles are allowed.'
+        message: 'Only "user","admin" or group-manager roles are allowed.'
       }
     },
     wins: {
@@ -74,6 +74,10 @@
     profileImageFileName: {
       type: String,
       default: ''
+    },
+    balance: {
+      type: Number,
+      default: 0
     },
     profileImageLink: String,
     accounts: [Account.schema],

@@ -62,7 +62,7 @@ export class AccountsComponent implements OnInit {
               .subscribe((user:any) => {
                 // console.log(user.data)
                 this.user = user.data
-                console.log('user in InfoComponent from server', this.user);
+                console.log('user in AccountsComponent from server', this.user);
                 this.accountsService.getAccountsByUserID(this.user._id)
                   .subscribe((accounts:any) => {
                     console.log(accounts.data);
@@ -105,6 +105,10 @@ export class AccountsComponent implements OnInit {
       .subscribe((newAccount:any)=>{
         console.log(newAccount)
       })
+  }
+
+  searchGroups(){
+    console.log('searching groups')
   }
 
 }

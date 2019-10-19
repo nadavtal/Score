@@ -24,8 +24,15 @@ import { UserRowComponent } from '../shared/components/user-row/user-row.compone
 import { SendMessageComponent } from '../shared/components/send-message/send-message.component';
 import { StatsComponent } from './components/stats/stats.component';
 import { GlowingSpinnerComponent } from './components/glowing-spinner/glowing-spinner.component';
+import { ClashRoyaleBattleComponent } from '../accounts/account/clash-royale-user-account/clash-royale-battles/clash-royale-battle/clash-royale-battle.component';
 import { ArraySortPipe } from './pipes/sort.pipe';
 import { ProgressLoaderComponent } from './components/progress-loader/progress-loader.component';
+import { InfiniteScrollComponent } from './components/infinite-scroll/infinite-scroll.component'
+//PAGINATION COMPONENETS
+import { JwPaginationComponent } from 'jw-angular-pagination';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { TransactionsComponent } from '../transactions/transactions.component';
+import { TransactionItemComponent } from '../transactions/transaction-item/transaction-item.component';
 
 
 @NgModule({
@@ -50,7 +57,12 @@ import { ProgressLoaderComponent } from './components/progress-loader/progress-l
         StatsComponent, 
         GlowingSpinnerComponent,
         ArraySortPipe,
-        ProgressLoaderComponent
+        ProgressLoaderComponent,
+        JwPaginationComponent,
+        InfiniteScrollComponent,
+        ClashRoyaleBattleComponent,
+        TransactionsComponent,
+        TransactionItemComponent
 
     ],
     imports: [
@@ -60,6 +72,7 @@ import { ProgressLoaderComponent } from './components/progress-loader/progress-l
         MaterialModule,
         AngularFontAwesomeModule,
         FormsModule,
+        InfiniteScrollModule
         
     ],
     exports: [
@@ -88,7 +101,13 @@ import { ProgressLoaderComponent } from './components/progress-loader/progress-l
         AngularFontAwesomeModule,
         FormsModule,
         SweetAlert2Module,
-        ProgressLoaderComponent
+        ProgressLoaderComponent,
+        JwPaginationComponent,
+        InfiniteScrollModule,
+        InfiniteScrollComponent,
+        ClashRoyaleBattleComponent,
+        TransactionsComponent,
+        TransactionItemComponent
     ]
 })
 export class  SharedModule{

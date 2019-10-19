@@ -91,7 +91,7 @@
             surname: user.surname,
             firstName: user.firstName,
           }, config.secret, {
-            expiresIn: '24h'
+            expiresIn: '72h'
           });
           // console.log('token', token)
 
@@ -265,6 +265,7 @@
           'email': bodyParams.email,
           'role': bodyParams.role,
           'wins' : bodyParams.wins,
+          'balance' : bodyParams.balance,
           'gamesplayed' : bodyParams.gamesplayed,
           'accounts': bodyParams.account,
           'friends' : bodyParams.friends,
@@ -274,7 +275,7 @@
         },
         { upsert: false, new: true, fields: { password: 0 }, runValidators: true, setDefaultsOnInsert: true })
       .exec((err, user) => {
-        console.log('returnedUser', user)
+        // console.log('returnedUser', user)
         if (err) return next({ err: err, status: 400 });
         if (!user) return next({
           message: 'User not found.',

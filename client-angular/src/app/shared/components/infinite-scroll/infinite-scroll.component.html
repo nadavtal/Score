@@ -1,0 +1,19 @@
+<div
+    infinite-scroll
+    [infiniteScrollDistance]="scrollDistance"
+    [infiniteScrollUpDistance]="scrollUpDistance"
+    [infiniteScrollThrottle]="throttle"
+    (scrolled)="onScrollDown()"
+    (scrolledUp)="onUp()"
+
+    >
+    <div *ngIf="array.length > 0">
+        <div class="" *ngFor="let battle of array | sort:'battleTime'">
+            <app-clash-royale-battle 
+                *ngIf="battle"
+                [battle]="battle">
+            </app-clash-royale-battle>
+        </div>
+    </div>
+    
+</div>

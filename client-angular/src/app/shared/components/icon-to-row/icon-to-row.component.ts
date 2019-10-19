@@ -13,6 +13,7 @@ export class IconToRowComponent implements OnInit {
   @Input() icon:string;
   @Input() positionClass:string;
   @Input() question:string;
+  @Input() toolTipText:string;
   @Output() action =  new Subject<any>();
   constructor(private groupsService: GroupsService) { }
 

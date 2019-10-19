@@ -1,0 +1,33 @@
+.battle{
+    height: auto;
+    border-top: 1px solid black;
+
+    &__info{
+        padding: .3rem 1rem;
+        font-size: .6rem;
+    }
+    &__participant{
+        text-align: center;
+
+        &--userName{
+            font-weight: bold;
+        }
+
+        &--score{
+            font-weight: bold;
+        }
+
+        &__cards{
+            padding:  0 .8rem;
+
+            &--card{
+                width: 2rem;
+                height: 2rem;
+
+                img{
+                    width: 100%;
+                }
+            }
+        }
+    }
+}
