@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { GamesService } from '../../games.service';
 import { NgForm } from '@angular/forms';
@@ -6,7 +6,12 @@ import { localStorageService } from 'src/app/shared/services/local-storage.servi
 import { Utils } from 'src/app/shared/services/utils.service';
 import { listAnimation, moveInUp } from '../../../shared/animations'
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
-// import { SweetAlert } from 'sweetalert/typings/core';
+import { SubSink } from 'node_modules/subsink/dist/subsink'
+import { PrivacyService } from 'src/app/shared/services/privacyService';
+import { PlatformsService } from 'src/app/shared/services/platforms.service';
+import { GroupsService } from 'src/app/groups/groups.service';
+import { MessagesService } from 'src/app/messages/messages.service';
+import { getTreeControlMissingError } from '@angular/cdk/tree';
 
 @Component({
   selector: 'app-game-info',
@@ -14,7 +19,7 @@ import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
   styleUrls: ['./game-info.component.scss'],
   animations: [listAnimation, moveInUp]
 })
-export class GameInfoComponent implements OnInit {
+export class GameInfoComponent implements OnInit, OnDestroy {
   @ViewChild('gameForm', {static: false}) private gameForm: NgForm;
   @ViewChild('gameSwal', {static: false}) private gameSwal: SwalComponent;
   id: string;
@@ -25,25 +30,45 @@ export class GameInfoComponent implements OnInit {
   actions:any;
   toolBarActions:any;
   currentUser:any;
+  currentUserGroups:any;
   gameTypes: any;
   groupsNum: number;
+  privacyOptions: any;
+  platforms:any;
+
+  private subs = new SubSink();
+  
   
   constructor(
       private route: ActivatedRoute,
       private router: Router,
       private utilsService: Utils,
+      private platformService: PlatformsService,
+      private groupsService: GroupsService,
       private localStorage: localStorageService,
+      private messagesService: MessagesService,
+      private privacyService: PrivacyService,
       private gamesService: GamesService) { }
 
   ngOnInit() {
     
     this.currentUser = this.localStorage.get('currentUser')
+    this.subs.sink = this.groupsService.getGroupsManagedByUserID(this.currentUser._id)
+      .subscribe((groups:any) => {
+        this.currentUserGroups = groups.data
+      })
+    this.currentUserGroups
     this.actions= [
       {name: 'Edit', color: 'green', icon: 'envelope-open'},
       {name: 'Save', color: 'green', icon: 'user-plus'},
       
       
     ];
+    this.subs.sink = this.platformService.getPlatforms()
+      .subscribe((platforms:any)=>{
+        this.platforms = platforms.data
+      })
+    this.privacyOptions = this.privacyService.privacyOptions
 
     this.toolBarActions= [
       {name: 'Log out', color: 'green', icon: 'home', },
@@ -53,28 +78,33 @@ export class GameInfoComponent implements OnInit {
       
       ];
 
-    this.gamesService.getGameTypes()
+    this.subs.sink = this.gamesService.getGameTypes()
       .subscribe((gameTypes:any) => {
         this.gameTypes = gameTypes.data;
         console.log(this.gameTypes)
       })
-    this.route.params
+    this.subs.sink = this.route.params
         .subscribe(
           (params: Params) => {
             console.log(params)
             this.id = params['gameId'];
-            this.gamesService.getGame(this.id)
+            this.subs.sink = this.gamesService.getGame(this.id)
               .subscribe((game:any) => {
-                console.log(this.game)
+                
                 this.game = game.data
                 console.log('game in GameInfoComponent from server', this.game);
+                this.groupsNum = this.game.gameGroups.length
                 this.registered = this.utilsService.checkIfUserInArrayByUsername(this.game.players, this.currentUser.userName);
                 this.loaded = true;
-                console.log(this.registered)
+                
               })
           }
         );
 
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 
   editGame(){
@@ -82,15 +112,16 @@ export class GameInfoComponent implements OnInit {
     
   }
   saveGame(){
+    console.log(this.game);
     if(this.editMode == true){
       this.editMode = !this.editMode;
 
     }
-    this.gamesService.editGame(this.game)
+    this.subs.sink = this.gamesService.editGame(this.game)
       .subscribe((upadtedGame:any)=> {
         this.game = upadtedGame.data;
         this.registered = this.utilsService.checkIfUserInArrayByUsername(this.game.players, this.currentUser.userName);
-        console.log(this.registered);
+        console.log(this.game);
       })
   }
  
@@ -105,7 +136,7 @@ export class GameInfoComponent implements OnInit {
       userName: this.currentUser.userName,
       userId: this.currentUser._id
     });
-    this.gamesService.editGame(this.game)
+    this.subs.sink = this.gamesService.editGame(this.game)
       .subscribe((upadtedGame:any)=> {
         this.game = upadtedGame.data;
         this.gameSwal.title="GOOD LUCK";
@@ -147,6 +178,7 @@ export class GameInfoComponent implements OnInit {
       
       if(this.game.gameType == "1V1"){
         this.addGroupsToGame(2,1);
+       
         // this.game.gameGroups[0].groupMembers[0].userName = this.currentUser.userName
         // addPlayerToGroup(0, this.currentUser.userName);
       }
@@ -213,8 +245,50 @@ export class GameInfoComponent implements OnInit {
       }
       this.game.gameGroups.push(group)
     }
-    this.game.gameGroups[0].groupMembers[0].userName = this.currentUser.userName
-    console.log(this.game)
+    this.game.gameGroups[0].groupMembers[0].userName = this.currentUser.userName;
+    // console.log(this.game)
+    this.game.maxPlayers = this.game.gameGroups.length * parseInt(this.game.playersPerGroup);
+    console.log(this.game.maxPlayers)
   }
 
+  inviteFriendsAndGroups(data){
+    console.log(data);
+    if(data.friends){
+      this.inviteUsers(data.friends)
+    }
+    if(data.groupsSelected){
+      this.inviteGroups(data.groupsSelected)
+    }
+
+  }
+
+  inviteUsers(users){
+    this.messagesService.sendInvitationMessage('Game', this.game, this.currentUser, users, 'gameInvite')
+      .then((createdMessages:any)=> {
+        console.log('createdMessages: ', createdMessages)
+      })
+  }
+
+  inviteGroups(groups:any){
+    
+    for(var i=0; i< groups.length; i++){
+      if(groups[i].members.length > 0){
+        console.log(groups[i].groupName)
+        this.messagesService.sendInvitationMessage('Game', this.game, this.currentUser, groups[i].members, 'gameInvite')
+        .then((createdMessages:any)=> {
+          console.log('createdMessages: ', createdMessages)
+        })
+
+      }
+    }
+  }
+
+  sendMessageToPlayers(text){
+    this.messagesService.sendMessageToGroup(this.game.players, this.currentUser, text)
+      .then((createdMessages:any) => {
+        console.log('createdMessages: ', createdMessages)
+      })
+  }
+
+  
 }

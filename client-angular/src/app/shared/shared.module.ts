@@ -26,6 +26,7 @@ import { StatsComponent } from './components/stats/stats.component';
 import { GlowingSpinnerComponent } from './components/glowing-spinner/glowing-spinner.component';
 import { ClashRoyaleBattleComponent } from '../accounts/account/clash-royale-user-account/clash-royale-battles/clash-royale-battle/clash-royale-battle.component';
 import { ArraySortPipe } from './pipes/sort.pipe';
+import { UnreadMessages } from './pipes/unread-messages.pipe';
 import { ProgressLoaderComponent } from './components/progress-loader/progress-loader.component';
 import { InfiniteScrollComponent } from './components/infinite-scroll/infinite-scroll.component'
 //PAGINATION COMPONENETS
@@ -62,7 +63,8 @@ import { TransactionItemComponent } from '../transactions/transaction-item/trans
         InfiniteScrollComponent,
         ClashRoyaleBattleComponent,
         TransactionsComponent,
-        TransactionItemComponent
+        TransactionItemComponent,
+        UnreadMessages
 
     ],
     imports: [
@@ -107,7 +109,8 @@ import { TransactionItemComponent } from '../transactions/transaction-item/trans
         InfiniteScrollComponent,
         ClashRoyaleBattleComponent,
         TransactionsComponent,
-        TransactionItemComponent
+        TransactionItemComponent,
+        UnreadMessages
     ]
 })
 export class  SharedModule{

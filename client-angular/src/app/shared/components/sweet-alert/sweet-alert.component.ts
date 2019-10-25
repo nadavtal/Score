@@ -16,6 +16,7 @@ export class SweetAlertComponent implements OnInit {
   @Input() formName: string;
   @Input() formTitle: string;
   @Input() actionName: string;
+  @Input() buttonColor: string = 'black';
   @Output()confirmed = new Subject<any>();
   platforms:any;
   constructor(
@@ -43,23 +44,7 @@ export class SweetAlertComponent implements OnInit {
     console.log(this.form.value);
     // this.confirmed.next({formName: this.formName, formValues: this.form.value})
     this.confirmed.next({action: this.formName, values: this.form.value})
-  //   switch(this.formName) { 
-  //     case 'createGameForm': { 
-  //        console.log('creating game');
-  //        break; 
-  //     } 
-  //     case 'createGroupForm': { 
-  //        console.log('creating Group')
-  //        break; 
-  //     } 
-  //     case 'createTournamentForm': { 
-  //        console.log('creating tournament')
-  //        break; 
-  //     } 
-      
-  //  } 
-    
-    
+ 
   }
 
 }

@@ -1,22 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { TournamentsService } from '../../tournaments.service';
 import { ActivatedRoute, Params } from '@angular/router';
+import { SubSink } from 'node_modules/subsink/dist/subsink'
 
 @Component({
   selector: 'app-tournament-structure',
   templateUrl: './tournament-structure.component.html',
   styleUrls: ['./tournament-structure.component.scss']
 })
-export class TournamentStructureComponent implements OnInit {
+export class TournamentStructureComponent implements OnInit, OnDestroy {
   id:string;
   tournament:any;
   tournamentStructureObj:any;
   loaded:boolean = false;
+  private subs = new SubSink()
   constructor(private tournamentsService: TournamentsService,
               private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.tournamentsService.tournamentSelected
+    this.subs.sink = this.tournamentsService.tournamentSelected
     .subscribe((tournament:any) => {
       this.tournament = tournament;
       // console.log('tournament received from Subject:', this.tournament);
@@ -149,12 +151,16 @@ export class TournamentStructureComponent implements OnInit {
     console.log(this.tournamentStructureObj);
     this.tournament.tree = JSON.stringify(this.tournamentStructureObj);
     
-    this.tournamentsService.editTournament(this.tournament)
+    this.subs.sink = this.tournamentsService.editTournament(this.tournament)
       .subscribe((tournament:any) => {
         this.tournament = tournament.data;
         console.log(this.tournament);
       })
     
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 
 }

@@ -50,25 +50,103 @@
     [path]="'home'">
 </app-dinamic-tabs>
 <router-outlet></router-outlet>
-    <!--<div class="mainCubeMenu" @listAnimation>
-        <div class="cubeMenuItem cubeMenuItem--cube bg-{{tab.color}} white holder "
-            *ngFor="let tab of tabs"
-            routerLink="{{tab.name}}">
-            <div class="cubeMenuItem--title absCenter">
-                <div class="absCenter">
-                    <div class="center" >
-                            <mat-icon aria-hidden="false" aria-label="Example home icon">{{tab.icon}}</mat-icon>
-                    </div>
-                    <div class="text-center">
-                       
-                            {{tab.name}}
+<swal
+    #userSwal
     
-                    </div>
-                </div>
-                
-            </div>
-           
-        </div>
+    title="{{swalTitle}}"
+    text="{{swalText}}"
+    type="{{swalType}}"
+    timer="{{swalTimer}}"
+    [showConfirmButton]="showConfirmButton"
+    (confirm)="swalConfirm(swalOptions)"
+    (cancel)="handleRefusal($event)"
+    [showCancelButton]="showCancelButton"
+    [focusCancel]="true"
+    [swalOptions]="swalOptions"
+    >
+    
+</swal>
 
-    </div>-->
+<swal title="Login/Signup"
+    #loginSweetAlert
+    (confirm)="onSubmit(loginForm.value)"
+    >
+    
+    <form
+        #loginForm="ngForm"
+        *swalPortal
+        
+        name="loginForm"
+        role="form"
+        id="loginForm"
+        >
+        <div class="switchWrapper">
+            <app-switch-check-box
+                [ifCheckedFunction]="toggleLoginMode.bind(this)"
+                [ifUnCheckedFunction]="toggleLoginMode.bind(this)">
+            </app-switch-check-box>
+
+        </div>
+       
+        <mat-form-field class="example-full-width"
+            [class.hidden]="loginMode">
+            <input matInput 
+            placeholder="Email" 
+            
+            id="email"
+            ngModel
+            name="email"
+            #email = "ngModel"
+            [required] = "!loginMode"
+            email>
+        </mat-form-field>
+        <br>
+        <mat-form-field class="example-full-width">
+            <input matInput 
+            placeholder="User Name" 
+            value=""
+            id="userName"
+            [(ngModel)]="userName"
+            name="userName"
+            required
+            >
+        </mat-form-field>
+        <br>
+        <mat-form-field class="example-full-width">
+            <input matInput 
+            placeholder="Password" 
+            value=""
+            id="password"
+            [(ngModel)]="password"
+            name="password"
+            required
+            minlength="3">
+        </mat-form-field>
+        <!-- <button
+            [disabled]="!loginForm.valid">
+            {{ loginMode? 'Login' : 'Sign Up' }}
+        </button> -->
+        <ng-container *swalPortal="swalTargets.confirmButton">
+                {{ loginMode? 'Login' : 'Sign Up' }}
+            </ng-container>
+    </form>
+    <div class="errorMsg red" *ngIf="error">{{error}}</div>
+    
+    
+    <!-- This targets the confirm button's inner content
+            Notice the usage of ng-container to avoid creating an useless DOM element inside the button -->
+    
+</swal>
+<button 
+        class="authButton white"
+        (click)="logout()" 
+        *ngIf="currentUser">
+        Logout
+    </button>
+    <button 
+        class="authButton white"
+        (click)="toggleForm()" 
+        *ngIf="!currentUser">
+        Login
+    </button>
 

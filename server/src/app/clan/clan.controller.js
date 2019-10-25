@@ -370,12 +370,18 @@
               };
                 
             request(options, function (error, response, body) {
-              if (error) throw new Error(error);
+              if (error) 
+              // throw new Error(error);
+              reject(error)
               // console.log('got battles from clash API')
                 
-              
-              var battles = JSON.parse(body);
-              resolve(battles)
+              if(body){
+                var battles = JSON.parse(body);
+                resolve(battles)
+
+              } else {
+                resolve('Didnt get '+ clan.memberList[i].tag + ' battles')
+              }
               // console.log(battles);
               // var battlesLeangth = user.battles.length;
               // for(let battle of battles){

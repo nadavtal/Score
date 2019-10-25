@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { UsersService } from '../../users.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
@@ -6,7 +6,7 @@ import { User } from '../../user.model';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { localStorageService } from 'src/app/shared/services/local-storage.service';
 import { TransactionsService } from 'src/app/transactions/transaction.service';
-
+import { SubSink } from 'node_modules/subsink/dist/subsink'
 
 
 
@@ -16,7 +16,7 @@ import { TransactionsService } from 'src/app/transactions/transaction.service';
   templateUrl: './info.component.html',
   styleUrls: ['./info.component.scss']
 })
-export class InfoComponent implements OnInit {
+export class InfoComponent implements OnInit, OnDestroy {
   roles = [];
   id:string;
   user:User;
@@ -30,6 +30,7 @@ export class InfoComponent implements OnInit {
   @ViewChild('deleteSwal', {static: false}) private deleteSwal: SwalComponent;
   @ViewChild('userForm', {static: false}) private userForm: NgForm;
   
+  private subs = new SubSink();
   constructor(
             private usersService: UsersService,
             private transactionsService: TransactionsService,
@@ -45,18 +46,18 @@ export class InfoComponent implements OnInit {
       {name: 'Show/Hide transactions', color: 'green', icon: 'money'},
       // {name: 'Show transactions', color: 'green', icon: 'dollar'},
     ]
-    this.usersService.userSelected
+    this.subs.sink = this.usersService.userSelected
       .subscribe((user:any)=>{
         this.user = user;
         console.log('user in InfoComponent sub', this.user);
         this.loaded = true;
       })
-    this.route.parent.params
+      this.subs.sink = this.route.parent.params
         .subscribe(
           (params: Params) => {
             // console.log(params)
             this.id = params['userId'];
-            this.usersService.getUserFromDb(this.id)
+            this.subs.sink = this.usersService.getUserFromDb(this.id)
               .subscribe((user:any) => {
                 // console.log(user.data)
                 this.user = user.data;
@@ -70,6 +71,10 @@ export class InfoComponent implements OnInit {
     this.roles =  ['User', 'Admin'];
     
    
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 
   iconActionClicked(event){
@@ -112,9 +117,15 @@ export class InfoComponent implements OnInit {
   saveProfile(){
     this.editMode = !this.editMode;
     console.log(this)
-    this.usersService.updateUser(this.user)
-      .subscribe((upadtedUser:any)=>{
-        this.user = upadtedUser.data
+    this.subs.sink = this.usersService.updateUser(this.user)
+      .subscribe((updatedUser:any)=>{
+        this.user = updatedUser.data
+        this.usersService.userSelected.next(this.user);
+        this.localStorage.update('currentUser', this.user);
+        console.log(this.localStorage.get('currentUser'))
+      },
+      error => {
+        console.log(error)
       })
   }
 
@@ -122,18 +133,11 @@ export class InfoComponent implements OnInit {
     transaction.userId = this.currentUser._id;
     
     console.log(transaction)
-    this.transactionsService.createTransaction(transaction)
+    this.subs.sink = this.transactionsService.createTransaction(transaction)
       .subscribe((createdTransaction:any) => {
         
         this.updateUserBalance(createdTransaction.data)
-        this.usersService.updateUser(this.user)
-          .subscribe((updatedUser:any) => {
-            console.log(updatedUser)
-            // this.user = updatedUser.data
-          },
-          error => {
-            console.log(error)
-          })
+        this.saveProfile()
         
       })
   }

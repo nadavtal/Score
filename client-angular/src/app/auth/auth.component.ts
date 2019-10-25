@@ -54,8 +54,11 @@ export class AuthComponent implements OnInit {
     this.authService.login(userData)
     .subscribe((user:any)=>{
       console.log(user);
-      this.localStorage.set('currentUser', user.data);
+      this.localStorage.set('currentUser', user.data.user);
+      this.localStorage.set('token', user.data.token);
+      
       this.currentUser = this.localStorage.get('currentUser');
+      console.log(window.localStorage)
       this.toggleForm();
       this.goToMyProfile()
     }, error => {
@@ -65,6 +68,7 @@ export class AuthComponent implements OnInit {
   }
   logout(){
     this.localStorage.remove('currentUser');
+    this.localStorage.remove('token');
     this.currentUser = false;
     // this.toggleForm()
   }

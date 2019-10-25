@@ -75,7 +75,12 @@
     width: 50%  !important;
 }
 
-.nakedButton{
+.nakedButton {
+    transition: .3s all;
     border: none;
     background-color: transparent
+}
+
+.nakedButton :focus{
+    outline: none !important
 }

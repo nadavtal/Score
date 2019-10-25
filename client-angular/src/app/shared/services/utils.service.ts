@@ -28,7 +28,7 @@ export class Utils{
     }
 
     removeUserFromArrayByUserId(array:any, userId:string){
-      console.log(array)
+      // console.log(array)
       return array.filter(function(value){
         
         return value.userId != userId;

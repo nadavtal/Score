@@ -1,5 +1,5 @@
 import { Component, OnInit , Inject, Input} from '@angular/core';
-import { SwalPortalTargets } from '@sweetalert2/ngx-sweetalert2';
+
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { GroupFormComponent } from 'src/app/groups/group/group-form/group-form.component';
 

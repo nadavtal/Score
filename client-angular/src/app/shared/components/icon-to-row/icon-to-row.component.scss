@@ -51,6 +51,17 @@
     padding-left: .5rem;
 }
 
+.selectInputsWrapper{
+    width: 77%;
+}
+.selectInputsWrapper mat-form-field {
+    width: 50%;
+}
+
+
+.mat-select-value{
+    color: white
+}
 .question{
     padding: .7rem;
     display: flex;

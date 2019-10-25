@@ -2,19 +2,19 @@
 
 
 <button mat-raised-button
-    class="nakedButton"
+    class="nakedButton {{buttonColor}}"
     matTooltip="{{actionName}}"
     [matTooltipPosition]="'below'"
     aria-label="Button that displays a tooltip in various positions">
     <fa class="absCenter" name="plus" 
     animation=""
-    (click)="sweetALert.fire()"></fa>
+    (click)="sweetAlert.fire()"></fa>
 </button>
 
 
 
 <swal title="{{formTitle}}" 
-    #sweetALert
+    #sweetAlert
     (confirm)="modalConfirmedClicked()">
     <!-- This form will be displayed as the alert main content
             Targets the alert's main content zone by default -->
@@ -275,7 +275,6 @@
                     id="accountId"
                     #accountId="ngModel"
                     name="accountId"
-                    #accountId="ngModel"
                     >
                 </mat-form-field>
 

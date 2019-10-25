@@ -75,6 +75,7 @@
             surname: user.surname,
             firstName: user.firstName,
             wins: user.wins,
+            balance: user.balance,
             friends: user.friends,
             groups: user.groups,
             accounts: user.accounts,
@@ -95,12 +96,12 @@
           });
           // console.log('token', token)
 
-          userInfo.token = token;
+          var userToken = token;
 
           // just to prove sockets are working, there are better use cases for using websockets
           req.io.emit('user:loggedIn');
 
-          utils.sendJSONresponse(res, 200, userInfo);
+          utils.sendJSONresponse(res, 200, {user: user, token: userToken});
         });
       });
   }
@@ -117,7 +118,7 @@
     if (token) {
       
       jwt.verify(token, config.secret, (err, decodedToken) => {
-        console.log(decodedToken)
+        console.log('decodedToken: ', decodedToken)
         if (err){
           // console.log(err)
           return next({
@@ -298,6 +299,7 @@
     req.checkBody('password', 'Password must be defined').notEmpty();
     req.checkBody('confirmPassword', 'Confirmed password must be defined').notEmpty();
     req.checkBody('confirmPassword', 'Password and confirm password does not match').equals(req.body.password);
+    // req.checkBody('balance', 'balance is not a number');
 
     var errors = req.validationErrors();
     if (errors) {

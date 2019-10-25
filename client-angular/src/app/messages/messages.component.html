@@ -1,6 +1,7 @@
 <mat-tab-group mat-align-tabs="center" *ngIf="loaded">
-    <mat-tab label="Inbox" >
-        <div *ngFor="let message of inboxMessages">
+    
+    <mat-tab label="Inbox ({{sumUnreadMessages(inboxMessages)}})" *ngIf="inboxMessages.length">
+        <div *ngFor="let message of inboxMessages | sort:'sentdAt'">
             <app-message
                 [box]="'inbox'"
                 [message]="message">
@@ -8,8 +9,35 @@
         </div>
         
     </mat-tab>
-    <mat-tab label="Outbox">
-        <div *ngFor="let message of outboxMessages">
+    <mat-tab label="Invites ({{sumUnreadMessages(invites) }})" *ngIf="invites.length">
+        <div *ngFor="let message of invites| sort:'sentdAt'">
+            <app-message
+                [box]="'inbox'"
+                [message]="message">
+            </app-message>
+        </div>
+        
+    </mat-tab>
+    <mat-tab label="Notifications ({{sumUnreadMessages(notifications)}})" *ngIf="notifications.length">
+        <div *ngFor="let message of notifications| sort:'sentdAt'">
+            <app-message
+                [box]="'inbox'"
+                [message]="message">
+            </app-message>
+        </div>
+        
+    </mat-tab>
+    <mat-tab label="Log ({{sumUnreadMessages(logMessages)}})" *ngIf="logMessages.length">
+        <div *ngFor="let message of logMessages | sort:'sentdAt'">
+            <app-message
+                [box]="'inbox'"
+                [message]="message">
+            </app-message>
+        </div>
+        
+    </mat-tab>
+    <mat-tab label="Outbox ({{sumUnreadMessages(outboxMessages)}})" *ngIf="outboxMessages.length">
+        <div *ngFor="let message of outboxMessages| sort:'sentdAt'">
             <app-message
                 [box]="'outbox'"
                 [message]="message">

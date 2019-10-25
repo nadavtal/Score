@@ -24,13 +24,13 @@
     messageType: {
       type: String,
       enum: {
-        values: ['replyMessage', 'groupInvite', 'groupMessage', 'gameInvite', 'privateChatMessage', 'groupChatMessage', 'systemMessage', 'friendRequest', 'tournamentInvite'],
-        message: 'Only "replyMessage", groupInvite", "groupMessage", gameInvite", "privateChatMessage", "groupChatMessage", systemMessage" , "friendRequest", "tournamentInvitey", messages are allowed.'
+        values: ['replyMessage', 'groupInvite', 'groupMessage', 'gameInvite', 'privateChatMessage', 'groupChatMessage', 'systemMessage', 'friendRequest', 'tournamentInvite','log', 'notification'],
+        message: 'Only "replyMessage", groupInvite", "groupMessage", gameInvite", "privateChatMessage", "groupChatMessage", "systemMessage" , "friendRequest", "tournamentInvite", "log", "notification" , messages are allowed.'
       }
     },
     sender: {
       userName: String,
-      userId: ObjectId
+      userId: String
     },
     receiver: {
       userName: String,

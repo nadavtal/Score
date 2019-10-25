@@ -13,11 +13,12 @@ export class AuthInterceptorService implements HttpInterceptor {
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>>{
         // console.log('req on its way', req);
         let currentUser = this.localStorage.get('currentUser');
+        let token = this.localStorage.get('token');
         
-        if(currentUser){
+        if(currentUser && token){
             req = req.clone({
                 setHeaders: {
-                  Authorization: `Bearer ${currentUser.token}`
+                  Authorization: `Bearer ${token}`
                 }
               });
         } else{

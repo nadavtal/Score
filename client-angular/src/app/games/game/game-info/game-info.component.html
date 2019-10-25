@@ -5,6 +5,7 @@
         </div>
         <div class="modalButton">
             <app-sweet-alert 
+            [buttonColor]="'white'"
             [formName]="'createGameForm'"
             [actionName]="'Create'"
             ></app-sweet-alert>
@@ -26,14 +27,31 @@
             </app-three-d-button>
 
         </div> 
-        <div class="pageHeaderActions" >
+        <app-icon-to-row
+            [bgColor]="'green'"
+            [icon]="'comments'"
+            [currentUser]="currentUser"
+            [toolTipText]="'Send message to group'"
+            [positionClass]="'right1_2'"
+            (action)="sendMessageToPlayers($event)">
+        </app-icon-to-row>
+        <app-icon-to-row
+            [bgColor]="'green'"
+            [icon]="'user-plus'"
+            [currentUser]="currentUser"
+            [toolTipText]="'Invite friends and groups'"
+            [groups]="currentUserGroups"
+            [positionClass]="'right0_2'"
+            (action)="inviteFriendsAndGroups($event)">
+        </app-icon-to-row>
+        <!-- <div class="pageHeaderActions" >
             <app-icon-actions
             *ngIf="actions"
                 [actions]="actions">
             </app-icon-actions>
             
             
-        </div>
+        </div> -->
     </div>  
         
         
@@ -71,42 +89,32 @@
                     </mat-form-field>
                     
                     
-                 
-                    <mat-form-field class="example-full-width">
-                        <input matInput 
-                        placeholder="Host" 
-                        [(ngModel)]="game.host"
-                        id="host"
-                        [disabled]="!editMode"
-                        required
-                        name="host"
-                        #host="ngModel"
-                        >
+                    <mat-form-field>
+                        <mat-label>Platform</mat-label>
+                        <mat-select
+                            
+                            id="platform"
+                            [(value)]="game.platform"
+                            [disabled]="!editMode"
+                            name="platform"
+                            
+                            required>
+                            <mat-option *ngFor="let platform of platforms" [value]="platform.name">
+                            {{platform.name}}
+                            </mat-option>
+                        </mat-select>
                     </mat-form-field>
-                    
-                    
-                    <mat-form-field class="example-full-width">
-                        <input matInput 
-                        placeholder="Platform" 
-                        [(ngModel)]="game.platform"
-                        id="platform"
-                        [disabled]="!editMode"
-                        #platform="ngModel"
-                        name="platform"
-                        >
-                    </mat-form-field>
-                    
                     <mat-form-field>
                         <mat-label>Game type</mat-label>
                         <mat-select
-                            (selectionChange)="gameTypeSelected(gameTypeSelect.value.name)"
+                            (selectionChange)="gameTypeSelected(game.gameType)"
                             id="gameTypeSelect"
-                            ngModel
+                            [(value)]="game.gameType"
                             [disabled]="!editMode"
                             name="gameTypeSelect"
-                            #gameTypeSelect="ngModel"
+                            
                             required>
-                            <mat-option *ngFor="let type of gameTypes" [value]="type">
+                            <mat-option *ngFor="let type of gameTypes" [value]="type.name">
                             {{type.name}}
                             </mat-option>
                         </mat-select>
@@ -181,7 +189,7 @@
                         <mat-datepicker touchUi #picker></mat-datepicker>
                     </mat-form-field>
     
-                    <mat-form-field>
+                    <!-- <mat-form-field>
                         <mat-label>Choose host</mat-label>
                         <mat-select
                             id="managerSelect"
@@ -193,8 +201,22 @@
                             {{player.userName}}
                             </mat-option>
                         </mat-select>
+                    </mat-form-field> -->
+                    <mat-form-field>
+                        <mat-label>Host</mat-label>
+                        <mat-select
+                       
+                            id="host"
+                            [(value)]="game.host"
+                            [disabled]="!editMode"
+                            name="host"
+                            
+                            required>
+                            <mat-option *ngFor="let user of currentUser.friends" [value]="user.userName">
+                            {{user.userName}}
+                            </mat-option>
+                        </mat-select>
                     </mat-form-field>
-    
                     <mat-form-field class="example-full-width">
                         <input matInput 
                         placeholder="Entree fee" 
@@ -206,7 +228,7 @@
                         >
                     </mat-form-field>
                     
-                    <mat-form-field class="example-full-width">
+                    <!-- <mat-form-field class="example-full-width">
                         <input matInput 
                         placeholder="Privacy" 
                         [(ngModel)]="game.privacy"
@@ -215,6 +237,21 @@
                         name="privacy"
                         [disabled]="!editMode"
                         >
+                    </mat-form-field> -->
+                    <mat-form-field>
+                        <mat-label>Privacy</mat-label>
+                        <mat-select
+                            
+                            id="privacy"
+                            [(value)]="game.privacy"
+                            [disabled]="!editMode"
+                            name="privacy"
+                            
+                            required>
+                            <mat-option *ngFor="let option of privacyOptions" [value]="option">
+                            {{option}}
+                            </mat-option>
+                        </mat-select>
                     </mat-form-field>
                     
                     <mat-form-field class="example-full-width"

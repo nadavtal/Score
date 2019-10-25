@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Game } from '../game.model';
 import { GamesService } from '../games.service';
 import { UsersService } from 'src/app/users/users.service';
@@ -6,8 +6,10 @@ import { User } from 'src/app/users/user.model';
 import { ActivatedRoute, Params } from '@angular/router';
 import { GroupsService } from 'src/app/groups/groups.service';
 import { Utils } from 'src/app/shared/services/utils.service';
-import { trigger, state, style, transition, animate, keyframes, query, stagger } from '@angular/animations';
+import { SubSink } from 'node_modules/subsink/dist/subsink'
 import { listAnimation, moveInUp } from '../../shared/animations'
+import { localStorageService } from 'src/app/shared/services/local-storage.service';
+import { MessagesService } from 'src/app/messages/messages.service';
 
 @Component({
   selector: 'app-game-list',
@@ -19,7 +21,7 @@ import { listAnimation, moveInUp } from '../../shared/animations'
  
   ]
 })
-export class GameListComponent implements OnInit {
+export class GameListComponent implements OnInit, OnDestroy {
   user:User;
   group: any;
   games: Game[];
@@ -31,34 +33,32 @@ export class GameListComponent implements OnInit {
   topPositionContentClass: string;
   showFilterSection:boolean = false;
   showSwitchButton:boolean = true;
+  isLoggedIn:boolean;
+  
+  private subs = new SubSink();
+  private message:any = {};
   constructor(private gamesService: GamesService,
               private usersService: UsersService,
               private groupService: GroupsService,
+              private messagesService: MessagesService,
+              private loaclStorage: localStorageService,
               private utilsService: Utils,
               private route: ActivatedRoute) { }
 
   ngOnInit() {
-    
+    if(this.loaclStorage.get('currentUser')){
+      this.currentUser = this.loaclStorage.get('currentUser');
+
+    }
+    if(this.currentUser){
+      this.isLoggedIn = true
+    }
     
     this.actions= [
       {name: 'Filter', color: 'green', icon: 'filter', },
        ];
-    // this.usersService.userSelected
-    // .subscribe((user:any)=>{
-    //   this.user = user;
-    //   // console.log('user in AccountsComponent sub', this.user);
-     
-    //   this.gamesService.getGamesByUserID(this.user._id)
-    //       .subscribe((games:any) => {
-    //         this.games = games.data
-    //         this.addRegisteredToGames(this.user, this.games);
-    //         
-    //         // console.log(this.games);
-    //         this.loaded = true;
-    //       });
-  
-    // })
-    this.route.parent.params
+    
+    this.subs.sink = this.route.parent.params
         .subscribe(
           (params: Params) => {
             console.log(params);
@@ -66,12 +66,12 @@ export class GameListComponent implements OnInit {
               this.id = params['userId'];
               this.topPositionHeaderClass = 'pageHeaderTabs'
               this.topPositionContentClass = 'pageContentTabs'
-              this.usersService.getUserFromDb(this.id)
+              this.subs.sink = this.usersService.getUserFromDb(this.id)
                 .subscribe((user:any) => {
                   // console.log(user.data)
                   this.user = user.data
                   // console.log('user in GameListComponent from server', this.user);
-                  this.gamesService.getGamesByUserID(this.user._id)
+                  this.subs.sink = this.gamesService.getGamesByUserID(this.user._id)
                   .subscribe((games:any) => {
                     this.games = games.data
                     this.addRegisteredToGames(this.user, this.games)
@@ -79,16 +79,18 @@ export class GameListComponent implements OnInit {
                     this.loaded = true;
                   });
                 });
-            } else if(params['groupId']){
+            } 
+            else if(params['groupId']){
               this.id = params['groupId'];
+              
               this.topPositionHeaderClass = 'pageHeaderTabs'
               this.topPositionContentClass = 'pageContentTabs'
-              this.groupService.getGroupFromDb(this.id)
+              this.subs.sink = this.groupService.getGroupFromDb(this.id)
                 .subscribe((group:any) => {
                   // this.userLoaded = true;
                   this.group = group.data
                   console.log('group in GameListComponent from server', this.group);
-                  this.gamesService.getGamesByGroupId(this.id)
+                  this.subs.sink = this.gamesService.getGamesByGroupId(this.id)
                   .subscribe((games:any) => {
                     this.games = games.data
                     console.log(this.games);
@@ -101,7 +103,7 @@ export class GameListComponent implements OnInit {
               this.topPositionHeaderClass = 'pageHeader';
               this.topPositionContentClass = 'pageContent';
               this.showSwitchButton = false;
-              this.gamesService.getGames()
+              this.subs.sink = this.gamesService.getGames()
                   .subscribe((games:any) => {
                     this.games = games.data;
                     console.log(this.games);
@@ -116,55 +118,29 @@ export class GameListComponent implements OnInit {
     
   }
 
-  getUser(){
-    return new Promise<User>((resolve, reject) => { 
-      
-      if(this.usersService.getUser()){
-        const user = this.usersService.getUser();
-        // console.log('user in FriendsComponent from getUser', this.user);
-        resolve(user)
-        
-      }else{
-        this.route.parent.params
-        .subscribe(
-          (params: Params) => {
-            console.log(params)
-            this.id = params['id'];
-            this.usersService.getUserFromDb(this.id)
-              .subscribe((user:any) => {
-                // console.log(user.data)
-                this.user = user.data
-                // console.log('user in FriendsComponent from server', this.user);
-                resolve(this.user)
   
-              })
-          }
-        );
-      };
-
-    })
-  }
-
   sweetAlertConfirm(data:any){
     console.log(data);
     this.createNewGame(data.values)
   }
 
   createNewGame(game:any){
-    game.host = this.user.userName;
-    game.players = [{userName: this.user.userName,
-                    userId: this.user._id}]
-    this.gamesService.createGame(game)
-      .subscribe((newGame:any) => {
-        console.log('new game created', newGame.data);
-        this.games.push(newGame.data)
+    this.gamesService.gameCreation(game, this.currentUser, this.group)
+      .then((newGame:any)=>{
+        console.log(newGame)
+        this.games.push(newGame);
       })
+          
   }
 
   addRegisteredToGames(user, games){
     for(let i=0; i<games.length;i++){
       games[i].registered = this.utilsService.checkIfUserInArrayByUsername(games[i].players, user.userName) 
     }
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 
 }

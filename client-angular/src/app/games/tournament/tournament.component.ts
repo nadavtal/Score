@@ -1,22 +1,25 @@
-import { Component, OnInit, Input} from '@angular/core';
+import { Component, OnInit, Input, OnDestroy} from '@angular/core';
 // import { Tournament } from '../tournament.model';
 import { TournamentsService } from '../tournaments.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { localStorageService } from 'src/app/shared/services/local-storage.service';
 import { Utils } from 'src/app/shared/services/utils.service';
+import { SubSink } from 'node_modules/subsink/dist/subsink';
+
 @Component({
   selector: 'app-tournament',
   templateUrl: './tournament.component.html',
   styleUrls: ['./tournament.component.scss']
 })
-export class TournamentComponent implements OnInit {
+export class TournamentComponent implements OnInit, OnDestroy {
   id: string;
   tournament:any;
   registered:boolean;
   currentUser:any;  
   loaded:boolean =false;
   path:string;
-  tab:string
+  tab:string;
+  private subs = new SubSink()
   
   constructor(private tournamentsService: TournamentsService,
               private route: ActivatedRoute,
@@ -27,7 +30,7 @@ export class TournamentComponent implements OnInit {
   ngOnInit() {
     this.tab = 'Info';
     this.currentUser = this.localStorage.get('currentUser');
-    this.route.params
+    this.subs.sink = this.route.params
       .subscribe(
         (params: Params) => {
           // console.log(params);
@@ -36,19 +39,23 @@ export class TournamentComponent implements OnInit {
           
           this.id = params['tournamentId'];
           // console.log(this.tab)
-          this.tournamentsService.getTournament(this.id)
+          this.subs.sink = this.tournamentsService.getTournament(this.id)
             .subscribe((tournament:any) => {
               this.tournament = tournament.data;
               
-              this.loaded = true;
-              // console.log('tournament in TournamentComponent from server', this.tournament);
               this.registered = this.utilsService.checkIfUserInArrayByUsername(this.tournament.registered, this.currentUser.userName);
+              // console.log('tournament in TournamentComponent from server', this.tournament);
               this.tournamentsService.tournamentSelected.next(this.tournament)
+              this.loaded = true;
             })
         }
       );
 
     
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 
   changeActiveTab(event){

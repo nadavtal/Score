@@ -14,21 +14,7 @@ export class GamesComponent implements OnInit {
               private httpService: QueryService) { }
 
   ngOnInit() {
-    // this.gamesService.gameSelected
-    //   .subscribe((game: Game) =>{
-    //     this.selectedGame = game
-    //   });
-    
-    
-
-    // this.httpService.get('clashusers/%232JYGLLPU')
-    //   .subscribe(responseData => {
-    //     console.log(responseData);
-    // }, error=>{
-    //   this.httpService.error.next(error.message);
-    //   console.log(error)
-    // });
-    
+      
 
   }
 

@@ -1,20 +1,21 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { MessagesService } from '../messages.service';
+import { SubSink } from 'node_modules/subsink/dist/subsink'
 
 @Component({
   selector: 'app-message',
   templateUrl: './message.component.html',
   styleUrls: ['./message.component.scss']
 })
-export class MessageComponent implements OnInit {
+export class MessageComponent implements OnInit, OnDestroy {
   @Input() message:any;
   @Input() box:string;
   @ViewChild('replyForm', {static: false}) replyForm: NgForm;
   showMessageContent:boolean = false;
   showReplyForm: boolean = false;
-
+  private subs = new SubSink();
   constructor(private router: Router,
               private messagesService: MessagesService) { }
 
@@ -66,7 +67,7 @@ export class MessageComponent implements OnInit {
           parentMessageId: message._id
       }
       message.status = 'unread';
-      this.messagesService.createMessage(newMessage)
+      this.subs.sink = this.messagesService.createMessage(newMessage)
           .subscribe((newMessage:any)=>{
             console.log(newMessage.data)
               console.log(this.messagesService);
@@ -81,7 +82,7 @@ export class MessageComponent implements OnInit {
               // });
           })
       
-      this.messagesService.updateMessage(message)
+        this.subs.sink = this.messagesService.updateMessage(message)
           .subscribe(function(updatedMessage){
               console.log(updatedMessage);
           })
@@ -108,7 +109,7 @@ export class MessageComponent implements OnInit {
     if (message.status == 'unread'){
         message.status = newStatus;
         
-        this.messagesService.updateMessage(message)
+        this.subs.sink = this.messagesService.updateMessage(message)
         .subscribe(function(message){
             
             // console.log($scope.$parent.$parent.$parent.vm.sumUnreadMessages);
@@ -117,6 +118,10 @@ export class MessageComponent implements OnInit {
         })
     }
 
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
     
   

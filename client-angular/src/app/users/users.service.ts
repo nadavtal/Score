@@ -39,17 +39,17 @@ export class UsersService {
         return this.query.get('users/'+id);
     }
 
-    // query(method, url, getParams, postParams, headers) {
-    //     // console.log(getParams)
-        
-    //     return $http({
-    //       method: method,
-    //       url: CONSTANTS.API.dev.API_URL + url,
-    //       params: getParams || '', // GET
-    //       data: postParams || '', // POST/PUT
-    //       headers: {
-    //         'Content-Type': 'application/json'
-    //       }
-    //     });
-    //   };
+    checkIfUserBalanceHasSufficientFunds(user:any, amount:number){
+        if(user.balance - amount < 0){
+            return false
+        } else{
+            
+            return true
+        }
+    }
+
+    updateUserBalance(user, amount:number){
+        user.balance += amount
+         
+    }
 }

@@ -18,4 +18,16 @@
 <app-tournament-prizes
     [class.hidden]="tab !== 'Prizes'" 
       
-    ></app-tournament-prizes>
+    >
+</app-tournament-prizes>
+<swal
+    #tournamentSwal
+    title=""
+    text=""
+    type=""
+    timer=""
+    [showConfirmButton]="false"
+    [showCancelButton]="false"
+    [focusCancel]="true"
+    >
+</swal>

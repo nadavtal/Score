@@ -31,7 +31,7 @@
             <div class="tournamentBlock__buttons">
                 <div class="tournamentBlock__buttons--button">
                     <app-flipping-button
-                    [condition]="!tournament.isRegistered"
+                    [condition]="!registered"
                     [actionOneName]="'Join'"
                     [actionTwoName]="'Leave'"
                     (action)="fllipingButtonClicked($event)"   

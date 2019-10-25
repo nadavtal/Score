@@ -1,40 +1,40 @@
 
-<div class="">
-        <div class="{{topPositionHeaderClass}}"  [@moveInUp]>
-            <div class="d-flex between">
-                <div class="pageHeaderTitle">
-                    Tournaments
-                    
-                </div>
-                <div class="modalButton">
-                    <app-sweet-alert 
-                    [formName]="'createTournamentForm'"
-                    [actionName]="'Create tournament'"
-                    [formTitle]="'New tournament'"
-                    ></app-sweet-alert>
-                </div>
-                <div class="pageHeaderActions" >
-                    <app-icon-actions
-                    *ngIf="actions"
-                        [actions]="actions"
-                        (action)="onActionClick($event)">
-                    </app-icon-actions>
-                    
-                    
-               </div>
 
-            </div>
-            <app-switch-check-box  *ngIf="showSwitchButton"
-                [ifCheckedFunction]="showOnlyManagedTournaments.bind(this)"
-                [ifUnCheckedFunction]="showOnlyRegisteredTournaments.bind(this)">
-            </app-switch-check-box>
-            <div class="swichButtonText"  *ngIf="showSwitchButton">{{showTournaments}}</div>
+<div class="{{topPositionHeaderClass}}"  [@moveInUp]>
+    <div class="d-flex between">
+        <div class="pageHeaderTitle">
+            Tournaments
             
-        </div> 
-</div>
+        </div>
+        <div class="modalButton">
+            <app-sweet-alert 
+            [formName]="'createTournamentForm'"
+            [actionName]="'Create tournament'"
+            [formTitle]="'New tournament'"
+            ></app-sweet-alert>
+        </div>
+        <div class="pageHeaderActions" >
+            <app-icon-actions
+            *ngIf="actions"
+                [actions]="actions"
+                (action)="onActionClick($event)">
+            </app-icon-actions>
+            
+            
+        </div>
+
+    </div>
+    <app-switch-check-box  *ngIf="showSwitchButton"
+        [ifCheckedFunction]="showOnlyManagedTournaments.bind(this)"
+        [ifUnCheckedFunction]="showOnlyRegisteredTournaments.bind(this)">
+    </app-switch-check-box>
+    <div class="swichButtonText"  *ngIf="showSwitchButton">{{showTournaments}}</div>
+    
+</div> 
+
 <div class="filterSection" 
     [class.filterSectionOpen] = "showFilterSection">
-    <div class="row">
+    <div class="row no-gutters">
         <div class="col-6">
             <mat-form-field>
                 <mat-label>Platform type</mat-label>
@@ -131,11 +131,10 @@
 <div class="{{topPositionContentClass}}" *ngIf="loaded"
     [class.filterOpen]="showFilterSection">
     <div *ngIf="showTournaments == 'Managed tournaments'" >
-        <div [@listAnimation]="managedTournaments.length">
-            <div *ngFor="let tournament of managedTournaments">
+        <div class="tournamentsList" [@listAnimation]="managedTournaments.length">
+            <div *ngFor="let tournament of managedTournaments ">
                 <app-tournament-item 
-                    
-                    
+                    [currentUser]="currentUser"                    
                     [tournament]="tournament">
                 </app-tournament-item>
             </div>
@@ -143,11 +142,10 @@
         </div>
     </div>
     <div *ngIf="showTournaments == 'Registered tournaments' && tournaments.length > 0">
-        <div  [@listAnimation]="tournaments.length">
+        <div  class="tournamentsList" [@listAnimation]="tournaments.length">
             <div *ngFor="let tournament of tournaments" >
                 <app-tournament-item 
-                    
-                    
+                    [currentUser]="currentUser"     
                     [tournament]="tournament">
                 </app-tournament-item>
 
@@ -157,5 +155,6 @@
     </div>
 
 </div>
+
 
 

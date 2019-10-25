@@ -4,7 +4,7 @@
             <div class="pageHeaderTitle">
                 Games
             </div>
-            <div class="modalButton">
+            <div class="modalButton" *ngIf="currentUser">
                 <app-sweet-alert 
                 [formName]="'createGameForm'"
                 [actionName]="'Create game'"
@@ -26,7 +26,8 @@
 <div class="{{topPositionContentClass}}" [@listAnimation]="games.length" *ngIf="loaded">
    <div *ngFor="let game of games">
         <app-game-item 
-            [game]="game">
+            [game]="game"
+            [currentUser] ="currentUser">
         </app-game-item>
    </div>
     

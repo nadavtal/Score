@@ -12,6 +12,21 @@
     [positionClass]="'wrapperClosedCorner'"
     [bgColor]="'black'">
 </app-to-full-screen>
+<swal
+    #userSwal
+    (render)="onRender($event)"
+    (beforeOpen)="onBeforeOpen($event)"
+    title="{{swalTitle}}"
+    text="{{swalText}}"
+    type="{{swalType}}"
+    timer="{{swalTimer}}"
+    [showConfirmButton]="showConfirmButton"
+    (confirm)="swalConfirm($event)"
+    (cancel)="handleRefusal($event)"
+    [showCancelButton]="showCancelButton"
+    [focusCancel]="true"
+    >
+</swal>
 <!--<app-info
     *ngIf="tab == 'Profile'"></app-info>
 <app-accounts

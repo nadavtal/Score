@@ -20,8 +20,8 @@
     transactionType: {
       type: String,
       enum: {
-        values: ['Deposit', 'Withdraw', 'Transfer', 'Bonus','TournamentRegistration', 'GameRegistration', 'TournamentWin', 'GameWin'],
-        message: "Only 'Deposit', 'Withdraw', 'bonus', 'TournamentRegistration', 'GameRegistration', 'TournamentWin', 'GameWin' or 'Transfer' types are allowed."
+        values: ['Deposit', 'Withdraw', 'Transfer', 'Bonus','Tournament Registration', 'Tournament UnRegistration', 'Game Registration', 'Game UnRegistration', 'Tournament Win', 'Game Win'],
+        message: "Only 'Deposit', 'Withdraw', 'bonus', 'Tournament Registration', 'Tournament UnRegistration', 'Game Registration', 'Game UnRegistration', 'Tournament Win', 'Game Win' or 'Transfer' types are allowed."
       },
       required: true
     },

@@ -27,14 +27,28 @@
                     >
                 </app-three-d-button>
         </div>
-        <div class="pageHeaderActions" >
+        <app-icon-to-row
+            [bgColor]="'green'"
+            [icon]="'comments'"
+            [currentUser]="currentUser"
+            [positionClass]="'right1_2'"
+            (action)="sendMessageToGroup($event)">
+        </app-icon-to-row>
+        <app-icon-to-row
+            [bgColor]="'green'"
+            [icon]="'user-plus'"
+            [currentUser]="currentUser"
+            [positionClass]="'right0_2'"
+            (action)="inviteFriends($event)">
+        </app-icon-to-row>
+        <!-- <div class="pageHeaderActions" >
             <app-icon-actions
             *ngIf="actions"
                 [actions]="actions">
             </app-icon-actions>
             
             
-        </div>
+        </div> -->
         
        
         
@@ -68,64 +82,37 @@
                                             <span class="" *ngIf="groupName.errors['forbidden']">This groupName is used</span>
                                         </mat-error>
                                 </mat-form-field>
-                        
-                                <mat-form-field class="example-full-width">
-                                    <input matInput 
-                                    placeholder="Manager" 
-                                    value="group.groupManager"
-                                    id="groupManager"
-                                    [(ngModel)]="group.groupManager.userName"
-                                    name="groupManager"
-                                    [disabled]="!editMode"
-                                    required
-                                    #groupManager="ngModel"
-                                    >
-                                    <mat-error *ngIf="groupManager.errors && (!groupManager.valid && groupManager.touched)">
-                                        <span class="" *ngIf="groupManager.errors['required']">Please choose a manager</span>
-                                        <span class="" *ngIf="groupManager.errors['forbidden']">This user is forbidden</span>
-                                    </mat-error>
-                                </mat-form-field>
                                 <mat-form-field>
-                                    <mat-label>Choose manager</mat-label>
+                                    <mat-label>Manager</mat-label>
                                     <mat-select
-                                        id="managerSelect"
-                                        [(ngModel)]="group.groupManager"
-                                        name="managerSelect"
+                                        
+                                        id="manager"
+                                        [(value)]="group.groupManager.userName"
                                         [disabled]="!editMode"
-                                        >
-                                        <mat-option *ngFor="let member of group.members" [value]="member">
-                                        {{member.userName}}
+                                        name="manager"
+                                        
+                                        required>
+                                        <mat-option *ngFor="let user of group.members" [value]="user.userName">
+                                        {{user.userName}}
                                         </mat-option>
                                     </mat-select>
                                 </mat-form-field>
-                                <mat-form-field class="example-full-width">
-                                    <input matInput 
-                                    placeholder="Main platform" 
-                                    value=""
-                                    id="mainPlatform"
-                                    [(ngModel)]="group.mainPlatform"
-                                    [disabled]="!editMode"
-                                    name="mainPlatform"
-                                    #mainPlatform="ngModel"
-                                    >
-                                    <mat-error *ngIf="mainPlatform.errors && (!mainPlatform.valid && mainPlatform.touched)">
-                                        <span class="" *ngIf="mainPlatform.errors['required']">tournament mainPlatform is required</span>
-                                        <span class="" *ngIf="mainPlatform.errors['forbidden']">This mainPlatform doesnt exist in our database</span>
-                                    </mat-error>
-                                </mat-form-field>
                                 <mat-form-field>
-                                    <mat-label>Choose platform</mat-label>
+                                    <mat-label>Main platform</mat-label>
                                     <mat-select
-                                        id="managerSelect"
-                                        ngModel
-                                        name="managerSelect"
+                                        
+                                        id="platform"
+                                        [(value)]="group.mainPlatform"
                                         [disabled]="!editMode"
-                                        >
-                                        <mat-option *ngFor="let platform of platforms" [value]="platform">
+                                        name="platform"
+                                        
+                                        required>
+                                        <mat-option *ngFor="let platform of platforms" [value]="platform.name">
                                         {{platform.name}}
                                         </mat-option>
                                     </mat-select>
                                 </mat-form-field>
+                                
                             </div>
                             
                         </div>

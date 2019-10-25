@@ -1,9 +1,10 @@
-import { Component, OnInit, Input, Output } from '@angular/core';
+import { Component, OnInit, Input, Output, OnDestroy } from '@angular/core';
 import { Group } from '../group.model';
 import { GroupsService } from '../groups.service';
 import { Subject } from 'rxjs';
 import { listAnimation, moveInUp, moveOutRight } from '../../shared/animations'
 import { MessagesService } from 'src/app/messages/messages.service';
+import { SubSink } from 'node_modules/subsink/dist/subsink'
 
 @Component({
   selector: 'app-group-item',
@@ -11,12 +12,12 @@ import { MessagesService } from 'src/app/messages/messages.service';
   styleUrls: ['./group-item.component.scss'],
   animations:[moveOutRight]
 })
-export class GroupItemComponent implements OnInit {
+export class GroupItemComponent implements OnInit, OnDestroy {
   actions:any;
   @Input() group: any;
   @Output()action = new Subject<any>();
   // @Input() id: number;
-  
+  private subs = new SubSink()
   
 
   constructor(private groupsService: GroupsService,
@@ -33,6 +34,10 @@ export class GroupItemComponent implements OnInit {
     //   ];
   }
 
+  ngOnDestroy() {
+    this.subs.unsubscribe();
+  }
+
   actionClicked(event){
     console.log(event);
     if(event == 'Delete'){
@@ -43,7 +48,7 @@ export class GroupItemComponent implements OnInit {
 
   deleteGroup(){
     console.log('deleting group')
-    this.groupsService.deleteGroup(this.group._id)
+    this.subs.sink = this.groupsService.deleteGroup(this.group._id)
       .subscribe((data:any)=>{
         // console.log(data);
         if(data.data.ok){

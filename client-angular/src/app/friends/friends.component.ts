@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { User } from '../users/user.model';
 import { UsersService } from '../users/users.service';
 import { GroupsService } from '../groups/groups.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { listAnimation, moveInUp } from '../shared/animations'
-
+import { SubSink } from 'node_modules/subsink/dist/subsink'
 
 
 
@@ -15,7 +15,7 @@ import { listAnimation, moveInUp } from '../shared/animations'
   styleUrls: ['./friends.component.scss'],
   animations:[listAnimation, moveInUp]
 })
-export class FriendsComponent implements OnInit {
+export class FriendsComponent implements OnInit, OnDestroy {
   user:User;
   id:string;
   dataLoaded:boolean;
@@ -23,6 +23,7 @@ export class FriendsComponent implements OnInit {
   actions:any;
   showSwitchButton: boolean = true;
   showFriends:string = 'All friends'
+  private subs = new SubSink();
 
   constructor(
     private usersService: UsersService,
@@ -36,7 +37,7 @@ export class FriendsComponent implements OnInit {
     //   {name: 'Filter', color: 'purple', icon: 'filter', },
     //   {name: 'Search', color: 'purple', icon: 'search', },
     // ];
-    this.usersService.userSelected
+    this.subs.sink = this.usersService.userSelected
     .subscribe((user:any)=>{
       this.user = user;
       console.log('user in AccountsComponent sub', this.user);
@@ -44,12 +45,12 @@ export class FriendsComponent implements OnInit {
       
   
     })
-    this.route.parent.params
+    this.subs.sink = this.route.parent.params
         .subscribe(
           (params: Params) => {
             // console.log(params)
             this.id = params['userId'];
-            this.usersService.getUserFromDb(this.id)
+            this.subs.sink = this.usersService.getUserFromDb(this.id)
               .subscribe((user:any) => {
                 // console.log(user.data)
                 this.user = user.data
@@ -68,6 +69,11 @@ export class FriendsComponent implements OnInit {
     
     
   }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
+  };
+  
   showOnlineFriends(){
     this.showFriends = 'Online friends'
     

@@ -31,7 +31,7 @@
             <div class="gameBlock__buttons">
                 <div class="gameBlock__buttons--button pr-2">
                     <app-flipping-button
-                    [condition]="!game.registered"
+                    [condition]="!registered"
                     [actionOneName]="'Join'"
                     [actionTwoName]="'Leave'"
                     (action)="fllipingButtonClicked($event)"   

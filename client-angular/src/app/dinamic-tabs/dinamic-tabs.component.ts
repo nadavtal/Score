@@ -170,7 +170,7 @@ export class dinamicTabsComponent implements OnInit {
             this.activeTab = this.route.firstChild.routeConfig.path;
             
           }
-          console.log(this.activeTab)
+          
           if(this.activeTab){
             
             let color:string;

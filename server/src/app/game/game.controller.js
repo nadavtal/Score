@@ -44,7 +44,7 @@
       platform : params.platform,
       buyIn: params.buyIn,
       players : params.players,
-      playersPerGroup : params.PlayersPerGroup,
+      playersPerGroup : params.playersPerGroup,
       optionalPlayers : params.optionalPlayers,
       winner: params.winner,
       time: params.time,
@@ -181,7 +181,7 @@
   function getGamesByGroupId(req,res,next){
     console.log(req.params);
     var params = req.params;
-    Game.find({ 'group': params.groupId })
+    Game.find({ 'group.groupId': params.groupId })
     .exec((err, data) => {
       if (err) return next(err);
       if (!data) return next({
@@ -272,6 +272,9 @@
           'players': bodyParams.players,
           'time': bodyParams.time,
           'timeOptions': bodyParams.timeOptions,
+          'privacy': bodyParams.privacy,
+          'maxPlayers': bodyParams.maxPlayers,
+          'platform': bodyParams.platform,
           'updatedAt': bodyParams.updatedAt,
           'winner': bodyParams.winner,
           'buyIn': bodyParams.buyIn,

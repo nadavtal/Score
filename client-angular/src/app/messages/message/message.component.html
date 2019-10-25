@@ -1,7 +1,7 @@
 <div class="messageRow">
         
     <div class="row messageRow__main" 
-         ngClass="message.status == 'unread' ? 'unread' : read">
+         [ngClass]="message.status == 'unread' ? 'unread' : 'read'">
          
         <div class="col-3 messageRow--coloumn" (click)="messageClicked($event, message, 'inbox')">
             <div class="pl-1" *ngIf="box === 'inbox'">

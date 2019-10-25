@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Account } from './account.model';
 import { AccountsService } from './accountsService';
 import { UsersService } from '../users/users.service';
@@ -6,6 +6,7 @@ import { User } from '../users/user.model';
 import { listAnimation, moveInUp } from '../shared/animations'
 import { Params, ActivatedRoute } from '@angular/router';
 import { localStorageService } from '../shared/services/local-storage.service';
+import { SubSink } from 'node_modules/subsink/dist/subsink'
 
 @Component({
   selector: 'app-accounts',
@@ -13,7 +14,7 @@ import { localStorageService } from '../shared/services/local-storage.service';
   styleUrls: ['./accounts.component.scss'],
   animations: [listAnimation, moveInUp]
 })
-export class AccountsComponent implements OnInit {
+export class AccountsComponent implements OnInit, OnDestroy {
   user: User;
   accounts: Account[];
   id: string;
@@ -22,6 +23,8 @@ export class AccountsComponent implements OnInit {
   currentUser: any;
   showSwitchButton: boolean = true;
   showAccounts: string = 'All accounts'
+
+  private subs = new SubSink();
   constructor(private accountsService: AccountsService,
               private usersService: UsersService,
               private localStorage: localStorageService,
@@ -35,16 +38,16 @@ export class AccountsComponent implements OnInit {
     //   {name: 'Message', color: 'black', icon: 'shopping-cart'},
       
     // ];
-    this.accountsService.accountDeleted
+    this.subs.sink = this.accountsService.accountDeleted
       .subscribe(deletedAccount=>{
         this.removeAccount(deletedAccount._id)
       })
     this.currentUser = this.localStorage.get('currentUser')
-    this.usersService.userSelected
+    this.subs.sink = this.usersService.userSelected
     .subscribe((user:any)=>{
       this.user = user;
       console.log('user in AccountsComponent sub', this.user);
-      this.accountsService.getAccountsByUserID(this.user._id)
+      this.subs.sink = this.accountsService.getAccountsByUserID(this.user._id)
       .subscribe((accounts:any) => {
         console.log(accounts.data);
         this.accounts = accounts.data
@@ -53,17 +56,17 @@ export class AccountsComponent implements OnInit {
   
     })
 
-    this.route.parent.params
+    this.subs.sink = this.route.parent.params
         .subscribe(
           (params: Params) => {
             // console.log(params)
             this.id = params['userId'];
-            this.usersService.getUserFromDb(this.id)
+            this.subs.sink = this.usersService.getUserFromDb(this.id)
               .subscribe((user:any) => {
                 // console.log(user.data)
                 this.user = user.data
                 console.log('user in AccountsComponent from server', this.user);
-                this.accountsService.getAccountsByUserID(this.user._id)
+                this.subs.sink = this.accountsService.getAccountsByUserID(this.user._id)
                   .subscribe((accounts:any) => {
                     console.log(accounts.data);
                     this.accounts = accounts.data;
@@ -101,7 +104,7 @@ export class AccountsComponent implements OnInit {
   createAccount(account){
     console.log('create account');
     account.userId = this.currentUser._id
-    this.accountsService.createAccount(account)
+    this.subs.sink = this.accountsService.createAccount(account)
       .subscribe((newAccount:any)=>{
         console.log(newAccount)
       })
@@ -109,6 +112,10 @@ export class AccountsComponent implements OnInit {
 
   searchGroups(){
     console.log('searching groups')
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 
 }

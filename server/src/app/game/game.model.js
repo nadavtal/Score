@@ -111,8 +111,9 @@
       default: []
     },
     group: {
-      type: ObjectId,
-      default: null
+      groupId: ObjectId,
+      groupName: String
+      
     },
     createdAt: {
       type: Date,

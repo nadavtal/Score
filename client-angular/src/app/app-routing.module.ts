@@ -4,13 +4,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { UsersComponent } from './users/users.component';
 import { GamesComponent } from './games/games.component';
 
-import { UserComponent } from './users/user/user.component';
-
 import { GroupsComponent } from './groups/groups.component';
-import { AccountsComponent } from './accounts/accounts.component';
-import { FriendsComponent } from './friends/friends.component';
-import { MessagesComponent } from './messages/messages.component'
-import { InfoComponent } from './users/user/info/info.component';
+
 
 import { TournamentComponent } from './games/tournament/tournament.component';
 
@@ -41,6 +36,7 @@ const appRoutes: Routes = [
     //     {path: 'Games', component: GamesComponent},
     //     {path: 'Messages', component: MessagesComponent},
     // ]},
+    {path: '', redirectTo: '/home', pathMatch: 'full'},
     {path: 'admin', component: AdminComponent},
     {path: 'users', component: UsersComponent},
     // {path: 'groups/:groupId', component: GroupComponent, children:[
@@ -65,7 +61,7 @@ const appRoutes: Routes = [
         {path: 'Leages', component: GameListComponent},
         {path: 'Groups', component: GroupsComponent},
     ]},
-    {path: '', redirectTo: '/home', pathMatch: 'full'},
+    
 ]
 
 

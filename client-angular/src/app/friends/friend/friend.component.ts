@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { UsersService } from 'src/app/users/users.service';
 import { User } from 'src/app/users/user.model';
 import { GroupsService } from 'src/app/groups/groups.service';
-
+import { SubSink } from 'node_modules/subsink/dist/subsink'
 @Component({
   selector: 'app-friend',
   templateUrl: './friend.component.html',
@@ -13,23 +13,28 @@ export class FriendComponent implements OnInit {
   @Input()index:any;
   @Input()user:User;
   @Input()bgColor:string;
+  private subs = new SubSink()
   constructor(private groupsService: GroupsService,
               private userService: UsersService) { }
 
   ngOnInit() {
     // console.log(this.friend);
-    this.userService.getUserFromDb(this.friend.userId)
+    this.subs.sink = this.userService.getUserFromDb(this.friend.userId)
       .subscribe((friend:any)=>{
         this.friend = friend.data;
         // console.log(this.friend)
       })
-    this.groupsService.getGroupsByUserID(this.user._id)
+    this.subs.sink = this.groupsService.getGroupsByUserID(this.user._id)
       .subscribe((groups:any) => {
           // console.log(groups)
           this.friend.sharedGroups = this.findSharedGroupsWithUser(groups.data, this.friend._id);
           
        
       })
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 
   sendMessageToUser(user){

@@ -144,6 +144,15 @@
                     </mat-form-field>
                     <mat-form-field class="example-full-width">
                         <input matInput 
+                        placeholder="Registered" 
+                        [(ngModel)]="tournament.registered.length"
+                        id="registered"
+                        disabled
+                        name="registered"
+                        >
+                    </mat-form-field>
+                    <mat-form-field class="example-full-width">
+                        <input matInput 
                         placeholder="Player per battle" 
                         [(ngModel)]="tournament.playerPerBattle"
                         id="playerPerBattle"

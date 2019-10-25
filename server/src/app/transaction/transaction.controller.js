@@ -48,7 +48,7 @@
     console.log(transaction)
     // req params validation for required fields
     req.checkBody('transactionType', 'transactionType must be defined').notEmpty();
-    req.checkBody('transactionMethod', 'transactionMethod must be defined').notEmpty();
+    // req.checkBody('transactionMethod', 'transactionMethod must be defined').notEmpty();
     req.checkBody('userId', 'userId must be defined').notEmpty();
     req.checkBody('amount', 'amount must be defined').notEmpty();
     

@@ -23,13 +23,13 @@ export class FlippingButtonComponent implements OnInit {
 
   ifTrue(event){
     console.log(this.condition)
-    this.condition = !this.condition
+    // this.condition = !this.condition
     
     this.action.emit('trueFunction');
   }
   ifFalse(event){
     console.log(this.condition)
-    this.condition = !this.condition
+    // this.condition = !this.condition
     
     this.action.emit('falseFunction');
   }

@@ -1,15 +1,16 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { Account } from '../account.model';
 import { ClashRoyaleService } from '../accounts-services/clash-royale.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { ProgressService } from 'src/app/shared/components/progress-loader/progressLoader.service';
+import { SubSink } from 'node_modules/subsink/dist/subsink'
 
 @Component({
   selector: 'app-account',
   templateUrl: './account.component.html',
   styleUrls: ['./account.component.scss']
 })
-export class AccountComponent implements OnInit {
+export class AccountComponent implements OnInit, OnDestroy {
   tab:any;
   account:any;
   accountId:any;
@@ -17,15 +18,17 @@ export class AccountComponent implements OnInit {
   platform:any;
   clan:any;
   loaded:boolean = false;
+  private subs = new SubSink();
 
   constructor(private clashRoyaleService: ClashRoyaleService,
               private progressService: ProgressService,
+             
               private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.tab = 'Info';
     
-    this.route.params
+    this.subs.sink = this.route.params
     .subscribe(
       (params: Params) => {
         console.log(params)
@@ -39,7 +42,7 @@ export class AccountComponent implements OnInit {
             
             // this.progressService.progressMsg.next('getting clash user')
             console.log(this.accountType)
-            this.clashRoyaleService.getClashUser(this.accountId)
+            this.subs.sink = this.clashRoyaleService.getClashUser(this.accountId)
             .subscribe((account:any) => {
               this.account = account;
               console.log('account in accounComponent', this.account);
@@ -49,7 +52,7 @@ export class AccountComponent implements OnInit {
           else if (this.accountType == 'clan'){
             // this.progressService.progressMsg.next('getting clash clan')
             console.log(this.accountType)
-            this.clashRoyaleService.getClashRoyalClan(this.accountId)
+            this.subs.sink = this.clashRoyaleService.getClashRoyalClan(this.accountId)
             .subscribe((clan:any) => {
               this.account = clan.data.clanFromClashApi
               this.clan = clan.data.clanFromDb
@@ -94,6 +97,10 @@ export class AccountComponent implements OnInit {
       }
     );
     
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 
   changeActiveTab(event){
