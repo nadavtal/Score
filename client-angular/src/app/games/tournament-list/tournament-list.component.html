@@ -141,7 +141,7 @@
 
         </div>
     </div>
-    <div *ngIf="showTournaments == 'Registered tournaments' && tournaments.length > 0">
+    <div *ngIf="showTournaments == 'Registered tournaments' && tournaments">
         <div  class="tournamentsList" [@listAnimation]="tournaments.length">
             <div *ngFor="let tournament of tournaments" >
                 <app-tournament-item 

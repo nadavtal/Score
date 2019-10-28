@@ -1,0 +1,86 @@
+
+.customButton{
+    text-align: center;
+    padding: .5rem;
+    
+    border-radius: 25px;
+    // margin: 1rem 1rem 1rem 0;
+    
+    width: auto;
+
+    // &__wide{
+    //     width: 10rem;
+    // }
+
+
+}
+
+.logOutButton{
+    border: none;
+    background-color: transparent;
+}
+
+.textIconButton{
+    background: none;
+    border: none;
+    
+}
+
+.backToMainButton{
+    
+    position: fixed;
+    bottom: 1.5vh;
+    left: 1vh;
+}
+
+.backToHomePageButton{
+    // position: fixed;
+    // left: 1vw;
+    // bottom: 1vh;
+    height: 2rem;
+    width: 2rem;
+}
+
+.navBackButton{
+    display: flex;
+    align-items: center;
+    margin-left: 1rem;
+}
+
+.backToMainButton.ng-enter{
+    transition: .3s linear all;
+    left: 100vw;
+}
+
+.backToMainButton.ng-enter-active{
+    bottom: 2rem;
+    left: 2rem;
+}
+
+.backToMainButton.ng-leave{
+    transition: .3s linear all;
+    left: 2rem;
+}
+
+.backToMainButton.ng-leave-active{
+    bottom: 2rem;
+    left: -50rem;
+}
+
+
+.editButton{
+    padding: .3rem;
+    background-color: blue;
+    color: white !important;
+    width: 50%  !important;
+}
+
+.nakedButton {
+    transition: .3s all;
+    border: none;
+    background-color: transparent
+}
+
+.nakedButton :focus{
+    outline: none !important
+}

@@ -28,8 +28,8 @@
       type: String,
     },
     manager: {
-      type: String,
-      required: true,
+      userName: String,
+      userId: ObjectId
     },
     platform: {
       type: String,

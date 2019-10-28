@@ -55,7 +55,7 @@ import { TransactionItemComponent } from '../transactions/transaction-item/trans
         NameValidator,
         UserRowComponent,
         SendMessageComponent,
-        StatsComponent, 
+        StatsComponent,
         GlowingSpinnerComponent,
         ArraySortPipe,
         ProgressLoaderComponent,
@@ -75,8 +75,7 @@ import { TransactionItemComponent } from '../transactions/transaction-item/trans
         AngularFontAwesomeModule,
         FormsModule,
         InfiniteScrollModule
-        
-    ],
+     ],
     exports: [
         SwitchCheckBoxComponent,
         SweetAlertComponent,
@@ -95,7 +94,7 @@ import { TransactionItemComponent } from '../transactions/transaction-item/trans
         UserRowComponent,
         SendMessageComponent,
         ChatComponent,
-        StatsComponent, 
+        StatsComponent,
         GlowingSpinnerComponent,
         ArraySortPipe,
         CommonModule,

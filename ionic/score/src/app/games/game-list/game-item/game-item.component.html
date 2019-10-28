@@ -1,0 +1,54 @@
+<div class="gameBlock text-center" 
+    [ngClass]="registered? 'registered' : ''">
+    
+        
+        <div class="" 
+            [routerLink]="['/', 'games', game._id]">
+            <img class="gameBlock--image" src="../../assets/img/platforms/{{game.platform}}.png" alt="">
+
+        </div>
+        <div  class="gameBlock__details"
+          [routerLink]="['/', 'games', game._id]">
+            <div class="gameBlock--name">{{game.name}}</div>
+        </div>
+        <div  class=""
+            [routerLink]="['/', 'games', game._id]">
+            <div class="gameBlock--prizePool">
+                    {{game.buyIn}}
+                </div>
+        </div>
+        <div  class=""
+            [routerLink]="['/', 'games', game._id]">
+            <div class="gameBlock--numMembers">
+                {{game.players.length}}/{{game.maxPlayers}}
+            </div>
+        </div>
+        <div >
+            <div class="gameBlock--date">
+                {{game.time | date:'dd-MM-yy H:mm'}}
+
+            </div>
+            <div class="gameBlock__buttons">
+                <div class="gameBlock__buttons--button pr-2">
+                    <app-flipping-button
+                    [condition]="!registered"
+                    [actionOneName]="'Join'"
+                    [actionTwoName]="'Leave'"
+                    (action)="fllipingButtonClicked($event)"   
+                    ></app-flipping-button>
+
+                </div>
+                
+            </div>
+        </div>
+        
+    
+    <!-- <md-progress-linear class="md-warn" md-mode="buffer" value="{{determinateValue}}"
+                md-buffer-value="{{determinateValue2}}"
+            ng-disabled="!showList[0]">
+    </md-progress-linear>
+    <div class="meterContainer">
+        <md-progress-linear md-mode="indeterminate" ng-if="loading"></md-progress-linear>
+
+    </div> -->
+</div>

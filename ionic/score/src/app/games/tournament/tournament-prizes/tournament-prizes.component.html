@@ -1,0 +1,16 @@
+
+<div *ngIf="loaded" class="pb-5">
+    <div [@listAnimation]="tournament.registered.length">
+        <div *ngFor="let user of tournament.registered; let i = index" >
+            <app-friend 
+                [friend]="user"
+                [index]="i"
+                [bgColor]="'black'"
+                [user]="currentUser">
+            </app-friend>
+        </div>
+            
+    </div>
+
+</div>
+

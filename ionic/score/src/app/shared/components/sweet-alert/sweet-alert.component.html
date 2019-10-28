@@ -1,0 +1,340 @@
+
+
+
+<button mat-raised-button
+    class="nakedButton {{buttonColor}}"
+    matTooltip="{{actionName}}"
+    [matTooltipPosition]="'below'"
+    aria-label="Button that displays a tooltip in various positions">
+    <fa class="absCenter" name="plus" 
+    animation=""
+    (click)="sweetAlert.fire()"></fa>
+</button>
+
+
+
+<swal title="{{formTitle}}" 
+    #sweetAlert
+    (confirm)="modalConfirmedClicked()">
+    <!-- This form will be displayed as the alert main content
+            Targets the alert's main content zone by default -->
+        <form
+            #form="ngForm"
+            *swalPortal
+            name="form"
+            role="form"
+            id="form">
+            
+            <div *ngIf="formName == 'createGroupForm'">
+                <mat-form-field class="example-full-width">
+                        <input matInput 
+                        placeholder="Group name" 
+                        value=""
+                        id="groupName"
+                        ngModel
+                        name="groupName"
+                        
+                        required
+                        #groupName="ngModel">
+                        <mat-error *ngIf="groupName.errors && (!groupName.valid && groupName.touched)">
+                            <span class="" *ngIf="groupName.errors['required']">tournament groupName is required</span>
+                            <span class="" *ngIf="groupName.errors['forbidden']">This groupName is used</span>
+                        </mat-error>
+                </mat-form-field>
+                
+                <select
+
+                    id="platform"
+                    ngModel
+                    name="platform"
+                    #platform="ngModel">
+                    <option value="">Choose platform</option>
+                    <option *ngFor="let platform of platforms" [value]="platform.name">
+                            {{platform.name}}
+                    </option>
+                    
+                </select>
+                
+                
+               <!-- <mat-form-field>
+                    <mat-label>Choose platform</mat-label>
+                    <mat-select
+                        id="platform"
+                        ngModel
+                        name="platform"
+                        #platform="ngModel"
+                        >
+                        <mat-option *ngFor="let platform of platforms" [value]="platform">
+                        {{platform.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>-->
+            </div>
+            <div *ngIf="formName === 'createTournamentForm'">
+         
+        
+                <mat-form-field class="example-full-width">
+                    <input matInput 
+                        placeholder="Tournament name" 
+                        ngModel
+                        id="name"
+                        name="name"
+                        required
+                        #name="ngModel"
+                        [class.is-invalid]="name.invalid && name.touched"
+                        
+                        >
+                        <mat-error *ngIf="name.errors && (!name.valid && name.touched)">
+                            <span class="" *ngIf="name.errors['required']">tournament name is required</span>
+                            <span class="" *ngIf="name.errors['forbidden']">This name is used</span>
+                        </mat-error>
+                        <!--<span class="help-block" *ngIf="name.errors && (!name.valid && name.touched)">
+                            <span class="" *ngIf="name.errors['required']">tournament name is required</span>
+                            <span class="" *ngIf="name.errors['forbidden']">This name is used</span>
+                        </span>-->
+                        
+                </mat-form-field>
+                <mat-form-field class="example-full-width">
+                    <input matInput 
+                    placeholder="Time" 
+                    value="time"
+                    id="time"
+                    ngModel=""
+                    name="time"
+                    #time="ngModel"
+                    >
+                </mat-form-field>
+                <mat-form-field class="example-full-width">
+                    <input matInput 
+                    placeholder="Manager" 
+                    ngModel
+                    id="manager"
+                    required
+                    name="manager"
+                    #manager="ngModel"
+                    >
+                </mat-form-field>
+                <!--<mat-form-field>
+                    <mat-label>Choose manager</mat-label>
+                    <mat-select
+                        id="managerSelect"
+                        ngModel
+                        name="managerSelect"
+                        required>
+                        <mat-option *ngFor="let player of tournament.members" [value]="player">
+                        {{player.userName}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>-->
+                <mat-form-field class="example-full-width">
+                    <input matInput 
+                    placeholder="Privacy" 
+                    ngModel
+                    id="privacy"
+                    #privacy="ngModel"
+                    name="privacy"
+                    >
+                </mat-form-field>
+                
+                <select
+
+                    id="platform"
+                    ngModel
+                    name="platform"
+                    #platform="ngModel">
+                    <option value="">Choose platform</option>
+                    <option *ngFor="let platform of platforms" [value]="platform.name">
+                            {{platform.name}}
+                    </option>
+                    
+                </select>
+                <mat-form-field class="example-full-width">
+                    <input matInput 
+                    placeholder="Max players" 
+                    ngModel
+                    id="maxPlayers"
+                    #maxPlayers="ngModel"
+                    name="maxPlayers"
+                    >
+                </mat-form-field>
+                
+                
+                <mat-form-field class="example-full-width">
+                    <input matInput 
+                    placeholder="Entree fee" 
+                    ngModel
+                    id="buyIn"
+                    #buyin="ngModel"
+                    name="buyIn"
+                    >
+                </mat-form-field>
+                
+            </div>    
+            <div *ngIf="formName === 'createGameForm'">
+                    <mat-form-field class="example-full-width">
+                        <input matInput 
+                            placeholder="Game name" 
+                            ngModel
+                            id="name"
+                            name="name"
+                            required
+                            #name="ngModel"
+                            [class.is-invalid]="name.invalid && name.touched"
+                            
+                            >
+                            <mat-error *ngIf="name.errors && (!name.valid && name.touched)">
+                                <span class="" *ngIf="name.errors['required']">Game name is required</span>
+                                <span class="" *ngIf="name.errors['forbidden']">This name is used</span>
+                            </mat-error>
+                            <!--<span class="help-block" *ngIf="name.errors && (!name.valid && name.touched)">
+                                <span class="" *ngIf="name.errors['required']">tournament name is required</span>
+                                <span class="" *ngIf="name.errors['forbidden']">This name is used</span>
+                            </span>-->
+                            
+                    </mat-form-field>
+
+                   <!-- <mat-form-field class="example-full-width">
+                        <input matInput [matDatepicker]="picker" placeholder="Choose a date">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                    <input type="date"
+                        placeholder="time" 
+                        ngModel
+                        id="time"
+                        #time="ngModel"
+                        name="time">-->
+                    <mat-form-field class="example-full-width">
+                        <input matInput 
+                        placeholder="Entree fee" 
+                        ngModel
+                        id="buyIn"
+                        #buyin="ngModel"
+                        name="buyIn"
+                        >
+                    </mat-form-field>
+
+                    <select
+
+                        id="platform"
+                        ngModel
+                        name="platform"
+                        #platform="ngModel">
+                        <option value="">Choose platform</option>
+                        <option *ngFor="let platform of platforms" [value]="platform.name">
+                                {{platform.name}}
+                        </option>
+                        
+                    </select>
+                <!--<select name="" id="">
+                        <option *ngFor="let platform of platforms" [value]="platform">
+                            {{platform.name}}
+                        </option>
+                    </select>
+                    <mat-form-field>
+                        <mat-label>Choose platform</mat-label>
+                        <mat-select
+                            id="platform"
+                            ngModel
+                            name="platform"
+                            #platform="ngModel"
+                            >
+                            <mat-option *ngFor="let platform of platforms" [value]="platform">
+                            {{platform.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>-->
+            </div>
+            <div *ngIf="formName === 'createAccountForm'">
+                <mat-form-field class="example-full-width">
+                    <input matInput 
+                        placeholder="Account userName" 
+                        ngModel
+                        id="userName"
+                        name="userName"
+                        required
+                        #userName="ngModel"
+                        [class.is-invalid]="userName.invalid && userName.touched"
+                        
+                        >
+                        <mat-error *ngIf="userName.errors && (!userName.valid && userName.touched)">
+                            <span class="" *ngIf="userName.errors['required']">Game name is required</span>
+                            <span class="" *ngIf="userName.errors['forbidden']">This name is used</span>
+                        </mat-error>
+                        <!--<span class="help-block" *ngIf="name.errors && (!name.valid && name.touched)">
+                            <span class="" *ngIf="name.errors['required']">tournament name is required</span>
+                            <span class="" *ngIf="name.errors['forbidden']">This name is used</span>
+                        </span>-->
+                        
+                </mat-form-field>
+
+                <mat-form-field class="example-full-width">
+                    <input matInput 
+                    placeholder="Account Id" 
+                    ngModel
+                    id="accountId"
+                    #accountId="ngModel"
+                    name="accountId"
+                    >
+                </mat-form-field>
+
+                <select
+
+                    id="platform"
+                    ngModel
+                    name="platform"
+                    #platform="ngModel"
+                    (change)="platformChosen(platform)">
+                    <option value="">Choose platform</option>
+                    <option *ngFor="let platform of platforms" [value]="platform.name">
+                            {{platform.name}}
+                    </option>
+                    
+                </select>
+                <br>
+                <select
+                    *ngIf="platform.value == 'Clash Royale'"
+                    id="accountType"
+                    ngModel
+                    name="accountType"
+                    #accountType="ngModel">
+                    <option value="">Choose account type</option>
+                    <option value="user">
+                            user
+                    </option>
+                    <option value="clan">
+                            clan
+                    </option>
+                    
+                </select>
+            <!--<select name="" id="">
+                    <option *ngFor="let platform of platforms" [value]="platform">
+                        {{platform.name}}
+                    </option>
+                </select>
+                <mat-form-field>
+                    <mat-label>Choose platform</mat-label>
+                    <mat-select
+                        id="platform"
+                        ngModel
+                        name="platform"
+                        #platform="ngModel"
+                        >
+                        <mat-option *ngFor="let platform of platforms" [value]="platform">
+                        {{platform.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>-->
+            </div>
+            
+        </form>
+  
+    
+    <!-- This targets the confirm button's inner content
+            Notice the usage of ng-container to avoid creating an useless DOM element inside the button -->
+    <ng-container *swalPortal="swalTargets.confirmButton">
+        {{actionName}}
+    </ng-container>
+</swal>
+
+

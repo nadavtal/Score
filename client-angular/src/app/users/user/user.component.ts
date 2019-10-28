@@ -52,7 +52,7 @@ export class UserComponent implements OnInit, OnDestroy{
             })
         }
       );
-      this.subs.sink = this.swalService.swal
+    this.subs.sink = this.swalService.swal
       .subscribe((swalData:any)=>{
         
         console.log(swalData)
@@ -68,7 +68,7 @@ export class UserComponent implements OnInit, OnDestroy{
         
       })
       
-  }
+    }
 
   
 

@@ -1,0 +1,16 @@
+<div class="battles">
+    <!-- <jw-pagination [items]="battles" (changePage)="onChangePage($event)"></jw-pagination> 
+     <div class="" *ngFor="let battle of pageOfItems | sort:'battleTime'">
+        <app-clash-royale-battle 
+            [battle]="battle">
+        </app-clash-royale-battle>
+    </div> -->
+    
+
+    <app-infinite-scroll
+        
+        [dataArray]="battles">
+
+    </app-infinite-scroll>
+    
+</div>

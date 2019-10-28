@@ -1,0 +1,69 @@
+ggdfgdfgdfgdgfdfgdfg
+<form
+    #groupForm="ngForm"
+    
+    name="groupForm"
+    role="form"
+    id="groupForm">
+    <div class="">
+        <div class="">
+            <mat-form-field class="example-full-width">
+                    <input matInput 
+                    placeholder="Group name" 
+                    value=""
+                    id="groupName"
+                    ngModel
+                    name="groupName"
+                    
+                    required
+                    #groupName="ngModel">
+                    <mat-error *ngIf="groupName.errors && (!groupName.valid && groupName.touched)">
+                        <span class="" *ngIf="groupName.errors['required']">tournament groupName is required</span>
+                        <span class="" *ngIf="groupName.errors['forbidden']">This groupName is used</span>
+                    </mat-error>
+            </mat-form-field>
+    
+            
+            <!--<mat-form-field class="example-full-width">
+                <input matInput 
+                placeholder="Main platform" 
+                value=""
+                id="mainPlatform"
+                ngModel
+                
+                name="mainPlatform"
+                #mainPlatform="ngModel"
+                >
+                <mat-error *ngIf="mainPlatform.errors && (!mainPlatform.valid && mainPlatform.touched)">
+                    <span class="" *ngIf="mainPlatform.errors['required']">tournament mainPlatform is required</span>
+                    <span class="" *ngIf="mainPlatform.errors['forbidden']">This mainPlatform doesnt exist in our database</span>
+                </mat-error>
+            </mat-form-field>-->
+            <mat-form-field>
+                <mat-label>Choose platform</mat-label>
+                <mat-select
+                    id="platform"
+                    ngModel
+                    name="platform"
+                    #platform="ngModel"
+                    >
+                    <mat-option *ngFor="let platform of platforms" [value]="platform">
+                    {{platform.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        
+    </div>
+    <div class="">
+
+        <button 
+            class="customButton"
+            type="submit"
+            [disabled]="!groupForm.valid"
+            (click)="onSubmit()">
+            Create
+        </button>
+
+    </div>
+</form>

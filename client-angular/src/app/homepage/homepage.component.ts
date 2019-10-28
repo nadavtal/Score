@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { listAnimation} from '../shared/animations'
+import { listAnimation} from '../shared/animations';
 import { ActivatedRoute, Params, Router, Event, NavigationStart, NavigationEnd, NavigationError } from '@angular/router';
 import { localStorageService } from '../shared/services/local-storage.service';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
@@ -7,7 +7,7 @@ import { SwalService } from '../shared/services/swal.service';
 import { SwalPortalTargets } from '@sweetalert2/ngx-sweetalert2';
 import { AuthService } from '../auth/auth.service';
 import { NgForm } from '@angular/forms';
-import { SubSink } from 'node_modules/subsink/dist/subsink'
+import { SubSink } from 'node_modules/subsink/dist/subsink';
 
 @Component({
   selector: 'app-homepage',
@@ -42,10 +42,15 @@ export class HomepageComponent implements OnInit, OnDestroy{
             private router: Router) { }
 
   ngOnInit() {
-    var self = this
+    var self = this;
+    this.subs.sink = this.swalService.loginSwal
+      .subscribe((action) => {
+        console.log(action)
+        this.loginSweetAlert.fire()
+      })
     this.subs.sink = this.swalService.swal
       .subscribe((swalData:any)=>{
-        
+
         console.log(swalData)
         this.swalTitle = swalData.title;
         this.swalText = swalData.text;
@@ -57,7 +62,7 @@ export class HomepageComponent implements OnInit, OnDestroy{
         setTimeout(function(){
           self.userSwal.fire()
         },50)
-        
+
       })
     this.currentUser = this.localStorage.get('currentUser');
     console.log(this.currentUser)
@@ -66,15 +71,15 @@ export class HomepageComponent implements OnInit, OnDestroy{
       {name: 'Games', color: 'orange', icon: 'settings_cell', index: 1},
       {name: 'Leagues', color: 'pink', icon: 'group', index: 2},
       {name: 'Groups', color: 'blue', icon: 'people_outline', index: 3},
-     
+
     ];
     this.tab = this.router.url.substring(this.router.url.lastIndexOf('/') + 1);
-   
+
     if(this.tab !== 'home'){
       this.showMenuTabs = true
     }
     this.subs.sink = this.router.events.subscribe( (event: Event) => {
-    
+
       if (event instanceof NavigationStart) {
         //  console.log('NavigationStart', event) // Show loading indicator
       }
@@ -83,7 +88,7 @@ export class HomepageComponent implements OnInit, OnDestroy{
           // Hide loading indicator
           console.log('NavigationEnd', event);
           this.tab = this.router.url.substring(this.router.url.lastIndexOf('/') + 1);
-          
+
           console.log(this.tab)
           for(let i =0; i<this.tabs.length; i++){
             if(this.tabs[i].name == this.tab){
@@ -96,7 +101,7 @@ export class HomepageComponent implements OnInit, OnDestroy{
 
           console.log(this.showMenuTabs)
 
-          
+
       }
 
       if (event instanceof NavigationError) {
@@ -120,19 +125,19 @@ export class HomepageComponent implements OnInit, OnDestroy{
     this.activeTab = event;
     this.showMenuTabs = true
     console.log(event)
-    
+
   }
 
   swalConfirm(options){
     console.log(options)
     if(options.action == 'deposit'){
       console.log('DEPOSITTTTTTT')
-    } 
+    }
     else if (options.action == 'login/signup'){
       this.loginSweetAlert.fire()
     }
-    
-    
+
+
   }
 
   onSubmit(values: any ){
@@ -142,8 +147,8 @@ export class HomepageComponent implements OnInit, OnDestroy{
     } else{
       this.signUp(values.userName, values.email, values.password);
     }
-     
-    
+
+
   }
 
   signUp(userName, email, password){
@@ -158,7 +163,7 @@ export class HomepageComponent implements OnInit, OnDestroy{
       console.log(data)
     }, error => {
       console.log(error);
-      
+
       // this.error = error
     })
   }
@@ -173,14 +178,15 @@ export class HomepageComponent implements OnInit, OnDestroy{
       console.log(user);
       this.localStorage.set('currentUser', user.data.user);
       this.localStorage.set('token', user.data.token);
-      
+
       this.currentUser = this.localStorage.get('currentUser');
+      this.goToMyProfile()
       // console.log(window.localStorage)
-      
-      
+
+
     }, error => {
       console.log(error);
-      
+
     })
   }
 
@@ -192,6 +198,11 @@ export class HomepageComponent implements OnInit, OnDestroy{
   handleRefusal(event){
     console.log('Tournament joined canceled by user')
   }
-  
+
+  goToMyProfile(){
+    this.router.navigateByUrl('/users/'+this.currentUser._id);
+
+  }
+
 
 }

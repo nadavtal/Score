@@ -1,0 +1,19 @@
+<app-dinamic-tabs
+    [routeMode]="true"
+    (tabSubject)="changeActiveTab($event)"
+    [path]="'accounts'">
+</app-dinamic-tabs>
+<br><br><br>
+<app-clash-user-info
+   
+    [class.hidden]="tab !== 'Info'"    
+   >
+</app-clash-user-info>
+<app-clash-royale-battles
+   
+    [class.hidden]="tab !== 'Battles'"
+    >
+</app-clash-royale-battles>
+<app-progress-loader
+    >
+</app-progress-loader>

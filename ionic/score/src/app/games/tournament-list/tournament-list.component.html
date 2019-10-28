@@ -1,0 +1,160 @@
+
+
+<div class="{{topPositionHeaderClass}}"  [@moveInLeft]>
+    <div class="d-flex between">
+        <div class="pageHeaderTitle">
+            Tournaments
+            
+        </div>
+        <div class="modalButton">
+            <app-sweet-alert 
+            [formName]="'createTournamentForm'"
+            [actionName]="'Create tournament'"
+            [formTitle]="'New tournament'"
+            ></app-sweet-alert>
+        </div>
+        <div class="pageHeaderActions" >
+            <app-icon-actions
+            *ngIf="actions"
+                [actions]="actions"
+                (action)="onActionClick($event)">
+            </app-icon-actions>
+            
+            
+        </div>
+
+    </div>
+    <app-switch-check-box  *ngIf="showSwitchButton"
+        [ifCheckedFunction]="showOnlyManagedTournaments.bind(this)"
+        [ifUnCheckedFunction]="showOnlyRegisteredTournaments.bind(this)">
+    </app-switch-check-box>
+    <div class="swichButtonText"  *ngIf="showSwitchButton">{{showTournaments}}</div>
+    
+</div> 
+
+<div class="filterSection" 
+    [class.filterSectionOpen] = "showFilterSection">
+    <div class="row no-gutters">
+        <div class="col-6">
+            <mat-form-field>
+                <mat-label>Platform type</mat-label>
+                <mat-select
+                    id="platformType"
+                    [(ngModel)]="platformType"
+                   
+                    name="platformType"
+                    >
+                    <mat-option *ngFor="let type of platformTypes" [value]="type">
+                    {{type.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field class="example-full-width">
+                <input matInput 
+                type="number"
+                placeholder="Min players" 
+                [(ngModel)]="minPlayers"
+                id="minPlayers"
+                
+                name="minPlayers"
+                >
+            </mat-form-field>
+            <mat-form-field class="example-full-width">
+                <input matInput 
+                type="number"
+                placeholder="Min Enterr fee" 
+                [(ngModel)]="minBuyIn"
+                id="minBuyIn"
+                
+                name="minBuyIn"
+                >
+            </mat-form-field>
+            <mat-form-field class="example-full-width">
+                <input matInput 
+                type="number"
+                placeholder="Min Prize pool" 
+                [(ngModel)]="minPrizePool"
+                id="minPrizePool"
+                
+                name="minPrizePool"
+                >
+            </mat-form-field>
+        </div>    
+        <div class="col-6">
+            <mat-form-field>
+                <mat-label>Platform </mat-label>
+                <mat-select
+                    id="platformSelect"
+                    [(ngModel)]="platform"
+                    
+                    name="platformSelect"
+                    >
+                    <mat-option *ngFor="let platform of platforms" [value]="platform">
+                    {{platform.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field class="example-full-width">
+                <input matInput 
+                type="number"
+                placeholder="Max players" 
+                [(ngModel)]="maxPlayers"
+                id="maxPlayers"
+                
+                name="maxPlayers"
+                >
+            </mat-form-field>
+            <mat-form-field class="example-full-width">
+                <input matInput 
+                type="number"
+                placeholder="Max Entree fee" 
+                [(ngModel)]="maxBuyIn"
+                id="maxBuyIn"
+                
+                name="maxBuyIn"
+                >
+            </mat-form-field>
+            <mat-form-field class="example-full-width">
+                <input matInput 
+                type="number"
+                placeholder="Max Prize pool" 
+                [(ngModel)]="maxPrizePool"
+                id="maxPrizePool"
+                
+                name="maxPrizePool"
+                >
+            </mat-form-field>
+        </div>    
+    </div> 
+
+</div>
+<div class="{{topPositionContentClass}}" *ngIf="loaded"
+    [class.filterOpen]="showFilterSection">
+    <div *ngIf="showTournaments == 'Managed tournaments'" >
+        <div class="tournamentsList" [@listAnimation]="managedTournaments.length">
+            <div *ngFor="let tournament of managedTournaments ">
+                <app-tournament-item 
+                    [currentUser]="currentUser"                    
+                    [tournament]="tournament">
+                </app-tournament-item>
+            </div>
+
+        </div>
+    </div>
+    <div *ngIf="showTournaments == 'Registered tournaments' && tournaments">
+        <div  class="tournamentsList" [@listAnimation]="tournaments.length">
+            <div *ngFor="let tournament of tournaments" >
+                <app-tournament-item 
+                    [currentUser]="currentUser"     
+                    [tournament]="tournament">
+                </app-tournament-item>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+

@@ -1,0 +1,47 @@
+
+.toolBarWrapper{
+    transition: .3s all;
+    right: 0.3rem;
+    bottom: .5rem;
+    left: auto;
+    top: auto;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    z-index: 100;
+
+}
+
+.toolBarWrapper.open{
+    width: 100%;
+    border-radius: 0;
+}
+
+.stickyBottom{
+    position: fixed;
+    bottom: 0;
+}
+
+.trigger{
+    transition: .3s all;
+    position: absolute;
+    right: 0;
+    height: 100%;
+    width: 3rem;
+}
+
+.triggerOpen{
+    transform: rotate(90deg);
+}
+.actionIconWrapper{
+    position: relative;
+    
+}
+
+.toolBarBar{
+    width: 90vw;
+    height: 100%;
+}
+.action{
+    // width: 33.33%;
+}

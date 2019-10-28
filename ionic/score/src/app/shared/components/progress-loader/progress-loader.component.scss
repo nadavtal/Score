@@ -1,0 +1,36 @@
+.loaderWrapper{
+    width: 100Vw;
+    height: 100%;
+    
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.loaderMessage {
+    width: 100%;
+}
+
+.shineTextLoader {
+    position: relative;
+    
+    text-transform: uppercase;
+    
+    letter-spacing: 4px;
+    overflow: hidden;
+    background: linear-gradient(90deg, #000, #fff, #000);
+    background-repeat: no-repeat;
+    background-size: 80%;
+    animation: animate 3s linear infinite;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: rgba(255, 255, 255, 0);
+}
+
+@keyframes animate {
+    0% {
+        background-position: -500%;
+    }
+    100% {
+        background-position: 500%;
+    }
+}

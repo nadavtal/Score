@@ -1,0 +1,36 @@
+<div class="accountRow"
+    [class.inActive]="account.active == false">
+    <div class="row">
+        <div class="col-2"
+            [routerLink] = "['/accounts',account.platform, account.accountType, account.accountId]">
+            <img class="accountImage" src="../../../assets/img/platforms/{{account.platform}}.png" alt="">
+        </div>
+        <div class="col-4"
+           [routerLink] = "['/accounts',account.platform, account.accountType, account.accountId]">
+            {{account.userName}}
+        </div>
+        <div class="col-4"
+            [routerLink] = "['/accounts',account.platform, account.accountType, account.accountId]">
+            {{account.accountId}}
+        </div>
+    </div>
+    <app-icon-to-row
+        *ngIf="account.active"
+        [bgColor]="'red'"
+        [toolTipText]="'Diactivate account'"
+        [icon]="'trash'"
+        [question]="'Are you sure you want to diactivate this account?'"
+        [positionClass]="'right0_2'"
+        (action)="turnToInactive()">
+    </app-icon-to-row>
+    <app-icon-to-row
+        *ngIf="!account.active"
+        [bgColor]="'green'"
+        [toolTipText]="'Activate account'"
+        [icon]="'trash'"
+        [question]="'Are you sure you want to activate this account?'"
+        [positionClass]="'right0_2'"
+        (action)="turnToActive()">
+    </app-icon-to-row>
+    
+</div>

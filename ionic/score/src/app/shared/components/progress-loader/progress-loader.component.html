@@ -1,0 +1,40 @@
+<div class="loaderWrapper bg-white" *ngIf="loading">
+    <div class="text-center absCenter" >
+        <svg viewBox="0 0 200 300">
+            <symbol id="s-text">
+                <text class="loaderSimble white" text-anchor="middle" 
+                    x="50%"
+                    y="35%"
+                    class="text--line"
+                    >
+                    S
+                </text>
+                               
+            </symbol>
+            
+            <g class="g-ants">
+                <use xlink:href="#s-text"
+                class="text-copy"></use>     
+                <use xlink:href="#s-text"
+                class="text-copy"></use>     
+                <use xlink:href="#s-text"
+                class="text-copy"></use>     
+                <use xlink:href="#s-text"
+                class="text-copy"></use>     
+                <use xlink:href="#s-text"
+                class="text-copy"></use>     
+            </g>
+                
+                
+        </svg>
+          
+            
+    </div>
+    
+    <div class="loaderMessage absCenter">
+        <div class="shineTextLoader text-center">
+            {{progressMsg}} 
+        </div>
+    </div>
+
+</div>

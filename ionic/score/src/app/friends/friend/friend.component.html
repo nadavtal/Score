@@ -1,0 +1,53 @@
+<div class="friendRow ">
+    <mat-grid-list cols="12" 
+        rowHeight="3rem"
+        *ngIf="friend">
+        <mat-grid-tile colspan="2"
+            [routerLink]= "['/', 'users', friend._id]">
+            <img class="list-item--profileImg" 
+                src="http://localhost:5000/api/v1/image/{{friend.profileImageFileName}}" 
+                alt="" 
+                *ngIf="friend.profileImageFileName">
+            <img class="list-item--profileImg" 
+                src="{{friend.profileImageLink}}" 
+                alt="" 
+                *ngIf="!friend.profileImageFileName">
+        </mat-grid-tile >
+
+        <mat-grid-tile colspan="2" [routerLink]= "['/', 'users', friend._id]">
+            {{friend.userName}} 
+        </mat-grid-tile >
+
+        <mat-grid-tile colspan="5">
+            <div  *ngFor=" let group of friend.sharedGroups">{{group.groupName}}</div>
+        </mat-grid-tile>
+
+        <!-- <mat-grid-tile colspan="2">
+            <div class="rowActions">
+                
+                <fa class="red" name="trash" animation=""
+                    (click)="removeFriend(index, user)">
+                </fa>
+                
+            </div>
+        </mat-grid-tile> -->
+        
+    
+    </mat-grid-list>
+    <app-icon-to-row
+        [bgColor]="'red'"
+        [toolTipText]="'Remove friend'"
+        [icon]="'trash'"
+        [question]="'Are you sure you want to remove this friend?'"
+        [positionClass]="'right0_2'"
+        (action)="removeFriend(index, user)">
+    </app-icon-to-row>
+    <app-icon-to-row
+        [bgColor]="bgColor"
+        [icon]="'comments'"
+        [positionClass]="'right1_2'"
+        (action)="sendMessage($event)">
+    </app-icon-to-row>
+    
+</div>
+

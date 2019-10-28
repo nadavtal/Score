@@ -1,0 +1,90 @@
+<div class="icon {{positionClass}}">
+    <button mat-raised-button
+        class="nakedButton"
+        matTooltip="{{toolTipText}}"
+        [matTooltipPosition]="'below'"
+        aria-label="Button that displays a tooltip in various positions">
+        <fa class="{{bgColor}}" name="{{icon}}" animation=""
+            [class.open]="white"
+            (click)="toggleForm()">
+        </fa>
+    </button>
+    
+</div>
+<div class="iconToRowWrapper {{positionClass}} bg-{{bgColor}}"
+    [class.open]="open">
+    <div class="iconToRowWrapperContent white" *ngIf="open">
+        <div class="input" *ngIf="icon =='comments'">
+            <input class="chatInput black" [(ngModel)]="message" placeholder="Enter message..."/>
+            <fa class="white icon-download" class="chatSend" name="send" animation=""
+                (click)="yesFunction(message)">
+            </fa>    
+            <fa class="white icon-download" class="chatSend" name="minus" animation=""
+                (click)="toggleForm()">
+            </fa>    
+        </div>
+        <div *ngIf="icon == 'trash'">
+            <div class="question">
+                {{question}}
+                <fa class="white icon-download" class="chatSend" name="trash" animation=""
+                    (click)="yesFunction()">
+                </fa>    
+                <fa class="white icon-download" class="chatSend" name="minus" animation=""
+                    (click)="toggleForm()">
+                </fa>
+            </div>
+        </div>
+        <div class="input" *ngIf="icon =='search'">
+            <input class="chatInput black" [(ngModel)]="search" placeholder="Search..."/>
+            <fa class="white icon-download" class="chatSend" name="search" animation=""
+                (click)="yesFunction(search)">
+            </fa>    
+            <fa class="white icon-download" class="chatSend" name="minus" animation=""
+                (click)="toggleForm()">
+            </fa>    
+        </div>
+        <div class="input" *ngIf="icon =='user-plus'">
+            <div class="selectInputsWrapper d-flex white" >
+                <mat-form-field class="white">
+                    <mat-label class="white">Invite friends</mat-label>
+                    <mat-select
+                        id="friendsSelect"
+                        [(ngModel)]="friends"
+                        multiple
+                        name="friendsSelect"
+                        >
+                        <mat-option *ngFor="let friend of currentUser.friends" [value]="friend" >
+                        {{friend.userName}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field *ngIf="groups">
+                    <mat-label class="white">Invite groups</mat-label>
+                    <mat-select
+                        
+                        id="groupsSelect"
+                        [(ngModel)]="groupsSelected"
+                        multiple
+                        name="groupsSelect"
+                        
+                        >
+                        <mat-option *ngFor="let group of groups" [value]="group">
+                        {{group.groupName}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+            </div>
+            <div class="pr-1">
+                <fa class="white icon-download" class="chatSend" name="send" animation=""
+                    (click)="yesFunction({friends: friends, groupsSelected: groupsSelected})">
+                </fa>    
+                <fa class="white icon-download" class="chatSend" name="minus" animation=""
+                    (click)="toggleForm()">
+                </fa>    
+
+            </div>
+        </div>
+    </div>
+    
+</div>

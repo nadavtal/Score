@@ -1,0 +1,182 @@
+<form 
+    *ngIf="tournament"
+    (ngSubmit)="onSubmit()"
+    [formGroup]="tournamentForm"
+    >
+        <mat-form-field class="example-full-width">
+            <input matInput 
+                placeholder="Tournament name" 
+                value="{{tournament.name}}"
+                id="name"
+                
+                formControlName="name"
+                >
+                <span class="help-block" *ngIf="!tournamentForm.get('name').valid && tournamentForm.get('name').touched">
+                    <span class="" *ngIf="tournamentForm.get('name').errors['required']">tournament name is required</span>
+                    <span class="" *ngIf="tournamentForm.get('name').errors['forbidden']">This name is used</span>
+                </span>
+                
+        </mat-form-field>
+        
+        <mat-form-field class="example-full-width">
+            <input matInput 
+            placeholder="Manager" 
+            value="{{tournament.manager}}"
+            id="manager"
+            
+            formControlName="manager"
+            
+            >
+        </mat-form-field>
+        <!--<mat-form-field>
+            <mat-label>Choose manager</mat-label>
+            <mat-select
+                id="managerSelect"
+                ngModel
+                name="managerSelect"
+                required>
+                <mat-option *ngFor="let member of tournament.members" [value]="member">
+                {{member.userName}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>-->
+        <mat-form-field class="example-full-width">
+            <input matInput 
+            placeholder="Privacy" 
+            value=""
+            id="privacy"
+            
+            formControlName="privacy"
+            >
+        </mat-form-field>
+        
+        <mat-form-field class="example-full-width">
+            <input matInput 
+            placeholder="Platform" 
+            value="platform"
+            id="platform"
+            
+            formControlName="platform"
+            >
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+            <input matInput 
+            placeholder="Max players" 
+            value="maxPlayers"
+            id="maxPlayers"
+            
+            formControlName="maxPlayers"
+            >
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+            <input matInput 
+            placeholder="Player per battle" 
+            value="playerPerBattle"
+            id="playerPerBattle"
+            
+            formControlName="playerPerBattle"
+            >
+        </mat-form-field>
+        
+        <mat-form-field class="example-full-width">
+            <input matInput 
+            placeholder="Entree fee" 
+            value="buyIn"
+            id="buyIn"
+            
+            formControlName="buyIn"
+            >
+        </mat-form-field>
+        
+        <mat-form-field class="example-full-width">
+            <input matInput 
+            type="number"
+            placeholder="Places paid" 
+            value="placesPaid"
+            id="placesPaid"
+            (click)="onPlacesPaid(placesPaid)"
+            formControlName="placesPaid"
+            >
+        </mat-form-field>
+        <button type="button" (click)="onPlacesPaid(2)">add places paid</button>
+        <div 
+            formArrayName="placesPaidFormArray">
+            <div class="positionRow d-flex" *ngFor="let position of tournamentForm.get('placesPaidFormArray').controls; let i = index">
+                <div class="">
+                    <strong>{{i+1}}</strong>
+                </div>
+                <div class="d-flex">
+                    <input type="number" class=" positionRow--input" 
+                    
+                    [formControlName]="i"
+                    (ngChange)="calculatePrize(position.percentage, $index)">
+                    <span >{{position.percentage}}</span>
+                    <span>%</span> 
+                </div>
+                <div class="col-xs-3">{{position.userName}}</div>
+                <div class="col-xs-2">{{position.prize}}</div>
+            </div>
+            
+        </div>
+        <div class="positionRow d-flex" *ngFor="let position of tournament.winners; let i = index">
+            <div class="">
+                <strong>{{i+1}}</strong>
+            </div>
+            <div class="d-flex">
+                <input type="number" class=" positionRow--input" 
+                    (ngChange)="calculatePrize(position.percentage, $index)"
+                    >
+                <span >{{position.percentage}}</span>
+                <span>%</span> 
+            </div>
+            <div class="col-xs-3">{{position.userName}}</div>
+            <div class="col-xs-2">{{position.prize}}</div>
+        </div>
+
+        <mat-form-field class="example-full-width">
+            <input matInput 
+            placeholder="Time" 
+            value="time"
+            id="time"
+            
+            formControlName="time"
+            >
+        </mat-form-field>
+        
+        <div class="pageButtons">
+                <span class="" *ngIf="!tournamentForm.valid && tournamentForm.touched">Please enter required data</span>
+                <app-button-to-modal
+                    [condition]="false"
+                    [message] = "'heyyyy'"
+                    [actionName]="'save'"
+                    [dataDirection]="'top'"
+                    [ifTrueFunction]="save"
+                    [ifFalseFunction]="remove">
+                </app-button-to-modal>
+        
+                <app-flipping-button
+                    [condition]="tournamentForm.valid"
+                    [actionOneName]="'Save'"
+                    [actionTwoName]="'Save'"
+                    (action)="fllipingButtonClicked($event)">
+        
+                </app-flipping-button>
+                <!--<button 
+                    class="customButton"
+                    type="submit"
+                    [disabled]="groupForm.valid"
+                    
+                >
+                    Create
+                </button>-->
+        
+                <button
+                    class="customButton green"
+                    
+                    
+                >
+                    Save
+                </button>
+        </div>
+        
+</form>

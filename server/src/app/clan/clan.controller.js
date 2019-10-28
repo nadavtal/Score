@@ -349,10 +349,13 @@
   }
 
   function getAllBattlesByClan(clan){
-    var clan = JSON.parse(clan)
-    // console.log('CLAN', clan)
+    clan = JSON.parse(clan)
+    // if(clan){
+    //   var clan = JSON.parse(clan)
+    // } 
+    console.log('CLAN', clan)
     var promiseArr = [];
-    if (clan && clan.memberList.length > 0){
+    if (clan){
       
       for (var i = 0; i < clan.memberList.length; i++) {
           var promise = new Promise(function(resolve, reject) {
@@ -380,7 +383,7 @@
                 resolve(battles)
 
               } else {
-                resolve('Didnt get '+ clan.memberList[i].tag + ' battles')
+                resolve('Didnt get battles')
               }
               // console.log(battles);
               // var battlesLeangth = user.battles.length;
@@ -588,9 +591,9 @@
   } 
 
   
-  updateNewFriendlyBattlesFromAllClans()
+  // updateNewFriendlyBattlesFromAllClans()
 
-  setInterval(updateNewFriendlyBattlesFromAllClans, 300000);
+  // setInterval(updateNewFriendlyBattlesFromAllClans, 300000);
 
 
   

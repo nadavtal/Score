@@ -1,0 +1,350 @@
+<div class="" *ngIf="loaded">
+    <div class="pageHeaderNoTab d-flex between white bg-black">
+        <div class="pageHeaderTitle">
+            {{game.name}}
+        </div>
+        <div class="modalButton">
+            <app-sweet-alert 
+            [buttonColor]="'white'"
+            [formName]="'createGameForm'"
+            [actionName]="'Create'"
+            ></app-sweet-alert>
+        </div>
+        <div class="threeDButtonWrapper">
+            <app-three-d-button
+                [condition]="!editMode"
+                [actionTrueName]="'Edit'"
+                [actionFalseName]="'Save'"
+                [actionTrueFunction]="editGame.bind(this)"
+                [actionFalseFunction]="saveGame.bind(this)"
+                [actionTrueIconName]="'edit'"
+                [actionFalseIconName]="'save'"
+                [trueColor]="'pink'"
+                [falseColor]="'green'"
+                [iconSizeClass]="'small'"
+                (threeDActionEmmiter)="threeDButtonClicked($event)"
+                >
+            </app-three-d-button>
+
+        </div> 
+        <app-icon-to-row
+            [bgColor]="'green'"
+            [icon]="'comments'"
+            [currentUser]="currentUser"
+            [toolTipText]="'Send message to group'"
+            [positionClass]="'right1_2'"
+            (action)="sendMessageToPlayers($event)">
+        </app-icon-to-row>
+        <app-icon-to-row
+            [bgColor]="'green'"
+            [icon]="'user-plus'"
+            [currentUser]="currentUser"
+            [toolTipText]="'Invite friends and groups'"
+            [groups]="currentUserGroups"
+            [positionClass]="'right0_2'"
+            (action)="inviteFriendsAndGroups($event)">
+        </app-icon-to-row>
+        <!-- <div class="pageHeaderActions" >
+            <app-icon-actions
+            *ngIf="actions"
+                [actions]="actions">
+            </app-icon-actions>
+            
+            
+        </div> -->
+    </div>  
+        
+        
+    <div class="container pageContentNoTabs">
+            <form 
+            #gameForm="ngForm"
+            *ngIf="game"
+            (ngSubmit)="onSubmit(gameForm)"
+            name="gameForm"
+            
+            >
+            <div class="row">
+                <div class="col-6">
+                    <mat-form-field class="example-full-width">
+                        <input matInput 
+                            placeholder="game name" 
+                            [(ngModel)]="game.name"
+                            id="name"
+                            name="name"
+                            [disabled]="!editMode"
+                            required
+                            #name="ngModel"
+                            [class.is-invalid]="name.invalid && name.touched"
+                            
+                            >
+                        <mat-error *ngIf="name.errors && (!name.valid && name.touched)">
+                            <span class="" *ngIf="name.errors['required']">game name is required</span>
+                            
+                        </mat-error>
+                            <!--<span class="help-block" *ngIf="name.errors && (!name.valid && name.touched)">
+                                <span class="" *ngIf="name.errors['required']">game name is required</span>
+                                <span class="" *ngIf="name.errors['forbidden']">This name is used</span>
+                            </span>-->
+                            
+                    </mat-form-field>
+                    
+                    
+                    <mat-form-field>
+                        <mat-label>Platform</mat-label>
+                        <mat-select
+                            
+                            id="platform"
+                            [(value)]="game.platform"
+                            [disabled]="!editMode"
+                            name="platform"
+                            
+                            required>
+                            <mat-option *ngFor="let platform of platforms" [value]="platform.name">
+                            {{platform.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Game type</mat-label>
+                        <mat-select
+                            (selectionChange)="gameTypeSelected(game.gameType)"
+                            id="gameTypeSelect"
+                            [(value)]="game.gameType"
+                            [disabled]="!editMode"
+                            name="gameTypeSelect"
+                            
+                            required>
+                            <mat-option *ngFor="let type of gameTypes" [value]="type.name">
+                            {{type.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="example-full-width"
+                        *ngIf="game.gameType === 'group Vs group'">
+                        <input matInput 
+                        placeholder="Groups number" 
+                        [(ngModel)]="groupsNum"
+                        id="groups"
+                        (change)="setNumGroups(groupsNum)"
+                        [disabled]="!editMode"
+                        #groups="ngModel"
+                        name="groups"
+                        >
+                    </mat-form-field>
+                    
+                    
+                    
+                   <!-- <mat-form-field class="example-full-width">
+                        <input matInput 
+                        placeholder="Winner" 
+                        [(ngModel)]="game.winner.userName"
+                        id="winner"
+                        required
+                        name="winner"
+                        #winner="ngModel"
+                        >
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Choose winner</mat-label>
+                        <mat-select
+                            id="winnerSelect"
+                            [(ngModel)]="game.winner"
+                            name="winnerSelect"
+                            >
+                            <mat-option *ngFor="let player of game.players" [value]="player">
+                            {{player.userName}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>-->
+                    <!--<button type="button" (click)="onPlacesPaid(game.placesPaid)">add places paid</button>
+                    
+                    <div class="positionRow d-flex" *ngFor="let position of game.winners; let i = index">
+                        <div class="">
+                            <strong>{{i+1}}</strong>
+                        </div>
+                        <div class="d-flex">
+                            <input type="number" class=" positionRow--input" 
+                                (ngChange)="calculatePrize(position.percentage, $index)"
+                                >
+                            <span >{{position.percentage}}</span>
+                            <span>%</span> 
+                        </div>
+                        <div class="col-xs-3">{{position.userName}}</div>
+                        <div class="col-xs-2">{{position.prize}}</div>
+                    </div>-->
+                        
+                        
+                        
+                        
+                </div>
+                <div class="col-6">
+                    <mat-form-field class="example-full-width">
+                        <input matInput [matDatepicker]="picker" 
+                            placeholder="Choose a date"
+                            [(ngModel)]="game.time"
+                            name="time"
+                            [disabled]="!editMode"
+                            #time="ngModel">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker touchUi #picker></mat-datepicker>
+                    </mat-form-field>
+    
+                    <!-- <mat-form-field>
+                        <mat-label>Choose host</mat-label>
+                        <mat-select
+                            id="managerSelect"
+                            ngModel
+                            name="managerSelect"
+                            [disabled]="!editMode"
+                            required>
+                            <mat-option *ngFor="let player of game.players" [value]="player">
+                            {{player.userName}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field> -->
+                    <mat-form-field>
+                        <mat-label>Host</mat-label>
+                        <mat-select
+                       
+                            id="host"
+                            [(value)]="game.host"
+                            [disabled]="!editMode"
+                            name="host"
+                            
+                            required>
+                            <mat-option *ngFor="let user of currentUser.friends" [value]="user.userName">
+                            {{user.userName}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="example-full-width">
+                        <input matInput 
+                        placeholder="Entree fee" 
+                        [(ngModel)]="game.buyIn"
+                        id="buyIn"
+                        #buyIn="ngModel"
+                        name="buyIn"
+                        [disabled]="!editMode"
+                        >
+                    </mat-form-field>
+                    
+                    <!-- <mat-form-field class="example-full-width">
+                        <input matInput 
+                        placeholder="Privacy" 
+                        [(ngModel)]="game.privacy"
+                        id="privacy"
+                        #privacy="ngModel"
+                        name="privacy"
+                        [disabled]="!editMode"
+                        >
+                    </mat-form-field> -->
+                    <mat-form-field>
+                        <mat-label>Privacy</mat-label>
+                        <mat-select
+                            
+                            id="privacy"
+                            [(value)]="game.privacy"
+                            [disabled]="!editMode"
+                            name="privacy"
+                            
+                            required>
+                            <mat-option *ngFor="let option of privacyOptions" [value]="option">
+                            {{option}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    
+                    <mat-form-field class="example-full-width"
+                        *ngIf="game.gameType === 'group Vs group' || game.gameType === '1 Vs many'">
+                        <input matInput 
+                        placeholder="Player per group" 
+                        
+                        [(ngModel)]="game.playersPerGroup"
+                        (change)="setNumPlayerPerGroup(game.playersPerGroup)"
+                        id="playersPerGroup"
+                        #playersPerGroup="ngModel"
+                        name="playersPerGroup"
+                        [disabled]="!editMode"
+                        >
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                
+                <div class="gameGroup col-{{12/game.gameGroups.length}}" *ngFor="let group of game.gameGroups; let groupIndex = index">
+                    <div class="white gameGroup--groupNumber text-center">
+                        group {{groupIndex + 1}}
+                    </div>
+                    <div class="gameGroup__players" [@listAnimation]="group.groupMembers.length">
+                        <div class="gameGroup__players--player" 
+                            *ngFor="let user of group.groupMembers; let playerIndex = index">
+                            <fa class="absCenter" name="user-plus"
+                                
+                                animation=""
+                                (click)="takeThisPlace(playerIndex, groupIndex)"
+                                *ngIf="user.userName == '' && !registered">
+                            </fa>
+                            {{user.userName}}
+                            <fa class="black" name="minus" 
+                                animation=""
+                                (click)="removeFromThisPlace(playerIndex, groupIndex)"
+                                *ngIf="user.userName == currentUser.userName" >
+                            </fa>
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--<div class="groupMembers" >
+                <div class="">Players ({{game.players.length}})</div>
+                <div class="members">
+                    <app-user-row *ngFor="let user of game.players; let i = index"
+                        [user]="user"
+                        [index]="i">
+    
+                    </app-user-row>
+                    
+                </div>
+            </div> --> 
+            <div class="pageButtons">
+                
+            </div>
+            
+        </form>
+    </div>
+   
+    <div class="mainButtonWrapper">
+        <app-three-d-button
+            [condition]="registered"
+            [actionTrueName]="'Leave'"
+            [actionFalseName]="'Join'"
+            [actionTrueFunction]="leaveGame.bind(this)"
+            [actionFalseFunction]="joinGame.bind(this)"
+            [actionTrueIconName]="'arrow-up'"
+            [actionFalseIconName]="'arrow-down'"
+            [trueColor]="'pink'"
+            [falseColor]="'green'"
+            [iconSizeClass]="'med'"
+            (threeDActionEmmiter)="threeDButtonClicked($event)"
+            >
+        </app-three-d-button>
+    </div>
+    <swal
+        #gameSwal
+        title=""
+        text=""
+        type=""
+        timer=""
+        [showConfirmButton]="false"
+        [showCancelButton]="false"
+        [focusCancel]="true"
+        >
+    </swal>
+    <app-tool-bar
+        [positionClass]="'stickyBottom'"
+        [triggerIconName]="'bars'"
+        [actions]="toolBarActions"
+        [toolBarColor] = "'black'"
+        [color]="'white'">
+    </app-tool-bar>
+</div>

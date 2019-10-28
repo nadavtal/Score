@@ -1,0 +1,88 @@
+<div class="container" *ngIf="loaded">
+    <div *ngIf="user">
+        <div class="row" >
+                <div class="col-5">name: </div>
+                <div class="col-7">{{user.name}}</div>
+                <div class="col-5">trophies: </div>
+                <div class="col-7">{{user.trophies}}</div>
+                <div class="col-5">bestTrophies: </div>
+                <div class="col-7">{{user.bestTrophies}}</div>
+                <div class="col-5">arena: </div>
+                <div class="col-7">{{user.arena.name}}</div>
+                <div class="col-5">role: </div>
+                <div class="col-7">{{user.role}}</div>
+                <div class="col-5">clan: </div>
+                <div class="col-7"
+                    [routerLink] = "['/accounts','Clash Royale', user.clan.tag]"
+                    >
+                    {{user.clan.name}}
+                </div>
+                <br>
+        </div>
+        <br>
+        <h4>Stats</h4>
+        <div class="row">
+            <div class="col-5">wins</div>
+            <div class="col-7">{{user.wins}}</div>
+            <div class="col-5">threeCrownWins</div>
+            <div class="col-7">{{user.threeCrownWins}}</div>
+            <div class="col-5">losses</div>
+            <div class="col-7">{{user.losses}}</div>
+            <div class="col-5">battleCount</div>
+            <div class="col-7">{{user.battleCount}}</div>
+            <div class="col-5">challengeMaxWins</div>
+            <div class="col-7">{{user.challengeMaxWins}}</div>
+            
+            
+        </div>
+        <br>
+    
+        <h4>currentDeck</h4>
+        
+        <div class="cardImage" *ngFor="let card of user.currentDeck">
+            <img  src="{{card.iconUrls.medium}}" alt="">
+        </div>
+        <br>
+        <h4>currentFavouriteCard</h4>
+        <!-- <div class="col-7"> -->
+        <div class="cardImage">
+            <img  src="{{user.currentFavouriteCard.iconUrls.medium}}" alt="">
+        </div>
+    </div>
+    <div *ngIf="clan">
+            <div class="row" >
+                <div class="col-5">name: </div>
+                <div class="col-7">{{clan.name}}</div>
+                <div class="col-5">clan war trophies: </div>
+                <div class="col-7">{{clan.clanWarTrophies}}</div>
+                <div class="col-5">clanScore: </div>
+                <div class="col-7">{{clan.clanScore}}</div>
+                <div class="col-5">Location: </div>
+                <div class="col-7">{{clan.location.name}}</div>
+                <div class="col-5">members: </div>
+                <div class="col-7">{{clan.members}}</div>
+                <div class="col-5">required trophies: </div>
+                <div class="col-7">{{clan.requiredTrophies}}</div>
+                    
+            </div>
+            <br>
+            <h4>Members</h4>
+            <div class="row" *ngFor="let member of clan.memberList"
+                [routerLink]="['../../', 'user', member.tag]">
+                <div class="col-4">{{member.name}}</div>
+                
+                <div class="col-3">{{member.role}}</div>
+                
+                <div class="col-3">{{member.tag}}</div>
+               
+                <div class="col-2">{{member.trophies}}</div>
+               
+                            
+                
+            </div>
+            <br>
+    </div>
+    
+</div>
+
+

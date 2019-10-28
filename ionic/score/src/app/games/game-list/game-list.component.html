@@ -1,0 +1,36 @@
+<div class="">
+    <div class="{{topPositionHeaderClass}}" [@moveInLeft]>
+        <div class="d-flex between">
+            <div class="pageHeaderTitle">
+                Games
+            </div>
+            <div class="modalButton" *ngIf="currentUser">
+                <app-sweet-alert 
+                [formName]="'createGameForm'"
+                [actionName]="'Create game'"
+                [formTitle]="'New game, new losers'"
+                (confirmed)="sweetAlertConfirm($event)"
+                ></app-sweet-alert>
+            </div>
+            <div class="pageHeaderActions">
+                <app-icon-actions
+                    [actions]="actions">
+                </app-icon-actions>
+                
+                
+            </div>
+        </div>
+        <app-switch-check-box *ngIf="showSwitchButton"></app-switch-check-box>
+     </div>
+</div>
+<div class="{{topPositionContentClass}}" [@listAnimation]="games.length" *ngIf="loaded">
+   <div *ngFor="let game of games">
+        <app-game-item 
+            [game]="game"
+            [currentUser] ="currentUser">
+        </app-game-item>
+   </div>
+    
+
+</div>
+

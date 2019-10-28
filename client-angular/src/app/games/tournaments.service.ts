@@ -21,7 +21,7 @@ export class TournamentsService implements OnDestroy{
 
         ){}
     tournamentSelected = new Subject<any>();
-    
+
     ngOnDestroy() {
         this.subs.unsubscribe();
       }
@@ -32,7 +32,7 @@ export class TournamentsService implements OnDestroy{
 
     getTournament(tournamentId) {
         if (!tournamentId) return;
-  
+
         return this.query.get('tournaments/' + tournamentId)
     }
 
@@ -47,33 +47,33 @@ export class TournamentsService implements OnDestroy{
     getTournamentsByGroupID(groupId:string){
         return this.query.get('tournaments/group/'+groupId)
     }
-    editTournament(tournament:any){
-        return this.query.put('tournaments/'+tournament._id, tournament) 
+    editTournament(tournament: any){
+        return this.query.put('tournaments/' + tournament._id, tournament);
     }
 
-    tournamentRegistration(action: string, tournament:any, user:any){
-        var promise = new Promise((resolve, reject) => {
-            var self = this
-            var transaction;
-            var message;
+    tournamentRegistration(action: string, tournament: any, user: any){
+        const promise = new Promise((resolve, reject) => {
+            const self = this;
+            let transaction;
+            let message;
             console.log(action)
-            if(action == 'Tournament Registration'){
+            if (action === 'Tournament Registration') {
                 if (!this.usersService.checkIfUserBalanceHasSufficientFunds(user, parseInt(tournament.buyIn))){
-                    resolve('Insufficient funds')
-                } 
+                    resolve('Insufficient funds');
+                }
                 else{
                     transaction = {
                         transactionType: action,
                         userId: user._id,
                         tournamentId: tournament._id,
                         amount: -tournament.buyIn
-            
+
                     }
 
                     message = {
                         subject : action,
                         content: 'Registered to tournament: ' + tournament.name + '. Your account was charged ' + tournament.buyIn,
-                        messageType : 'registrationLog',
+                        messageType : 'log',
                         sender : {
                             userName: 'system',
                             userId: ''
@@ -92,20 +92,19 @@ export class TournamentsService implements OnDestroy{
                         userId: user._id
                     });
                 }
-            } 
-            else if (action == 'Tournament UnRegistration'){
+            }
+            else if (action === 'Tournament UnRegistration'){
                 transaction = {
                     transactionType: action,
                     userId: user._id,
                     tournamentId: tournament._id,
                     amount: tournament.buyIn
-            
                 }
 
                 message = {
                     subject : action,
                     content: 'Unregistered from tournament: ' + tournament.name + '. Your account was refunded ' + tournament.buyIn,
-                    messageType : 'registrationLog',
+                    messageType : 'log',
                     sender : {
                         userName: 'system',
                         userId: ''
@@ -116,26 +115,25 @@ export class TournamentsService implements OnDestroy{
                     },
                     links: {
                         tournamentId: tournament._id,
-                        
                     },
-                }
+                };
 
                 tournament.registered = this.utilsService.removeUserFromArrayByUserId(tournament.registered, user._id);
             }
-            
+
 
             this.subs.sink = this.transactionsService.createTransaction(transaction)
                 .subscribe((createdTransaction:any) => {
                 console.log('Transaction created: ',  createdTransaction.data);
-                
+
                 user.balance += createdTransaction.data.amount
                 this.subs.sink = this.usersService.updateUser(user)
                     .subscribe((updatedUser:any) => {
                     user = updatedUser.data;
                     this.usersService.userSelected.next(updatedUser.data);
                     this.localStorage.update('currentUser', user)
-                    
-                    
+
+
                     tournament.prizePool =  self.calculatePrizePool(tournament);
                     this.subs.sink = self.editTournament(tournament)
                         .subscribe((updatedTournament:any)=> {
@@ -151,34 +149,34 @@ export class TournamentsService implements OnDestroy{
                             reject({'errorInEditingTournemnt': error})
                         })
                     // this.saveTournament('Registered to ' +tournament.name, 'Your account was charged '+ tournament.buyIn + '. GOOD LUCK!');
-                    
+
                     },
                     error => {
                         reject({'errorInUpdatingUser': error})
                     });
-                    
+
                 },
                 error => {
                     reject({'errorIncreatingTransaction': error})
                 });
 
-            
+
 
 
         })
-        
+
         return promise
     }
 
     calculatePrizePool(tournament){
-    
-        var prizePool = tournament.buyIn * tournament.registered.length;
+
+        let prizePool = tournament.buyIn * tournament.registered.length;
         // console.log(prizePool)
-        
+
         // console.log(this.tournament.prizePool)
         return prizePool
       }
 
 
-    
+
 }

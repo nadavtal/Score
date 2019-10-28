@@ -1,0 +1,39 @@
+
+<div class="download-wrap">
+  <div class="download" 
+       [class.is-active]="!condition">
+    <div class="button-download bg-{{trueColor}}" (click)="buttonClicked($event)">
+        <div class="actionNamewrapper">
+            <div class="actionName {{iconSizeClass}}">
+                {{actionTrueName}}
+
+            </div>
+        </div>
+        <span class="meter-progress-download">
+            </span>
+        <span class="icon-wrap">
+            <fa class="white icon-download absCenter {{iconSizeClass}}" name="{{actionTrueIconName}}" animation="">
+            </fa>
+            
+        </span>
+    </div>
+    <div class="meter bg-{{falseColor}}"  (click)="buttonClicked($event)">
+        <div class="actionNamewrapper">
+            <div class="actionName {{iconSizeClass}}">
+                {{actionFalseName}}
+
+            </div>
+        </div>
+        <span class="meter-progress-meter">
+        </span>
+        <span class="icon-wrap">
+            
+                <fa class="white icon-download absCenter {{iconSizeClass}}" name="{{actionFalseIconName}}" animation="">
+                </fa>
+        </span>
+    </div>
+  </div>
+</div> 
+
+
+

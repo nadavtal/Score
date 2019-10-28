@@ -1,0 +1,45 @@
+.modalButton{
+    height: 2rem;
+    position: relative;
+}
+
+.filterSection {
+    padding: 0 1rem;
+    visibility: hidden;
+    position: absolute;
+    top: 9rem;
+    transition: .3s all;
+    -webkit-box-shadow: 0px 9px 17px -4px rgba(0,0,0,0.7);
+        -moz-box-shadow: 0px 9px 17px -4px rgba(0,0,0,0.7);
+        box-shadow: 0px 9px 17px -4px rgba(0,0,0,0.7);
+    height:0 ;
+    opacity: 0;
+    z-index: 100;
+    background-color: white;
+    
+
+    
+
+    mat-form-field{
+        font-size: .8rem;
+        height: 2.5rem;
+        color: black;
+    }
+
+    
+}
+
+.filterSectionOpen{
+    height:11rem;
+    opacity: 1;
+    visibility: visible;
+}
+
+.filterOpen{
+    top: 20rem
+}
+
+.tournamentsList{
+    max-height: 31rem;
+    overflow: auto;
+}

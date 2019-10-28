@@ -1,0 +1,186 @@
+<div class="" *ngIf="loaded">
+	
+    <div class="pageHeader d-flex between">
+		
+        <div class="pageHeaderTitle">
+            {{user.userName}}
+        </div>
+        <div class="threeDButtonWrapper">
+            <app-three-d-button
+                [condition]="!editMode"
+                [actionTrueName]="'Edit'"
+                [actionFalseName]="'Save'"
+                [actionTrueFunction]="editProfile.bind(this)"
+                [actionFalseFunction]="saveProfile.bind(this)"
+                [actionTrueIconName]="'edit'"
+                [actionFalseIconName]="'save'"
+                [trueColor]="'pink'"
+                [falseColor]="'green'"
+                [iconSizeClass]="'small'"
+                (threeDActionEmmiter)="threeDButtonClicked($event)"
+                >
+            </app-three-d-button>
+        </div>
+        
+        <div class="pageHeaderActions" >
+            <app-icon-actions
+                *ngIf="actions"
+                (action)="iconActionClicked($event)"
+                [actions]="actions">
+            </app-icon-actions>
+        </div>
+        <app-icon-to-row
+            [bgColor]="'green'"
+            [toolTipText]="'Send message to user'"
+            [icon]="'comments'"
+            [positionClass]="'right0_2'"
+            (action)="sendMessageToUser()">
+        </app-icon-to-row>
+        
+    </div> 
+    <div class="pageContent container">
+        <div class="transactions" *ngIf="showTransactions">
+            <app-transactions></app-transactions>
+        </div> 
+        <div class="row" *ngIf="!showTransactions">
+            <div class="col-11">
+                <form
+                    #userForm="ngForm"
+                    (ngSubmit)="onSubmit(userForm)"
+                    name="userForm"
+                    role="form"
+                    
+                    id="userForm">
+                
+                    <mat-form-field class="example-full-width">
+                        <input matInput 
+                        placeholder="User name" 
+                        id="userName"
+                        [(ngModel)]="user.userName"
+                        name="userName"
+                        [disabled]="!editMode"
+                        required
+                        #userName="ngModel">
+                        <!-- <span class="help-block" *ngIf="!userName.valid && userName.touched">Please enter a user name</span> -->
+                    </mat-form-field>
+                    <mat-form-field class="example-full-width">
+                        <input matInput 
+                        placeholder="Balance" 
+                        id="balance"
+                        [(ngModel)]="user.balance"
+                        name="balance"
+                        [disabled]="!editMode"
+                        required
+                        #balance="ngModel">
+                        <!-- <span class="help-block" *ngIf="!userName.valid && userName.touched">Please enter a user name</span> -->
+                    </mat-form-field>
+                    <mat-form-field class="example-full-width">
+                        <input matInput 
+                        placeholder="Email" 
+                        id="email"
+                        [(ngModel)]="user.email"
+                        name="email"
+                        [disabled]="!editMode"
+                        required
+                        email>
+                    </mat-form-field>
+                    <mat-form-field class="example-full-width"  *ngIf="editMode">
+                        <input matInput 
+                        placeholder="Password" 
+                        id="password"
+                        [(ngModel)]="user.password"
+                       
+                        name="password"
+                        required>
+                    </mat-form-field>
+                    <mat-form-field class="example-full-width">
+                        <input matInput 
+                        placeholder="First name" 
+                        id="firstName"
+                        [disabled]="!editMode"
+                        [(ngModel)]="user.firstName"
+                        name="firstName"
+                        required>
+                    </mat-form-field>
+                    <mat-form-field class="example-full-width">
+                        <input matInput 
+                        placeholder="Last name" 
+                        id="surname"
+                        [(ngModel)]="user.surname"
+                        name="surname"
+                        [disabled]="!editMode"
+                        required>
+                    </mat-form-field>
+                    <mat-form-field class="example-full-width">
+                        <input matInput 
+                        placeholder="Role" 
+                        id="userRole"
+                        [(ngModel)]="user.role"
+                        name="userRole"
+                        [disabled]="!editMode"
+                        required>
+                    </mat-form-field>
+                    <mat-form-field *ngIf="currentUser.role == 'admin' && editMode">
+                        <mat-label>Change role</mat-label>
+                        <mat-select
+                            id="role"
+                            [(ngModel)]="user.role"
+                            name="role"
+                            [disabled]="!editMode"
+                            required>
+                            <mat-option *ngFor="let role of roles" [value]="role">
+                            {{role}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>    
+                    
+                            
+                        
+                            <!-- <img class="userContentTitle--profileImg" src="http://localhost:5000/api/v1/image/{{vm.user.profileImageFileName}}" alt=""> -->
+                        
+    
+                    
+                        
+    
+                    
+                    <!-- <form action="vm.uploadFile()" method="POST" enctype="multipart/form-data">
+                        <div class="custom-file mb-3">
+                            <input type="file" name="file" id="file" class="custom-file-input">
+                            <label for="file" class="custom-file-label">Choose File</label>
+                        </div>
+                        <input type="submit" value="Submit" class="btn btn-primary btn-block">
+                        </form>
+                    <div class="row">
+                        <label for="file" >Upload Image</label>
+                        <input type="file" name="file" id="file" ng-model="vm.file">
+                        <span ng-click="vm.uploadFile(vm.file)">Upload</span>
+                    </div> -->
+    
+                    <!-- <div >
+                        <input name="file" class="customButton" ngf-select="vm.upload($file)"/placeholder="Upload on file select" ng-if="vm.actionType == 'editUser'">
+                        
+                    </div> -->
+    
+                    
+                        
+                </form> 
+                
+            </div>
+        </div>
+        <div class="pageButtons">
+            <div class="buttonToModalWrapper">
+                <app-button-to-modal
+                    [condition]="true"
+                    [message] = "'Deposit/Withdraw'"
+                    [formName] = "'transactionForm'"
+                    [actionName]="'Deposit/Withdraw'"
+                    [dataDirection]="'top'"
+                    [ifTrueFunction]="createTransaction.bind(this)"
+                    >
+                </app-button-to-modal>
+            </div>
+            
+        </div>
+    </div>
+   
+</div>

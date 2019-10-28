@@ -1,0 +1,20 @@
+
+<div class="row table-header">
+    <div class="col-3">Date</div>
+    <div class="col-6">Type</div>
+    <div class="col-3">Amount</div>
+    
+</div>
+<div [@listAnimation]="transactions.length" *ngIf="loaded && transactions.length > 0">
+    <div *ngFor="let transaction of transactions | sort:'createdAt'" >
+        <div class="transaction-item">
+            <div class="row">
+                <div class="col-3">{{transaction.createdAt | date:'dd-MM-yy H:mm'}}</div>
+                <div class="col-6">{{transaction.transactionType}}</div>
+                <div class="col-3">{{transaction.amount}}</div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="loaded && transactions.length == 0">No transactions</div>
+

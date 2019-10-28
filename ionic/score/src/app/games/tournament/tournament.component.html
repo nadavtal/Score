@@ -1,0 +1,39 @@
+<ion-content>
+	<app-dinamic-tabs
+		[routeMode]="true"
+		[path]="'tournaments'">
+	</app-dinamic-tabs>
+	<router-outlet>
+	
+	</router-outlet>	
+	<br><br><br>
+	
+	<!-- <app-tournament-info
+		[class.hidden]="tab !== 'Info'"
+			
+		></app-tournament-info>
+	<app-tournament-structure
+		[class.hidden]="tab !== 'Structure'"
+		
+		></app-tournament-structure>
+	<app-tournament-prizes
+		[class.hidden]="tab !== 'Prizes'" 
+		  
+		>
+	</app-tournament-prizes> -->
+	<swal
+		#tournamentSwal
+		title=""
+		text=""
+		type=""
+		timer=""
+		[showConfirmButton]="false"
+		[showCancelButton]="false"
+		[focusCancel]="true"
+		>
+	</swal>
+	<app-to-full-screen
+		[positionClass]="'wrapperClosedCorner'"
+		[bgColor]="'black'">
+	</app-to-full-screen>
+</ion-content>

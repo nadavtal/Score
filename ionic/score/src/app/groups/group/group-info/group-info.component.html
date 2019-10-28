@@ -1,0 +1,239 @@
+
+<div class="" *ngIf="userLoaded" >
+    <div class="pageHeader d-flex between" [@moveInLeft]>
+        <div class="pageHeaderTitle">
+            {{group.groupName}}
+        </div>
+        
+        <div class="modalButton">
+            <app-sweet-alert 
+            [formName]="'createGroupForm'"
+            [actionName]="'Create'"
+            ></app-sweet-alert>
+        </div>
+        <div class="threeDButtonWrapper">
+                <app-three-d-button
+                    [condition]="!editMode"
+                    [actionTrueName]="'Edit'"
+                    [actionFalseName]="'Save'"
+                    [actionTrueFunction]="editGroup.bind(this)"
+                    [actionFalseFunction]="saveGroup.bind(this)"
+                    [actionTrueIconName]="'edit'"
+                    [actionFalseIconName]="'save'"
+                    [trueColor]="'pink'"
+                    [falseColor]="'green'"
+                    [iconSizeClass]="'small'"
+                    (threeDActionEmmiter)="threeDButtonClicked($event)"
+                    >
+                </app-three-d-button>
+        </div>
+        <app-icon-to-row
+            [bgColor]="'green'"
+            [icon]="'comments'"
+            [currentUser]="currentUser"
+            [positionClass]="'right1_2'"
+            (action)="sendMessageToGroup($event)">
+        </app-icon-to-row>
+        <app-icon-to-row
+            [bgColor]="'green'"
+            [icon]="'user-plus'"
+            [currentUser]="currentUser"
+            [positionClass]="'right0_2'"
+            (action)="inviteFriends($event)">
+        </app-icon-to-row>
+        <!-- <div class="pageHeaderActions" >
+            <app-icon-actions
+            *ngIf="actions"
+                [actions]="actions">
+            </app-icon-actions>
+            
+            
+        </div> -->
+        
+       
+        
+    </div> 
+    
+    
+    <div class="pageContent">
+        <div class="container">
+            <div class="row no-gutters">
+                <div class="col-6 pr-3">
+                    <form
+                    #groupForm="ngForm"
+                    
+                    name="groupForm"
+                    role="form"
+                    id="groupForm">
+                        <div class="">
+                            <div class="">
+                                <mat-form-field class="example-full-width">
+                                        <input matInput 
+                                        placeholder="Group name" 
+                                        value=""
+                                        id="groupName"
+                                        [(ngModel)] = "group.groupName"
+                                        name="groupName"
+                                        [disabled]="!editMode"
+                                        required
+                                        #groupName="ngModel">
+                                        <mat-error *ngIf="groupName.errors && (!groupName.valid && groupName.touched)">
+                                            <span class="" *ngIf="groupName.errors['required']">tournament groupName is required</span>
+                                            <span class="" *ngIf="groupName.errors['forbidden']">This groupName is used</span>
+                                        </mat-error>
+								</mat-form-field>
+								<mat-form-field class="example-full-width">
+                                        <input matInput 
+                                        placeholder="Manager" 
+                                        value=""
+                                        id="groupManager"
+                                        [(ngModel)] = "group.groupManager.userName"
+                                        name="groupManager"
+                                        [disabled]="!editMode"
+                                        required
+                                        #groupManager="ngModel">
+                                        <mat-error *ngIf="groupManager.errors && (!groupManager.valid && groupManager.touched)">
+                                            <span class="" *ngIf="groupManager.errors['required']">tournament groupManager is required</span>
+                                           
+                                        </mat-error>
+                                </mat-form-field>
+								<mat-form-field
+									*ngIf="editMode">
+                                    <mat-label>Manager</mat-label>
+                                    <mat-select
+                                        
+                                        id="manager"
+                                        [(value)]="group.groupManager"
+                                        [disabled]="!editMode"
+                                        name="manager"
+                                        
+                                        required>
+                                        <mat-option *ngFor="let user of group.members" [value]="{userName: user.userName, userId: user.userId}">
+                                        {{user.userName}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field>
+                                    <mat-label>Main platform</mat-label>
+                                    <mat-select
+                                        
+                                        id="platform"
+                                        [(value)]="group.mainPlatform"
+                                        [disabled]="!editMode"
+                                        name="platform"
+                                        
+                                        required>
+                                        <mat-option *ngFor="let platform of platforms" [value]="platform.name">
+                                        {{platform.name}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                
+                            </div>
+                            
+                        </div>
+                        
+                        <!--<mat-form-field>
+                            <mat-label>Add member</mat-label>
+                            <mat-select
+                                id="memberSelect"
+                                ngModel
+                                name="memberSelect"
+                                required>
+                                <mat-option *ngFor="let friend of user.friends" [value]="friend">
+                                {{friend.userName}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>-->
+                    
+                        
+                                    
+                                    
+                                
+                        <div class="">
+                
+                
+                            
+                
+                           <!-- <app-flipping-button
+                                [condition]="groupForm.valid"
+                                [actionOneName]="'Save'"
+                                [actionTwoName]="'Save(disabled)'"
+                                (action)="flippingButtonClicked($event)"
+                                >
+                    
+                            </app-flipping-button>
+                            <button 
+                                class="customButton"
+                                type="submit"
+                                [disabled]="groupForm.valid"
+                                
+                            >
+                                Create
+                            </button>
+                
+                            <button
+                                class="customButton green"
+                                type="submit"
+                                [disabled]="groupForm.valid"
+                            >
+                                Save
+                            </button>-->
+                        </div>
+                    </form>
+                    <div class="mainButtonWrapper">
+                        <app-three-d-button
+                            [condition]="registered"
+                            [actionTrueName]="'Leave'"
+                            [actionFalseName]="'Join'"
+                            [actionTrueFunction]="leaveGroup.bind(this)"
+                            [actionFalseFunction]="joinGroup.bind(this)"
+                            [actionTrueIconName]="'arrow-up'"
+                            [actionFalseIconName]="'arrow-down'"
+                            [trueColor]="'pink'"
+                            [falseColor]="'green'"
+                            [iconSizeClass]="'med'"
+                            (threeDActionEmmiter)="threeDButtonClicked($event)"
+                            >
+                        </app-three-d-button>
+                    </div>
+                     
+                </div>
+                <div class="col-6 pr-2">
+                    <div class="groupMembers" >
+                        <div class="">Members ({{group.members.length}})</div>
+                        <div class="members" 
+                            >
+                            <div class="member" *ngFor="let member of group.members; let i = index"
+                                [@moveOutRight]
+                                [@moveInUp]
+                                >
+                                
+                                <div class=""
+                                    [routerLink] = "['/', 'users', member.userId]">
+                                    <img class="member--profileImg" src="https://randomuser.me/api/portraits/men/{{i}}.jpg" alt="">
+                                    
+                                    {{member.userName}}
+                                    
+                                        
+                                </div>
+                                <div class="">
+                                    <fa class="red" name="trash" animation=""
+                                        (click)="removeMember(index, member)">
+                                    </fa>
+                                    
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+   
+</div>
+
+

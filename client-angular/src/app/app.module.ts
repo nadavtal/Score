@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'; 
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { UsersComponent } from './users/users.component';
 import { UsersListComponent } from './users/users-list/users-list.component';
@@ -36,12 +36,12 @@ import { AdminComponent } from './admin/admin.component';
     UsersListComponent,
     UserListItemComponent,
     DinamicModalComponent,
-    DinamicModalComponent, 
-    DialogOverviewExampleDialog, 
-    HomepageComponent, 
-    AuthComponent, 
-    GroupFormComponent, 
-    CalculatePrizePoolComponent, AdminComponent, 
+    DinamicModalComponent,
+    DialogOverviewExampleDialog,
+    HomepageComponent,
+    AuthComponent,
+    GroupFormComponent,
+    CalculatePrizePoolComponent, AdminComponent,
   ],
   imports: [
     BrowserModule,
@@ -58,14 +58,13 @@ import { AdminComponent } from './admin/admin.component';
     MessagesModule,
     GamesModule,
     UserModule
-    
-  ],
+    ],
   entryComponents: [DinamicModalComponent, DialogOverviewExampleDialog, GroupFormComponent],
   providers: [
-    
+
     {
-      provide: HTTP_INTERCEPTORS, 
-      useClass: AuthInterceptorService, 
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptorService,
       multi: true
     },
     ],

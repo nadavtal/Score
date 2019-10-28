@@ -1,0 +1,55 @@
+<div class="pageHeader"  [@moveInUp]>
+    <div class="d-flex between">
+        <div class="pageHeaderTitle">
+                Friends
+        </div>
+        
+        <div class="switchButton">
+            <app-switch-check-box 
+            *ngIf="showSwitchButton"
+            [ifCheckedFunction]="showOnlineFriends.bind(this)"
+            [ifUnCheckedFunction]="showAllFriends.bind(this)">
+            </app-switch-check-box>
+
+        </div>
+        <div class="swichButtonText" *ngIf="showSwitchButton">{{showFriends}}</div>
+        
+        <div class="pageHeaderActions" >
+            <app-icon-to-row
+                [bgColor]="'purple'"
+                [toolTipText]="'Search friends'"
+                [icon]="'search'"
+                [positionClass]="'right0_2'"
+                (action)="searchFriends()">
+            </app-icon-to-row>
+            <app-icon-to-row
+                [bgColor]="'purple'"
+                [toolTipText]="'Send message to user'"
+                [icon]="'comments'"
+                [positionClass]="'right1_2'"
+                (action)="sendMessageToFriends()">
+            </app-icon-to-row>
+            
+        </div>
+    </div>
+    
+    
+</div>
+<div *ngIf="loaded" class="pageContent">
+    <div [@listAnimation]="user.friends.length">
+        <div *ngFor="let friend of user.friends; let i = index" >
+            <app-friend 
+                [friend]="friend"
+                [index]="i"
+                [bgColor]="'purple'"
+                [user]="user">
+            </app-friend>
+        </div>
+            
+    </div>
+   
+</div>
+
+    
+
+    

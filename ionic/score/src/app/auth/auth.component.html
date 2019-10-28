@@ -1,0 +1,66 @@
+<div class="auth container"
+    [class.authOpen] ="formOpen">
+    <form
+        #loginForm="ngForm"
+        (ngSubmit)="onSubmit(loginForm)"
+        name="loginForm"
+        role="form"
+        id="loginForm"
+        *ngIf="formOpen">
+    
+       
+        <mat-form-field class="example-full-width">
+            <input matInput 
+            placeholder="Email" 
+            value=""
+            id="email"
+            [(ngModel)]="email"
+            name="email"
+            [required] = "!loginMode"
+            email>
+        </mat-form-field>
+        <br>
+        <mat-form-field class="example-full-width">
+            <input matInput 
+            placeholder="User Name" 
+            value=""
+            id="userName"
+            [(ngModel)]="userName"
+            name="userName"
+            required
+            >
+        </mat-form-field>
+        <br>
+        <mat-form-field class="example-full-width">
+            <input matInput 
+            placeholder="Password" 
+            value=""
+            id="password"
+            [(ngModel)]="password"
+            name="password"
+            required
+            minlength="3">
+        </mat-form-field>
+        <button
+            [disabled]="!loginForm.valid">
+            {{ loginMode? 'Login' : 'Sign Up' }}
+        </button>
+        
+    </form>
+    <div class="errorMsg red" *ngIf="error">{{error}}</div>
+    <button 
+        class="authButton white"
+        (click)="logout()" 
+        *ngIf="currentUser">
+        Logout
+    </button>
+    <button 
+        class="authButton white"
+        (click)="toggleForm()" 
+        *ngIf="!currentUser">
+        Login
+    </button>
+
+</div>
+
+

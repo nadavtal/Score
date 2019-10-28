@@ -1,0 +1,48 @@
+<div class="battle">
+    
+    <div class="battle__info d-flex between">
+        <div class="">{{battle.battleTime | date: 'dd/MM/yy HH:mm'}}</div>
+        <div class="">{{battle.type}}</div>
+    </div>
+    
+
+    <div class="row">
+        <div class="col-6 battle__participant" ngClass="isWinner? 'bg-green-faded' : 'bg-red-faded'">
+            <div *ngFor="let player of battle.team">
+                <div class="battle__participant--userName">
+                    <!-- <a ui-sref="clashUser({ usertag: player.tag })" class="create-user-link text-center" ui-sref-opts="{reload: true, notify: true}"> -->
+                    {{player.name}}
+                    <!-- </a>  -->
+                </div>
+                <div class="battle__participant__cards d-flex">
+                    <div class="battle__participant__cards--card" *ngFor="let card of player.cards">
+                        <img *ngIf="card" src="{{card.iconUrls.medium}}" alt="">
+                    </div>
+                </div>
+                
+            </div>
+            <div class="battle__participant--score">
+                {{battle.team[0].crowns}}
+            </div>
+            
+        </div>
+        <div class="col-6 battle__participant" ngClass="!isWinner? 'bg-green-faded' : 'bg-red-faded'">
+            <div *ngFor="let player of battle.opponent" class="battle__participant--userName">
+                <div class="battle__participant--userName">
+                    <!-- <a ui-sref="clashUser({ usertag: player.tag })" class="create-user-link text-center" ui-sref-opts="{reload: true, notify: true}"> -->
+                    {{player.name}}
+                    <!-- </a>  -->
+                </div>
+                <div class="battle__participant__cards d-flex">
+                    <div class="battle__participant__cards--card" *ngFor="let card of player.cards">
+                        <img  src="{{card.iconUrls.medium}}" alt="">
+                    </div>
+                </div>
+            </div>
+            <div class="battle__participant--score">
+                    {{battle.opponent[0].crowns}}
+            </div>
+        </div>
+
+    </div>
+</div>

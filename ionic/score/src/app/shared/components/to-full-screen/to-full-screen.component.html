@@ -1,0 +1,24 @@
+<div class="wrapper bg-{{bgColor}} {{positionClass}}" 
+    [ngClass]="{wrapperClosed : !open}" >
+    <button class="wrapperToggelButton white bg-{{bgColor}}" (click)="toggleComponent()" *ngIf="!open">
+        
+            <fa class="white icon-download absCenter" name="comments" animation=""></fa>
+
+        
+
+    </button>
+    <button class="actionIconWrapper white" (click)="toggleComponent()" *ngIf="open">
+            <div [class.absCenter]="!open">
+                <fa class="" name="times" animation=""></fa>
+    
+            </div>
+    </button>
+    <div class="content" *ngIf="open">
+        <div class="container white"  >
+            
+            <app-chat></app-chat>
+        </div>
+
+    </div>  
+
+</div>

@@ -1,0 +1,19 @@
+<div class="icon">
+    <fa class="{{bgColor}}" name="comments" animation=""
+        [class.open]="white"
+        (click)="toggleForm()">
+    </fa>
+</div>
+<div class="sendMessageWrapper bg-{{bgColor}}"
+    [class.open]="open">
+    
+    <div class="input white" *ngIf="open">
+        <input class="chatInput black" [ngModel]="message" placeholder="Enter message..."/>
+        <fa class="white icon-download" class="chatSend" name="send" animation=""
+            (click)="sendMessage(message)">
+        </fa>    
+        <fa class="white icon-download" class="chatSend" name="minus" animation=""
+            (click)="toggleForm()">
+        </fa>    
+    </div>
+</div>

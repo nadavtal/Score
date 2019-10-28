@@ -1,0 +1,15 @@
+<div class="iconActions" *ngIf="actions">
+    <div class="action actionIconWrapper pull-right" *ngFor="let action of actions"
+        >
+        <button mat-raised-button
+                class="nakedButton {{action.color}} pull-right"
+                matTooltip="{{action.name}}"
+                [matTooltipPosition]="'below'"
+                
+                aria-label="Button that displays a tooltip in various positions">
+				<fa  name="{{action.icon}}" animation=""
+				(click)="actionClicked($event, action.name)"></fa>
+        </button>
+        
+    </div>
+</div>

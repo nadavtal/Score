@@ -1,0 +1,37 @@
+<!-- <ion-header>
+  <ion-toolbar>
+    <ion-title>user</ion-title>
+  </ion-toolbar>
+</ion-header> -->
+
+<ion-content>
+	<app-dinamic-tabs
+		*ngIf="loaded"
+		[routeMode]="true"
+		[path]="'users'"
+		>
+	</app-dinamic-tabs>
+	
+	<br><br><br>
+	<router-outlet></router-outlet>
+	<app-glowing-spinner *ngIf="!loaded"></app-glowing-spinner>
+	<app-to-full-screen
+		[positionClass]="'wrapperClosedCorner'"
+		[bgColor]="'black'">
+	</app-to-full-screen>
+	<swal
+		#userSwal
+		(render)="onRender($event)"
+		(beforeOpen)="onBeforeOpen($event)"
+		title="{{swalTitle}}"
+		text="{{swalText}}"
+		type="{{swalType}}"
+		timer="{{swalTimer}}"
+		[showConfirmButton]="showConfirmButton"
+		(confirm)="swalConfirm($event)"
+		(cancel)="handleRefusal($event)"
+		[showCancelButton]="showCancelButton"
+		[focusCancel]="true"
+		>
+	</swal>
+</ion-content>

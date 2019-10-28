@@ -1,0 +1,69 @@
+
+
+<div class="pageHeader"  [@moveInLeft]>
+    <div class="d-flex between">
+        <div class="pageHeaderTitle">
+                Groups
+        </div>
+        
+        <div class="switchButton">
+            <app-switch-check-box 
+            *ngIf="showSwitchButton"
+            [ifCheckedFunction]="showOnlyRegisteredGroups.bind(this)"
+            [ifUnCheckedFunction]="showOnlyManagedGroups.bind(this)">
+            </app-switch-check-box>
+
+        </div>
+        <div class="swichButtonText" *ngIf="showSwitchButton">{{showGroups}}</div>
+        <div class="modalButton">
+            <app-sweet-alert 
+            [formName]="'createGroupForm'"
+            [actionName]="'Create group'"
+            [formTitle]="'New group, new family'"
+            (confirmed)="createNewGroup($event)"
+            ></app-sweet-alert>
+        </div>
+        <div class="pageHeaderActions" >
+            <app-icon-actions
+            *ngIf="actions"
+                [actions]="actions">
+            </app-icon-actions>
+            
+        </div>
+    </div>
+    
+    
+</div>
+    
+
+<div class="pageContent" *ngIf="loaded">
+        
+        <div *ngIf="showGroups == 'Managed groups'" [@listAnimation]="managedGroups.length">
+            <div *ngFor="let group of managedGroups; let i = index" 
+               >
+                <app-group-item 
+                    
+                    (action)="actionFromGroupItem($event)"
+                    [group]="group"
+                    [id]="group.id">
+                </app-group-item>
+            </div>
+                
+        </div>
+        
+        <div *ngIf="showGroups == 'Registered groups'" [@listAnimation]="groups.length">
+            <div *ngFor="let group of groups; let i = index" 
+                >
+                <app-group-item 
+                    (action)="actionFromGroupItem($event)"
+                    [group]="group"
+                    [id]="group.id">
+                </app-group-item>
+            </div>
+            
+        </div>
+</div>
+
+
+
+    

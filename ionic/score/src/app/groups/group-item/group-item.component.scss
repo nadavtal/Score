@@ -1,0 +1,11 @@
+.groupBlock{
+    position: relative;
+    margin-bottom: .7rem;
+    padding: .5rem;
+    background-color: rgba(80, 80, 255, 0.075);
+    
+    &--image{
+        width: 3rem;
+        height: 3rem;
+    }
+}

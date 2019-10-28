@@ -1,0 +1,24 @@
+<div class="tournamentWrapper">
+    <div class="tournamentColoumn round{{i}}" *ngFor="let round of tournamentStructureObj | keyvalue; let i = index">
+        <div class="tournamentColoumn--title">round {{i + 1}}</div>
+        <div class="battleDirective " *ngFor="let battle of tournamentStructureObj[i]; let j = index">
+            <div class="battleDirective__user user1 d-flex between" 
+                    (click)="selectWinner(j, $event, battle, battle.player1, i)"
+                    [ngClass]="battle.winner && battle.winner._id && battle.winner._id == battle.player1._id ? 'winner' : 'loser'">
+
+                <div *ngIf="battle.player1.userName" class="battleDirective__user--name">{{battle.player1.userName}}</div>	
+                <!-- <span class="battleDirective__user--score">2</span> -->
+        
+            </div>
+            <br>
+            <!-- <div>Vs.</div> -->
+            <div class="battleDirective__user user2 d-flex between" 
+                    (click)="selectWinner(j, $event, battle, battle.player2, i)"
+                    [ngClass]="battle.winner && battle.winner._id == battle.player2._id ? 'winner' : 'loser'">
+                <div *ngIf="battle.player2.userName" class="battleDirective__user--name" >{{battle.player2.userName}}</div>	
+                <!-- <span class="battleDirective__user--score">1</span> -->
+                
+            </div>
+        </div>
+    </div>
+</div>

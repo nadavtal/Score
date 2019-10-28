@@ -1,0 +1,66 @@
+<div class="groupBlock list-item"
+  [@moveOutRight] 
+  routerLinkActive="active">
+  <div class="row">
+    
+      <div class="col-2"
+        [routerLink]= "['/', 'groups', group._id]">
+        <img class="groupBlock--image" src="../../assets/img/platforms/{{group.mainPlatform}}.png" alt="">
+      </div>
+      <div class="col-6 groupBlock__details"
+        [routerLink]= "['/', 'groups', group._id]">
+        <h4>{{group.groupName}}</h4>
+        <div class="groupBlock__details--numMembers">
+          {{group.members.length}} members
+        </div>
+
+      </div>
+  
+      <div class="col-3">
+        <app-icon-actions
+          [actions]="actions"
+          (action)="actionClicked($event)">
+        </app-icon-actions>
+        <!-- <md-icon md-svg-src="assets/img/icons/edit.svg" class="actionButton" ui-sref="editGroup({ groupId: group._id })"></md-icon>
+        <md-icon md-svg-src="assets/img/icons/email.svg" class="actionButton blue" ng-click="vm.sendMessageToGroup(group)"></md-icon>
+        <md-icon md-svg-src="assets/img/icons/remove.svg" class="actionButton red" ng-click="vm.removeGame($index, group._id)"></md-icon> -->
+        
+      </div>
+  </div>
+  <app-icon-to-row
+    [bgColor]="'red'"
+    [toolTipText]="'Delete group'"
+    [icon]="'trash'"
+    [question]="'Are you sure you want to delete this group?'"
+    [positionClass]="'right0_2'"
+    (action)="deleteGroup()">
+  </app-icon-to-row>
+  <app-icon-to-row
+    [bgColor]="'blue'"
+    [toolTipText]="'Send message to group'"
+    [icon]="'comments'"
+    [positionClass]="'right1_2'"
+    (action)="sendMessage($event)">
+  </app-icon-to-row>
+  <!--<app-send-message 
+    [bgColor]="'blue'">
+  </app-send-message>-->
+</div>
+
+
+<!-- <a
+  [routerLink]= "[id]"
+  routerLinkActive="active"
+  class="list-group-item clearfix"  >
+  <div class="pull-left">
+    <h4 class="list-group-item-heading">{{ group.groupName }}</h4>
+    
+  </div>
+   <span class="pull-right">
+    <img
+      [src]="user.imagePath"
+      alt="{{ user.name }}"
+      class="img-responsive"
+      style="max-height: 50px;">
+  </span> 
+</a> -->

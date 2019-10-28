@@ -1,0 +1,63 @@
+<mat-tab-group mat-align-tabs="center" *ngIf="loaded">
+    
+    <mat-tab label="Inbox ({{sumUnreadMessages(inboxMessages)}})" *ngIf="inboxMessages.length">
+        <div *ngFor="let message of inboxMessages | sort:'sentdAt'">
+            <app-message
+                [box]="'inbox'"
+                [message]="message">
+            </app-message>
+        </div>
+        
+    </mat-tab>
+    <mat-tab label="Invites ({{sumUnreadMessages(invites) }})" *ngIf="invites.length">
+        <div *ngFor="let message of invites| sort:'sentdAt'">
+            <app-message
+                [box]="'inbox'"
+                [message]="message">
+            </app-message>
+        </div>
+        
+    </mat-tab>
+    <mat-tab label="Notifications ({{sumUnreadMessages(notifications)}})" *ngIf="notifications.length">
+        <div *ngFor="let message of notifications| sort:'sentdAt'">
+            <app-message
+                [box]="'inbox'"
+                [message]="message">
+            </app-message>
+        </div>
+        
+    </mat-tab>
+    <mat-tab label="Log ({{sumUnreadMessages(logMessages)}})" *ngIf="logMessages.length">
+        <div *ngFor="let message of logMessages | sort:'sentdAt'">
+            <app-message
+                [box]="'inbox'"
+                [message]="message">
+            </app-message>
+        </div>
+        
+    </mat-tab>
+    <mat-tab label="Outbox ({{sumUnreadMessages(outboxMessages)}})" *ngIf="outboxMessages.length">
+        <div *ngFor="let message of outboxMessages| sort:'sentdAt'">
+            <app-message
+                [box]="'outbox'"
+                [message]="message">
+            </app-message>
+        </div>
+    </mat-tab>
+    <mat-tab label="Draft">
+       
+    </mat-tab>
+    <mat-tab>
+        <ng-template mat-tab-label>
+            <div class="tabsActions">
+                <app-icon-actions
+                    [actions]="actions"> 
+                
+                </app-icon-actions>
+
+            </div>
+        </ng-template>
+        
+    </mat-tab>
+</mat-tab-group>
+

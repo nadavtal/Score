@@ -1,0 +1,200 @@
+
+@import '../../../../theme/partials/variables';
+@import '../../../../theme/partials/colors';
+$transition-duration: 0.8s;
+$transition-easing: cubic-bezier(0.230, 1.000, 0.320, 1.000);
+$bounce-easing: cubic-bezier(0.175, 0.885, 0.320, 1.275);
+$closed-width: 200px;
+$closed-height: 40px;
+$opened-width: 100vw;
+$opened-height: auto;
+
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,700);
+
+
+
+.description {
+  margin-top: 50px;
+  text-align: center;
+  color: #999;
+  transition: opacity 0.3s ease;
+}
+
+.description a {
+  color: #4A9DF6;
+  text-decoration: none;
+}
+
+.btn.is-open ~ .description {
+  opacity: 0;
+}
+
+.btn {
+  display: block;
+  margin: 0 auto;
+  position: relative;
+  width: $closed-width;
+  height: $closed-height;
+  transition: width $transition-duration $transition-easing,
+              height $transition-duration $transition-easing,
+              transform $transition-duration $bounce-easing;
+  transform-style: preserve-3d;
+  transform-origin: 50% 50%;
+  text-align: center;
+}
+
+.modalContent{
+  height: 13rem;
+}
+
+.btn-front {
+  position: absolute;
+  display: block;
+ 
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  line-height: $closed-height;
+  background-color: #F44336;
+  color: #fff;
+  cursor: pointer;
+  transform: translateX(-2rem);
+  backface-visibility: hidden;
+  -webkit-tap-highlight-color: rgba( 0, 0, 0, 0 );
+  transition: background 0.15s ease,
+              line-height $transition-duration $transition-easing;
+
+  &--button{
+    background: none;
+    border: none
+  }
+}
+.btn-front:hover {
+  background-color: lighten(#F44336, 10%);
+}
+// .btn.is-open .btn-front {
+//   pointer-events: none;
+//   line-height: $opened-height;
+// }
+
+.btn-confirm{
+  height: $closed-height;
+  width: $closed-width;
+  background-color: $orange
+}
+
+.btn-back {
+//   display: none ;
+  position: absolute;
+//   top: .6rem;
+  padding: 1rem;
+  width: 100%;
+  height: $closed-height;
+  background-color: $black;
+  
+  color: #fff;
+  transform: translateZ(-2px) translateX(-2rem) rotateX(180deg);
+  overflow: hidden;
+  transition: box-shadow $transition-duration ease;
+}
+.btn-back select , .btn-back input{
+  height: 2rem;
+  padding: .2rem;
+  color: black;
+}
+.btn-back input, .btn-back select {
+  margin-top: .5rem;
+  margin-bottom: .5rem;
+}
+.btn-back button, .btn-front button {
+  display: inline-block;
+  padding: 12px 20px;
+  width: 30%;
+  height: 3rem;
+  margin: 0 5px;
+  line-height: 1rem;
+  background-color: transparent;
+  border: 0;
+  border-radius: 2px;
+  font-size: 1em;
+  cursor: pointer;
+  -webkit-appearance: none;
+  -webkit-tap-highlight-color: rgba( 0, 0, 0, 0 );
+  transition: background 0.15s ease;
+  
+  &:focus {
+    outline: 0;
+  }
+  
+  &.yes {
+    background-color: $orange;
+    color: #fff;
+    
+    
+  }
+  
+  &.disabled{
+    background-color: $orange-faded
+  }
+  
+  &.no {
+    color: #2196F3;
+    
+    &:hover {
+      background-color: #ddd;
+    }
+  }
+}
+
+.btn.is-open.confirm {
+  // box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+  
+  display: block;
+  height: auto;
+  transform: rotateZ(180deg)!important
+}
+
+.btn.is-open .btn-back {
+  box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+  transform: translateX(0) rotateX(180deg);
+  top: 10rem;
+  display: block;
+  height: 18rem;
+}
+
+.btn.is-open .btn-front {
+  box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+  top: 10rem;
+  display: block;
+  height: 18rem;
+  padding: 1rem;
+  transform: rotate(180deg);
+  background-color: $black;
+
+}
+
+.btn[data-direction="left"] .btn-back,
+.btn[data-direction="right"] .btn-back {
+  transform: translateZ(-2px) rotateY(180deg);
+}
+
+.btn.is-open {
+  width: $opened-width;
+  height: $opened-height;
+}
+
+.btn[data-direction="top"].is-open {
+  transform: rotateX(180deg);
+}
+
+.btn[data-direction="right"].is-open {
+  transform: rotateY(180deg);
+}
+
+.btn[data-direction="bottom"].is-open {
+  transform: rotateX(-180deg);
+}
+
+.btn[data-direction="left"].is-open {
+  transform: rotateY(-180deg);
+}
