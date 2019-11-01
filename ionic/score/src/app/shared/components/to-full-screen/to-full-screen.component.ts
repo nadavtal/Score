@@ -7,10 +7,10 @@ import { Component, OnInit, Input, HostListener, ElementRef } from '@angular/cor
 })
 export class ToFullScreenComponent implements OnInit {
   open: boolean;
-  
-  
+
+
   @Input() bgColor: string;
-  @Input() positionClass:string;
+  @Input() positionClass: string;
 
   constructor(private eRef: ElementRef) { }
 
@@ -21,8 +21,8 @@ export class ToFullScreenComponent implements OnInit {
     this.positionClass = this.positionClass;
   }
 
-  toggleComponent(){
-    console.log(this.open)
+  toggleComponent() {
+    console.log(this.open);
     this.open = !this.open;
     // scope.$apply();
 }

@@ -15,7 +15,7 @@
         </div>
     </div>
     <app-icon-to-row
-        *ngIf="account.active"
+        *ngIf="account.active && isUser"
         [bgColor]="'red'"
         [toolTipText]="'Diactivate account'"
         [icon]="'trash'"
@@ -24,7 +24,7 @@
         (action)="turnToInactive()">
     </app-icon-to-row>
     <app-icon-to-row
-        *ngIf="!account.active"
+        *ngIf="!account.active && isUser"
         [bgColor]="'green'"
         [toolTipText]="'Activate account'"
         [icon]="'trash'"

@@ -78,19 +78,19 @@ export class MessagesComponent implements OnInit, OnDestroy {
   findInboxMessages(messages) {
     // console.log(messages)
     const inboxMessages = [];
-    for (let i = 0; i < messages.length; i++) {
+    for (const message of messages) {
       // console.log(messages[i].receiver.userId, this.currentUser._id)
-      if (messages[i].receiver.userId === this.currentUser._id) {
-        inboxMessages.push(messages[i]);
+      if (message.receiver.userId === this.currentUser._id) {
+        inboxMessages.push(message);
       }
     }
     return inboxMessages;
   }
   findOutboxMessages(messages) {
     const inboxMessages = [];
-    for (let i = 0; i < messages.length; i++) {
-      if (messages[i].sender.userId === this.currentUser._id) {
-        inboxMessages.push(messages[i]);
+    for (const message of messages) {
+      if (message.sender.userId === this.currentUser._id) {
+        inboxMessages.push(message);
       }
     }
     return inboxMessages;

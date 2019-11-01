@@ -33,13 +33,13 @@ export class DinamicTabsComponent implements OnInit {
   showMenuTab = false;
   id: string;
   component: string;
-  user: User;
+  
   lineClasses: string;
   currentUser: any;
   actions: any;
   toolBarColor: string;
   tab: any;
-
+  @Input() isUser: boolean;
   @Input() path: string;
   @Input() routeMode: any;
   @Output() tabSubject = new Subject<any>();
@@ -67,6 +67,7 @@ export class DinamicTabsComponent implements OnInit {
           for (const tab of this.tabs) {
             if (tab.name === this.tab) {
               this.showMenuTab = true;
+              this.activeTab = this.tab;
               break;
             } else {
               this.showMenuTab = false;
@@ -116,14 +117,26 @@ export class DinamicTabsComponent implements OnInit {
           } else if (this.path === 'users') {
 
             this.id = params.userId;
-            this.tabs = [
-              {name: 'Profile', color: 'green', icon: 'user', index: 0},
-              {name: 'Accounts', color: 'orange', icon: 'id-card', index: 1},
-              {name: 'Groups', color: 'blue', icon: 'users', index: 2},
-              {name: 'Friends', color: 'purple', icon: 'heart', index: 3},
-              {name: 'Games', color: 'black', icon: 'gamepad', index: 4},
-              {name: 'Messages', color: 'pink', icon: 'comments', index: 5},
-            ];
+            if (this.isUser) {
+              this.tabs = [
+                {name: 'Profile', color: 'green', icon: 'user', index: 0},
+                {name: 'Accounts', color: 'orange', icon: 'id-card', index: 1},
+                {name: 'Groups', color: 'blue', icon: 'users', index: 2},
+                {name: 'Friends', color: 'purple', icon: 'heart', index: 3},
+                {name: 'Games', color: 'black', icon: 'gamepad', index: 4},
+                {name: 'Messages', color: 'pink', icon: 'comments', index: 5},
+              ];
+            } else {
+
+              this.tabs = [
+                {name: 'Profile', color: 'green', icon: 'user', index: 0},
+                {name: 'Accounts', color: 'orange', icon: 'id-card', index: 1},
+                {name: 'Groups', color: 'blue', icon: 'users', index: 2},
+                {name: 'Friends', color: 'purple', icon: 'heart', index: 3},
+                // {name: 'Games', color: 'black', icon: 'gamepad', index: 4},
+                // {name: 'Messages', color: 'pink', icon: 'comments', index: 5},
+              ];
+            }
 
 
           } else if (this.path === 'groups') {

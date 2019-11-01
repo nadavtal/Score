@@ -200,36 +200,44 @@
                      
                 </div>
                 <div class="col-6 pr-2">
-                    <div class="groupMembers" >
-                        <div class="">Members ({{group.members.length}})</div>
-                        <div class="members" 
-                            >
-                            <div class="member" *ngFor="let member of group.members; let i = index"
-                                [@moveOutRight]
-                                [@moveInUp]
-                                >
-                                
-                                <div class=""
-                                    [routerLink] = "['/', 'users', member.userId]">
-                                    <img class="member--profileImg" src="https://randomuser.me/api/portraits/men/{{i}}.jpg" alt="">
-                                    
-                                    {{member.userName}}
-                                    
-                                        
-                                </div>
-                                <div class="">
-                                    <fa class="red" name="trash" animation=""
-                                        (click)="removeMember(index, member)">
-                                    </fa>
-                                    
-                                </div>
-                            </div>
-                            
-                        </div>
-                    </div>
+                   
                 </div>
             </div>
-
+			<div class="groupMembers" >
+				<div class="">Members ({{group.members.length}})</div>
+					<div class="members" 
+						>
+						<div class="member" *ngFor="let member of group.members; let i = index"
+							[@moveOutRight]
+							[@moveInUp]
+							>
+							
+							<div class=""
+								[routerLink] = "['/', 'users', member.userId]">
+								<img class="member--profileImg" src="https://randomuser.me/api/portraits/men/{{i}}.jpg" alt="">
+								
+								{{member.userName}}
+								
+									
+							</div>
+							<div class="" >
+								<fa *ngIf="isManager"
+									class="red" name="trash" animation=""
+									(click)="removeMember(i, member)">
+								</fa>
+								<app-icon-to-row
+									*ngIf="registered"
+									[bgColor]="'green'"
+									[icon]="'comments'"
+									[currentUser]="currentUser"
+									[positionClass]="'right1_2'"
+									(action)="sendMessageToUser($event, member)">
+								</app-icon-to-row>
+							</div>
+						</div>
+						
+					</div>
+				</div>
         </div>
 
     </div>

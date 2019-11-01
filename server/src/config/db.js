@@ -51,7 +51,7 @@
 
         });
     }
-    // removeCollection('games');
+    // removeCollection('transactions');
     // removeCollection('messages');
     // removeCollection('uploads.files');
   });

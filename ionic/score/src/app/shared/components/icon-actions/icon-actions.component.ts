@@ -1,5 +1,7 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { Subject } from 'rxjs';
+import { UsersService } from 'src/app/users/users.service';
+import { localStorageService } from '../../services/local-storage.service';
 
 @Component({
   selector: 'app-icon-actions',
@@ -9,9 +11,12 @@ import { Subject } from 'rxjs';
 export class IconActionsComponent implements OnInit {
   @Output()action = new Subject<any>();
   @Input() actions: any;
-  constructor() { }
+  isUser: boolean;
+  constructor(private usersService: UsersService,
+              ) { }
 
   ngOnInit() {
+    // this.isUser = this.usersService.checkIfUserIsCurrentUser(this.user);
     // console.log(this.actions)
   }
 

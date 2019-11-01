@@ -9,11 +9,17 @@
 }
 
 .member{
-    display: flex;
+	position: relative;
+	display: flex;
+	font-size: 1.2rem;
+    padding: 0.5rem 0.5rem;
+    max-height: 5rem;
+    width: 100%;
     justify-content: space-between;
-    margin-top: .3rem;
+	// margin-top: .1rem;
+	
     &--profileImg{
-        width: 2rem;
+        width: 2.5rem;
     }
 }
 

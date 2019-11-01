@@ -1,11 +1,11 @@
 <div class="" *ngIf="loaded">
 	
-    <div class="pageHeader d-flex between">
+    <div class="pageHeader d-flex between" [@moveInLeft]>
 		
         <div class="pageHeaderTitle">
             {{user.userName}}
         </div>
-        <div class="threeDButtonWrapper">
+        <div class="threeDButtonWrapper" *ngIf="isUser">
             <app-three-d-button
                 [condition]="!editMode"
                 [actionTrueName]="'Edit'"
@@ -22,23 +22,24 @@
             </app-three-d-button>
         </div>
         
-        <div class="pageHeaderActions" >
+        <div class="pageHeaderActions" *ngIf="isUser">
             <app-icon-actions
                 *ngIf="actions"
                 (action)="iconActionClicked($event)"
                 [actions]="actions">
             </app-icon-actions>
         </div>
-        <app-icon-to-row
+		<app-icon-to-row
+			*ngIf="!isUser"
             [bgColor]="'green'"
             [toolTipText]="'Send message to user'"
             [icon]="'comments'"
             [positionClass]="'right0_2'"
-            (action)="sendMessageToUser()">
+            (action)="sendMessageToUser($event)">
         </app-icon-to-row>
         
     </div> 
-    <div class="pageContent container">
+    <div class="pageContent container" >
         <div class="transactions" *ngIf="showTransactions">
             <app-transactions></app-transactions>
         </div> 
@@ -168,7 +169,7 @@
             </div>
         </div>
         <div class="pageButtons">
-            <div class="buttonToModalWrapper">
+            <div class="buttonToModalWrapper" *ngIf="isUser">
                 <app-button-to-modal
                     [condition]="true"
                     [message] = "'Deposit/Withdraw'"

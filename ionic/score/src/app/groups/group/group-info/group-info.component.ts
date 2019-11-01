@@ -9,6 +9,7 @@ import { localStorageService } from 'src/app/shared/services/local-storage.servi
 import { listAnimation, moveInUp, moveOutRight, moveInLeft} from '../../../shared/animations';
 import { MessagesService } from 'src/app/messages/messages.service';
 import { IonToastService } from 'src/app/shared/services/ion-toast.service';
+import { UsersService } from 'src/app/users/users.service';
 
 @Component({
   selector: 'app-group-info',
@@ -25,6 +26,8 @@ export class GroupInfoComponent implements OnInit, OnChanges, OnDestroy {
   editMode: boolean;
   registered: boolean;
   currentUser: any;
+  isManager: boolean;
+  
   private subs = new SubSink();
   @ViewChild('groupForm', {static: false}) private groupForm: NgForm;
 
@@ -33,7 +36,8 @@ export class GroupInfoComponent implements OnInit, OnChanges, OnDestroy {
               private utilsService: Utils,
               private localStorage: localStorageService,
               private messagesService: MessagesService,
-              private ionToastService: IonToastService,
+              private usersService: UsersService,
+              private toastService: IonToastService,
               private groupService: GroupsService, ) { }
 
   ngOnInit() {
@@ -55,6 +59,7 @@ export class GroupInfoComponent implements OnInit, OnChanges, OnDestroy {
             .subscribe((group: any) => {
               this.userLoaded = true;
               this.group = group.data;
+              this.isManager = this.usersService.checkIfUserIsCurrentUser(this.group.groupManager.userId);
               console.log('group in GroupInfoComponent from server', this.group);
               this.registered = this.utilsService.checkIfUserInArrayByUsername(this.group.members, this.currentUser.userName);
 
@@ -65,7 +70,7 @@ export class GroupInfoComponent implements OnInit, OnChanges, OnDestroy {
     this.subs.sink = this.platformService.getPlatforms()
       .subscribe((platforms: any) => {
         this.platforms = platforms.data;
-        console.log(this.platforms)
+        console.log(this.platforms);
       });
 
     // this.groupForm.valueChanges.subscribe(
@@ -91,7 +96,7 @@ export class GroupInfoComponent implements OnInit, OnChanges, OnDestroy {
     this.editMode = !this.editMode;
   }
   saveGroup(toastMsg = 'Group saved') {
-    console.log(this.group.groupManager)
+    
     this.subs.sink = this.groupService.editGroup(this.group)
       .subscribe((updatedGroup: any) => {
         this.group = updatedGroup.data;
@@ -100,7 +105,7 @@ export class GroupInfoComponent implements OnInit, OnChanges, OnDestroy {
         if (this.editMode) {
           this.editMode = !this.editMode;
         }
-        this.ionToastService.ionToastSubject.next({
+        this.toastService.ionToastSubject.next({
           message: toastMsg,
           position: 'middle'
         });
@@ -181,11 +186,23 @@ export class GroupInfoComponent implements OnInit, OnChanges, OnDestroy {
       });
   }
 
+  sendMessageToUser(text, groupMember) {
+    this.messagesService.sendMessageToUser(groupMember, this.currentUser, text, '')
+      .subscribe(returnMessage => {
+        console.log(returnMessage)
+        if (returnMessage) {
+          this.toastService.ionToastSubject.next({
+            message: 'Message sent to ' + groupMember.userName
+          });
+        }
+      });
+  }
+
   sendMessageToGroup(text) {
     this.messagesService.sendMessageToGroup(this.group.members, this.currentUser, text)
     .then((createdMessages: any) => {
       console.log('createdMessages: ', createdMessages);
-      this.ionToastService.ionToastSubject.next({
+      this.toastService.ionToastSubject.next({
         message: 'Message sent',
         position: 'middle'
       });

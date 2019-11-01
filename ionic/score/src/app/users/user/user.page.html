@@ -7,6 +7,7 @@
 <ion-content>
 	<app-dinamic-tabs
 		*ngIf="loaded"
+		[isUser]="isUser"
 		[routeMode]="true"
 		[path]="'users'"
 		>

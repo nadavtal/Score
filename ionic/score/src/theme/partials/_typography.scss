@@ -132,6 +132,9 @@ body.swal2-height-auto {
     height: 100% !important;
 }
 
+.mat-input-element:disabled {
+    color: rgba(0,0,0,1);
+}
 /* ===============================
      sizes
    =============================== */

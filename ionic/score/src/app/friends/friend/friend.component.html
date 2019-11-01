@@ -34,7 +34,8 @@
         
     
     </mat-grid-list>
-    <app-icon-to-row
+	<app-icon-to-row
+		*ngIf="isUser"
         [bgColor]="'red'"
         [toolTipText]="'Remove friend'"
         [icon]="'trash'"
@@ -42,11 +43,12 @@
         [positionClass]="'right0_2'"
         (action)="removeFriend(index, user)">
     </app-icon-to-row>
-    <app-icon-to-row
+	<app-icon-to-row
+		*ngIf="isUser"
         [bgColor]="bgColor"
         [icon]="'comments'"
         [positionClass]="'right1_2'"
-        (action)="sendMessage($event)">
+        (action)="sendMessageToUser($event)">
     </app-icon-to-row>
     
 </div>

@@ -23,7 +23,7 @@ export class UserPage implements OnInit , OnDestroy {
   swalTimer: number;
   showConfirmButton = true;
   showCancelButton = true;
-
+  isUser: boolean;
   @ViewChild('userSwal', {static: false}) private userSwal: SwalComponent;
 
   private subs = new SubSink();
@@ -43,6 +43,7 @@ export class UserPage implements OnInit , OnDestroy {
             .subscribe((user: any) => {
               console.log('URL CHANGED FETCHING USER');
               this.user = user.data;
+              this.isUser = this.usersService.checkIfUserIsCurrentUser(this.user._id);
               console.log('user in userComponent', this.user);
               this.usersService.setUser(this.user);
               this.usersService.userSelected.next(this.user);

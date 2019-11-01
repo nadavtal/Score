@@ -42,7 +42,8 @@
             <div *ngFor="let group of managedGroups; let i = index" 
                >
                 <app-group-item 
-                    
+                    [isUser]="isUser"
+                    [currentUser]="currentUser"
                     (action)="actionFromGroupItem($event)"
                     [group]="group"
                     [id]="group.id">
@@ -54,7 +55,9 @@
         <div *ngIf="showGroups == 'Registered groups'" [@listAnimation]="groups.length">
             <div *ngFor="let group of groups; let i = index" 
                 >
-                <app-group-item 
+				<app-group-item 
+					[isUser]="isUser"
+					[currentUser]="currentUser"
                     (action)="actionFromGroupItem($event)"
                     [group]="group"
                     [id]="group.id">

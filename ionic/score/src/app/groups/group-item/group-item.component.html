@@ -16,7 +16,7 @@
 
       </div>
   
-      <div class="col-3">
+      <div class="col-3" *ngIf="actions">
         <app-icon-actions
           [actions]="actions"
           (action)="actionClicked($event)">
@@ -28,6 +28,7 @@
       </div>
   </div>
   <app-icon-to-row
+  	*ngIf="isUser"
     [bgColor]="'red'"
     [toolTipText]="'Delete group'"
     [icon]="'trash'"
@@ -36,6 +37,7 @@
     (action)="deleteGroup()">
   </app-icon-to-row>
   <app-icon-to-row
+  	*ngIf="isUser"
     [bgColor]="'blue'"
     [toolTipText]="'Send message to group'"
     [icon]="'comments'"

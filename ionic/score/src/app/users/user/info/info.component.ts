@@ -7,8 +7,9 @@ import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { localStorageService } from 'src/app/shared/services/local-storage.service';
 import { TransactionsService } from 'src/app/transactions/transaction.service';
 import { SubSink } from 'node_modules/subsink/dist/subsink';
-import { ToastController } from '@ionic/angular';
 import { IonToastService } from 'src/app/shared/services/ion-toast.service';
+import { moveInLeft, moveInUp } from 'src/app/shared/animations';
+import { MessagesService } from 'src/app/messages/messages.service';
 
 
 
@@ -16,7 +17,8 @@ import { IonToastService } from 'src/app/shared/services/ion-toast.service';
 @Component({
   selector: 'app-info',
   templateUrl: './info.component.html',
-  styleUrls: ['./info.component.scss']
+  styleUrls: ['./info.component.scss'],
+  animations: [moveInLeft, moveInUp]
 })
 export class InfoComponent implements OnInit, OnDestroy {
   roles = [];
@@ -37,9 +39,9 @@ export class InfoComponent implements OnInit, OnDestroy {
             private usersService: UsersService,
             private transactionsService: TransactionsService,
             private localStorage: localStorageService,
-            public toastController: ToastController,
+            private messagesService: MessagesService,
             private route: ActivatedRoute,
-            private ionToastService: IonToastService,
+            private toastService: IonToastService,
 
   ) { }
 
@@ -49,12 +51,12 @@ export class InfoComponent implements OnInit, OnDestroy {
       {name: 'Show/Hide transactions', color: 'green', icon: 'money'},
       // {name: 'Show transactions', color: 'green', icon: 'dollar'},
     ];
-    this.subs.sink = this.usersService.userSelected
-      .subscribe((user: any) => {
-        this.user = user;
-        console.log('user in InfoComponent sub', this.user);
-        this.loaded = true;
-      });
+    // this.subs.sink = this.usersService.userSelected
+    //   .subscribe((user: any) => {
+    //     this.user = user;
+    //     console.log('user in InfoComponent sub', this.user);
+    //     this.loaded = true;
+    //   });
     this.subs.sink = this.route.parent.params
         .subscribe(
           (params: Params) => {
@@ -65,10 +67,10 @@ export class InfoComponent implements OnInit, OnDestroy {
                 // console.log(user.data)
                 this.user = user.data;
                 this.loaded = true;
+                this.isUser = this.usersService.checkIfUserIsCurrentUser(this.user._id);
+                console.log(this.isUser);
                 console.log('user in InfoComponent from server', this.user);
-
-
-              });
+            });
           }
         );
     this.roles =  ['User', 'Admin'];
@@ -92,8 +94,15 @@ export class InfoComponent implements OnInit, OnDestroy {
     console.log(this.showTransactions);
   }
 
-  sendMessageToUser() {
-    console.log('send message to: ', this.user.userName);
+  sendMessageToUser(text) {
+    this.messagesService.sendMessageToUser(this.user, this.currentUser, text, '')
+      .subscribe(returnMessage => {
+        if (returnMessage) {
+            this.toastService.ionToastSubject.next({
+            message: 'Message sent to ' + this.user.userName
+          });
+        }
+      });
   }
 
   onSubmit(form: NgForm) {
@@ -126,14 +135,14 @@ export class InfoComponent implements OnInit, OnDestroy {
         this.usersService.userSelected.next(this.user);
         this.localStorage.update('currentUser', this.user);
         console.log(this.localStorage.get('currentUser'));
-        this.ionToastService.ionToastSubject.next({
+        this.toastService.ionToastSubject.next({
           message: toastMsg,
           
         });
       },
       error => {
         console.log(error);
-        this.ionToastService.ionToastSubject.next({
+        this.toastService.ionToastSubject.next({
           message: error.message,
           
         });
@@ -160,5 +169,7 @@ export class InfoComponent implements OnInit, OnDestroy {
       this.user.balance -= transaction.amount;
     }
   }
+
+
 
 }

@@ -63,15 +63,19 @@ export class MessagesService implements OnDestroy {
         return promise;
       }
 
-    sendMessageToUser(toUser, fromUser) {
-        console.log(fromUser, toUser);
+    sendMessageToUser(toUser, fromUser, subject, content = '', messageType = 'privateChatMessage') {
+        // console.log(subject);
         // toUser._id = toUser.userId
-        const users = {
-          sender: fromUser,
-          receiver: toUser,
-          messageType: 'privateChatMessage'
+        const message = {
+          subject,
+          content,
+          messageType,
+          sender:  fromUser.userId ? {userName: fromUser.userName, userId: fromUser.userId} :
+                                  {userName: fromUser.userName, userId: fromUser._id},
+          receiver: toUser.userId ? {userName: toUser.userName, userId: toUser.userId} :
+                                 {userName: toUser.userName, userId: toUser._id} ,
         };
-
+        return this.createMessage(message);
       }
 
     sendMessageToGroup(group, fromUser, text) {
@@ -80,10 +84,8 @@ export class MessagesService implements OnDestroy {
           subject : text,
           content: '',
           messageType : 'groupMessage',
-          sender : {
-              userName: fromUser.userName,
-              userId: fromUser._id
-          },
+          sender : fromUser.userId ? {userName: fromUser.userName, userId: fromUser.userId} :
+                                     {userName: fromUser.userName, userId: fromUser._id},
           links: {
             groupId: group._id,
             groupName: group.groupName
@@ -221,7 +223,7 @@ export class MessagesService implements OnDestroy {
       };
       if (!message) { return; }
 
-      return this.query.post('messages/', message);
+      return this.createMessage(message);
     }
 
     createNotificationMessage(action, content, receiver, links) {
@@ -247,7 +249,7 @@ export class MessagesService implements OnDestroy {
       };
       if (!message) { return; }
 
-      return this.query.post('messages/', message);
+      return this.createMessage(message);
     }
 
     sendInvitationMessage(itemType, item, fromUser, users, msgType) {

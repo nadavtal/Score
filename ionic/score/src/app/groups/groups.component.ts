@@ -23,6 +23,7 @@ export class GroupsComponent implements OnInit, OnDestroy {
   managedGroups: any[];
   showGroups = 'Managed groups';
   loaded = false;
+  isUser: boolean;
   showSwitchButton = true;
   dataLoaded = false;
   private subs = new SubSink();
@@ -47,33 +48,35 @@ export class GroupsComponent implements OnInit, OnDestroy {
       this.groups.push(newGroup);
     });
     this.subs.sink = this.usersService.userSelected
-    .subscribe((user: any) => {
+      .subscribe((user: any) => {
       this.user = user;
+      this.isUser = this.usersService.checkIfUserIsCurrentUser(this.user._id);
       // console.log('user in GroupListComponent sub', this.user);
-      
-    this.subs.sink = this.groupsService.getGroupsByUserID(this.user._id)
+
+      this.subs.sink = this.groupsService.getGroupsByUserID(this.user._id)
         .subscribe((groups: any) => {
           this.groups = groups.data;
-          // console.log(this.groups);
-          // this.loaded = true;
+        // console.log(this.groups);
+        // this.loaded = true;
         });
-    this.subs.sink = this.groupsService.getGroupsManagedByUserID(this.user._id)
+      this.subs.sink = this.groupsService.getGroupsManagedByUserID(this.user._id)
         .subscribe((managedGroups: any) => {
           this.managedGroups = managedGroups.data;
           console.log(this.managedGroups);
           this.loaded = true;
         });
-  
+
     });
     this.subs.sink = this.route.parent.params
       .subscribe(
         (params: Params) => {
-          if (params['userId']){
-            this.id = params['userId'];
+          if (params.userId) {
+            this.id = params.userId;
             this.subs.sink = this.usersService.getUserFromDb(this.id)
               .subscribe((user: any) => {
                 // console.log(user.data)
                 this.user = user.data;
+                this.isUser = this.usersService.checkIfUserIsCurrentUser(this.user._id);
                 console.log('user in InfoComponent from server', this.user);
                 this.subs.sink = this.groupsService.getGroupsByUserID(this.user._id)
                   .subscribe((groups: any) => {
@@ -87,10 +90,10 @@ export class GroupsComponent implements OnInit, OnDestroy {
                     console.log(this.managedGroups);
                     this.loaded = true;
                   });
-  
+
               });
 
-          }else{
+          } else {
             this.subs.sink = this.groupsService.getGroups()
               .subscribe((groups: any) => {
                 this.groups = groups.data;
@@ -102,21 +105,21 @@ export class GroupsComponent implements OnInit, OnDestroy {
           }
         }
       );
-    
-            
 
-    
+
+
+
 
 
   }
 
   actionFromGroupItem(event){
     console.log(event);
-    
+
   }
 
   // pageHeaderActionClicked(actionName){
-    
+
   //   if(actionName === 'Create group'){
   //     this.createNewGroup();
   //   }
@@ -131,10 +134,10 @@ export class GroupsComponent implements OnInit, OnDestroy {
 
   createNewGroup(data){
     const group  = data.values;
-    
+
     group.groupManager = {userName : this.currentUser.userName,
       userId: this.currentUser._id};
-      
+
     console.log(group);
     this.subs.sink = this.groupsService.createGroup(group)
       .subscribe((newGroup: any) => {

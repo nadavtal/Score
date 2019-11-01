@@ -7,8 +7,7 @@ import { localStorageService } from '../shared/services/local-storage.service';
 import { SubSink } from 'node_modules/subsink/dist/subsink';
 import { Utils } from '../shared/services/utils.service';
 import { MessagesService } from '../messages/messages.service';
-import { resolve } from 'dns';
-import { reject } from 'q';
+
 
 @Injectable({providedIn: 'root'})
 export class TournamentsService implements OnDestroy {
