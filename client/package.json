@@ -61,7 +61,7 @@
   },
   "homepage": "https://github.com/jbutko/ExpressJS-Socket.io-AngularJS-Boilerplate",
   "dependencies": {
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "titanic-icons": "^1.2.0"
   }
 }
